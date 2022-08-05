@@ -1,0 +1,63 @@
+{
+  "word": "ãgriska",
+  "note": "costam",
+  "partOfSpeech": "NOUN",
+  "genderNounType": "FEMININE",
+  "variation": {
+    "nominative": "ãgriska",
+    "genitive": "ãgrisczi",
+    "dative": "ãgrisce",
+    "accusative": "ãgriskã",
+    "instrumental": "ãgriską",
+    "locative": "ãgrisce",
+    "vocative": "ãgriska!",
+    "nominativePlural": "ãgrisczi",
+    "genitivePlural": "ãgrisków",
+    "dativePlural": "ãgriskóm",
+    "accusativePlural": "ãgrisczi",
+    "instrumentalPlural": "ãgriskama",
+    "locativePlural": "ãgriskach",
+    "vocativePlural": "ãgrisczi"
+  },
+  "meanings": [
+    {
+      "polishTranslation": "agrest",
+      "definition": "Kolczasty krzew, na którym rosną niewielkie, kuliste owoce.",
+      "origin": "Prawdopodobnie od łac. agrestis – polny, wiejski.",
+      "synonims": [4324,4325,6565],
+      "antonyms": [66,67],
+      "basic": 17,
+      "superordinate": 18,
+      "proverbs": [{"proverb": "lorem ipsum", "note": "foo"}],
+      "phrasalVerbs": [{"proverb": "lorem ipsum", "note": "foo"}],
+      "quotes": [{"quote": "lorem ipsum", "note": "foo"}],
+      "examples": [{"example": "lorem ipsum", "note": "foo"}]
+    },
+    {
+      "polishTranslation": "agrest",
+      "definition": "Owoc krzewu o tej samej nazwie.",
+      "origin": "Prawdopodobnie od łac. agrestis – polny, wiejski.",
+      "synonims": [4324,4325,6565],
+      "antonyms": [66,67],
+      "basic": 17,
+      "superordinate": 18,
+      "proverbs": [{"proverb": "lorem ipsum", "note": "foo"}],
+      "phrasalVerbs": [{"proverb": "lorem ipsum", "note": "foo"}],
+      "quotes": [{"quote": "lorem ipsum", "note": "foo"}],
+      "examples": [{"example": "lorem ipsum", "note": "foo"}]
+    },
+    {
+      "polishTranslation": "podfruwajka",
+      "definition": "Niedorosła, kilkunastoletnia dziewczyna.",
+      "origin": "Od słowa: ãgriska, oznaczającego (niedojrzały) owoc agrestu.",
+      "synonims": [4324,4325,6565],
+      "antonyms": [66,67],
+      "basic": 17,
+      "superordinate": 18,
+      "proverbs": [{"proverb": "lorem ipsum", "note": "foo"}],
+      "phrasalVerbs": [{"phrasalVerbs": "lorem ipsum", "note": "foo"}],
+      "quotes": [{"quote": "lorem ipsum", "note": "foo"}],
+      "examples": [{"example": "lorem ipsum", "note": "foo"}]
+    }
+  ]
+}
