@@ -12,7 +12,6 @@ import javax.persistence.Table
 data class Example(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     val id: Long,
     val example: String?,
     val note: String?

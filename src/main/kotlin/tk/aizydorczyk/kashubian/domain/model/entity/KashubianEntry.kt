@@ -21,7 +21,6 @@ import javax.persistence.Table
 data class KashubianEntry(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     var id: Long,
     @Column(unique = true)
     val word: String?,

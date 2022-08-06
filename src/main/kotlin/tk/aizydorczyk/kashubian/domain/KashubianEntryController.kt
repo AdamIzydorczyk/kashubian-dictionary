@@ -55,8 +55,7 @@ class KashubianEntryController(
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(
-            MethodArgumentNotValidException::class)
+    @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleValidationExceptions(
         ex: MethodArgumentNotValidException): Map<String, List<Any>> {
         val groupedErrors = ex.bindingResult.allErrors
