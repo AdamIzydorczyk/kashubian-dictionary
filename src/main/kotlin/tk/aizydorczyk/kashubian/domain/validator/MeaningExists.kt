@@ -15,29 +15,29 @@ import kotlin.reflect.KClass
 
 
 @MustBeDocumented
-@Constraint(validatedBy = [UniqueWordValidator::class])
+@Constraint(validatedBy = [MeaningExistsValidator::class])
 @Target(allowedTargets = [FIELD])
 @Retention(RUNTIME)
-annotation class UniqueWord(
-    val message: String = "WORD_NOT_UNIQUE",
+annotation class MeaningExists(
+    val message: String = "MEANING_NOT_EXISTS",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [])
 
 @Component
 @RequestScope
-class UniqueWordValidator : ConstraintValidator<UniqueWord, String?> {
+class MeaningExistsValidator : ConstraintValidator<MeaningExists, Long?> {
 
     @Autowired
     @Qualifier("defaultEntityManager")
     private lateinit var entityManager: EntityManager
 
-    override fun isValid(word: String?, context: ConstraintValidatorContext?): Boolean {
-        return word?.let(this::isWordNonExistOrEqual) ?: true
+    override fun isValid(meaningId: Long?, context: ConstraintValidatorContext?): Boolean {
+        return meaningId?.let(this::isMeaningExist) ?: true
     }
 
-    private fun isWordNonExistOrEqual(word: String?): Boolean {
-        return entityManager.createQuery("select count(e) from KashubianEntry e where e.word = :word",
+    private fun isMeaningExist(meaningId: Long): Boolean {
+        return entityManager.createQuery("select count(m) from Meaning m where m.id = :id",
                 Long::class.javaObjectType)
-            .setParameter("word", word).singleResult < 1
+            .setParameter("id", meaningId).singleResult > 0
     }
 }

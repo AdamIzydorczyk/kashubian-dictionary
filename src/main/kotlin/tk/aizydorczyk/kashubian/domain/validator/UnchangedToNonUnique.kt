@@ -27,7 +27,7 @@ annotation class UnchangedToNonUnique(
 
 @Component
 @RequestScope
-class UnchangedWordValidator : ConstraintValidator<UnchangedToNonUnique, String> {
+class UnchangedWordValidator : ConstraintValidator<UnchangedToNonUnique, String?> {
 
     @Autowired
     @Qualifier("defaultEntityManager")
@@ -36,11 +36,11 @@ class UnchangedWordValidator : ConstraintValidator<UnchangedToNonUnique, String>
     @Autowired
     private lateinit var request: HttpServletRequest
 
-    override fun isValid(word: String, context: ConstraintValidatorContext?): Boolean {
-        return word.let(this::isChangedWordUnique)
+    override fun isValid(word: String?, context: ConstraintValidatorContext?): Boolean {
+        return word?.let(this::isChangedWordUnique) ?: true
     }
 
-    private fun isChangedWordUnique(word: String): Boolean {
+    private fun isChangedWordUnique(word: String?): Boolean {
         val patchVariables =
             request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE) as LinkedHashMap<String, String>
         val entryId = patchVariables["entryId"]?.toLong() ?: 0
