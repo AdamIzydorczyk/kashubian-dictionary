@@ -2,14 +2,12 @@ package tk.aizydorczyk.kashubian.domain.model.entitysearch
 
 import javax.persistence.Entity
 import javax.persistence.Id
-import javax.persistence.JoinColumn
-import javax.persistence.ManyToOne
 import javax.persistence.OneToOne
 import javax.persistence.Table
 
 @Entity
 @Table(name = "variation")
-data class VariationSearch(
+data class SearchVariation(
     @Id
     val id: Long,
     val nominative: String?,
@@ -28,5 +26,5 @@ data class VariationSearch(
     val vocativePlural: String?,
 
     @OneToOne(mappedBy = "variation")
-    val kashubianEntry: KashubianEntrySearch
+    val kashubianEntry: SearchKashubianEntry
 )

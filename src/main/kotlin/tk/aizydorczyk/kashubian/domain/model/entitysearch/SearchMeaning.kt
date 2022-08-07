@@ -12,29 +12,29 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "meaning")
-data class MeaningSearch(
+data class SearchMeaning(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
     @OneToOne
     @JoinColumn(name = "translation_id")
-    val translation: TranslationSearch? = null,
+    val translation: SearchTranslation? = null,
     val definition: String? = null,
     val origin: String? = null,
     @ManyToOne
-    var base: MeaningSearch? = null,
+    var base: SearchMeaning? = null,
     @ManyToOne
-    var superordinate: MeaningSearch? = null,
+    var superordinate: SearchMeaning? = null,
     @OneToMany(mappedBy = "meaning")
-    val proverbs: List<ProverbSearch> = emptyList(),
+    val proverbs: List<SearchProverb> = emptyList(),
     @OneToMany(mappedBy = "meaning")
-    val phrasalVerbs: List<PhrasalVerbSearch> = emptyList(),
+    val phrasalVerbs: List<SearchPhrasalVerb> = emptyList(),
     @OneToMany(mappedBy = "meaning")
-    val quotes: List<QuoteSearch> = emptyList(),
+    val quotes: List<SearchQuote> = emptyList(),
     @OneToMany(mappedBy = "meaning")
-    val examples: List<ExampleSearch> = emptyList(),
+    val examples: List<SearchExample> = emptyList(),
 
     @ManyToOne
     @JoinColumn(name = "kashubian_entry_id")
-    val kashubianEntry: KashubianEntrySearch
+    val kashubianEntry: SearchKashubianEntry
 )

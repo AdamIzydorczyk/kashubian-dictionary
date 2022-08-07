@@ -7,13 +7,13 @@ import javax.persistence.ManyToOne
 import javax.persistence.Table
 
 @Entity
-@Table(name = "proverb")
-data class ProverbSearch(
+@Table(name = "quote")
+data class SearchQuote(
     @Id
     val id: Long,
-    val proverb: String,
+    val quote: String,
     val note: String,
     @ManyToOne
     @JoinColumn(name = "meaning_id")
-    val meaning: MeaningSearch
+    val meaning: SearchMeaning
 )

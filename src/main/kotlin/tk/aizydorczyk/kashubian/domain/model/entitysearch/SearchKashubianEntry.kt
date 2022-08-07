@@ -10,7 +10,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "kashubian_entry")
-data class KashubianEntrySearch(
+data class SearchKashubianEntry(
     @Id
     var id: Long,
     @Column(unique = true)
@@ -21,7 +21,7 @@ data class KashubianEntrySearch(
     val genderNounType: String?,
     @OneToOne
     @JoinColumn(name = "variation_id")
-    val variation: VariationSearch?,
+    val variation: SearchVariation?,
     @OneToMany(mappedBy = "kashubianEntry")
-    val meanings: List<MeaningSearch> = emptyList()
+    val meanings: List<SearchMeaning> = emptyList()
 )

@@ -8,12 +8,12 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "example")
-data class ExampleSearch(
+data class SearchExample(
     @Id
     val id: Long,
     val example: String?,
     val note: String?,
     @ManyToOne
     @JoinColumn(name = "meaning_id")
-    val meaning: MeaningSearch
+    val meaning: SearchMeaning
 )
