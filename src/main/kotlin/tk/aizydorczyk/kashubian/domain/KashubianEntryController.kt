@@ -36,13 +36,13 @@ class KashubianEntryController(
     @PostMapping
     @ResponseStatus(CREATED)
     fun create(@Validated(OnCreate::class) @RequestBody entry: KashubianEntryDto) =
-        creator.create(kashubianMapper.toEntity(entry))
+        creator.create(kashubianMapper.toEntity(entry)).run { mapOf("entryId" to this.id) }
 
     @PutMapping("/{entryId}")
     fun update(
         @PathVariable entryId: Long,
         @Validated(OnUpdate::class) @RequestBody entry: KashubianEntryDto) =
-        updater.update(entryId, kashubianMapper.toEntity(entry))
+        updater.update(entryId, kashubianMapper.toEntity(entry)).run { mapOf("entryId" to this.id) }
 
     @DeleteMapping("/{entryId}")
     @ResponseStatus(NO_CONTENT)
