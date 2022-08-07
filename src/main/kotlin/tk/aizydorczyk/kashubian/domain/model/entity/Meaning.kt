@@ -27,18 +27,18 @@ data class Meaning(
     var base: Meaning? = null,
     @ManyToOne
     var superordinate: Meaning? = null,
-    @OneToMany
+    @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
     @JoinColumn(name = "meaning_id")
     val proverbs: List<Proverb> = emptyList(),
-    @OneToMany
+    @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
     @JoinColumn(name = "meaning_id")
     @LazyCollection(value = LazyCollectionOption.FALSE)
     val phrasalVerbs: List<PhrasalVerb> = emptyList(),
-    @OneToMany
+    @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
     @JoinColumn(name = "meaning_id")
     @LazyCollection(value = LazyCollectionOption.FALSE)
     val quotes: List<Quote> = emptyList(),
-    @OneToMany
+    @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
     @JoinColumn(name = "meaning_id")
     @LazyCollection(value = LazyCollectionOption.FALSE)
     val examples: List<Example> = emptyList(),
