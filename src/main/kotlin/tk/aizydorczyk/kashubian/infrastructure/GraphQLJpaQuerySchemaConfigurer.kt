@@ -5,14 +5,15 @@ import com.introproventures.graphql.jpa.query.autoconfigure.GraphQLSchemaConfigu
 import com.introproventures.graphql.jpa.query.autoconfigure.GraphQLShemaRegistration
 import com.introproventures.graphql.jpa.query.schema.impl.GraphQLJpaSchemaBuilder
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Configuration
 import javax.persistence.EntityManager
+import javax.persistence.EntityManagerFactory
 
 @Configuration
-class GraphQLJpaQuerySchemaConfigurer(private val entityManager: EntityManager) : GraphQLSchemaConfigurer {
+class GraphQLJpaQuerySchemaConfigurer(@Qualifier("graphqlEntityManager") private val entityManager: EntityManager,
+    private var properties: GraphQLJpaQueryProperties) : GraphQLSchemaConfigurer {
 
-    @Autowired
-    private lateinit var properties: GraphQLJpaQueryProperties
 
     override fun configure(registry: GraphQLShemaRegistration) {
         registry.register(

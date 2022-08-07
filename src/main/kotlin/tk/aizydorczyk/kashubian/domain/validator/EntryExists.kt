@@ -1,6 +1,7 @@
 package tk.aizydorczyk.kashubian.domain.validator
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import org.springframework.web.context.annotation.RequestScope
 import org.springframework.web.servlet.HandlerMapping
@@ -30,6 +31,7 @@ annotation class EntryExists(
 class EntryExistsValidator : ConstraintValidator<EntryExists, KashubianEntryDto> {
 
     @Autowired
+    @Qualifier("defaultEntityManager")
     private lateinit var entityManager: EntityManager
 
     @Autowired

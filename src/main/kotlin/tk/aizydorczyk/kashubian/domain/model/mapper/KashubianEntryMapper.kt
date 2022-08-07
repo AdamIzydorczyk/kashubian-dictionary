@@ -7,6 +7,9 @@ import tk.aizydorczyk.kashubian.domain.model.dto.ProverbDto
 import tk.aizydorczyk.kashubian.domain.model.entity.KashubianEntry
 import tk.aizydorczyk.kashubian.domain.model.entity.Meaning
 import tk.aizydorczyk.kashubian.domain.model.entity.Proverb
+import tk.aizydorczyk.kashubian.domain.model.entitysearch.KashubianEntrySearch
+import tk.aizydorczyk.kashubian.domain.model.entitysearch.MeaningSearch
+import tk.aizydorczyk.kashubian.domain.model.entitysearch.ProverbSearch
 
 @Mapper(componentModel = "spring", nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
 abstract class KashubianEntryMapper {

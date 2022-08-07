@@ -31,11 +31,7 @@ class KashubianEntryController(
     val kashubianMapper: KashubianEntryMapper,
     val creator: KashubianEntryCreator,
     val updater: KashubianEntryUpdater,
-    val remover: KashubianEntryRemover,
-    val finder: KashubianEntryFinder) {
-
-    @GetMapping
-    fun findAll() = finder.findAll()
+    val remover: KashubianEntryRemover) {
 
     @PostMapping
     @ResponseStatus(CREATED)

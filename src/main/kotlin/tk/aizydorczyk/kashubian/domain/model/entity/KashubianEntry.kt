@@ -31,6 +31,7 @@ data class KashubianEntry(
     @Enumerated(EnumType.STRING)
     val genderNounType: GenderNounType?,
     @OneToOne(cascade = [CascadeType.REMOVE], orphanRemoval = true)
+    @JoinColumn(name = "variation_id")
     val variation: Variation?,
     @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
     @JoinColumn(name = "kashubian_entry_id")
