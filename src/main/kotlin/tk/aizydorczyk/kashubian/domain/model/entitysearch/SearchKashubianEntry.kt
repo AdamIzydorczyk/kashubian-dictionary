@@ -23,5 +23,7 @@ data class SearchKashubianEntry(
     @JoinColumn(name = "variation_id")
     val variation: SearchVariation?,
     @OneToMany(mappedBy = "kashubianEntry")
-    val meanings: List<SearchMeaning> = emptyList()
-)
+    val meanings: Set<SearchMeaning> = emptySet()
+) {
+    override fun hashCode() = id.hashCode()
+}

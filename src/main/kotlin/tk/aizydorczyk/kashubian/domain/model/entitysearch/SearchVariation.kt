@@ -27,4 +27,6 @@ data class SearchVariation(
 
     @OneToOne(mappedBy = "variation")
     val kashubianEntry: SearchKashubianEntry
-)
+) {
+    override fun hashCode() = id.hashCode()
+}

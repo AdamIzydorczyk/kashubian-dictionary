@@ -16,4 +16,6 @@ data class SearchExample(
     @ManyToOne
     @JoinColumn(name = "meaning_id")
     val meaning: SearchMeaning
-)
+) {
+    override fun hashCode() = id.hashCode()
+}

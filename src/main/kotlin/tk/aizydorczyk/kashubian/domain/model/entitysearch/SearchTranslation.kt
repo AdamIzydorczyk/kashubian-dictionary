@@ -20,4 +20,6 @@ data class SearchTranslation(
 
     @OneToOne(mappedBy = "translation")
     val meaning: SearchMeaning
-)
+) {
+    override fun hashCode() = id.hashCode()
+}

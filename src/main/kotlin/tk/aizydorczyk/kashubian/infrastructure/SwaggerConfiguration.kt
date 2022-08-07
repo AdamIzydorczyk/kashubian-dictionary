@@ -19,7 +19,8 @@ class SwaggerConfiguration : WebMvcConfigurer {
     fun api(): Docket? {
         return Docket(DocumentationType.SWAGGER_2)
             .select()
-            .apis(RequestHandlerSelectors.basePackage("tk.aizydorczyk.kashubian"))
+            .apis(RequestHandlerSelectors.basePackage("tk.aizydorczyk.kashubian")
+                .or(RequestHandlerSelectors.basePackage("com.introproventures")))
             .paths(PathSelectors.any())
             .build()
             .apiInfo(apiInfo())

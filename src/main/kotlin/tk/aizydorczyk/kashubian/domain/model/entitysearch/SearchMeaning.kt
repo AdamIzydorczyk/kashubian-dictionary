@@ -1,5 +1,7 @@
 package tk.aizydorczyk.kashubian.domain.model.entitysearch
 
+import org.hibernate.annotations.LazyCollection
+import org.hibernate.annotations.LazyCollectionOption
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -26,15 +28,16 @@ data class SearchMeaning(
     @ManyToOne
     var superordinate: SearchMeaning? = null,
     @OneToMany(mappedBy = "meaning")
-    val proverbs: List<SearchProverb> = emptyList(),
+    val proverbs: Set<SearchProverb> = emptySet(),
     @OneToMany(mappedBy = "meaning")
-    val phrasalVerbs: List<SearchPhrasalVerb> = emptyList(),
+    val phrasalVerbs: Set<SearchPhrasalVerb> = emptySet(),
     @OneToMany(mappedBy = "meaning")
-    val quotes: List<SearchQuote> = emptyList(),
+    val quotes: Set<SearchQuote> = emptySet(),
     @OneToMany(mappedBy = "meaning")
-    val examples: List<SearchExample> = emptyList(),
-
+    val examples: Set<SearchExample> = emptySet(),
     @ManyToOne
     @JoinColumn(name = "kashubian_entry_id")
     val kashubianEntry: SearchKashubianEntry
-)
+) {
+    override fun hashCode() = id.hashCode()
+}
