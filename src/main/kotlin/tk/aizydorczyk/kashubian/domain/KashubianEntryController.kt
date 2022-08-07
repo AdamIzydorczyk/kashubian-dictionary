@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
 import tk.aizydorczyk.kashubian.domain.model.dto.KashubianEntryDto
+import tk.aizydorczyk.kashubian.domain.model.dto.ResponseDto
 import tk.aizydorczyk.kashubian.domain.model.mapper.KashubianEntryMapper
 import tk.aizydorczyk.kashubian.domain.validator.OnCreate
 import tk.aizydorczyk.kashubian.domain.validator.OnUpdate
@@ -36,13 +37,15 @@ class KashubianEntryController(
     @PostMapping
     @ResponseStatus(CREATED)
     fun create(@Validated(OnCreate::class) @RequestBody entry: KashubianEntryDto) =
-        creator.create(kashubianMapper.toEntity(entry)).run { mapOf("entryId" to this.id) }
+        creator.create(kashubianMapper.toEntity(entry))
+            .run { ResponseDto(this.id, this.meanings.map { it.id }) }
 
     @PutMapping("/{entryId}")
     fun update(
         @PathVariable entryId: Long,
         @Validated(OnUpdate::class) @RequestBody entry: KashubianEntryDto) =
-        updater.update(entryId, kashubianMapper.toEntity(entry)).run { mapOf("entryId" to this.id) }
+        updater.update(entryId, kashubianMapper.toEntity(entry))
+            .run { ResponseDto(this.id, this.meanings.map { it.id }) }
 
     @DeleteMapping("/{entryId}")
     @ResponseStatus(NO_CONTENT)
