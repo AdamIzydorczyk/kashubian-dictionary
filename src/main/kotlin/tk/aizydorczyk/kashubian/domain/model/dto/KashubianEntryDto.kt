@@ -16,7 +16,6 @@ data class KashubianEntryDto(
     val word: String?,
     val note: String?,
     val partOfSpeech: String?,
-    val genderNounType: String?,
     @field:Valid
     val variation: VariationDto?,
     @field:Valid

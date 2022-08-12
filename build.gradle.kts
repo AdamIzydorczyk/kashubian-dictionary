@@ -32,7 +32,7 @@ dependencies {
 	}
 
 	implementation("com.graphql-java:graphql-java:13.0")
-
+	implementation("com.vladmihalcea:hibernate-types-4:2.17.3")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.mapstruct:mapstruct:1.5.2.Final")
 	kapt ("org.mapstruct:mapstruct-processor:1.5.2.Final")
@@ -58,4 +58,8 @@ tasks.withType<Test> {
 
 tasks.getByName<Jar>("jar") {
 	enabled = false
+}
+val compileKotlin: KotlinCompile by tasks
+compileKotlin.kotlinOptions {
+    languageVersion = "1.4"
 }

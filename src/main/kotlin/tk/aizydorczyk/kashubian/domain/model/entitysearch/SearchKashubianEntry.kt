@@ -18,7 +18,6 @@ data class SearchKashubianEntry(
     val soundFileUrl: String?,
     val note: String?,
     val partOfSpeech: String?,
-    val genderNounType: String?,
     @OneToOne
     @JoinColumn(name = "variation_id")
     val variation: SearchVariation?,

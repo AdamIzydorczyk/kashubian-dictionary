@@ -41,5 +41,5 @@ data class Meaning(
     @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
     @JoinColumn(name = "meaning_id")
     @LazyCollection(value = LazyCollectionOption.FALSE)
-    val examples: List<Example> = emptyList(),
+    val examples: List<Example> = emptyList()
 )

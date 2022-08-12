@@ -1,18 +1,8 @@
 package tk.aizydorczyk.kashubian.domain.model.dto
 
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.ObjectNode
+
 data class VariationDto(
-    val nominative: String?,
-    val genitive: String?,
-    val dative: String?,
-    val accusative: String?,
-    val instrumental: String?,
-    val locative: String?,
-    val vocative: String?,
-    val nominativePlural: String?,
-    val genitivePlural: String?,
-    val dativePlural: String?,
-    val accusativePlural: String?,
-    val instrumentalPlural: String?,
-    val locativePlural: String?,
-    val vocativePlural: String?
+    val variation: ObjectNode
 )

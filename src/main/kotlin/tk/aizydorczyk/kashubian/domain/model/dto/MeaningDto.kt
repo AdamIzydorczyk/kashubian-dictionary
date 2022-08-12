@@ -21,5 +21,5 @@ data class MeaningDto(
     @field:Valid
     val quotes: List<QuoteDto> = emptyList(),
     @field:Valid
-    val examples: List<ExampleDto> = emptyList(),
+    val examples: List<ExampleDto> = emptyList()
 )

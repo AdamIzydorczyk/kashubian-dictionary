@@ -28,8 +28,6 @@ data class KashubianEntry(
     val note: String?,
     @Enumerated(EnumType.STRING)
     val partOfSpeech: PartOfSpeechType?,
-    @Enumerated(EnumType.STRING)
-    val genderNounType: GenderNounType?,
     @OneToOne(cascade = [CascadeType.REMOVE], orphanRemoval = true)
     @JoinColumn(name = "variation_id")
     val variation: Variation?,
