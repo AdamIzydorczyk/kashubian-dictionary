@@ -1,18 +1,21 @@
 package tk.aizydorczyk.kashubian.domain.model.entitysearch
 
-import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ObjectNode
-import javax.persistence.*
+import javax.persistence.Entity
+import javax.persistence.Id
+import javax.persistence.Lob
+import javax.persistence.OneToOne
+import javax.persistence.Table
 
 @Entity
 @Table(name = "variation")
 data class SearchVariation(
-        @Id
+    @Id
     val id: Long,
-        @Column(columnDefinition = "json")
-        var variation: ObjectNode?,
+    @Lob
+    var variation: ObjectNode?,
 
-        @OneToOne(mappedBy = "variation")
+    @OneToOne(mappedBy = "variation")
     val kashubianEntry: SearchKashubianEntry
 ) {
     override fun hashCode() = id.hashCode()

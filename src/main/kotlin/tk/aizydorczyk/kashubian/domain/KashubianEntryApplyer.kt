@@ -1,24 +1,12 @@
 package tk.aizydorczyk.kashubian.domain
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import org.springframework.beans.factory.annotation.Autowired
 import tk.aizydorczyk.kashubian.domain.model.entity.KashubianEntry
 import tk.aizydorczyk.kashubian.domain.model.entity.Meaning
-import tk.aizydorczyk.kashubian.domain.model.entity.variation.VerbVariation
 import javax.persistence.EntityManager
 
 abstract class KashubianEntryApplyer(val entityManager: EntityManager) {
-
-    @Autowired
-    lateinit var objectMapper: ObjectMapper
-
     protected fun persistAllEntryContentAndAssignRelations(entry: KashubianEntry): KashubianEntry {
-
-
-        entry.variation.let{
-            it!!.variation = objectMapper.valueToTree(VerbVariation())
-            entityManager.persist(it)
-        }
+        entry.variation.let(entityManager::persist)
 
         entry.meanings.forEach {
             it.translation.let(entityManager::persist)

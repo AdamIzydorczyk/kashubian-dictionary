@@ -1,8 +1,8 @@
 package tk.aizydorczyk.kashubian.domain.model.entity
 
-import com.fasterxml.jackson.annotation.JsonProperty
 import org.hibernate.annotations.LazyCollection
 import org.hibernate.annotations.LazyCollectionOption
+import tk.aizydorczyk.kashubian.domain.model.value.PartOfSpeechType
 import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
