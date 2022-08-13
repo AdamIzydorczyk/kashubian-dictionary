@@ -1,7 +1,5 @@
 package tk.aizydorczyk.kashubian.domain.model.entitysearch
 
-import org.hibernate.annotations.LazyCollection
-import org.hibernate.annotations.LazyCollectionOption
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
@@ -35,6 +33,11 @@ data class SearchMeaning(
     val quotes: Set<SearchQuote> = emptySet(),
     @OneToMany(mappedBy = "meaning")
     val examples: Set<SearchExample> = emptySet(),
+    @OneToMany(mappedBy = "meaning")
+    val synonyms: Set<SearchSynonym> = emptySet(),
+    @OneToMany(mappedBy = "meaning")
+    val antonyms: Set<SearchAntonym> = emptySet(),
+
     @ManyToOne
     @JoinColumn(name = "kashubian_entry_id")
     val kashubianEntry: SearchKashubianEntry

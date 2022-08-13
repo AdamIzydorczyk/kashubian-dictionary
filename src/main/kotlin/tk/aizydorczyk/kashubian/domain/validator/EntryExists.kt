@@ -14,12 +14,13 @@ import javax.validation.ConstraintValidatorContext
 import javax.validation.Payload
 import kotlin.annotation.AnnotationRetention.RUNTIME
 import kotlin.annotation.AnnotationTarget.CLASS
+import kotlin.annotation.AnnotationTarget.FIELD
 import kotlin.reflect.KClass
 
 
 @MustBeDocumented
-@Constraint(validatedBy = [EntryExistsValidator::class])
-@Target(allowedTargets = [CLASS])
+@Constraint(validatedBy = [EntryExistsDtoValidator::class, EntryExistsIdValidator::class])
+@Target(allowedTargets = [CLASS, FIELD])
 @Retention(RUNTIME)
 annotation class EntryExists(
     val message: String = "ENTRY_NOT_EXISTS",
@@ -28,7 +29,7 @@ annotation class EntryExists(
 
 @Component
 @RequestScope
-class EntryExistsValidator : ConstraintValidator<EntryExists, KashubianEntryDto> {
+class EntryExistsDtoValidator : ConstraintValidator<EntryExists, KashubianEntryDto> {
 
     @Autowired
     @Qualifier("defaultEntityManager")
@@ -37,10 +38,31 @@ class EntryExistsValidator : ConstraintValidator<EntryExists, KashubianEntryDto>
     @Autowired
     private lateinit var request: HttpServletRequest
 
-    override fun isValid(word: KashubianEntryDto, context: ConstraintValidatorContext?): Boolean {
+    override fun isValid(dto: KashubianEntryDto, context: ConstraintValidatorContext?): Boolean {
         val patchVariables =
             request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE) as LinkedHashMap<String, String>
         val entryId = patchVariables["entryId"]?.toLong() ?: 0
+        return entityManager.createQuery("select count(e) from KashubianEntry e where e.id = :id",
+                Long::class.javaObjectType)
+            .setParameter("id", entryId)
+            .singleResult > 0
+    }
+
+}
+
+@Component
+@RequestScope
+class EntryExistsIdValidator : ConstraintValidator<EntryExists, Long?> {
+
+    @Autowired
+    @Qualifier("defaultEntityManager")
+    private lateinit var entityManager: EntityManager
+
+    override fun isValid(entryId: Long?, context: ConstraintValidatorContext?): Boolean {
+        return entryId?.let(this::isEntryExist) ?: true
+    }
+
+    private fun isEntryExist(entryId: Long): Boolean {
         return entityManager.createQuery("select count(e) from KashubianEntry e where e.id = :id",
                 Long::class.javaObjectType)
             .setParameter("id", entryId)

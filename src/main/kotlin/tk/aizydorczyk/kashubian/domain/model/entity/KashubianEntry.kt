@@ -34,5 +34,9 @@ data class KashubianEntry(
     @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
     @JoinColumn(name = "kashubian_entry_id")
     @LazyCollection(value = LazyCollectionOption.FALSE)
-    val meanings: List<Meaning> = emptyList()
+    val meanings: List<Meaning> = emptyList(),
+    @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
+    @JoinColumn(name = "kashubian_entry_id")
+    @LazyCollection(value = LazyCollectionOption.FALSE)
+    val others: List<Other> = emptyList()
 )

@@ -12,11 +12,15 @@ class KashubianEntryRemover(@Qualifier("defaultEntityManager") val entityManager
     @Transactional
     fun remove(entryId: Long) {
         val entry = entityManager.find(KashubianEntry::class.java, entryId)
+        entry.others.forEach(entityManager::remove)
+
         entry.meanings.forEach {
             it.proverbs.forEach(entityManager::remove)
             it.examples.forEach(entityManager::remove)
             it.quotes.forEach(entityManager::remove)
             it.phrasalVerbs.forEach(entityManager::remove)
+            it.synonyms.forEach(entityManager::remove)
+            it.antonyms.forEach(entityManager::remove)
             entityManager.remove(it)
         }
         entityManager.remove(entry)

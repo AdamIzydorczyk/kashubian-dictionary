@@ -28,5 +28,7 @@ data class KashubianEntryDto(
     @field:Valid
     val variation: VariationDto?,
     @field:Valid
-    val meanings: List<MeaningDto> = emptyList()
+    val meanings: List<MeaningDto> = emptyList(),
+    @field:Valid
+    val others: List<OtherDto> = emptyList()
 )
