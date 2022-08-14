@@ -29,6 +29,9 @@ data class KashubianEntry(
     @Enumerated(EnumType.STRING)
     val partOfSpeech: PartOfSpeechType?,
     @OneToOne(cascade = [CascadeType.REMOVE], orphanRemoval = true)
+    @JoinColumn(name = "sound_file_id")
+    var soundFile: SoundFile?,
+    @OneToOne(cascade = [CascadeType.REMOVE], orphanRemoval = true)
     @JoinColumn(name = "variation_id")
     val variation: Variation?,
     @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)

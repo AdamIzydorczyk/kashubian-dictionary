@@ -13,7 +13,7 @@ class KashubianEntryRemover(@Qualifier("defaultEntityManager") val entityManager
     fun remove(entryId: Long) {
         val entry = entityManager.find(KashubianEntry::class.java, entryId)
         entry.others.forEach(entityManager::remove)
-
+        entry.soundFile?.let(entityManager::remove)
         entry.meanings.forEach {
             it.proverbs.forEach(entityManager::remove)
             it.examples.forEach(entityManager::remove)

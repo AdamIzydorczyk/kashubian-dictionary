@@ -15,12 +15,13 @@ import javax.validation.Payload
 import kotlin.annotation.AnnotationRetention.RUNTIME
 import kotlin.annotation.AnnotationTarget.CLASS
 import kotlin.annotation.AnnotationTarget.FIELD
+import kotlin.annotation.AnnotationTarget.VALUE_PARAMETER
 import kotlin.reflect.KClass
 
 
 @MustBeDocumented
 @Constraint(validatedBy = [EntryExistsDtoValidator::class, EntryExistsIdValidator::class])
-@Target(allowedTargets = [CLASS, FIELD])
+@Target(allowedTargets = [CLASS, FIELD, VALUE_PARAMETER])
 @Retention(RUNTIME)
 annotation class EntryExists(
     val message: String = "ENTRY_NOT_EXISTS",

@@ -15,12 +15,14 @@ data class SearchKashubianEntry(
     var id: Long,
     @Column(unique = true)
     val word: String?,
-    val soundFileUrl: String?,
     val note: String?,
     val partOfSpeech: String?,
     @OneToOne
     @JoinColumn(name = "variation_id")
     val variation: SearchVariation?,
+    @OneToOne
+    @JoinColumn(name = "sound_file_id")
+    val soundFile: SearchSoundFile?,
     @OneToMany(mappedBy = "kashubianEntry")
     val meanings: Set<SearchMeaning> = emptySet(),
     @OneToMany(mappedBy = "kashubianEntry")
