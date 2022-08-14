@@ -17,6 +17,7 @@ data class SearchKashubianEntry(
     val word: String?,
     val note: String?,
     val partOfSpeech: String?,
+    val partOfSpeechSubType: String?,
     @OneToOne
     @JoinColumn(name = "variation_id")
     val variation: SearchVariation?,

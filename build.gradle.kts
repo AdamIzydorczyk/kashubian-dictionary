@@ -42,6 +42,7 @@ dependencies {
 	implementation("com.h2database:h2:2.1.214")
 	implementation("io.springfox:springfox-boot-starter:3.0.0")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	implementation("org.jeasy:easy-random-core:5.0.0")
 }
 
 tasks.withType<KotlinCompile> {
@@ -49,6 +50,10 @@ tasks.withType<KotlinCompile> {
 		freeCompilerArgs = listOf("-Xjsr305=strict")
 		jvmTarget = "11"
 	}
+}
+
+tasks.bootRun {
+	jvmArgs = listOf("-Xms1g", "-Xmx2g")
 }
 
 tasks.withType<Test> {

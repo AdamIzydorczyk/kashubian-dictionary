@@ -2,6 +2,7 @@ package tk.aizydorczyk.kashubian.domain.model.entity
 
 import org.hibernate.annotations.LazyCollection
 import org.hibernate.annotations.LazyCollectionOption
+import tk.aizydorczyk.kashubian.domain.model.value.PartOfSpeechSubType
 import tk.aizydorczyk.kashubian.domain.model.value.PartOfSpeechType
 import javax.persistence.CascadeType
 import javax.persistence.Column
@@ -24,10 +25,11 @@ data class KashubianEntry(
     var id: Long,
     @Column(unique = true)
     val word: String?,
-    val soundFileUrl: String?,
     val note: String?,
     @Enumerated(EnumType.STRING)
     val partOfSpeech: PartOfSpeechType?,
+    @Enumerated(EnumType.STRING)
+    val partOfSpeechSubType: PartOfSpeechSubType?,
     @OneToOne(cascade = [CascadeType.REMOVE], orphanRemoval = true)
     @JoinColumn(name = "sound_file_id")
     var soundFile: SoundFile?,
