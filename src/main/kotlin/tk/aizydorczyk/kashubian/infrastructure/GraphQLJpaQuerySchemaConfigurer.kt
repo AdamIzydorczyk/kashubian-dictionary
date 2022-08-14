@@ -12,7 +12,6 @@ import javax.persistence.EntityManager
 class GraphQLJpaQuerySchemaConfigurer(@Qualifier("graphqlEntityManager") private val entityManager: EntityManager,
     private var properties: GraphQLJpaQueryProperties) : GraphQLSchemaConfigurer {
 
-
     override fun configure(registry: GraphQLShemaRegistration) {
         registry.register(
                 GraphQLJpaSchemaBuilder(entityManager)

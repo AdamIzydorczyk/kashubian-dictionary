@@ -1,0 +1,13 @@
+version: '3.4'
+services:
+  kas_postgres:
+    container_name: kas-postgres
+    image: postgres:14.5
+    restart: always
+    environment:
+      - POSTGRES_USER=kas
+      - POSTGRES_PASSWORD=kas
+      - POSTGRES_DB=kas
+    ports:
+      - '5555:5432'
+      

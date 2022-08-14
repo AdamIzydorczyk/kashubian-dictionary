@@ -2,6 +2,7 @@ package tk.aizydorczyk.kashubian.domain.model.entitysearch
 
 import javax.persistence.Column
 import javax.persistence.Entity
+import javax.persistence.FetchType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.OneToMany
@@ -18,10 +19,10 @@ data class SearchKashubianEntry(
     val note: String?,
     val partOfSpeech: String?,
     val partOfSpeechSubType: String?,
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "variation_id")
     val variation: SearchVariation?,
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "sound_file_id")
     val soundFile: SearchSoundFile?,
     @OneToMany(mappedBy = "kashubianEntry")

@@ -6,7 +6,7 @@ import javax.persistence.EntityManager
 
 abstract class KashubianEntryApplyer(val entityManager: EntityManager) {
     protected fun persistAllEntryContentAndAssignRelations(entry: KashubianEntry): KashubianEntry {
-        entry.variation.let(entityManager::persist)
+        entry.variation?.let(entityManager::persist)
         entry.others.forEach {
             it.other = entityManager.find(KashubianEntry::class.java, it.other.id)
             entityManager.persist(it)

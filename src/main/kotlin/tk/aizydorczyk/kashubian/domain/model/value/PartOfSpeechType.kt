@@ -17,6 +17,11 @@ import tk.aizydorczyk.kashubian.domain.model.value.PartOfSpeechSubType.NUMERAL_P
 import tk.aizydorczyk.kashubian.domain.model.value.PartOfSpeechSubType.PLURAL_MASCULINE
 import tk.aizydorczyk.kashubian.domain.model.value.PartOfSpeechSubType.UNINFLECTIV_ADJECTIVE
 import tk.aizydorczyk.kashubian.domain.model.value.PartOfSpeechSubType.UNINFLECTIV_NUMERAL
+import tk.aizydorczyk.kashubian.domain.model.value.PartOfSpeechType.ADJECTIVE
+import tk.aizydorczyk.kashubian.domain.model.value.PartOfSpeechType.NOUN
+import tk.aizydorczyk.kashubian.domain.model.value.PartOfSpeechType.NUMERAL
+import tk.aizydorczyk.kashubian.domain.model.value.PartOfSpeechType.PRONOUN
+import tk.aizydorczyk.kashubian.domain.model.value.PartOfSpeechType.VERB
 
 enum class PartOfSpeechType(val subTypes: List<PartOfSpeechSubType>) {
     NOUN(listOf(NEUTER,
@@ -43,27 +48,27 @@ enum class PartOfSpeechType(val subTypes: List<PartOfSpeechSubType>) {
     PARTICIPLE(listOf(PartOfSpeechSubType.PARTICIPLE))
 }
 
-enum class PartOfSpeechSubType {
-    NEUTER,
-    MASCULINE,
-    FEMININE,
-    PLURAL_MASCULINE,
-    NON_MASCULINE,
-    CONJUGATION_I,
-    CONJUGATION_II,
-    CONJUGATION_III,
-    CONJUGATION_IV,
-    INFLECTIV_ADJECTIVE,
-    UNINFLECTIV_ADJECTIVE,
-    INFLECTIV_NUMERAL,
-    UNINFLECTIV_NUMERAL,
-    NOUN_PRONOUN,
-    ADJECTIVE_PRONOUN,
-    NUMERAL_PRONOUN,
-    ADVERB_PRONOUN,
-    ADVERB,
-    PREPOSITION,
-    CONJUNCTION,
-    INTERJECTION,
-    PARTICIPLE
+enum class PartOfSpeechSubType(val partOfSpeechType: PartOfSpeechType) {
+    NEUTER(NOUN),
+    MASCULINE(NOUN),
+    FEMININE(NOUN),
+    PLURAL_MASCULINE(NOUN),
+    NON_MASCULINE(NOUN),
+    CONJUGATION_I(VERB),
+    CONJUGATION_II(VERB),
+    CONJUGATION_III(VERB),
+    CONJUGATION_IV(VERB),
+    INFLECTIV_ADJECTIVE(ADJECTIVE),
+    UNINFLECTIV_ADJECTIVE(ADJECTIVE),
+    INFLECTIV_NUMERAL(NUMERAL),
+    UNINFLECTIV_NUMERAL(NUMERAL),
+    NOUN_PRONOUN(PRONOUN),
+    ADJECTIVE_PRONOUN(PRONOUN),
+    NUMERAL_PRONOUN(PRONOUN),
+    ADVERB_PRONOUN(PRONOUN),
+    ADVERB(PartOfSpeechType.ADVERB),
+    PREPOSITION(PartOfSpeechType.PREPOSITION),
+    CONJUNCTION(PartOfSpeechType.CONJUNCTION),
+    INTERJECTION(PartOfSpeechType.INTERJECTION),
+    PARTICIPLE(PartOfSpeechType.PARTICIPLE)
 }

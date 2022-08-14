@@ -1,22 +1,23 @@
 package tk.aizydorczyk.kashubian.domain.model.entitysearch
 
 import com.fasterxml.jackson.databind.node.ObjectNode
+import com.vladmihalcea.hibernate.type.json.JsonNodeBinaryType
+import org.hibernate.annotations.Type
+import org.hibernate.annotations.TypeDef
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
-import javax.persistence.Lob
-import javax.persistence.OneToOne
 import javax.persistence.Table
 
 @Entity
 @Table(name = "variation")
+@TypeDef(name = "jsonb", typeClass = JsonNodeBinaryType::class)
 data class SearchVariation(
     @Id
     val id: Long,
-    @Lob
-    var variation: ObjectNode?,
-
-    @OneToOne(mappedBy = "variation")
-    val kashubianEntry: SearchKashubianEntry
+    @Type(type = "jsonb")
+    @Column(columnDefinition = "jsonb")
+    var variation: ObjectNode
 ) {
     override fun hashCode() = id.hashCode()
     override fun equals(other: Any?): Boolean {
