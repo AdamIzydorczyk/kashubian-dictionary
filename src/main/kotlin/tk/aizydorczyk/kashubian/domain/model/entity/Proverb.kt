@@ -13,6 +13,6 @@ data class Proverb(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "proverb_id_generator")
     @SequenceGenerator(name = "proverb_id_generator", sequenceName = "proverb_id_sequence", allocationSize = 1)
-    val id: Long,
+    var id: Long,
     val proverb: String,
     val note: String)

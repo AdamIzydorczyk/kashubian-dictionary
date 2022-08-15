@@ -14,7 +14,6 @@ import javax.persistence.GenerationType
 import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.OneToMany
-import javax.persistence.OneToOne
 import javax.persistence.SequenceGenerator
 import javax.persistence.Table
 
@@ -33,12 +32,10 @@ data class KashubianEntry(
     val partOfSpeech: PartOfSpeechType?,
     @Enumerated(EnumType.STRING)
     val partOfSpeechSubType: PartOfSpeechSubType?,
-    @OneToOne(cascade = [CascadeType.REMOVE], orphanRemoval = true)
-    @JoinColumn(name = "sound_file_id")
+    @Transient
     var soundFile: SoundFile?,
-    @OneToOne(cascade = [CascadeType.REMOVE], orphanRemoval = true)
-    @JoinColumn(name = "variation_id")
-    val variation: Variation?,
+    @Transient
+    var variation: Variation?,
     @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
     @JoinColumn(name = "kashubian_entry_id")
     @LazyCollection(value = LazyCollectionOption.FALSE)

@@ -4,7 +4,8 @@ import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType
 import javax.persistence.Id
-import javax.persistence.OneToOne
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
 import javax.persistence.Table
 
 @Entity
@@ -17,8 +18,8 @@ data class SearchTranslation(
     val english: String?,
     val german: String?,
     val ukrainian: String?,
-
-    @OneToOne(mappedBy = "translation")
+    @ManyToOne
+    @JoinColumn(name = "meaning_id")
     val meaning: SearchMeaning
 ) {
     override fun hashCode() = id.hashCode()

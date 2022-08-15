@@ -1,9 +1,9 @@
 package tk.aizydorczyk.kashubian.domain.model.entitysearch
 
 import javax.persistence.Entity
-import javax.persistence.FetchType
 import javax.persistence.Id
-import javax.persistence.OneToOne
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
 import javax.persistence.Table
 
 @Entity
@@ -13,7 +13,8 @@ data class SearchSoundFile(
     val id: Long,
     val fileName: String,
     val type: String,
-    @OneToOne(mappedBy = "soundFile", fetch = FetchType.LAZY)
+    @ManyToOne
+    @JoinColumn(name = "kashubian_entry_id")
     val kashubianEntry: SearchKashubianEntry
 ) {
     override fun hashCode() = id.hashCode()

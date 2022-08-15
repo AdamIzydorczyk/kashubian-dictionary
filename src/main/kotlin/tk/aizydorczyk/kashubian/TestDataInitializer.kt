@@ -6,10 +6,12 @@ import com.github.javafaker.Faker
 import org.jeasy.random.EasyRandom
 import org.jeasy.random.EasyRandomParameters
 import org.jeasy.random.FieldPredicates
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
+import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import tk.aizydorczyk.kashubian.domain.KashubianEntryController
 import tk.aizydorczyk.kashubian.domain.model.dto.AntonymDto
@@ -31,15 +33,23 @@ import kotlin.math.min
 import kotlin.streams.toList
 
 
-//@Component
+@Component
 class TestDataInitializer(
     val kashubianEntryController: KashubianEntryController,
     val objectMapper: ObjectMapper,
     @Qualifier("defaultEntityManager") val entityManager: EntityManager) : ApplicationRunner {
 
-    val logger = LoggerFactory.getLogger(javaClass)
+    val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     override fun run(args: ApplicationArguments?) {
+
+        if (entityManager.createQuery("select count(e) from KashubianEntry e",
+                    Long::class.javaObjectType)
+                .singleResult > 0
+        ) {
+            return
+        }
+
         val variationsGenerator = EasyRandom()
         val variations = listOf(
                 variationsGenerator.nextObject(VerbVariation::class.java)
@@ -193,7 +203,7 @@ class TestDataInitializer(
         }
 
         val generator = EasyRandom(parameters)
-        generator.objects(KashubianEntryDto::class.java, 1000)
+        generator.objects(KashubianEntryDto::class.java, 25000)
             .forEach {
                 kashubianEntryController.create(it)
                     .let { response -> kashubianEntryController.uploadSoundFile(response.entryId, FakeMultipartFile()) }

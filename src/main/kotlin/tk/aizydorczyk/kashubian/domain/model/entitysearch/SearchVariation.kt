@@ -7,6 +7,8 @@ import org.hibernate.annotations.TypeDef
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
+import javax.persistence.JoinColumn
+import javax.persistence.ManyToOne
 import javax.persistence.Table
 
 @Entity
@@ -17,7 +19,10 @@ data class SearchVariation(
     val id: Long,
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
-    var variation: ObjectNode
+    var variation: ObjectNode,
+    @ManyToOne
+    @JoinColumn(name = "kashubian_entry_id")
+    val kashubianEntry: SearchKashubianEntry
 ) {
     override fun hashCode() = id.hashCode()
     override fun equals(other: Any?): Boolean {

@@ -15,6 +15,6 @@ data class PhrasalVerb(
     @SequenceGenerator(name = "phrasal_verb_id_generator",
             sequenceName = "phrasal_verb_id_sequence",
             allocationSize = 1)
-    val id: Long,
+    var id: Long,
     val phrasalVerb: String,
     val note: String)

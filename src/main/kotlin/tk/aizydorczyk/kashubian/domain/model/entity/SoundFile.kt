@@ -13,7 +13,9 @@ data class SoundFile(
     val fileName: String,
     val type: String,
     @Column(columnDefinition = "bytea")
-    val file: ByteArray
+    val file: ByteArray,
+    @Column(name = "kashubian_entry_id")
+    val kashubianEntry: Long
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

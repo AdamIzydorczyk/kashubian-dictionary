@@ -13,9 +13,9 @@ import javax.persistence.Table
 @Table(name = "other")
 data class Other(
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "meaning_id_generator")
-    @SequenceGenerator(name = "meaning_id_generator", sequenceName = "meaning_id_sequence", allocationSize = 1)
-    val id: Long,
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "other_id_generator")
+    @SequenceGenerator(name = "other_id_generator", sequenceName = "other_id_sequence", allocationSize = 1)
+    var id: Long,
     val note: String?,
     @ManyToOne
     @JoinColumn(name = "other_id")

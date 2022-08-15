@@ -17,7 +17,8 @@ class KashubianEntrySoundFileUploader(@Qualifier("defaultEntityManager") val ent
                 id = entryId,
                 fileName = soundFile.originalFilename.toString(),
                 type = soundFile.contentType.toString(),
-                file = soundFile.bytes).let {
+                file = soundFile.bytes,
+                kashubianEntry = entryId).let {
             entityManager.merge(it)
             entityManager.flush()
             entry.soundFile = it

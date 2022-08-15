@@ -10,7 +10,6 @@ import tk.aizydorczyk.kashubian.domain.model.dto.SynonymDto
 import tk.aizydorczyk.kashubian.domain.model.dto.VariationDto
 import tk.aizydorczyk.kashubian.domain.model.entity.Antonym
 import tk.aizydorczyk.kashubian.domain.model.entity.KashubianEntry
-import tk.aizydorczyk.kashubian.domain.model.entity.Meaning
 import tk.aizydorczyk.kashubian.domain.model.entity.Other
 import tk.aizydorczyk.kashubian.domain.model.entity.Proverb
 import tk.aizydorczyk.kashubian.domain.model.entity.Synonym
@@ -22,13 +21,11 @@ abstract class KashubianEntryMapper {
     abstract fun toEntity(dto: KashubianEntryDto): KashubianEntry
     abstract fun toEntity(dto: ProverbDto): Proverb
 
-    fun longToMeaning(id: Long?): Meaning? = id?.let { Meaning(id = it) }
-
     fun variationDtoToVariation(variationDto: VariationDto?): Variation? {
         if (variationDto == null) {
             return null
         }
-        return Variation(0L, variationDto.variation!!)
+        return Variation(0L, variationDto.variation!!, 0L)
     }
 
     fun otherDtoToOther(otherDto: OtherDto?): Other? =
@@ -43,17 +40,17 @@ abstract class KashubianEntryMapper {
                             variation = null))
         }
 
-    fun otherDtoToOther(synonymDto: SynonymDto?): Synonym? =
+    fun synonymDtoToSynonym(synonymDto: SynonymDto?): Synonym? =
         synonymDto?.let {
             Synonym(0L,
                     it.note,
-                    Meaning(id = it.meaningId))
+                    it.meaningId)
         }
 
-    fun otherDtoToOther(antonymDto: AntonymDto?): Antonym? =
+    fun antonymDtoToAntonym(antonymDto: AntonymDto?): Antonym? =
         antonymDto?.let {
             Antonym(0L,
                     it.note,
-                    Meaning(id = it.meaningId))
+                    it.meaningId)
         }
 }

@@ -7,7 +7,6 @@ import javax.persistence.Id
 import javax.persistence.JoinColumn
 import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
-import javax.persistence.OneToOne
 import javax.persistence.Table
 
 @Entity
@@ -16,9 +15,8 @@ data class SearchMeaning(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     val id: Long,
-    @OneToOne
-    @JoinColumn(name = "translation_id")
-    val translation: SearchTranslation? = null,
+    @OneToMany(mappedBy = "meaning")
+    val translation: Set<SearchTranslation> = emptySet(),
     val definition: String? = null,
     val origin: String? = null,
     @ManyToOne
