@@ -144,35 +144,35 @@ class TestDataInitializer(
         parameters.randomize(FieldPredicates.named("word")) {
             selectWord(fakerPl).let {
                 it[random.nextInt(it.size - 1)].invoke()
-                    .let { value -> value.substring(0, min(value.length, 250)) } + index
+                    .let { value -> value.substring(0, min(value.length, 240)) } + index
             }
         }
 
         parameters.randomize(FieldPredicates.named("polish")) {
             selectWord(fakerPl).let {
                 it[random.nextInt(it.size - 1)].invoke()
-                    .let { value -> value.substring(0, min(value.length, 250)) } + index
+                    .let { value -> value.substring(0, min(value.length, 240)) } + index
             }
         }
 
         parameters.randomize(FieldPredicates.named("english")) {
             selectWord(fakerEn).let {
                 it[random.nextInt(it.size - 1)].invoke()
-                    .let { value -> value.substring(0, min(value.length, 250)) } + index
+                    .let { value -> value.substring(0, min(value.length, 240)) } + index
             }
         }
 
         parameters.randomize(FieldPredicates.named("german")) {
             selectWord(fakerDe).let {
                 it[random.nextInt(it.size - 1)].invoke()
-                    .let { value -> value.substring(0, min(value.length, 250)) } + index
+                    .let { value -> value.substring(0, min(value.length, 240)) } + index
             }
         }
 
         parameters.randomize(FieldPredicates.named("ukrainian")) {
             selectWord(fakerUa).let {
                 it[random.nextInt(it.size - 1)].invoke()
-                    .let { value -> value.substring(0, min(value.length, 250)) } + index
+                    .let { value -> value.substring(0, min(value.length, 240)) } + index
             }
         }
 
@@ -203,7 +203,7 @@ class TestDataInitializer(
         }
 
         val generator = EasyRandom(parameters)
-        generator.objects(KashubianEntryDto::class.java, 25000)
+        generator.objects(KashubianEntryDto::class.java, 1000)
             .forEach {
                 kashubianEntryController.create(it)
                     .let { response -> kashubianEntryController.uploadSoundFile(response.entryId, FakeMultipartFile()) }
