@@ -7,6 +7,7 @@ import org.jeasy.random.FieldPredicates
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.http.MediaType
@@ -37,7 +38,8 @@ import kotlin.streams.toList
 class TestDataInitializer(
     val kashubianEntryController: KashubianEntryController,
     val exampleVariationsGenerator: ExampleVariationsGenerator,
-    @Qualifier("defaultEntityManager") val entityManager: EntityManager) : ApplicationRunner {
+    @Qualifier("defaultEntityManager") val entityManager: EntityManager,
+    @Value("\${test.data.initializer.generated.elements.size}") val generatedSize: Int) : ApplicationRunner {
 
     val logger: Logger = LoggerFactory.getLogger(javaClass)
 
@@ -62,7 +64,7 @@ class TestDataInitializer(
 
         val parameters = EasyRandomParameters()
         parameters.stringLengthRange(64, 64)
-        parameters.collectionSizeRange(3, 3)
+        parameters.collectionSizeRange(0, 3)
         parameters.randomize(FieldPredicates.named("variation")) {
             variations[Math.floorMod(21, index + 1).toInt()].first?.let { VariationDto(it) }
         }
@@ -135,7 +137,7 @@ class TestDataInitializer(
         }
 
         val generator = EasyRandom(parameters)
-        generator.objects(KashubianEntryDto::class.java, 400)
+        generator.objects(KashubianEntryDto::class.java, generatedSize)
             .forEach {
                 kashubianEntryController.create(it)
                     .let { response -> kashubianEntryController.uploadSoundFile(response.entryId, FakeMultipartFile()) }
