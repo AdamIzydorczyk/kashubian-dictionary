@@ -41,7 +41,7 @@ class JpaConfiguration {
 
         return builder
             .dataSource(dataSource)
-            .packages("tk.aizydorczyk.kashubian.domain.model.entity")
+            .packages("tk.aizydorczyk.kashubian.crud.model.entity")
             .persistenceUnit("default")
             .properties(properties)
             .build()
@@ -71,7 +71,7 @@ class JpaConfiguration {
 
         return builder
             .dataSource(dataSource)
-            .packages("tk.aizydorczyk.kashubian.domain.model.entitysearch")
+            .packages("tk.aizydorczyk.kashubian.crud.model.entitysearch")
             .persistenceUnit("graphql")
             .properties(properties)
             .build()

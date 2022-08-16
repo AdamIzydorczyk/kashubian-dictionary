@@ -9,19 +9,20 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
-import tk.aizydorczyk.kashubian.domain.ExampleVariationsGenerator
-import tk.aizydorczyk.kashubian.domain.KashubianEntryController
-import tk.aizydorczyk.kashubian.domain.model.dto.AntonymDto
-import tk.aizydorczyk.kashubian.domain.model.dto.KashubianEntryDto
-import tk.aizydorczyk.kashubian.domain.model.dto.OtherDto
-import tk.aizydorczyk.kashubian.domain.model.dto.SynonymDto
-import tk.aizydorczyk.kashubian.domain.model.dto.VariationDto
-import tk.aizydorczyk.kashubian.domain.model.entity.KashubianEntry
-import tk.aizydorczyk.kashubian.domain.model.entity.Meaning
-import tk.aizydorczyk.kashubian.domain.model.value.PartOfSpeechSubType
-import tk.aizydorczyk.kashubian.domain.model.value.PartOfSpeechType
+import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryController
+import tk.aizydorczyk.kashubian.crud.model.dto.AntonymDto
+import tk.aizydorczyk.kashubian.crud.model.dto.KashubianEntryDto
+import tk.aizydorczyk.kashubian.crud.model.dto.OtherDto
+import tk.aizydorczyk.kashubian.crud.model.dto.SynonymDto
+import tk.aizydorczyk.kashubian.crud.model.dto.VariationDto
+import tk.aizydorczyk.kashubian.crud.model.entity.KashubianEntry
+import tk.aizydorczyk.kashubian.crud.model.entity.Meaning
+import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType
+import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechType
+import tk.aizydorczyk.kashubian.crud.query.ExampleVariationsGenerator
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.InputStream
@@ -53,7 +54,6 @@ class TestDataInitializer(
 
         var index = 0L
         val random = Random()
-
 
         val fakerEn = Faker()
         val fakerPl = Faker(Locale("pl-PL"))
@@ -196,9 +196,9 @@ class TestDataInitializer(
 
         override fun getName(): String = "test"
 
-        override fun getOriginalFilename(): String = "test"
+        override fun getOriginalFilename(): String = "test.txt"
 
-        override fun getContentType(): String = "test"
+        override fun getContentType(): String = MediaType.TEXT_PLAIN_VALUE
 
         override fun isEmpty(): Boolean = false
 
