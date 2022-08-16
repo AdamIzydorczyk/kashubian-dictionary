@@ -135,7 +135,7 @@ class TestDataInitializer(
         }
 
         val generator = EasyRandom(parameters)
-        generator.objects(KashubianEntryDto::class.java, 500)
+        generator.objects(KashubianEntryDto::class.java, 400)
             .forEach {
                 kashubianEntryController.create(it)
                     .let { response -> kashubianEntryController.uploadSoundFile(response.entryId, FakeMultipartFile()) }
