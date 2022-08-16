@@ -1,6 +1,5 @@
 package tk.aizydorczyk.kashubian
 
-import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.github.javafaker.Faker
 import org.jeasy.random.EasyRandom
@@ -13,6 +12,7 @@ import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
+import tk.aizydorczyk.kashubian.domain.ExampleVariationsGenerator
 import tk.aizydorczyk.kashubian.domain.KashubianEntryController
 import tk.aizydorczyk.kashubian.domain.model.dto.AntonymDto
 import tk.aizydorczyk.kashubian.domain.model.dto.KashubianEntryDto
@@ -20,7 +20,6 @@ import tk.aizydorczyk.kashubian.domain.model.dto.OtherDto
 import tk.aizydorczyk.kashubian.domain.model.dto.SynonymDto
 import tk.aizydorczyk.kashubian.domain.model.entity.KashubianEntry
 import tk.aizydorczyk.kashubian.domain.model.entity.Meaning
-import tk.aizydorczyk.kashubian.domain.model.json.VerbVariation
 import tk.aizydorczyk.kashubian.domain.model.value.PartOfSpeechSubType
 import tk.aizydorczyk.kashubian.domain.model.value.PartOfSpeechType
 import java.io.ByteArrayInputStream
@@ -36,7 +35,7 @@ import kotlin.streams.toList
 @Component
 class TestDataInitializer(
     val kashubianEntryController: KashubianEntryController,
-    val objectMapper: ObjectMapper,
+    val exampleVariationsGenerator: ExampleVariationsGenerator,
     @Qualifier("defaultEntityManager") val entityManager: EntityManager) : ApplicationRunner {
 
     val logger: Logger = LoggerFactory.getLogger(javaClass)
@@ -50,76 +49,7 @@ class TestDataInitializer(
             return
         }
 
-        val variationsGenerator = EasyRandom()
-        val variations = listOf(
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.NEUTER) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.MASCULINE) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.FEMININE) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.PLURAL_MASCULINE) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.NON_MASCULINE) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.CONJUGATION_I) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.CONJUGATION_II) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.CONJUGATION_III) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.CONJUGATION_IV) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.INFLECTIV_ADJECTIVE) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.UNINFLECTIV_ADJECTIVE) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.INFLECTIV_NUMERAL) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.UNINFLECTIV_NUMERAL) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.NOUN_PRONOUN) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.ADJECTIVE_PRONOUN) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.NUMERAL_PRONOUN) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.ADVERB_PRONOUN) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.ADVERB) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.PREPOSITION) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.CONJUNCTION) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.INTERJECTION) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Pair(it, PartOfSpeechSubType.PARTICIPLE) },
-        ).toTypedArray()
-
+        val variations = exampleVariationsGenerator.variationsExamples()
 
         var index = 0L
         val random = Random()
@@ -135,7 +65,7 @@ class TestDataInitializer(
         parameters.collectionSizeRange(3, 3)
         parameters.randomize(ObjectNode::class.java) { variations[Math.floorMod(21, index + 1).toInt()].first }
         parameters.randomize(PartOfSpeechType::class.java) {
-            variations[Math.floorMod(21, index + 1).toInt()].second.partOfSpeechType
+            variations[Math.floorMod(21, index + 1).toInt()].third
         }
         parameters.randomize(PartOfSpeechSubType::class.java) {
             variations[Math.floorMod(21, index + 1).toInt()].second
@@ -203,7 +133,7 @@ class TestDataInitializer(
         }
 
         val generator = EasyRandom(parameters)
-        generator.objects(KashubianEntryDto::class.java, 1000)
+        generator.objects(KashubianEntryDto::class.java, 500)
             .forEach {
                 kashubianEntryController.create(it)
                     .let { response -> kashubianEntryController.uploadSoundFile(response.entryId, FakeMultipartFile()) }

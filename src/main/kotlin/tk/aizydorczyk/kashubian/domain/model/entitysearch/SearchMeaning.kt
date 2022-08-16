@@ -19,10 +19,6 @@ data class SearchMeaning(
     val translation: Set<SearchTranslation> = emptySet(),
     val definition: String? = null,
     val origin: String? = null,
-    @OneToMany(mappedBy = "base")
-    var base: Set<SearchMeaning>? = emptySet(),
-    @OneToMany(mappedBy = "superordinate")
-    var superordinate: Set<SearchMeaning> = emptySet(),
     @OneToMany(mappedBy = "meaning")
     val proverbs: Set<SearchProverb> = emptySet(),
     @OneToMany(mappedBy = "meaning")
