@@ -1,6 +1,5 @@
 package tk.aizydorczyk.kashubian
 
-import com.fasterxml.jackson.databind.node.ObjectNode
 import com.github.javafaker.Faker
 import org.jeasy.random.EasyRandom
 import org.jeasy.random.EasyRandomParameters
@@ -18,6 +17,7 @@ import tk.aizydorczyk.kashubian.domain.model.dto.AntonymDto
 import tk.aizydorczyk.kashubian.domain.model.dto.KashubianEntryDto
 import tk.aizydorczyk.kashubian.domain.model.dto.OtherDto
 import tk.aizydorczyk.kashubian.domain.model.dto.SynonymDto
+import tk.aizydorczyk.kashubian.domain.model.dto.VariationDto
 import tk.aizydorczyk.kashubian.domain.model.entity.KashubianEntry
 import tk.aizydorczyk.kashubian.domain.model.entity.Meaning
 import tk.aizydorczyk.kashubian.domain.model.value.PartOfSpeechSubType
@@ -63,7 +63,9 @@ class TestDataInitializer(
         val parameters = EasyRandomParameters()
         parameters.stringLengthRange(64, 64)
         parameters.collectionSizeRange(3, 3)
-        parameters.randomize(ObjectNode::class.java) { variations[Math.floorMod(21, index + 1).toInt()].first }
+        parameters.randomize(FieldPredicates.named("variation")) {
+            variations[Math.floorMod(21, index + 1).toInt()].first?.let { VariationDto(it) }
+        }
         parameters.randomize(PartOfSpeechType::class.java) {
             variations[Math.floorMod(21, index + 1).toInt()].third
         }
