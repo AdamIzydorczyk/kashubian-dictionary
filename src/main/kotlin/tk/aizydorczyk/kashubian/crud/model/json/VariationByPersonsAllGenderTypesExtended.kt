@@ -13,13 +13,13 @@ data class VariationByPersonsAllGenderTypesExtended(
     val secondPersonSingularNeuter: String?,
     val secondPersonPluralMasculineSecond: String?,
     val secondPersonPluralNonMasculineSecond: String?,
+    val secondPersonPluralMasculineFirst: String?,
+    val secondPersonPluralNonMasculineFirst: String?,
+    val secondPersonPluralMasculineThird: String?,
+    val secondPersonPluralNonMasculineThird: String?,
     val thirdPersonSingularMasculine: String?,
     val thirdPersonSingularFeminine: String?,
     val thirdPersonSingularNeuter: String?,
-    val waMasculineFirst: String?,
-    val waMasculineSecond: String?,
-    val waNonMasculineFirst: String?,
-    val waNonMasculineSecond: String?,
     val thirdPersonPluralMasculine: String?,
     val thirdPersonPluralNonMasculine: String?
 )
