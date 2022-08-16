@@ -126,7 +126,7 @@ class TestDataInitializer(
                     Meaning::class.java).setParameter("ids", random.longs(1, -1, index * 3)
                 .toList()).resultList.firstOrNull()?.id
         }
-        parameters.randomize(FieldPredicates.named("superordinate")) {
+        parameters.randomize(FieldPredicates.named("hyperonym")) {
             entityManager.createQuery("select m from Meaning m where m.id in (:ids)",
                     Meaning::class.java).setParameter("ids", random.longs(1, -1, index * 3)
                 .toList()).resultList.firstOrNull()?.id

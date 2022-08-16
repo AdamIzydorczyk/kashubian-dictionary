@@ -13,7 +13,7 @@ data class MeaningDto(
     @MeaningExists(groups = [OnCreate::class, OnUpdate::class])
     var base: Long?,
     @MeaningExists(groups = [OnCreate::class, OnUpdate::class])
-    var superordinate: Long?,
+    var hyperonym: Long?,
     @field:Valid
     val proverbs: List<ProverbDto> = emptyList(),
     @field:Valid

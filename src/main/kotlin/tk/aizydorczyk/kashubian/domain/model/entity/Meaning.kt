@@ -24,8 +24,8 @@ data class Meaning(
     val origin: String? = null,
     @Column(name = "base_id")
     var base: Long? = null,
-    @Column(name = "superordinate_id")
-    var superordinate: Long? = null,
+    @Column(name = "hyperonym_id")
+    var hyperonym: Long? = null,
     @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
     @JoinColumn(name = "meaning_id")
     val proverbs: List<Proverb> = emptyList(),

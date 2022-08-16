@@ -39,16 +39,16 @@ create table public.meaning (
 	definition character varying(255),
 	origin character varying(255),
 	base_id bigint,
-	superordinate_id bigint,
+	hyperonym_id bigint,
 	kashubian_entry_id bigint,
 	constraint constraint_6 primary key (id),
 	constraint fk3e19p4wfu5nw0aa8lhc3c7w2n foreign key (kashubian_entry_id) references public.kashubian_entry(id) on delete restrict on update restrict,
 	constraint fk60is1opx5ajacx094pmshuote foreign key (base_id) references public.meaning(id) on delete cascade on update restrict,
-	constraint fkhpem2wi575s5rnsmu4emmrgl9 foreign key (superordinate_id) references public.meaning(id) on delete restrict on update restrict
+	constraint fkhpem2wi575s5rnsmu4emmrgl9 foreign key (hyperonym_id) references public.meaning(id) on delete restrict on update restrict
 );
 create index fk3e19p4wfu5nw0aa8lhc3c7w2n_index_6 on public.meaning (kashubian_entry_id);
 create index fk60is1opx5ajacx094pmshuote_index_6 on public.meaning (base_id);
-create index fkhpem2wi575s5rnsmu4emmrgl9_index_6 on public.meaning (superordinate_id);
+create index fkhpem2wi575s5rnsmu4emmrgl9_index_6 on public.meaning (hyperonym_id);
 create unique index primary_key_6 on public.meaning (id);
 create sequence meaning_id_sequence;
 
@@ -182,9 +182,9 @@ where
 update
 	public.meaning
 set
-	"superordinate_id" = null
+	"hyperonym_id" = null
 where
-	"superordinate_id" = old.id;
+	"hyperonym_id" = old.id;
 
 return old;
 end;
