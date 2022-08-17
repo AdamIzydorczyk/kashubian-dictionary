@@ -1,5 +1,6 @@
 package tk.aizydorczyk.kashubian
 
+import com.fasterxml.jackson.databind.node.ObjectNode
 import com.github.javafaker.Faker
 import org.jeasy.random.EasyRandom
 import org.jeasy.random.EasyRandomParameters
@@ -54,7 +55,10 @@ class TestDataInitializer(
 
         val generatorCounter = AtomicLong(1L)
 
-        val parameters = prepareGeneratorParameters(generatorCounter::get)
+        val parameters =
+            prepareGeneratorParameters(generatorCounter::get) {
+                exampleVariationsGenerator.variationsExamples().random(kotlin.random.Random(generatorCounter.get()))
+            }
         val generator = EasyRandom(parameters)
         generator.objects(KashubianEntryDto::class.java, generatedSize)
             .forEach {
@@ -66,24 +70,24 @@ class TestDataInitializer(
         logger.info("Entries generation finished")
     }
 
-    private fun prepareGeneratorParameters(generatorCounter: () -> Long): EasyRandomParameters {
-        val variationWithTypes =
-            exampleVariationsGenerator.variationsExamples().random()
+    private fun prepareGeneratorParameters(
+        generatorCounter: () -> Long,
+        variationWithTypesFunction: () -> Triple<ObjectNode?, PartOfSpeechSubType, PartOfSpeechType>): EasyRandomParameters {
 
         return with(EasyRandomParameters()) {
             stringLengthRange(64, 64)
             collectionSizeRange(0, 3)
 
             randomize(FieldPredicates.named("variation")) {
-                variationWithTypes.first?.let { VariationDto(it) }
+                variationWithTypesFunction.invoke().first?.let { VariationDto(it) }
             }
 
             randomize(PartOfSpeechType::class.java) {
-                variationWithTypes.third
+                variationWithTypesFunction.invoke().third
             }
 
             randomize(PartOfSpeechSubType::class.java) {
-                variationWithTypes.second
+                variationWithTypesFunction.invoke().second
             }
 
             randomize(FieldPredicates.named("word")
