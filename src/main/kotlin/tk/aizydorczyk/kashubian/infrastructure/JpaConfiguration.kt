@@ -1,9 +1,11 @@
 package tk.aizydorczyk.kashubian.infrastructure
 
+import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
 import org.hibernate.cfg.AvailableSettings
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder
+import org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
@@ -32,12 +34,7 @@ class JpaConfiguration {
         builder: EntityManagerFactoryBuilder,
         dataSource: DataSource): LocalContainerEntityManagerFactoryBean? {
 
-        val properties: MutableMap<String, Any?> = HashMap()
-        properties[AvailableSettings.HBM2DDL_AUTO] = ddlAuto
-        properties[AvailableSettings.HBM2DDL_CREATE_SCHEMAS] = "true"
-        properties[AvailableSettings.DIALECT] = dialect
-        properties[AvailableSettings.SHOW_SQL] = showSql
-        properties[AvailableSettings.FORMAT_SQL] = "true"
+        val properties: MutableMap<String, Any?> = prepareProperties()
 
         return builder
             .dataSource(dataSource)
@@ -62,12 +59,7 @@ class JpaConfiguration {
         builder: EntityManagerFactoryBuilder,
         dataSource: DataSource): LocalContainerEntityManagerFactoryBean? {
 
-        val properties: MutableMap<String, Any?> = HashMap()
-        properties[AvailableSettings.HBM2DDL_AUTO] = "validate"
-        properties[AvailableSettings.HBM2DDL_CREATE_SCHEMAS] = "false"
-        properties[AvailableSettings.DIALECT] = dialect
-        properties[AvailableSettings.SHOW_SQL] = showSql
-        properties[AvailableSettings.FORMAT_SQL] = "true"
+        val properties: MutableMap<String, Any?> = prepareProperties()
 
         return builder
             .dataSource(dataSource)
@@ -75,6 +67,19 @@ class JpaConfiguration {
             .persistenceUnit("graphql")
             .properties(properties)
             .build()
+    }
+
+    private fun prepareProperties(): MutableMap<String, Any?> {
+        val properties: MutableMap<String, Any?> = HashMap()
+        properties[AvailableSettings.HBM2DDL_AUTO] = ddlAuto
+        properties[AvailableSettings.DIALECT] = dialect
+        properties[AvailableSettings.SHOW_SQL] = showSql
+        properties[AvailableSettings.FORMAT_SQL] = "true"
+        properties[AvailableSettings.IMPLICIT_NAMING_STRATEGY] =
+            SpringImplicitNamingStrategy::class.java.name
+        properties[AvailableSettings.PHYSICAL_NAMING_STRATEGY] =
+            CamelCaseToUnderscoresNamingStrategy::class.java.name
+        return properties
     }
 
     @Bean
