@@ -15,6 +15,6 @@ data class PhrasalVerb(
     @SequenceGenerator(name = "phrasal_verb_id_generator",
             sequenceName = "phrasal_verb_id_sequence",
             allocationSize = 1)
-    var id: Long,
+    override var id: Long,
     val phrasalVerb: String,
-    val note: String)
+    val note: String) : BaseEntity

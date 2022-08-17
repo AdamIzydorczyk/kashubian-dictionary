@@ -17,7 +17,7 @@ data class Meaning(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "meaning_id_generator")
     @SequenceGenerator(name = "meaning_id_generator", sequenceName = "meaning_id_sequence", allocationSize = 1)
-    var id: Long,
+    override var id: Long,
     @Transient
     var translation: Translation?,
     val definition: String? = null,
@@ -44,4 +44,4 @@ data class Meaning(
     @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
     @JoinColumn(name = "meaning_id")
     val antonyms: List<Antonym> = emptyList()
-)
+) : BaseEntity

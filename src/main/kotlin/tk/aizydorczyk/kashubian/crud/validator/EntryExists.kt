@@ -1,12 +1,11 @@
 package tk.aizydorczyk.kashubian.crud.validator
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import org.springframework.web.context.annotation.RequestScope
 import org.springframework.web.servlet.HandlerMapping
+import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryRepository
 import tk.aizydorczyk.kashubian.crud.model.dto.KashubianEntryDto
-import javax.persistence.EntityManager
 import javax.servlet.http.HttpServletRequest
 import javax.validation.Constraint
 import javax.validation.ConstraintValidator
@@ -33,8 +32,7 @@ annotation class EntryExists(
 class EntryExistsDtoValidator : ConstraintValidator<EntryExists, KashubianEntryDto> {
 
     @Autowired
-    @Qualifier("defaultEntityManager")
-    private lateinit var entityManager: EntityManager
+    private lateinit var repository: KashubianEntryRepository
 
     @Autowired
     private lateinit var request: HttpServletRequest
@@ -43,10 +41,7 @@ class EntryExistsDtoValidator : ConstraintValidator<EntryExists, KashubianEntryD
         val patchVariables =
             request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE) as LinkedHashMap<String, String>
         val entryId = patchVariables["entryId"]?.toLong() ?: 0
-        return entityManager.createQuery("select count(e) from KashubianEntry e where e.id = :id",
-                Long::class.javaObjectType)
-            .setParameter("id", entryId)
-            .singleResult > 0
+        return repository.countEntriesById(entryId) > 0
     }
 
 }
@@ -56,18 +51,14 @@ class EntryExistsDtoValidator : ConstraintValidator<EntryExists, KashubianEntryD
 class EntryExistsIdValidator : ConstraintValidator<EntryExists, Long?> {
 
     @Autowired
-    @Qualifier("defaultEntityManager")
-    private lateinit var entityManager: EntityManager
+    private lateinit var repository: KashubianEntryRepository
 
     override fun isValid(entryId: Long?, context: ConstraintValidatorContext?): Boolean {
         return entryId?.let(this::isEntryExist) ?: true
     }
 
     private fun isEntryExist(entryId: Long): Boolean {
-        return entityManager.createQuery("select count(e) from KashubianEntry e where e.id = :id",
-                Long::class.javaObjectType)
-            .setParameter("id", entryId)
-            .singleResult > 0
+        return repository.countEntriesById(entryId) > 0
     }
 
 }

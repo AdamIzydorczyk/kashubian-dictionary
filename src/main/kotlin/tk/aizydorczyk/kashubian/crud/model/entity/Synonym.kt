@@ -14,8 +14,8 @@ data class Synonym(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "synonym_id_generator")
     @SequenceGenerator(name = "synonym_id_generator", sequenceName = "synonym_id_sequence", allocationSize = 1)
-    var id: Long,
+    override var id: Long,
     val note: String?,
     @Column(name = "synonym_id")
     var synonym: Long
-)
+) : BaseEntity

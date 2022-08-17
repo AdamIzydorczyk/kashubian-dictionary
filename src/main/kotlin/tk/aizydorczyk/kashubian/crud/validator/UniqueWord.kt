@@ -1,10 +1,9 @@
 package tk.aizydorczyk.kashubian.crud.validator
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import org.springframework.web.context.annotation.RequestScope
-import javax.persistence.EntityManager
+import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryRepository
 import javax.validation.Constraint
 import javax.validation.ConstraintValidator
 import javax.validation.ConstraintValidatorContext
@@ -28,16 +27,13 @@ annotation class UniqueWord(
 class UniqueWordValidator : ConstraintValidator<UniqueWord, String?> {
 
     @Autowired
-    @Qualifier("defaultEntityManager")
-    private lateinit var entityManager: EntityManager
+    private lateinit var repository: KashubianEntryRepository
 
     override fun isValid(word: String?, context: ConstraintValidatorContext?): Boolean {
         return word?.let(this::isWordNonExistOrEqual) ?: true
     }
 
-    private fun isWordNonExistOrEqual(word: String?): Boolean {
-        return entityManager.createQuery("select count(e) from KashubianEntry e where e.word = :word",
-                Long::class.javaObjectType)
-            .setParameter("word", word).singleResult < 1
+    private fun isWordNonExistOrEqual(word: String): Boolean {
+        return repository.countEntriesByWord(word) < 1
     }
 }

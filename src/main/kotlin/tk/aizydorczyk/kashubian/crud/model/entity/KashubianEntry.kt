@@ -25,7 +25,7 @@ data class KashubianEntry(
     @SequenceGenerator(name = "kashubian_entry_id_generator",
             sequenceName = "kashubian_entry_id_sequence",
             allocationSize = 1)
-    var id: Long,
+    override var id: Long,
     @Column(unique = true)
     val word: String?,
     @Enumerated(EnumType.STRING)
@@ -44,4 +44,4 @@ data class KashubianEntry(
     @JoinColumn(name = "kashubian_entry_id")
     @LazyCollection(value = LazyCollectionOption.FALSE)
     val others: List<Other> = emptyList()
-)
+) : BaseEntity

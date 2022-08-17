@@ -13,6 +13,7 @@ data class Quote(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "quote_id_generator")
     @SequenceGenerator(name = "quote_id_generator", sequenceName = "quote_id_sequence", allocationSize = 1)
-    var id: Long,
+    override var id: Long,
     val quote: String,
-    val note: String)
+    val note: String
+) : BaseEntity

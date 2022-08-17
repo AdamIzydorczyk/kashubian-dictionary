@@ -13,7 +13,7 @@ data class Example(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "example_id_generator")
     @SequenceGenerator(name = "example_id_generator", sequenceName = "example_id_sequence", allocationSize = 1)
-    var id: Long,
+    override var id: Long,
     val example: String?,
     val note: String?
-)
+) : BaseEntity

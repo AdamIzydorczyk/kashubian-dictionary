@@ -1,10 +1,9 @@
 package tk.aizydorczyk.kashubian.crud.validator
 
 import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import org.springframework.web.context.annotation.RequestScope
-import javax.persistence.EntityManager
+import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryRepository
 import javax.validation.Constraint
 import javax.validation.ConstraintValidator
 import javax.validation.ConstraintValidatorContext
@@ -28,16 +27,13 @@ annotation class MeaningExists(
 class MeaningExistsValidator : ConstraintValidator<MeaningExists, Long?> {
 
     @Autowired
-    @Qualifier("defaultEntityManager")
-    private lateinit var entityManager: EntityManager
+    private lateinit var repository: KashubianEntryRepository
 
     override fun isValid(meaningId: Long?, context: ConstraintValidatorContext?): Boolean {
         return meaningId?.let(this::isMeaningExist) ?: true
     }
 
     private fun isMeaningExist(meaningId: Long): Boolean {
-        return entityManager.createQuery("select count(m) from Meaning m where m.id = :id",
-                Long::class.javaObjectType)
-            .setParameter("id", meaningId).singleResult > 0
+        return repository.countMeaningsById(meaningId) > 0
     }
 }

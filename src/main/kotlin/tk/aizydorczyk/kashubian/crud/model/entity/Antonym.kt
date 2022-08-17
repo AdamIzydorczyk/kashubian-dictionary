@@ -14,8 +14,8 @@ data class Antonym(
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "antonym_id_generator")
     @SequenceGenerator(name = "antonym_id_generator", sequenceName = "antonym_id_sequence", allocationSize = 1)
-    var id: Long,
+    override var id: Long,
     val note: String?,
     @Column(name = "antonym_id")
     var antonym: Long
-)
+) : BaseEntity

@@ -26,60 +26,59 @@ class VariationBySubtypeFinder(val exampleVariationsGenerator: ExampleVariations
 class ExampleVariationsGenerator(val objectMapper: ObjectMapper) {
     private final val variations: Array<Triple<ObjectNode?, PartOfSpeechSubType, PartOfSpeechType>>
     private final val exampleBySubtype: Map<String, ObjectNode?>
-
+    private final val variationsGenerator = EasyRandom()
     init {
-        val variationsGenerator = EasyRandom()
         variations = listOf(
-                variationsGenerator.nextObject(NounVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Triple(it, PartOfSpeechSubType.NEUTER, PartOfSpeechType.NOUN) },
-                variationsGenerator.nextObject(NounVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Triple(it, PartOfSpeechSubType.MASCULINE, PartOfSpeechType.NOUN) },
-                variationsGenerator.nextObject(NounVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Triple(it, PartOfSpeechSubType.FEMININE, PartOfSpeechType.NOUN) },
-                variationsGenerator.nextObject(NounVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Triple(it, PartOfSpeechSubType.PLURAL_MASCULINE, PartOfSpeechType.NOUN) },
-                variationsGenerator.nextObject(NounVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Triple(it, PartOfSpeechSubType.NON_MASCULINE, PartOfSpeechType.NOUN) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Triple(it, PartOfSpeechSubType.CONJUGATION_I, PartOfSpeechType.VERB) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Triple(it, PartOfSpeechSubType.CONJUGATION_II, PartOfSpeechType.VERB) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Triple(it, PartOfSpeechSubType.CONJUGATION_III, PartOfSpeechType.VERB) },
-                variationsGenerator.nextObject(VerbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Triple(it, PartOfSpeechSubType.CONJUGATION_IV, PartOfSpeechType.VERB) },
-                variationsGenerator.nextObject(AdjectiveVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Triple(it, PartOfSpeechSubType.INFLECTIV_ADJECTIVE, PartOfSpeechType.ADJECTIVE) },
-                variationsGenerator.nextObject(AdjectiveVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Triple(it, PartOfSpeechSubType.UNINFLECTIV_ADJECTIVE, PartOfSpeechType.ADJECTIVE) },
-                variationsGenerator.nextObject(NumeralVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Triple(it, PartOfSpeechSubType.INFLECTIV_NUMERAL, PartOfSpeechType.NUMERAL) },
-                variationsGenerator.nextObject(NumeralVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Triple(it, PartOfSpeechSubType.UNINFLECTIV_NUMERAL, PartOfSpeechType.NUMERAL) },
-                variationsGenerator.nextObject(NounPronounVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Triple(it, PartOfSpeechSubType.NOUN_PRONOUN, PartOfSpeechType.PRONOUN) },
-                variationsGenerator.nextObject(AdjectivePronounVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Triple(it, PartOfSpeechSubType.ADJECTIVE_PRONOUN, PartOfSpeechType.PRONOUN) },
+                prepareVariationJsonWithTypes(NounVariation::class.java,
+                        PartOfSpeechSubType.NEUTER,
+                        PartOfSpeechType.NOUN),
+                prepareVariationJsonWithTypes(NounVariation::class.java,
+                        PartOfSpeechSubType.MASCULINE,
+                        PartOfSpeechType.NOUN),
+                prepareVariationJsonWithTypes(NounVariation::class.java,
+                        PartOfSpeechSubType.FEMININE,
+                        PartOfSpeechType.NOUN),
+                prepareVariationJsonWithTypes(NounVariation::class.java,
+                        PartOfSpeechSubType.PLURAL_MASCULINE,
+                        PartOfSpeechType.NOUN),
+                prepareVariationJsonWithTypes(NounVariation::class.java,
+                        PartOfSpeechSubType.NON_MASCULINE,
+                        PartOfSpeechType.NOUN),
+                prepareVariationJsonWithTypes(VerbVariation::class.java,
+                        PartOfSpeechSubType.CONJUGATION_I,
+                        PartOfSpeechType.VERB),
+                prepareVariationJsonWithTypes(VerbVariation::class.java,
+                        PartOfSpeechSubType.CONJUGATION_II,
+                        PartOfSpeechType.VERB),
+                prepareVariationJsonWithTypes(VerbVariation::class.java,
+                        PartOfSpeechSubType.CONJUGATION_III,
+                        PartOfSpeechType.VERB),
+                prepareVariationJsonWithTypes(VerbVariation::class.java,
+                        PartOfSpeechSubType.CONJUGATION_IV,
+                        PartOfSpeechType.VERB),
+                prepareVariationJsonWithTypes(AdjectiveVariation::class.java,
+                        PartOfSpeechSubType.INFLECTIV_ADJECTIVE,
+                        PartOfSpeechType.ADJECTIVE),
+                prepareVariationJsonWithTypes(AdjectiveVariation::class.java,
+                        PartOfSpeechSubType.UNINFLECTIV_ADJECTIVE,
+                        PartOfSpeechType.ADJECTIVE),
+                prepareVariationJsonWithTypes(NumeralVariation::class.java,
+                        PartOfSpeechSubType.INFLECTIV_NUMERAL,
+                        PartOfSpeechType.NUMERAL),
+                prepareVariationJsonWithTypes(NumeralVariation::class.java,
+                        PartOfSpeechSubType.UNINFLECTIV_NUMERAL,
+                        PartOfSpeechType.NUMERAL),
+                prepareVariationJsonWithTypes(NounPronounVariation::class.java,
+                        PartOfSpeechSubType.NOUN_PRONOUN,
+                        PartOfSpeechType.PRONOUN),
+                prepareVariationJsonWithTypes(AdjectivePronounVariation::class.java,
+                        PartOfSpeechSubType.ADJECTIVE_PRONOUN,
+                        PartOfSpeechType.PRONOUN),
                 Triple(null, PartOfSpeechSubType.NUMERAL_PRONOUN, PartOfSpeechType.PRONOUN),
                 Triple(null, PartOfSpeechSubType.ADVERB_PRONOUN, PartOfSpeechType.PRONOUN),
-                variationsGenerator.nextObject(AdverbVariation::class.java)
-                    .let { objectMapper.convertValue(it, ObjectNode::class.java) }
-                    .let { Triple(it, PartOfSpeechSubType.ADVERB, PartOfSpeechType.ADVERB) },
+                prepareVariationJsonWithTypes(AdverbVariation::class.java,
+                        PartOfSpeechSubType.ADVERB,
+                        PartOfSpeechType.ADVERB),
                 Triple(null, PartOfSpeechSubType.PREPOSITION, PartOfSpeechType.PREPOSITION),
                 Triple(null, PartOfSpeechSubType.CONJUNCTION, PartOfSpeechType.CONJUNCTION),
                 Triple(null, PartOfSpeechSubType.INTERJECTION, PartOfSpeechType.INTERJECTION),
@@ -90,6 +89,12 @@ class ExampleVariationsGenerator(val objectMapper: ObjectMapper) {
             .groupBy { it.second.name }
             .mapValues { it.value.first().first }
     }
+
+    private final fun prepareVariationJsonWithTypes(variationClass: Class<*>,
+        partOfSpeechSubType: PartOfSpeechSubType,
+        partOfSpeechType: PartOfSpeechType) = variationsGenerator.nextObject(variationClass)
+        .let { objectMapper.convertValue(it, ObjectNode::class.java) }
+        .let { Triple(it, partOfSpeechSubType, partOfSpeechType) }
 
     fun variationsExamples(): Array<Triple<ObjectNode?, PartOfSpeechSubType, PartOfSpeechType>> = variations
     fun exampleBySubtype(): Map<String, ObjectNode?> = exampleBySubtype

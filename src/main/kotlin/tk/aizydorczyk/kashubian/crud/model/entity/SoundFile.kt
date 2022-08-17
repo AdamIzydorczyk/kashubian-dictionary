@@ -9,14 +9,14 @@ import javax.persistence.Table
 @Table(name = "sound_file")
 data class SoundFile(
     @Id
-    val id: Long,
+    override var id: Long,
     val fileName: String,
     val type: String,
     @Column(columnDefinition = "bytea")
     val file: ByteArray,
     @Column(name = "kashubian_entry_id")
     val kashubianEntry: Long
-) {
+) : BaseEntity {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
