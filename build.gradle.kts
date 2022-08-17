@@ -23,8 +23,9 @@ repositories {
 dependencies {
 	implementation("org.flywaydb:flyway-core:8.5.13")
 	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
-	implementation("org.springframework.boot:spring-boot-starter-web"){
-		exclude("org.springframework.boot","spring-boot-starter-tomcat")
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-web") {
+		exclude("org.springframework.boot", "spring-boot-starter-tomcat")
 	}
 
 	implementation("com.introproventures:graphql-jpa-query-boot-starter:0.4.19"){
