@@ -18,32 +18,33 @@ class SecurityConfiguration {
 
     @Bean
     fun filterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
-        httpSecurity
-            .antMatcher("/**")
-            .csrf().disable()
-            .cors().disable()
-            .sessionManagement()
-            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-            .and()
-            .authorizeRequests()
-            .antMatchers(HttpMethod.GET, "/",
-                    "/swagger-ui/**",
-                    "/swagger-resources/**",
-                    "/v2/**",
-                    "/graphiql/**",
-                    "/favicon.ico",
-                    "/graphql",
-                    "/custom-query/**",
-                    "/kashubian-entry/{entryId}/file")
-            .permitAll()
-            .anyRequest()
-            .authenticated()
-            .and()
-            .formLogin()
-            .disable()
-            .httpBasic()
-
-        return httpSecurity.build()
+        return httpSecurity.also {
+            it.antMatcher("/**")
+                .csrf().disable()
+                .cors().disable()
+                .sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.GET, "/",
+                        "/swagger-ui/**",
+                        "/swagger-resources/**",
+                        "/v2/**",
+                        "/graphiql/**",
+                        "/favicon.ico",
+                        "/graphql",
+                        "/custom-query/**",
+                        "/kashubian-entry/{entryId}/file")
+                .permitAll()
+                .antMatchers(HttpMethod.POST, "/graphql")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .formLogin()
+                .disable()
+                .httpBasic()
+        }.build()
     }
 
     @Bean
