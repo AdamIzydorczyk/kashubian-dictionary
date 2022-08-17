@@ -1,8 +1,8 @@
 package tk.aizydorczyk.kashubian.crud.domain
 
 import io.swagger.annotations.Api
-import org.springframework.http.HttpHeaders
-import org.springframework.http.HttpStatus
+import org.springframework.http.HttpHeaders.CONTENT_DISPOSITION
+import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.ResponseEntity
@@ -57,7 +57,7 @@ class KashubianEntryController(
     fun downloadSoundFile(@PathVariable entryId: Long): ResponseEntity<ByteArray> =
         downloader.download(entryId).let {
             ResponseEntity.ok()
-                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"${it.fileName}\"")
+                .header(CONTENT_DISPOSITION, "attachment; filename=\"${it.fileName}\"")
                 .body(it.file)
         }
 
@@ -74,7 +74,7 @@ class KashubianEntryController(
         remover.remove(entryId)
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException::class)
     fun handleValidationExceptions(
         ex: MethodArgumentNotValidException): Map<String, List<Any>> {

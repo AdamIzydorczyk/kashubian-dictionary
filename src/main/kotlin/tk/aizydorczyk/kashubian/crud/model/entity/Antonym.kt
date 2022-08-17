@@ -3,7 +3,7 @@ package tk.aizydorczyk.kashubian.crud.model.entity
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
-import javax.persistence.GenerationType
+import javax.persistence.GenerationType.SEQUENCE
 import javax.persistence.Id
 import javax.persistence.SequenceGenerator
 import javax.persistence.Table
@@ -12,7 +12,7 @@ import javax.persistence.Table
 @Table(name = "antonym")
 data class Antonym(
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "antonym_id_generator")
+    @GeneratedValue(strategy = SEQUENCE, generator = "antonym_id_generator")
     @SequenceGenerator(name = "antonym_id_generator", sequenceName = "antonym_id_sequence", allocationSize = 1)
     override var id: Long,
     val note: String?,

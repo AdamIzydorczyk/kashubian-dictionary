@@ -6,7 +6,6 @@ import org.jeasy.random.EasyRandomParameters
 import org.jeasy.random.FieldPredicates
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
@@ -14,6 +13,7 @@ import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryController
+import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryRepository
 import tk.aizydorczyk.kashubian.crud.model.dto.AntonymDto
 import tk.aizydorczyk.kashubian.crud.model.dto.KashubianEntryDto
 import tk.aizydorczyk.kashubian.crud.model.dto.OtherDto
@@ -27,9 +27,8 @@ import tk.aizydorczyk.kashubian.crud.query.ExampleVariationsGenerator
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.InputStream
-import java.util.Locale
 import java.util.Random
-import javax.persistence.EntityManager
+import java.util.concurrent.atomic.AtomicLong
 import kotlin.math.min
 import kotlin.streams.toList
 
@@ -38,115 +37,100 @@ import kotlin.streams.toList
 class TestDataInitializer(
     val kashubianEntryController: KashubianEntryController,
     val exampleVariationsGenerator: ExampleVariationsGenerator,
-    @Qualifier("defaultEntityManager") val entityManager: EntityManager,
+    val repository: KashubianEntryRepository,
     @Value("\${test.data.initializer.generated.elements.size}") val generatedSize: Int) : ApplicationRunner {
 
     val logger: Logger = LoggerFactory.getLogger(javaClass)
 
+    private final val random = Random()
+    private final val faker = Faker(random)
+
     override fun run(args: ApplicationArguments?) {
 
-        if (entityManager.createQuery("select count(e) from KashubianEntry e",
-                    Long::class.javaObjectType)
-                .singleResult > 0
+        if (repository.countAllEntries() > 0
         ) {
             return
         }
 
-        val variations = exampleVariationsGenerator.variationsExamples()
+        val generatorCounter = AtomicLong(1L)
 
-        var index = 0L
-        val random = Random()
-
-        val fakerEn = Faker()
-        val fakerPl = Faker(Locale("pl-PL"))
-        val fakerDe = Faker(Locale("de_DE"))
-        val fakerUa = Faker(Locale("uk_UA"))
-
-        val parameters = EasyRandomParameters()
-        parameters.stringLengthRange(64, 64)
-        parameters.collectionSizeRange(0, 3)
-        parameters.randomize(FieldPredicates.named("variation")) {
-            variations[Math.floorMod(21, index + 1).toInt()].first?.let { VariationDto(it) }
-        }
-        parameters.randomize(PartOfSpeechType::class.java) {
-            variations[Math.floorMod(21, index + 1).toInt()].third
-        }
-        parameters.randomize(PartOfSpeechSubType::class.java) {
-            variations[Math.floorMod(21, index + 1).toInt()].second
-        }
-
-        parameters.randomize(FieldPredicates.named("word")) {
-            selectWord(fakerPl).let {
-                it[random.nextInt(it.size - 1)].invoke()
-                    .let { value -> value.substring(0, min(value.length, 240)) } + index
-            }
-        }
-
-        parameters.randomize(FieldPredicates.named("polish")) {
-            selectWord(fakerPl).let {
-                it[random.nextInt(it.size - 1)].invoke()
-                    .let { value -> value.substring(0, min(value.length, 240)) } + index
-            }
-        }
-
-        parameters.randomize(FieldPredicates.named("english")) {
-            selectWord(fakerEn).let {
-                it[random.nextInt(it.size - 1)].invoke()
-                    .let { value -> value.substring(0, min(value.length, 240)) } + index
-            }
-        }
-
-        parameters.randomize(FieldPredicates.named("german")) {
-            selectWord(fakerDe).let {
-                it[random.nextInt(it.size - 1)].invoke()
-                    .let { value -> value.substring(0, min(value.length, 240)) } + index
-            }
-        }
-
-        parameters.randomize(FieldPredicates.named("ukrainian")) {
-            selectWord(fakerUa).let {
-                it[random.nextInt(it.size - 1)].invoke()
-                    .let { value -> value.substring(0, min(value.length, 240)) } + index
-            }
-        }
-
-        parameters.randomize(FieldPredicates.named("others")) {
-            entityManager.createQuery("select e from KashubianEntry e where e.id in (:ids)",
-                    KashubianEntry::class.java).setParameter("ids", random.longs(1, -1, index)
-                .toList()).resultList.map { OtherDto(it.id, "test") }
-        }
-        parameters.randomize(FieldPredicates.named("synonyms")) {
-            entityManager.createQuery("select m from Meaning m where m.id in (:ids)",
-                    Meaning::class.java).setParameter("ids", random.longs(3, -1, index * 3)
-                .toList()).resultList.map { SynonymDto(it.id, "test") }
-        }
-        parameters.randomize(FieldPredicates.named("antonyms")) {
-            entityManager.createQuery("select m from Meaning m where m.id in (:ids)",
-                    Meaning::class.java).setParameter("ids", random.longs(3, -1, index * 3)
-                .toList()).resultList.map { AntonymDto(it.id, "test") }
-        }
-        parameters.randomize(FieldPredicates.named("base")) {
-            entityManager.createQuery("select m from Meaning m where m.id in (:ids)",
-                    Meaning::class.java).setParameter("ids", random.longs(1, -1, index * 3)
-                .toList()).resultList.firstOrNull()?.id
-        }
-        parameters.randomize(FieldPredicates.named("hyperonym")) {
-            entityManager.createQuery("select m from Meaning m where m.id in (:ids)",
-                    Meaning::class.java).setParameter("ids", random.longs(1, -1, index * 3)
-                .toList()).resultList.firstOrNull()?.id
-        }
-
+        val parameters = prepareGeneratorParameters(generatorCounter::get)
         val generator = EasyRandom(parameters)
         generator.objects(KashubianEntryDto::class.java, generatedSize)
             .forEach {
                 kashubianEntryController.create(it)
                     .let { response -> kashubianEntryController.uploadSoundFile(response.entryId, FakeMultipartFile()) }
-                index++
-                logger.info(index.toString())
+                logger.info("Generated entry $generatorCounter from $generatedSize")
+                generatorCounter.incrementAndGet()
             }
+        logger.info("Entries generation finished")
     }
 
-    private fun selectWord(faker: Faker): List<() -> String> = listOf(
+    private fun prepareGeneratorParameters(generatorCounter: () -> Long): EasyRandomParameters {
+        val variationWithTypes =
+            exampleVariationsGenerator.variationsExamples().random()
+
+        return with(EasyRandomParameters()) {
+            stringLengthRange(64, 64)
+            collectionSizeRange(0, 3)
+
+            randomize(FieldPredicates.named("variation")) {
+                variationWithTypes.first?.let { VariationDto(it) }
+            }
+
+            randomize(PartOfSpeechType::class.java) {
+                variationWithTypes.third
+            }
+
+            randomize(PartOfSpeechSubType::class.java) {
+                variationWithTypes.second
+            }
+
+            randomize(FieldPredicates.named("word")
+                .or(FieldPredicates.named("polish")
+                    .or(FieldPredicates.named("english")
+                        .or(FieldPredicates.named("german")
+                            .or(FieldPredicates.named("german")
+                                .or(FieldPredicates.named("ukrainian"))))))) {
+                selectWordFunction() + generatorCounter.invoke()
+            }
+
+            randomize(FieldPredicates.named("others")) {
+                repository.findByTypeAndIds(KashubianEntry::class.java,
+                        generateEntitiesAmount(generatorCounter.invoke()))
+                    .map { OtherDto(it.id, "test other") }
+            }
+
+            randomize(FieldPredicates.named("synonyms")) {
+                repository.findByTypeAndIds(Meaning::class.java, generateEntitiesAmount(generatorCounter.invoke()))
+                    .map { SynonymDto(it.id, "test synonim") }
+            }
+
+            randomize(FieldPredicates.named("antonyms")) {
+                repository.findByTypeAndIds(Meaning::class.java, generateEntitiesAmount(generatorCounter.invoke()))
+                    .map { AntonymDto(it.id, "test antonym") }
+            }
+
+            randomize(FieldPredicates.named("base")) {
+                repository.findByTypeAndIds(Meaning::class.java, generateEntitiesAmount(generatorCounter.invoke()))
+                    .firstOrNull()?.id
+            }
+
+            randomize(FieldPredicates.named("hyperonym")) {
+                repository.findByTypeAndIds(Meaning::class.java, generateEntitiesAmount(generatorCounter.invoke()))
+                    .firstOrNull()?.id
+            }
+        }
+    }
+
+    private fun generateEntitiesAmount(generatorCounter: Long): List<Long> =
+        random.longs(1, -1, generatorCounter).toList()
+
+    private fun selectWordFunction(): String =
+        selectRandomWordFromSets().let { it.substring(0, min(it.length, 240)) }
+
+
+    private fun selectRandomWordFromSets(): String = listOf(
             faker.ancient()::god,
             faker.ancient()::hero,
             faker.ancient()::titan,
@@ -191,24 +175,24 @@ class TestDataInitializer(
             faker.dog()::memePhrase,
             faker.job()::position,
             faker.job()::title
-    )
+    ).random().invoke()
+}
 
-    class FakeMultipartFile : MultipartFile {
-        override fun getInputStream(): InputStream = ByteArrayInputStream.nullInputStream()
+class FakeMultipartFile : MultipartFile {
+    override fun getInputStream(): InputStream = ByteArrayInputStream.nullInputStream()
 
-        override fun getName(): String = "test"
+    override fun getName(): String = "test"
 
-        override fun getOriginalFilename(): String = "test.txt"
+    override fun getOriginalFilename(): String = "test.txt"
 
-        override fun getContentType(): String = MediaType.TEXT_PLAIN_VALUE
+    override fun getContentType(): String = MediaType.TEXT_PLAIN_VALUE
 
-        override fun isEmpty(): Boolean = false
+    override fun isEmpty(): Boolean = false
 
-        override fun getSize(): Long = 1L
+    override fun getSize(): Long = 1L
 
-        override fun getBytes(): ByteArray = ByteArray(1)
+    override fun getBytes(): ByteArray = ByteArray(1)
 
-        override fun transferTo(dest: File) {}
+    override fun transferTo(dest: File) {}
 
-    }
 }

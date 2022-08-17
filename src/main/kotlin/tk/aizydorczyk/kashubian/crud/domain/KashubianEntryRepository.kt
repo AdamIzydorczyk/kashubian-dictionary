@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
+import tk.aizydorczyk.kashubian.crud.model.entity.BaseEntity
 import tk.aizydorczyk.kashubian.crud.model.entity.SoundFile
 import java.math.BigInteger
 import javax.persistence.EntityManager
@@ -59,6 +60,14 @@ class KashubianEntryRepository(@Qualifier("defaultEntityManager") val entityMana
                 Long::class.javaObjectType)
             .setParameter("word", word)
             .singleResult
+
+    fun <EntityType : BaseEntity> findByTypeAndIds(type: Class<EntityType>, ids: List<Number>): List<EntityType> =
+        entityManager.createQuery("select e from ${type.simpleName} e where e.id in (:ids)",
+                type).setParameter("ids", ids).resultList
+
+    fun countAllEntries(): Long = entityManager.createQuery("select count(e) from KashubianEntry e",
+            Long::class.javaObjectType)
+        .singleResult
 
     private fun findByMeaningHierarchyElementByProcedure(meaningId: Long, procedureName: String): List<BigInteger> {
         val procedure =
