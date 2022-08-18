@@ -17,5 +17,7 @@ data class Synonym(
     override var id: Long,
     val note: String?,
     @Column(name = "synonym_id")
-    var synonym: Long
+    var synonym: Long,
+    @Column(name = "meaning_id")
+    var meaning: Long
 ) : BaseEntity

@@ -14,17 +14,20 @@ class KashubianEntryCreator(@Qualifier("defaultEntityManager") val entityManager
     @Transactional
     fun create(entry: KashubianEntry): KashubianEntry {
         entry.normalizedWord = entry.word?.stripAccents()
+        entityManager.persist(entry)
 
-        entry.others.forEach(entityManager::persist)
+        entry.others.onEach { it.kashubianEntry = entry.id }.forEach(entityManager::persist)
 
         entry.meanings.forEach { meaning ->
-            meaning.proverbs.forEach(entityManager::persist)
-            meaning.phrasalVerbs.forEach(entityManager::persist)
-            meaning.quotes.forEach(entityManager::persist)
-            meaning.examples.forEach(entityManager::persist)
-            meaning.antonyms.forEach(entityManager::persist)
-            meaning.synonyms.forEach(entityManager::persist)
+            meaning.apply { kashubianEntry = entry.id }
             entityManager.persist(meaning)
+
+            meaning.proverbs.onEach { it.meaning = meaning.id }.forEach(entityManager::persist)
+            meaning.phrasalVerbs.onEach { it.meaning = meaning.id }.forEach(entityManager::persist)
+            meaning.quotes.onEach { it.meaning = meaning.id }.forEach(entityManager::persist)
+            meaning.examples.onEach { it.meaning = meaning.id }.forEach(entityManager::persist)
+            meaning.antonyms.onEach { it.meaning = meaning.id }.forEach(entityManager::persist)
+            meaning.synonyms.onEach { it.meaning = meaning.id }.forEach(entityManager::persist)
 
             meaning.translation?.let {
                 entityManager.persist(Translation(id = meaning.id,
@@ -36,7 +39,6 @@ class KashubianEntryCreator(@Qualifier("defaultEntityManager") val entityManager
             }
         }
         return entry.apply {
-            entityManager.persist(this)
             variation?.let {
                 entityManager.persist(Variation(id, it.variation, id))
             }

@@ -124,7 +124,7 @@ class RandomDataInitializer(
         random.longs(1, -1, generatorCounter).toList()
 
     private fun selectWordFunction(): String =
-        selectRandomWordFromSets().let { it.substring(0, min(it.length, 240)) }
+        selectRandomWordFromSets().let { it.substring(0, min(it.length, 90)) }
 
 
     private fun selectRandomWordFromSets(): String = listOf(

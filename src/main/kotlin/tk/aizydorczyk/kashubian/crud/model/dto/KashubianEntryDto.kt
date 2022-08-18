@@ -10,15 +10,19 @@ import tk.aizydorczyk.kashubian.crud.validator.PartOfSpeechAndSubTypeConsistent
 import tk.aizydorczyk.kashubian.crud.validator.UnchangedToNonUnique
 import tk.aizydorczyk.kashubian.crud.validator.UniqueWord
 import javax.validation.Valid
+import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
+import javax.validation.constraints.Size
 
 @EntryExists(groups = [OnUpdate::class])
 @CorrectVariationJsonFormatByPartOfSpeechSubType(groups = [OnCreate::class, OnUpdate::class])
 @PartOfSpeechAndSubTypeConsistent(groups = [OnCreate::class, OnUpdate::class])
 data class KashubianEntryDto(
-    @field:NotNull(message = "WORD_IS_NULL", groups = [OnCreate::class, OnUpdate::class])
+    @field:NotNull(message = "IS_NULL", groups = [OnCreate::class, OnUpdate::class])
     @UniqueWord(groups = [OnCreate::class])
     @UnchangedToNonUnique(groups = [OnUpdate::class])
+    @field:NotBlank(message = "IS_BLANK", groups = [OnCreate::class, OnUpdate::class])
+    @field:Size(max = 100, message = "LENGTH_100_EXCEED", groups = [OnCreate::class, OnUpdate::class])
     val word: String?,
     val note: String?,
     val priority: Boolean,

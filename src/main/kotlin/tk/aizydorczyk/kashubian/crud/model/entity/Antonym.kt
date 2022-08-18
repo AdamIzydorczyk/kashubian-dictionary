@@ -17,5 +17,7 @@ data class Antonym(
     override var id: Long,
     val note: String?,
     @Column(name = "antonym_id")
-    var antonym: Long
+    var antonym: Long,
+    @Column(name = "meaning_id")
+    var meaning: Long
 ) : BaseEntity

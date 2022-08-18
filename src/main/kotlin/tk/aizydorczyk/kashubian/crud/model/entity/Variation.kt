@@ -17,7 +17,9 @@ data class Variation(
     override var id: Long,
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
+
     var variation: ObjectNode,
     @Column(name = "kashubian_entry_id")
+    
     val kashubianEntry: Long
 ) : BaseEntity

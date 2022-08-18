@@ -43,5 +43,7 @@ data class Meaning(
     val synonyms: List<Synonym> = emptyList(),
     @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
     @JoinColumn(name = "meaning_id")
-    val antonyms: List<Antonym> = emptyList()
+    val antonyms: List<Antonym> = emptyList(),
+    @Column(name = "kashubian_entry_id")
+    var kashubianEntry: Long
 ) : BaseEntity

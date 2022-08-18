@@ -10,10 +10,14 @@ import javax.persistence.Table
 data class SoundFile(
     @Id
     override var id: Long,
+
     val fileName: String,
+
     val type: String,
+
     @Column(columnDefinition = "bytea")
     val file: ByteArray,
+    
     @Column(name = "kashubian_entry_id")
     val kashubianEntry: Long
 ) : BaseEntity {

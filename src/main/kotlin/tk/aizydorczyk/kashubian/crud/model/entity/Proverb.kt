@@ -1,5 +1,6 @@
 package tk.aizydorczyk.kashubian.crud.model.entity
 
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType.SEQUENCE
@@ -15,5 +16,7 @@ data class Proverb(
     @SequenceGenerator(name = "proverb_id_generator", sequenceName = "proverb_id_sequence", allocationSize = 1)
     override var id: Long,
     val proverb: String,
-    val note: String
+    val note: String,
+    @Column(name = "meaning_id")
+    var meaning: Long
 ) : BaseEntity

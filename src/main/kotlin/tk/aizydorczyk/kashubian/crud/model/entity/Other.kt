@@ -17,5 +17,8 @@ data class Other(
     override var id: Long,
     val note: String?,
     @Column(name = "other_id")
-    var other: Long
+    var other: Long,
+    @Column(name = "kashubian_entry_id")
+    var kashubianEntry: Long
+
 ) : BaseEntity

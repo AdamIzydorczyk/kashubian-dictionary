@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull
 
 data class AntonymDto(
     @MeaningExists(groups = [OnCreate::class, OnUpdate::class])
-    @field:NotNull(message = "MEANING_ID_IS_NULL", groups = [OnCreate::class, OnUpdate::class])
+    @field:NotNull(message = "IS_NULL", groups = [OnCreate::class, OnUpdate::class])
     val meaningId: Long,
     val note: String?
 )

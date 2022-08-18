@@ -1,12 +1,12 @@
 -- public.kashubian_entry definition
 create table public.kashubian_entry (
 	id bigint not null,
-	note character varying(255),
+	note text,
 	priority boolean not null,
-	part_of_speech character varying(255),
-	part_of_speech_sub_type character varying(255),
-	word character varying(255),
-	normalized_word character varying(255),
+	part_of_speech varchar(12) not null,
+	part_of_speech_sub_type varchar(21) not null,
+	word varchar(100) not null,
+	normalized_word varchar(100) not null,
 	constraint pk_kashubian_entry primary key (id)
 );
 create unique index kashubian_entry_pk_unique_index on public.kashubian_entry (id);
@@ -16,8 +16,8 @@ create sequence kashubian_entry_id_sequence;
 -- public.variation definition
 create table public.variation (
 	id bigint not null,
-	variation jsonb,
-	kashubian_entry_id bigint,
+	variation jsonb not null,
+	kashubian_entry_id bigint not null,
 	constraint pk_variation primary key (id),
 	constraint fk_variation_kashubian_entry foreign key (kashubian_entry_id) references public.kashubian_entry(id) on delete cascade on update restrict
 );
@@ -27,8 +27,8 @@ create unique index variation_id_word_unique_index on public.variation (id);
 create table public.sound_file (
 	id bigint not null,
 	file bytea not null,
-	file_name character varying(255) not null,
-	"type" character varying(255) not null,
+	file_name text not null,
+	"type" varchar(80) not null,
 	kashubian_entry_id bigint,
 	constraint pk_sound_file primary key (id),
 	constraint fk_sound_file_kashubian_entry foreign key (kashubian_entry_id) references public.kashubian_entry(id) on delete cascade on update restrict
@@ -38,11 +38,11 @@ create unique index sound_file_pk_unique_index on public.sound_file (id);
 -- public.meaning definition
 create table public.meaning (
 	id bigint not null,
-	definition character varying(255),
-	origin character varying(255),
+	definition text,
+	origin text,
 	base_id bigint,
 	hyperonym_id bigint,
-	kashubian_entry_id bigint,
+	kashubian_entry_id bigint not null,
 	constraint pk_meaning primary key (id),
 	constraint fk_meaning_kashubian_entry foreign key (kashubian_entry_id) references public.kashubian_entry(id) on delete restrict on update restrict,
 	constraint fk_meaning_base foreign key (base_id) references public.meaning(id) on delete cascade on update restrict,
@@ -57,11 +57,11 @@ create sequence meaning_id_sequence;
 -- public.translation definition
 create table public."translation" (
 	id bigint not null,
-	english character varying(255),
-	german character varying(255),
-	polish character varying(255),
-	ukrainian character varying(255),
-	meaning_id bigint,
+	english varchar(100),
+	german varchar(100),
+	polish varchar(100),
+	ukrainian varchar(100),
+	meaning_id bigint not null,
 	constraint pk_translation primary key (id),
 	constraint fk_translation_meaning foreign key (meaning_id) references public."meaning"(id) on delete restrict on update restrict
 );
@@ -76,9 +76,9 @@ create sequence translation_id_sequence;
 -- public.other definition
 create table public.other (
 	id bigint not null,
-	note character varying(255),
-	other_id bigint,
-	kashubian_entry_id bigint,
+	note text,
+	other_id bigint not null,
+	kashubian_entry_id bigint not null,
 	constraint pk_other primary key (id),
 	constraint fk_other_kashubian_entry foreign key (kashubian_entry_id) references public.kashubian_entry(id) on delete restrict on update restrict,
 	constraint fk_other_other foreign key (other_id) references public.kashubian_entry(id) on delete cascade on update restrict
@@ -91,9 +91,9 @@ create sequence other_id_sequence;
 -- public.phrasal_verb definition
 create table public.phrasal_verb (
 	id bigint not null,
-	note character varying(255),
-	phrasal_verb character varying(255),
-	meaning_id bigint,
+	note text,
+	phrasal_verb varchar(150) not null,
+	meaning_id bigint not null,
 	constraint pk_phrasal_verb primary key (id),
 	constraint fk_phrasal_verb_meaning foreign key (meaning_id) references public.meaning(id) on delete restrict on update restrict
 );
@@ -104,9 +104,9 @@ create sequence phrasal_verb_id_sequence;
 -- public.proverb definition
 create table public.proverb (
 	id bigint not null,
-	note character varying(255),
-	proverb character varying(255),
-	meaning_id bigint,
+	note text,
+	proverb varchar(150) not null,
+	meaning_id bigint not null,
 	constraint pk_proverb primary key (id),
 	constraint fk_proverb_meaning foreign key (meaning_id) references public.meaning(id) on delete restrict on update restrict
 );
@@ -118,9 +118,9 @@ create sequence proverb_id_sequence;
 -- public.quote definition
 create table public.quote (
 	id bigint not null,
-	note character varying(255),
-	quote character varying(255),
-	meaning_id bigint,
+	note text,
+	quote varchar(150) not null,
+	meaning_id bigint not null,
 	constraint pk_quote primary key (id),
 	constraint fk_quote_meaning foreign key (meaning_id) references public.meaning(id) on delete restrict on update restrict
 );
@@ -132,9 +132,9 @@ create sequence quote_id_sequence;
 -- public.synonym definition
 create table public.synonym (
 	id bigint not null,
-	note character varying(255),
-	synonym_id bigint,
-	meaning_id bigint,
+	note text,
+	synonym_id bigint not null,
+	meaning_id bigint not null,
 	constraint pk_synonym primary key (id),
 	constraint fk_synonym_synonym foreign key (synonym_id) references public.meaning(id) on delete cascade on update restrict,
 	constraint fk_synonym_synonym_meaning foreign key (meaning_id) references public.meaning(id) on delete restrict on update restrict
@@ -148,9 +148,9 @@ create sequence synonym_id_sequence;
 -- public.antonym definition
 create table public.antonym (
 	id bigint not null,
-	note character varying(255),
-	antonym_id bigint,
-	meaning_id bigint,
+	note text,
+	antonym_id bigint not null,
+	meaning_id bigint not null,
 	constraint pk_antonym primary key (id),
 	constraint fk_antonym_meaning foreign key (meaning_id) references public.meaning(id) on delete restrict on update restrict,
 	constraint fk_antonym_antonym foreign key (antonym_id) references public.meaning(id) on delete cascade on update restrict
@@ -164,9 +164,9 @@ create sequence antonym_id_sequence;
 -- public.example definition
 create table public.example (
 	id bigint not null,
-	example character varying(255),
-	note character varying(255),
-	meaning_id bigint,
+	example varchar(150) not null,
+	note text,
+	meaning_id bigint not null,
 	constraint pk_example primary key (id),
 	constraint fk_example_meaning foreign key (meaning_id) references public.meaning(id) on delete restrict on update restrict
 );

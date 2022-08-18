@@ -14,6 +14,7 @@ data class Translation(
     val english: String?,
     val german: String?,
     val ukrainian: String?,
+    
     @Column(name = "meaning_id")
     val meaning: Long
 ) : BaseEntity

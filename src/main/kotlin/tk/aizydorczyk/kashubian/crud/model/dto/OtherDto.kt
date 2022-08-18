@@ -7,7 +7,7 @@ import javax.validation.constraints.NotNull
 
 data class OtherDto(
     @EntryExists(groups = [OnCreate::class, OnUpdate::class])
-    @field:NotNull(message = "ENTRY_ID_IS_NULL", groups = [OnCreate::class, OnUpdate::class])
+    @field:NotNull(message = "IS_NULL", groups = [OnCreate::class, OnUpdate::class])
     val entryId: Long,
     val note: String?
 )

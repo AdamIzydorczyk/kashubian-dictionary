@@ -29,7 +29,8 @@ abstract class KashubianEntryMapper {
             Other(
                     0L,
                     it.note,
-                    it.entryId
+                    it.entryId,
+                    0L
             )
         }
 
@@ -38,7 +39,8 @@ abstract class KashubianEntryMapper {
             Synonym(
                     0L,
                     it.note,
-                    it.meaningId
+                    it.meaningId,
+                    0L
             )
         }
 
@@ -47,7 +49,8 @@ abstract class KashubianEntryMapper {
             Antonym(
                     0L,
                     it.note,
-                    it.meaningId
+                    it.meaningId,
+                    0L
             )
         }
 }

@@ -1,5 +1,6 @@
 package tk.aizydorczyk.kashubian.crud.model.entity
 
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType.SEQUENCE
@@ -17,4 +18,6 @@ data class PhrasalVerb(
             allocationSize = 1)
     override var id: Long,
     val phrasalVerb: String,
-    val note: String) : BaseEntity
+    val note: String,
+    @Column(name = "meaning_id")
+    var meaning: Long) : BaseEntity
