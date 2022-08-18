@@ -3,6 +3,7 @@ package tk.aizydorczyk.kashubian.crud.domain
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import tk.aizydorczyk.kashubian.crud.extension.stripAccents
 import tk.aizydorczyk.kashubian.crud.model.entity.KashubianEntry
 import tk.aizydorczyk.kashubian.crud.model.entity.Meaning
 import tk.aizydorczyk.kashubian.crud.model.entity.Translation
@@ -13,8 +14,9 @@ import javax.persistence.EntityManager
 class KashubianEntryUpdater(@Qualifier("defaultEntityManager") val entityManager: EntityManager) {
     @Transactional
     fun update(entryId: Long, newEntry: KashubianEntry): KashubianEntry {
-        val oldEntry = entityManager.find(KashubianEntry::class.java, entryId)
+        newEntry.normalizedWord = newEntry.word?.stripAccents()
 
+        val oldEntry = entityManager.find(KashubianEntry::class.java, entryId)
         oldEntry.others.zip(newEntry.others)
             .onEach { it.first.id = it.second.id }
             .map { it.first }

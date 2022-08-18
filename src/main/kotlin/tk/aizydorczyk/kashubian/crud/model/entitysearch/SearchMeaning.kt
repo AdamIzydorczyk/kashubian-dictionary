@@ -1,5 +1,6 @@
 package tk.aizydorczyk.kashubian.crud.model.entitysearch
 
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.JoinColumn
@@ -11,6 +12,7 @@ import javax.persistence.Table
 @Table(name = "meaning")
 data class SearchMeaning(
     @Id
+    @Column(unique = true, nullable = false, updatable = false)
     val id: Long,
     @OneToMany(mappedBy = "meaning")
     val translation: Set<SearchTranslation> = emptySet(),

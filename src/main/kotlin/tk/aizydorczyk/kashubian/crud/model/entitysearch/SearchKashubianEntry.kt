@@ -11,9 +11,9 @@ import javax.persistence.Table
 data class SearchKashubianEntry(
     @Id
     @Column(unique = true, nullable = false, updatable = false)
-    var id: Long,
-    @Column(unique = true)
+    val id: Long,
     val word: String?,
+    val normalizedWord: String?,
     val note: String?,
     val priority: Boolean,
     val partOfSpeech: String?,

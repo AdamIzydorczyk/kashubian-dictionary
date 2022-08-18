@@ -6,10 +6,11 @@ create table public.kashubian_entry (
 	part_of_speech character varying(255),
 	part_of_speech_sub_type character varying(255),
 	word character varying(255),
+	normalized_word character varying(255),
 	constraint pk_kashubian_entry primary key (id)
 );
 create unique index kashubian_entry_pk_unique_index on public.kashubian_entry (id);
-create unique index kashubian_entry_word_unique_index on public.kashubian_entry (word);
+create unique index kashubian_entry_normalized_word_unique_index on public.kashubian_entry (normalized_word);
 create sequence kashubian_entry_id_sequence;
 
 -- public.variation definition

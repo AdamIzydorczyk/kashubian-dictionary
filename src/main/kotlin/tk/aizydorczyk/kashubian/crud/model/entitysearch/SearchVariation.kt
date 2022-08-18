@@ -16,6 +16,7 @@ import javax.persistence.Table
 @TypeDef(name = "jsonb", typeClass = JsonNodeBinaryType::class)
 data class SearchVariation(
     @Id
+    @Column(unique = true, nullable = false, updatable = false)
     val id: Long,
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")

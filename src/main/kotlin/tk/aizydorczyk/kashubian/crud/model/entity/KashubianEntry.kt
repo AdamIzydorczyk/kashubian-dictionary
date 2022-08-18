@@ -26,8 +26,9 @@ data class KashubianEntry(
             sequenceName = "kashubian_entry_id_sequence",
             allocationSize = 1)
     override var id: Long,
-    @Column(unique = true)
     val word: String?,
+    @Column(unique = true)
+    var normalizedWord: String?,
     val note: String?,
     val priority: Boolean,
     @Enumerated(EnumType.STRING)

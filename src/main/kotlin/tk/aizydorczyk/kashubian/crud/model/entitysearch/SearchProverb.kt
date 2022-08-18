@@ -1,5 +1,6 @@
 package tk.aizydorczyk.kashubian.crud.model.entitysearch
 
+import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
 import javax.persistence.JoinColumn
@@ -10,6 +11,7 @@ import javax.persistence.Table
 @Table(name = "proverb")
 data class SearchProverb(
     @Id
+    @Column(unique = true, nullable = false, updatable = false)
     val id: Long,
     val proverb: String,
     val note: String,

@@ -32,7 +32,7 @@ class SecurityConfiguration {
                         "/v2/**",
                         "/graphiql/**",
                         "/favicon.ico",
-                        "/graphql",
+                        "/graph-ql",
                         "/custom-query/**",
                         "/kashubian-entry/{entryId}/file")
                 .permitAll()
