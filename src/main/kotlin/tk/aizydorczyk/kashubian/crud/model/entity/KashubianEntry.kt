@@ -28,6 +28,8 @@ data class KashubianEntry(
     override var id: Long,
     @Column(unique = true)
     val word: String?,
+    val note: String?,
+    val priority: Boolean,
     @Enumerated(EnumType.STRING)
     val partOfSpeech: PartOfSpeechType?,
     @Enumerated(EnumType.STRING)

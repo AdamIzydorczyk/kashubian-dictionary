@@ -35,7 +35,7 @@ import kotlin.streams.toList
 
 
 @Component
-class TestDataInitializer(
+class RandomDataInitializer(
     val kashubianEntryController: KashubianEntryController,
     val exampleVariationsGenerator: ExampleVariationsGenerator,
     val repository: KashubianEntryRepository,
@@ -47,18 +47,17 @@ class TestDataInitializer(
     private final val faker = Faker(random)
 
     override fun run(args: ApplicationArguments?) {
-
         if (repository.countAllEntries() > 0
         ) {
             return
         }
 
         val generatorCounter = AtomicLong(1L)
-
         val parameters =
             prepareGeneratorParameters(generatorCounter::get) {
                 exampleVariationsGenerator.variationsExamples().random(kotlin.random.Random(generatorCounter.get()))
             }
+
         val generator = EasyRandom(parameters)
         generator.objects(KashubianEntryDto::class.java, generatedSize)
             .forEach {
@@ -75,7 +74,6 @@ class TestDataInitializer(
         variationWithTypesFunction: () -> Triple<ObjectNode?, PartOfSpeechSubType, PartOfSpeechType>): EasyRandomParameters {
 
         return with(EasyRandomParameters()) {
-            stringLengthRange(64, 64)
             collectionSizeRange(0, 3)
 
             randomize(FieldPredicates.named("variation")) {
@@ -90,29 +88,24 @@ class TestDataInitializer(
                 variationWithTypesFunction.invoke().second
             }
 
-            randomize(FieldPredicates.named("word")
-                .or(FieldPredicates.named("polish")
-                    .or(FieldPredicates.named("english")
-                        .or(FieldPredicates.named("german")
-                            .or(FieldPredicates.named("german")
-                                .or(FieldPredicates.named("ukrainian"))))))) {
+            randomize(FieldPredicates.ofType(String::class.java)) {
                 selectWordFunction() + generatorCounter.invoke()
             }
 
             randomize(FieldPredicates.named("others")) {
                 repository.findByTypeAndIds(KashubianEntry::class.java,
                         generateEntitiesAmount(generatorCounter.invoke()))
-                    .map { OtherDto(it.id, "test other") }
+                    .map { OtherDto(it.id, selectWordFunction() + generatorCounter.invoke()) }
             }
 
             randomize(FieldPredicates.named("synonyms")) {
                 repository.findByTypeAndIds(Meaning::class.java, generateEntitiesAmount(generatorCounter.invoke()))
-                    .map { SynonymDto(it.id, "test synonim") }
+                    .map { SynonymDto(it.id, selectWordFunction() + generatorCounter.invoke()) }
             }
 
             randomize(FieldPredicates.named("antonyms")) {
                 repository.findByTypeAndIds(Meaning::class.java, generateEntitiesAmount(generatorCounter.invoke()))
-                    .map { AntonymDto(it.id, "test antonym") }
+                    .map { AntonymDto(it.id, selectWordFunction() + generatorCounter.invoke()) }
             }
 
             randomize(FieldPredicates.named("base")) {

@@ -15,6 +15,7 @@ data class SearchKashubianEntry(
     @Column(unique = true)
     val word: String?,
     val note: String?,
+    val priority: Boolean,
     val partOfSpeech: String?,
     val partOfSpeechSubType: String?,
     @OneToMany(mappedBy = "kashubianEntry")

@@ -2,6 +2,7 @@
 create table public.kashubian_entry (
 	id bigint not null,
 	note character varying(255),
+	priority boolean not null,
 	part_of_speech character varying(255),
 	part_of_speech_sub_type character varying(255),
 	word character varying(255),

@@ -21,6 +21,7 @@ data class KashubianEntryDto(
     @UnchangedToNonUnique(groups = [OnUpdate::class])
     val word: String?,
     val note: String?,
+    val priority: Boolean,
     @field:NotNull(message = "PART_OF_SPEECH_IS_NULL", groups = [OnCreate::class, OnUpdate::class])
     val partOfSpeech: PartOfSpeechType?,
     @field:NotNull(message = "PART_OF_SPEECH_SUBTYPE_IS_NULL", groups = [OnCreate::class, OnUpdate::class])
