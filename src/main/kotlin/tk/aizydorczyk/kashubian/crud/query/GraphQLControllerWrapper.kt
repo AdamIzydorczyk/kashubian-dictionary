@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.introproventures.graphql.jpa.query.schema.GraphQLExecutor
 import com.introproventures.graphql.jpa.query.web.GraphQLController
 import com.introproventures.graphql.jpa.query.web.GraphQLController.GraphQLQueryRequest
+import io.swagger.annotations.Api
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletResponse
 import javax.validation.Valid
 
 @RestController
+@Api("GraphQL", tags = ["GraphQL"])
 class GraphQLControllerWrapper(graphQLExecutor: GraphQLExecutor, mapper: ObjectMapper) {
 
     private final val graphQLController = GraphQLController(graphQLExecutor, mapper)
@@ -34,12 +36,17 @@ class GraphQLControllerWrapper(graphQLExecutor: GraphQLExecutor, mapper: ObjectM
     fun postJson(@RequestBody queryRequest: @Valid GraphQLQueryRequest?,
         httpServletResponse: HttpServletResponse?) {
         queryRequest?.apply {
-            query = query.replace("(?<=normalizedWord)(.*)(?=})".toRegex()) {
-                it.value.stripAccents()
-            }
+            query = stripAccentsInNormalizedWordQueryClause()
         }
         graphQLController.postJson(queryRequest, httpServletResponse)
     }
+
+    private fun GraphQLQueryRequest.stripAccentsInNormalizedWordQueryClause() =
+        query.replace("(?<=normalizedWord)(.*)\"(.*)(?=\")".toRegex()) {
+            val lastMatchGroup: MatchGroup =
+                it.groups.last() ?: throw IllegalStateException("Searching word normalization failed")
+            it.value.replace(lastMatchGroup.value, lastMatchGroup.value.stripAccents())
+        }
 
     @GetMapping(value = [PATH],
             consumes = [GraphQLController.APPLICATION_GRAPHQL_VALUE],
