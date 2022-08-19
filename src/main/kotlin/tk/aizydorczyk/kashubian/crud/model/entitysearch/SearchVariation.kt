@@ -2,6 +2,7 @@ package tk.aizydorczyk.kashubian.crud.model.entitysearch
 
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.vladmihalcea.hibernate.type.json.JsonNodeBinaryType
+import org.hibernate.annotations.Immutable
 import org.hibernate.annotations.Type
 import org.hibernate.annotations.TypeDef
 import javax.persistence.Column
@@ -14,6 +15,7 @@ import javax.persistence.Table
 @Entity
 @Table(name = "variation")
 @TypeDef(name = "jsonb", typeClass = JsonNodeBinaryType::class)
+@Immutable
 data class SearchVariation(
     @Id
     @Column(unique = true, nullable = false, updatable = false)

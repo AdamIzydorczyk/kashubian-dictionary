@@ -79,6 +79,7 @@ class JpaConfiguration {
             SpringImplicitNamingStrategy::class.java.name
         properties[AvailableSettings.PHYSICAL_NAMING_STRATEGY] =
             CamelCaseToUnderscoresNamingStrategy::class.java.name
+        properties[AvailableSettings.STATEMENT_BATCH_SIZE] = 5
         return properties
     }
 

@@ -36,8 +36,6 @@ data class KashubianEntry(
     @Enumerated(EnumType.STRING)
     val partOfSpeechSubType: PartOfSpeechSubType?,
     @Transient
-    var soundFile: SoundFile?,
-    @Transient
     var variation: Variation?,
     @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
     @JoinColumn(name = "kashubian_entry_id")

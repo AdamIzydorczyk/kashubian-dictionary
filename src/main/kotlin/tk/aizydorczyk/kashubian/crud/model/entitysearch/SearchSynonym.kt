@@ -1,5 +1,6 @@
 package tk.aizydorczyk.kashubian.crud.model.entitysearch
 
+import org.hibernate.annotations.Immutable
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.Id
@@ -9,6 +10,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "synonym")
+@Immutable
 data class SearchSynonym(
     @Id
     @Column(unique = true, nullable = false, updatable = false)
