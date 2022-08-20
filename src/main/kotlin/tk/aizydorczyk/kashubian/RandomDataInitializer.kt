@@ -41,7 +41,7 @@ class RandomDataInitializer(
     val repository: KashubianEntryRepository,
     @Value("\${test.data.initializer.generated.elements.size}") val generatedSize: Int) : ApplicationRunner {
 
-    val logger: Logger = LoggerFactory.getLogger(javaClass)
+    val logger: Logger = LoggerFactory.getLogger(javaClass.simpleName)
 
     private final val random = Random()
     private final val faker = Faker(random)

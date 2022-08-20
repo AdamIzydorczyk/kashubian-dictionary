@@ -14,12 +14,12 @@ import javax.persistence.Table
 @TypeDef(name = "jsonb", typeClass = JsonNodeBinaryType::class)
 data class Variation(
     @Id
-    override var id: Long,
+    var id: Long,
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
 
     var variation: ObjectNode,
     @Column(name = "kashubian_entry_id")
-    
+
     val kashubianEntry: Long
-) : BaseEntity
+)

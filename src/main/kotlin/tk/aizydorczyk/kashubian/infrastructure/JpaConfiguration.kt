@@ -16,16 +16,12 @@ import javax.sql.DataSource
 
 
 @Configuration
-class JpaConfiguration {
-
-    @Value("\${spring.jpa.hibernate.ddl-auto}")
-    private lateinit var ddlAuto: String
-
+class JpaConfiguration(@Value("\${spring.jpa.hibernate.ddl-auto}")
+val ddlAuto: String,
     @Value("\${spring.jpa.show-sql}")
-    private lateinit var showSql: String
-
+    val showSql: String,
     @Value("\${spring.jpa.database-platform}")
-    private lateinit var dialect: String
+    val dialect: String) {
 
     @Bean
     @Primary

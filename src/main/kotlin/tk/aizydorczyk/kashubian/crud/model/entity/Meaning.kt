@@ -27,23 +27,27 @@ data class Meaning(
     @Column(name = "hyperonym_id")
     var hyperonym: Long? = null,
     @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
-    @JoinColumn(name = "meaning_id")
-    val proverbs: List<Proverb> = emptyList(),
+    @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
+    val proverbs: MutableList<Proverb> = mutableListOf(),
     @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
-    @JoinColumn(name = "meaning_id")
-    val phrasalVerbs: List<PhrasalVerb> = emptyList(),
+    @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
+    val phrasalVerbs: MutableList<PhrasalVerb> = mutableListOf(),
     @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
-    @JoinColumn(name = "meaning_id")
-    val quotes: List<Quote> = emptyList(),
+    @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
+    val quotes: MutableList<Quote> = mutableListOf(),
     @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
-    @JoinColumn(name = "meaning_id")
-    val examples: List<Example> = emptyList(),
+    @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
+    val examples: MutableList<Example> = mutableListOf(),
     @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
-    @JoinColumn(name = "meaning_id")
-    val synonyms: List<Synonym> = emptyList(),
+    @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
+    val synonyms: MutableList<Synonym> = mutableListOf(),
     @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
-    @JoinColumn(name = "meaning_id")
-    val antonyms: List<Antonym> = emptyList(),
+    @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
+    val antonyms: MutableList<Antonym> = mutableListOf(),
     @Column(name = "kashubian_entry_id")
     var kashubianEntry: Long
-) : BaseEntity
+) : ChildEntity {
+    override fun setParentId(parentId: Long) {
+        kashubianEntry = parentId
+    }
+}

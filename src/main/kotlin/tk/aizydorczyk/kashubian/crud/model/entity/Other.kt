@@ -21,4 +21,8 @@ data class Other(
     @Column(name = "kashubian_entry_id")
     var kashubianEntry: Long
 
-) : BaseEntity
+) : ChildEntity {
+    override fun setParentId(parentId: Long) {
+        kashubianEntry = parentId
+    }
+}

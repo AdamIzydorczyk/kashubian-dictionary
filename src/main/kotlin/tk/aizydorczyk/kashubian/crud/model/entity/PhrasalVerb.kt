@@ -20,4 +20,8 @@ data class PhrasalVerb(
     val phrasalVerb: String,
     val note: String,
     @Column(name = "meaning_id")
-    var meaning: Long) : BaseEntity
+    var meaning: Long) : ChildEntity {
+    override fun setParentId(parentId: Long) {
+        meaning = parentId
+    }
+}

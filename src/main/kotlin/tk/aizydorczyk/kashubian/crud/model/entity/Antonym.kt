@@ -20,4 +20,8 @@ data class Antonym(
     var antonym: Long,
     @Column(name = "meaning_id")
     var meaning: Long
-) : BaseEntity
+) : ChildEntity {
+    override fun setParentId(parentId: Long) {
+        meaning = parentId
+    }
+}

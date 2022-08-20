@@ -9,12 +9,12 @@ import javax.persistence.Table
 @Table(name = "translation")
 data class Translation(
     @Id
-    override var id: Long,
+    var id: Long,
     val polish: String?,
     val english: String?,
     val german: String?,
     val ukrainian: String?,
-    
+
     @Column(name = "meaning_id")
     val meaning: Long
-) : BaseEntity
+)

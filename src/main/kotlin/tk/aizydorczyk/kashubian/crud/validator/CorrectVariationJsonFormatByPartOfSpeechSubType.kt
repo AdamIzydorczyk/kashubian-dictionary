@@ -147,9 +147,7 @@ class CorrectVariationJsonFormatByPartOfSpeechSubTypeValidator :
             }
         }
     } ?: run {
-        context.buildConstraintViolationWithTemplate("VARIATION_IS_NULL")
-            .addConstraintViolation()
-        false
+        true
     }
 
 }

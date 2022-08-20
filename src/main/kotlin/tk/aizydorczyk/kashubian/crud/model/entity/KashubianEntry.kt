@@ -38,11 +38,11 @@ data class KashubianEntry(
     @Transient
     var variation: Variation?,
     @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
-    @JoinColumn(name = "kashubian_entry_id")
+    @JoinColumn(name = "kashubian_entry_id", insertable = false, updatable = false, nullable = false)
     @LazyCollection(value = LazyCollectionOption.FALSE)
-    val meanings: List<Meaning> = emptyList(),
+    val meanings: MutableList<Meaning> = mutableListOf(),
     @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
-    @JoinColumn(name = "kashubian_entry_id")
+    @JoinColumn(name = "kashubian_entry_id", insertable = false, updatable = false, nullable = false)
     @LazyCollection(value = LazyCollectionOption.FALSE)
-    val others: List<Other> = emptyList()
+    val others: MutableList<Other> = mutableListOf()
 ) : BaseEntity

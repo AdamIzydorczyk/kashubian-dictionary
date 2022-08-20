@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import tk.aizydorczyk.kashubian.crud.extension.stripAccents
+import tk.aizydorczyk.kashubian.crud.model.entity.ChildEntity
 import tk.aizydorczyk.kashubian.crud.model.entity.KashubianEntry
 import tk.aizydorczyk.kashubian.crud.model.entity.Meaning
 import tk.aizydorczyk.kashubian.crud.model.entity.Translation
@@ -17,64 +18,96 @@ class KashubianEntryUpdater(@Qualifier("defaultEntityManager") val entityManager
         newEntry.normalizedWord = newEntry.word?.stripAccents()
 
         val oldEntry = entityManager.find(KashubianEntry::class.java, entryId)
-        oldEntry.others.zip(newEntry.others)
-            .onEach { it.first.id = it.second.id }
-            .map { it.first }
-            .forEach(entityManager::merge)
 
-        newEntry.others.filter { it.id == 0L }
-            .forEach(entityManager::persist)
-
-        newEntry.variation = newEntry.variation?.let {
-            entityManager.merge(Variation(entryId, it.variation, entryId))
+        if (newEntry.variation == null) {
+            entityManager.find(Variation::class.java, entryId)?.let { entityManager.remove(it) }
+        } else {
+            newEntry.variation?.let {
+                entityManager.merge(Variation(entryId, it.variation, entryId))
+            }
         }
 
-        oldEntry.meanings.onEach { meaning -> }
-            .zip(newEntry.meanings)
-            .onEach(::persistOrMergeMeaningElementsDependingOnIdExist)
+        addOrMergeElements(entryId, oldEntry.others, newEntry.others)
+        addOrMergeElements(entryId, oldEntry.meanings, newEntry.meanings, ::processMeanings)
 
         newEntry.id = entryId
-        return entityManager.merge(newEntry)
+        entityManager.merge(newEntry)
+        return newEntry
     }
 
-    private fun persistOrMergeMeaningElementsDependingOnIdExist(meaningPair: Pair<Meaning, Meaning>) {
-        val newMeaning = meaningPair.first
-        val oldMeaning = meaningPair.second
-        oldMeaning.id = newMeaning.id
-
-        overrideExistsMeaningElements(oldMeaning, newMeaning)
-
-        newMeaning.translation = newMeaning.translation?.let {
-            entityManager.merge(Translation(id = oldMeaning.id,
-                    polish = it.polish,
-                    english = it.english,
-                    german = it.german,
-                    ukrainian = it.ukrainian,
-                    meaning = oldMeaning.id))
+    private fun processMeanings(oldMeaning: Meaning,
+        newMeaning: Meaning) {
+        if (oldMeaning.translation == null) {
+            entityManager.find(Translation::class.java, newMeaning.id)?.let { entityManager.remove(it) }
+        } else {
+            newMeaning.translation?.let {
+                entityManager.merge(Translation(id = newMeaning.id,
+                        polish = it.polish,
+                        english = it.english,
+                        german = it.german,
+                        ukrainian = it.ukrainian,
+                        meaning = newMeaning.id))
+            }
         }
 
-        addNewMeaningElements(newMeaning)
+        addOrMergeElements(oldMeaning.id, oldMeaning.quotes, newMeaning.quotes)
+        addOrMergeElements(oldMeaning.id, oldMeaning.antonyms, newMeaning.antonyms)
+        addOrMergeElements(oldMeaning.id, oldMeaning.synonyms, newMeaning.synonyms)
+        addOrMergeElements(oldMeaning.id, oldMeaning.examples, newMeaning.examples)
+        addOrMergeElements(oldMeaning.id, oldMeaning.proverbs, newMeaning.proverbs)
+        addOrMergeElements(oldMeaning.id, oldMeaning.phrasalVerbs, newMeaning.phrasalVerbs)
     }
 
-    private fun addNewMeaningElements(newMeaning: Meaning) {
-        (newMeaning.quotes
-                + newMeaning.antonyms
-                + newMeaning.synonyms
-                + newMeaning.examples
-                + newMeaning.proverbs
-                + newMeaning.phrasalVerbs).filter { it.id == 0L }
-            .forEach(entityManager::persist)
+    fun <EntityType : ChildEntity> addOrMergeElements(parentId: Long,
+        old: MutableList<EntityType>,
+        new: MutableList<EntityType>,
+        customFieldsFunction: (EntityType, EntityType) -> Unit = { _: EntityType, _: EntityType -> }) {
+        if (old.size > new.size) {
+            mergeWithOldAndRemoveRedundant(old, new, parentId, customFieldsFunction)
+        } else if (old.size == new.size) {
+            mergeAll(old, new, parentId, customFieldsFunction)
+        } else {
+            mergeWithOldAndAddNew(old, new, parentId, customFieldsFunction)
+        }
+        entityManager.flush()
     }
 
-    private fun overrideExistsMeaningElements(oldMeaning: Meaning,
-        newMeaning: Meaning) {
-        (oldMeaning.quotes.zip(newMeaning.quotes)
-                + oldMeaning.antonyms.zip(newMeaning.antonyms)
-                + oldMeaning.synonyms.zip(newMeaning.synonyms)
-                + oldMeaning.examples.zip(newMeaning.examples)
-                + oldMeaning.proverbs.zip(newMeaning.proverbs)
-                + oldMeaning.phrasalVerbs.zip(newMeaning.phrasalVerbs)).onEach { it.first.id = it.second.id }
-            .map { it.first }
-            .forEach(entityManager::merge)
+    private fun <EntityType : ChildEntity> mergeWithOldAndAddNew(old: MutableList<EntityType>,
+        new: MutableList<EntityType>,
+        parentId: Long,
+        customFieldsFunction: (EntityType, EntityType) -> Unit) {
+        old.zip(new.subList(0, old.size)).onEach {
+            it.second.id = it.first.id
+            it.second.setParentId(parentId)
+            entityManager.merge(it.second)
+        }.forEach { customFieldsFunction.invoke(it.first, it.second) }
+        new.subList(old.size, new.size).onEach {
+            it.setParentId(parentId)
+        }.forEach(entityManager::persist)
     }
+
+    private fun <EntityType : ChildEntity> mergeAll(old: MutableList<EntityType>,
+        new: MutableList<EntityType>,
+        parentId: Long,
+        customFieldsFunction: (EntityType, EntityType) -> Unit) {
+        old.zip(new).onEach {
+            it.second.id = it.first.id
+            it.second.setParentId(parentId)
+            entityManager.merge(it.second)
+        }.forEach { customFieldsFunction.invoke(it.first, it.second) }
+    }
+
+    private fun <EntityType : ChildEntity> mergeWithOldAndRemoveRedundant(old: MutableList<EntityType>,
+        new: MutableList<EntityType>,
+        parentId: Long,
+        customFieldsFunction: (EntityType, EntityType) -> Unit) {
+        old.subList(0, new.size).zip(new).onEach {
+            it.second.id = it.first.id
+            it.second.setParentId(parentId)
+            entityManager.merge(it.second)
+        }.forEach { customFieldsFunction.invoke(it.first, it.second) }
+        old.subList(new.size, old.size).onEach(entityManager::remove)
+            .let(old::removeAll)
+    }
+
 }
