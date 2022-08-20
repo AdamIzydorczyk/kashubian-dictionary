@@ -24,7 +24,7 @@ class WebConfiguration : WebMvcConfigurer {
         override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
             val currentUser = SecurityContextHolder.getContext().authentication.principal
 
-            logger.info("${request.method} ${request.requestURL} called by $currentUser")
+            logger.debug("${request.method} ${request.requestURL} called by $currentUser")
 
             val startTime = System.currentTimeMillis()
             request.setAttribute("START_TIME", startTime)
@@ -39,9 +39,9 @@ class WebConfiguration : WebMvcConfigurer {
             val startTime = request.getAttribute("START_TIME") as Long
             val executionTime = System.currentTimeMillis() - startTime
 
-            val currentUser = SecurityContextHolder.getContext().authentication.principal
+            val currentUserName = SecurityContextHolder.getContext().authentication.name
 
-            logger.info("${request.method} ${request.requestURL} executed in $executionTime ms by $currentUser")
+            logger.info("${request.method} ${request.requestURL} executed in $executionTime ms by $currentUserName")
 
             super.afterCompletion(request, response, handler, ex)
         }

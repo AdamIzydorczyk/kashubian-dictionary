@@ -1,6 +1,8 @@
 package tk.aizydorczyk.kashubian.crud.domain
 
 import io.swagger.annotations.Api
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders.CONTENT_DISPOSITION
 import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.CREATED
@@ -40,37 +42,47 @@ class KashubianEntryController(
     val uploader: KashubianEntrySoundFileUploader,
     val downloader: KashubianEntrySoundFileDownloader) {
 
+    val logger: Logger = LoggerFactory.getLogger(javaClass)
+
     @PostMapping
     @ResponseStatus(CREATED)
-    fun create(@Validated(OnCreate::class) @RequestBody entry: KashubianEntryDto) =
-        creator.create(kashubianMapper.toEntity(entry))
+    fun create(@Validated(OnCreate::class) @RequestBody entry: KashubianEntryDto): ResponseDto {
+        logger.info("Entry creating with payload: $entry")
+        return creator.create(kashubianMapper.toEntity(entry))
             .run { ResponseDto(this.id, this.meanings.map { it.id }) }
+    }
 
     @PostMapping("/{entryId}/file")
     @ResponseStatus(CREATED)
     fun uploadSoundFile(@PathVariable entryId: Long,
         @RequestPart(required = true) soundFile: MultipartFile) {
+        logger.info("File uploading with name: ${soundFile.name}")
         uploader.upload(entryId, soundFile)
     }
 
     @GetMapping("/{entryId}/file")
-    fun downloadSoundFile(@PathVariable entryId: Long): ResponseEntity<ByteArray> =
-        downloader.download(entryId).let {
+    fun downloadSoundFile(@PathVariable entryId: Long): ResponseEntity<ByteArray> {
+        logger.info("File downloading by entry id: $entryId")
+        return downloader.download(entryId).let {
             ResponseEntity.ok()
                 .header(CONTENT_DISPOSITION, "attachment; filename=\"${it.fileName}\"")
                 .body(it.file)
         }
+    }
 
     @PutMapping("/{entryId}")
     fun update(
         @PathVariable entryId: Long,
-        @Validated(OnUpdate::class) @RequestBody entry: KashubianEntryDto) =
-        updater.update(entryId, kashubianMapper.toEntity(entry))
+        @Validated(OnUpdate::class) @RequestBody entry: KashubianEntryDto): ResponseDto {
+        logger.info("Entry id: $entryId updating with payload: $entry")
+        return updater.update(entryId, kashubianMapper.toEntity(entry))
             .run { ResponseDto(this.id, this.meanings.map { it.id }) }
+    }
 
     @DeleteMapping("/{entryId}")
     @ResponseStatus(NO_CONTENT)
     fun delete(@PathVariable entryId: Long) {
+        logger.info("Entry id: $entryId deleting")
         remover.remove(entryId)
     }
 
@@ -84,6 +96,8 @@ class KashubianEntryController(
             .map { it as ObjectError }.map { it.defaultMessage.toString() }
         val messages = groupedErrors["ViolationFieldError"].orEmpty()
             .map { it as FieldError }.map { mapOf("message" to it.defaultMessage, "fieldName" to it.field) }
-        return mapOf("objectErrors" to objectErrors, "fieldErrors" to messages)
+        val validationErrorMessages = mapOf("objectErrors" to objectErrors, "fieldErrors" to messages)
+        logger.info("Validation failed with errors: $validationErrorMessages")
+        return validationErrorMessages
     }
 }

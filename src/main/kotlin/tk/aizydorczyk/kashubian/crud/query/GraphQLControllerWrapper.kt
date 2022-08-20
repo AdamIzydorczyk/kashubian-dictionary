@@ -5,6 +5,8 @@ import com.introproventures.graphql.jpa.query.schema.GraphQLExecutor
 import com.introproventures.graphql.jpa.query.web.GraphQLController
 import com.introproventures.graphql.jpa.query.web.GraphQLController.GraphQLQueryRequest
 import io.swagger.annotations.Api
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import org.springframework.http.MediaType
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PostMapping
@@ -22,6 +24,8 @@ class GraphQLControllerWrapper(graphQLExecutor: GraphQLExecutor, mapper: ObjectM
 
     private final val graphQLController = GraphQLController(graphQLExecutor, mapper)
 
+    val logger: Logger = LoggerFactory.getLogger(javaClass)
+
     @GetMapping(value = [PATH],
             consumes = [MediaType.TEXT_EVENT_STREAM_VALUE],
             produces = [MediaType.TEXT_EVENT_STREAM_VALUE])
@@ -35,14 +39,15 @@ class GraphQLControllerWrapper(graphQLExecutor: GraphQLExecutor, mapper: ObjectM
             produces = [MediaType.APPLICATION_JSON_VALUE])
     fun postJson(@RequestBody queryRequest: @Valid GraphQLQueryRequest?,
         httpServletResponse: HttpServletResponse?) {
+        logger.info("GraphQL query sending: ${queryRequest?.query}")
         queryRequest?.apply {
-            query = stripAccentsInNormalizedWordQueryClause()
+            query = query.stripAccentsInNormalizedWordQueryClause()
         }
         graphQLController.postJson(queryRequest, httpServletResponse)
     }
 
-    private fun GraphQLQueryRequest.stripAccentsInNormalizedWordQueryClause() =
-        query.replace("(?<=normalizedWord)(.*)\"(.*)(?=\")".toRegex()) {
+    private fun String?.stripAccentsInNormalizedWordQueryClause() =
+        this?.replace("(?<=normalizedWord)(.*)\"(.*)(?=\")".toRegex()) {
             val lastMatchGroup: MatchGroup =
                 it.groups.last() ?: throw IllegalStateException("Searching word normalization failed")
             it.value.replace(lastMatchGroup.value, lastMatchGroup.value.stripAccents())
@@ -54,7 +59,8 @@ class GraphQLControllerWrapper(graphQLExecutor: GraphQLExecutor, mapper: ObjectM
     fun getQuery(@RequestParam(name = "query") query: String?,
         @RequestParam(name = "variables", required = false) variables: String?,
         httpServletResponse: HttpServletResponse?) {
-        graphQLController.getQuery(query, variables, httpServletResponse)
+        logger.info("GraphQL query sending: $query")
+        graphQLController.getQuery(query.stripAccentsInNormalizedWordQueryClause(), variables, httpServletResponse)
     }
 
     @PostMapping(value = [PATH],
