@@ -40,7 +40,8 @@ class KashubianEntryController(
     val updater: KashubianEntryUpdater,
     val remover: KashubianEntryRemover,
     val uploader: KashubianEntrySoundFileUploader,
-    val downloader: KashubianEntrySoundFileDownloader) {
+    val downloader: KashubianEntrySoundFileDownloader,
+    val fileRemover: KashubianEntrySoundFileRemover) {
 
     val logger: Logger = LoggerFactory.getLogger(javaClass)
 
@@ -84,6 +85,13 @@ class KashubianEntryController(
     fun delete(@PathVariable entryId: Long) {
         logger.info("Entry id: $entryId deleting")
         remover.remove(entryId)
+    }
+
+    @DeleteMapping("/{entryId}/file")
+    @ResponseStatus(NO_CONTENT)
+    fun deleteFile(@PathVariable entryId: Long) {
+        logger.info("File entry id: $entryId deleting")
+        fileRemover.remove(entryId)
     }
 
     @ResponseStatus(BAD_REQUEST)

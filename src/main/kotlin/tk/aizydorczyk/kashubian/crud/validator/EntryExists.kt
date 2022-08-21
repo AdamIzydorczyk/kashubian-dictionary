@@ -3,7 +3,7 @@ package tk.aizydorczyk.kashubian.crud.validator
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.web.context.annotation.RequestScope
-import org.springframework.web.servlet.HandlerMapping
+import org.springframework.web.servlet.HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE
 import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryRepository
 import tk.aizydorczyk.kashubian.crud.model.dto.KashubianEntryDto
 import javax.servlet.http.HttpServletRequest
@@ -37,9 +37,11 @@ class EntryExistsDtoValidator : ConstraintValidator<EntryExists, KashubianEntryD
     @Autowired
     private lateinit var request: HttpServletRequest
 
+
+    @Suppress("UNCHECKED_CAST")
     override fun isValid(dto: KashubianEntryDto, context: ConstraintValidatorContext?): Boolean {
         val patchVariables =
-            request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE) as LinkedHashMap<String, String>
+            request.getAttribute(URI_TEMPLATE_VARIABLES_ATTRIBUTE) as LinkedHashMap<String, String>
         val entryId = patchVariables["entryId"]?.toLong() ?: 0
         return repository.countEntriesById(entryId) > 0
     }

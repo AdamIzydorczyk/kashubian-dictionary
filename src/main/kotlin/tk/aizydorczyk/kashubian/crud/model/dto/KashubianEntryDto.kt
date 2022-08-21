@@ -1,5 +1,6 @@
 package tk.aizydorczyk.kashubian.crud.model.dto
 
+import io.swagger.annotations.ApiModelProperty
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechType
 import tk.aizydorczyk.kashubian.crud.validator.CorrectVariationJsonFormatByPartOfSpeechSubType
@@ -27,8 +28,10 @@ data class KashubianEntryDto(
     val note: String?,
     val priority: Boolean,
     @field:NotNull(message = "PART_OF_SPEECH_IS_NULL", groups = [OnCreate::class, OnUpdate::class])
+    @ApiModelProperty(example = "NOUN")
     val partOfSpeech: PartOfSpeechType?,
     @field:NotNull(message = "PART_OF_SPEECH_SUBTYPE_IS_NULL", groups = [OnCreate::class, OnUpdate::class])
+    @ApiModelProperty(example = "MASCULINE")
     val partOfSpeechSubType: PartOfSpeechSubType?,
     @field:Valid
     val variation: VariationDto?,

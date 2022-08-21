@@ -1,7 +1,8 @@
 package tk.aizydorczyk.kashubian.crud.model.mapper
 
 import org.mapstruct.Mapper
-import org.mapstruct.NullValueMappingStrategy
+import org.mapstruct.NullValueMappingStrategy.RETURN_DEFAULT
+import org.mapstruct.ReportingPolicy.IGNORE
 import tk.aizydorczyk.kashubian.crud.model.dto.AntonymDto
 import tk.aizydorczyk.kashubian.crud.model.dto.KashubianEntryDto
 import tk.aizydorczyk.kashubian.crud.model.dto.OtherDto
@@ -15,9 +16,8 @@ import tk.aizydorczyk.kashubian.crud.model.entity.Proverb
 import tk.aizydorczyk.kashubian.crud.model.entity.Synonym
 import tk.aizydorczyk.kashubian.crud.model.entity.Variation
 
-@Mapper(componentModel = "spring", nullValueMappingStrategy = NullValueMappingStrategy.RETURN_DEFAULT)
+@Mapper(componentModel = "spring", nullValueMappingStrategy = RETURN_DEFAULT, unmappedTargetPolicy = IGNORE)
 abstract class KashubianEntryMapper {
-
     abstract fun toEntity(dto: KashubianEntryDto): KashubianEntry
     abstract fun toEntity(dto: ProverbDto): Proverb
 

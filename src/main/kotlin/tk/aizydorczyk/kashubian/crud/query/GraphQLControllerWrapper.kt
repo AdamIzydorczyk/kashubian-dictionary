@@ -47,7 +47,7 @@ class GraphQLControllerWrapper(graphQLExecutor: GraphQLExecutor, mapper: ObjectM
     }
 
     private fun String?.stripAccentsInNormalizedWordQueryClause() =
-        this?.replace("(?<=normalizedWord)(.*)\"(.*)(?=\")".toRegex()) {
+        this?.replace(NORMALIZED_WORD_EXTRACT_REGEX.toRegex()) {
             val lastMatchGroup: MatchGroup =
                 it.groups.last() ?: throw IllegalStateException("Searching word normalization failed")
             it.value.replace(lastMatchGroup.value, lastMatchGroup.value.stripAccents())
@@ -82,6 +82,7 @@ class GraphQLControllerWrapper(graphQLExecutor: GraphQLExecutor, mapper: ObjectM
 
     companion object {
         const val PATH: String = "\${spring.graphql.jpa.query.path:/graphql}"
+        const val NORMALIZED_WORD_EXTRACT_REGEX: String = "(?<=normalizedWord)(.*)\"(.*)(?=\")"
     }
 
 }

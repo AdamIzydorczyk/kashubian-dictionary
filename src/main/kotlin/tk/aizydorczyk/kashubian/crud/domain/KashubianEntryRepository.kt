@@ -25,6 +25,12 @@ class KashubianEntryRepository(@Qualifier("defaultEntityManager") val entityMana
             .setParameter("entryId", entryId)
             .singleResult
 
+    fun removeSoundFileByEntryId(entryId: Long) {
+        entityManager.createQuery("delete from SoundFile where kashubianEntry = :entryId")
+            .setParameter("entryId", entryId)
+            .executeUpdate()
+    }
+
     fun findHyponymsIds(meaningId: Long): List<BigInteger> =
         findByMeaningHierarchyElementByProcedure(meaningId, "find_hyponym_ids")
 

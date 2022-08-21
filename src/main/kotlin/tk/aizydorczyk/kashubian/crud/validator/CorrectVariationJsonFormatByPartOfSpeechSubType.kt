@@ -70,7 +70,7 @@ class CorrectVariationJsonFormatByPartOfSpeechSubTypeValidator :
                 FEMININE,
                 NEUTER,
                 PLURAL_MASCULINE,
-                NON_MASCULINE -> validateVariation(
+                NON_MASCULINE -> isVariationValid(
                         context,
                         dto.variation,
                         NounVariation::class.java,
@@ -79,33 +79,33 @@ class CorrectVariationJsonFormatByPartOfSpeechSubTypeValidator :
                 CONJUGATION_I,
                 CONJUGATION_II,
                 CONJUGATION_III,
-                CONJUGATION_IV -> validateVariation(
+                CONJUGATION_IV -> isVariationValid(
                         context,
                         dto.variation,
                         VerbVariation::class.java,
                         "INCORRECT_VERB_VARIATION_JSON_FORMAT")
 
                 INFLECTIV_ADJECTIVE,
-                UNINFLECTIV_ADJECTIVE -> validateVariation(
+                UNINFLECTIV_ADJECTIVE -> isVariationValid(
                         context,
                         dto.variation,
                         AdjectiveVariation::class.java,
                         "INCORRECT_ADJECTIVE_VARIATION_JSON_FORMAT")
 
                 INFLECTIV_NUMERAL,
-                UNINFLECTIV_NUMERAL -> validateVariation(
+                UNINFLECTIV_NUMERAL -> isVariationValid(
                         context,
                         dto.variation,
                         NumeralVariation::class.java,
                         "INCORRECT_NUMERAL_VARIATION_JSON_FORMAT")
 
-                NOUN_PRONOUN -> validateVariation(
+                NOUN_PRONOUN -> isVariationValid(
                         context,
                         dto.variation,
                         NounPronounVariation::class.java,
                         "INCORRECT_NOUN_PRONOUN_VARIATION_JSON_FORMAT")
 
-                ADJECTIVE_PRONOUN -> validateVariation(
+                ADJECTIVE_PRONOUN -> isVariationValid(
                         context,
                         dto.variation,
                         AdjectivePronounVariation::class.java,
@@ -113,7 +113,7 @@ class CorrectVariationJsonFormatByPartOfSpeechSubTypeValidator :
 
                 NUMERAL_PRONOUN,
                 ADVERB_PRONOUN,
-                ADVERB -> validateVariation(
+                ADVERB -> isVariationValid(
                         context,
                         dto.variation,
                         AdverbVariation::class.java,
@@ -132,7 +132,7 @@ class CorrectVariationJsonFormatByPartOfSpeechSubTypeValidator :
     }
 
 
-    private fun <T> validateVariation(context: ConstraintValidatorContext,
+    private fun <T> isVariationValid(context: ConstraintValidatorContext,
         variation: VariationDto?,
         jsonModelType: Class<T>,
         message: String): Boolean = variation?.let { dto ->
@@ -146,8 +146,6 @@ class CorrectVariationJsonFormatByPartOfSpeechSubTypeValidator :
                 false
             }
         }
-    } ?: run {
-        true
-    }
+    } ?: true
 
 }
