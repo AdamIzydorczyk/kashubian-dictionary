@@ -5,12 +5,12 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import tk.aizydorczyk.kashubian.crud.extension.normalize
 import tk.aizydorczyk.kashubian.crud.model.entity.KashubianEntry
-import tk.aizydorczyk.kashubian.crud.model.entity.Translation
 import tk.aizydorczyk.kashubian.crud.model.entity.Variation
 import javax.persistence.EntityManager
 
 @Component
-class KashubianEntryCreator(@Qualifier("defaultEntityManager") val entityManager: EntityManager) {
+class KashubianEntryCreator(@Qualifier("defaultEntityManager") val entityManager: EntityManager) :
+    KashubianEntryApplierBase() {
     @Transactional
     fun create(entry: KashubianEntry): KashubianEntry {
         entry.normalizedWord = entry.word?.normalize()
@@ -30,12 +30,7 @@ class KashubianEntryCreator(@Qualifier("defaultEntityManager") val entityManager
             meaning.synonyms.onEach { it.meaning = meaning.id }.forEach(entityManager::persist)
 
             meaning.translation?.let {
-                entityManager.persist(Translation(id = meaning.id,
-                        polish = it.polish,
-                        english = it.english,
-                        german = it.german,
-                        ukrainian = it.ukrainian,
-                        meaning = meaning.id))
+                entityManager.persist(prepareTranslation(meaning.id, it))
             }
         }
         return entry.apply {
@@ -44,5 +39,6 @@ class KashubianEntryCreator(@Qualifier("defaultEntityManager") val entityManager
             }
         }
     }
+
 
 }

@@ -41,17 +41,16 @@ class GraphQLControllerWrapper(graphQLExecutor: GraphQLExecutor, mapper: ObjectM
         httpServletResponse: HttpServletResponse?) {
         logger.info("GraphQL query sending: ${queryRequest?.query}")
         queryRequest?.apply {
-            query = query.stripAccentsInNormalizedWordQueryClause()
+            query = query.normalizeQuery()
         }
         graphQLController.postJson(queryRequest, httpServletResponse)
     }
 
-    private fun String?.stripAccentsInNormalizedWordQueryClause() =
-        this?.replace(NORMALIZED_WORD_EXTRACT_REGEX.toRegex()) {
-            val lastMatchGroup: MatchGroup =
-                it.groups.last() ?: throw IllegalStateException("Searching word normalization failed")
-            it.value.replace(lastMatchGroup.value, lastMatchGroup.value.normalize())
-        }
+    private fun replaceInMatched(it: MatchResult): String {
+        val lastMatchGroup: MatchGroup =
+            it.groups.last() ?: throw IllegalStateException("Searching word normalization failed")
+        return it.value.replace(lastMatchGroup.value, lastMatchGroup.value.normalize())
+    }
 
     @GetMapping(value = [PATH],
             consumes = [GraphQLController.APPLICATION_GRAPHQL_VALUE],
@@ -60,7 +59,7 @@ class GraphQLControllerWrapper(graphQLExecutor: GraphQLExecutor, mapper: ObjectM
         @RequestParam(name = "variables", required = false) variables: String?,
         httpServletResponse: HttpServletResponse?) {
         logger.info("GraphQL query sending: $query")
-        graphQLController.getQuery(query.stripAccentsInNormalizedWordQueryClause(), variables, httpServletResponse)
+        graphQLController.getQuery(query.normalizeQuery(), variables, httpServletResponse)
     }
 
     @PostMapping(value = [PATH],
@@ -80,9 +79,35 @@ class GraphQLControllerWrapper(graphQLExecutor: GraphQLExecutor, mapper: ObjectM
         graphQLController.postApplicationGraphQL(query, httpServletResponse)
     }
 
+    private fun String?.normalizeQuery() =
+        this.normalizeInputInNormalizedWordQueryClause()
+            .normalizeInputInNormalizedPolishQueryClause()
+            .normalizeInputInNormalizedEnglishQueryClause()
+            .normalizeInputInNormalizedGermanQueryClause()
+            .normalizeInputInNormalizedUkrainianQueryClause()
+
+    private fun String?.normalizeInputInNormalizedWordQueryClause() =
+        this?.replace(NORMALIZED_WORD_EXTRACT_REGEX.toRegex(), ::replaceInMatched)
+
+    private fun String?.normalizeInputInNormalizedPolishQueryClause() =
+        this?.replace(NORMALIZED_POLISH_EXTRACT_REGEX.toRegex(), ::replaceInMatched)
+
+    private fun String?.normalizeInputInNormalizedEnglishQueryClause() =
+        this?.replace(NORMALIZED_ENGLISH_EXTRACT_REGEX.toRegex(), ::replaceInMatched)
+
+    private fun String?.normalizeInputInNormalizedGermanQueryClause() =
+        this?.replace(NORMALIZED_GERMAN_EXTRACT_REGEX.toRegex(), ::replaceInMatched)
+
+    private fun String?.normalizeInputInNormalizedUkrainianQueryClause() =
+        this?.replace(NORMALIZED_UKRAINIAN_EXTRACT_REGEX.toRegex(), ::replaceInMatched)
+
     companion object {
         const val PATH: String = "\${spring.graphql.jpa.query.path:/graphql}"
         const val NORMALIZED_WORD_EXTRACT_REGEX: String = "(?<=normalizedWord)(.*)\"(.*)(?=\")"
+        const val NORMALIZED_ENGLISH_EXTRACT_REGEX: String = "(?<=normalizedEnglish)(.*)\"(.*)(?=\")"
+        const val NORMALIZED_POLISH_EXTRACT_REGEX: String = "(?<=normalizedPolish)(.*)\"(.*)(?=\")"
+        const val NORMALIZED_GERMAN_EXTRACT_REGEX: String = "(?<=normalizedGerman)(.*)\"(.*)(?=\")"
+        const val NORMALIZED_UKRAINIAN_EXTRACT_REGEX: String = "(?<=normalizedUkrainian)(.*)\"(.*)(?=\")"
     }
 
 }

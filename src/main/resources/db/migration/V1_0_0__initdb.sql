@@ -58,19 +58,23 @@ create sequence meaning_id_sequence;
 create table public."translation" (
 	id bigint not null,
 	english varchar(100),
+	normalized_english varchar(100),
 	german varchar(100),
+	normalized_german varchar(100),
 	polish varchar(100),
+	normalized_polish varchar(100),
 	ukrainian varchar(100),
+	normalized_ukrainian varchar(100),
 	meaning_id bigint not null,
 	constraint pk_translation primary key (id),
 	constraint fk_translation_meaning foreign key (meaning_id) references public."meaning"(id) on delete restrict on update restrict
 );
 create index translation_meaning_id_index on public."translation" (meaning_id);
 create unique index translation_pk_unique_index on public."translation" (id);
-create index translation_english_index on public.translation (english);
-create index translation_german_index on public.translation (german);
-create index translation_polish_index on public.translation (polish);
-create index translation_ukrainian_index on public.translation (ukrainian);
+create index translation_normalized_english_index on public.translation (english);
+create index translation_normalized_german_index on public.translation (german);
+create index translation_normalized_polish_index on public.translation (polish);
+create index translation_normalized_ukrainian_index on public.translation (ukrainian);
 create sequence translation_id_sequence;
 
 -- public.other definition

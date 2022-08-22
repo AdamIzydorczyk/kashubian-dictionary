@@ -54,15 +54,15 @@ class KashubianEntryRepository(@Qualifier("defaultEntityManager") val entityMana
                 Long::class.javaObjectType)
             .setParameter("id", meaningId).singleResult
 
-    fun countEntriesByWordExcludeEntryId(entryId: Long, word: String): Long =
-        entityManager.createQuery("select count(e) from KashubianEntry e where e.word = :word and e.id != :id",
+    fun countEntriesByNormalizedWordExcludeEntryId(entryId: Long, word: String): Long =
+        entityManager.createQuery("select count(e) from KashubianEntry e where e.normalizedWord = :word and e.id != :id",
                 Long::class.javaObjectType)
             .setParameter("word", word)
             .setParameter("id", entryId)
             .singleResult
 
-    fun countEntriesByWord(word: String): Long =
-        entityManager.createQuery("select count(e) from KashubianEntry e where e.word = :word",
+    fun countEntriesByNormalizedWord(word: String): Long =
+        entityManager.createQuery("select count(e) from KashubianEntry e where e.normalizedWord = :word",
                 Long::class.javaObjectType)
             .setParameter("word", word)
             .singleResult

@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.web.context.annotation.RequestScope
 import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryRepository
+import tk.aizydorczyk.kashubian.crud.extension.normalize
 import javax.validation.Constraint
 import javax.validation.ConstraintValidator
 import javax.validation.ConstraintValidatorContext
@@ -14,26 +15,26 @@ import kotlin.reflect.KClass
 
 
 @MustBeDocumented
-@Constraint(validatedBy = [UniqueWordValidator::class])
+@Constraint(validatedBy = [UniqueNormalizedWordValidator::class])
 @Target(allowedTargets = [FIELD])
 @Retention(RUNTIME)
-annotation class UniqueWord(
-    val message: String = "WORD_NOT_UNIQUE",
+annotation class UniqueNormalizedWord(
+    val message: String = "NORMALIZED_WORD_NOT_UNIQUE",
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [])
 
 @Component
 @RequestScope
-class UniqueWordValidator : ConstraintValidator<UniqueWord, String?> {
+class UniqueNormalizedWordValidator : ConstraintValidator<UniqueNormalizedWord, String?> {
 
     @Autowired
     private lateinit var repository: KashubianEntryRepository
 
     override fun isValid(word: String?, context: ConstraintValidatorContext?): Boolean {
-        return word?.let(this::isWordNonExistOrEqual) ?: true
+        return word?.let(this::isNormalizedWordNonExistOrEqual) ?: true
     }
 
-    private fun isWordNonExistOrEqual(word: String): Boolean {
-        return repository.countEntriesByWord(word) < 1
+    private fun isNormalizedWordNonExistOrEqual(word: String): Boolean {
+        return repository.countEntriesByNormalizedWord(word.normalize()) < 1
     }
 }

@@ -16,9 +16,14 @@ data class SearchTranslation(
     @Column(unique = true, nullable = false, updatable = false)
     val id: Long,
     val polish: String?,
+    val normalizedPolish: String?,
     val english: String?,
+    val normalizedEnglish: String?,
     val german: String?,
+    val normalizedGerman: String?,
     val ukrainian: String?,
+    val normalizedUkrainian: String?,
+
     @ManyToOne
     @JoinColumn(name = "meaning_id")
     val meaning: SearchMeaning
