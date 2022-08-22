@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.servlet.mvc.method.annotation.SseEmitter
-import tk.aizydorczyk.kashubian.crud.extension.stripAccents
+import tk.aizydorczyk.kashubian.crud.extension.normalize
 import javax.servlet.http.HttpServletResponse
 import javax.validation.Valid
 
@@ -50,7 +50,7 @@ class GraphQLControllerWrapper(graphQLExecutor: GraphQLExecutor, mapper: ObjectM
         this?.replace(NORMALIZED_WORD_EXTRACT_REGEX.toRegex()) {
             val lastMatchGroup: MatchGroup =
                 it.groups.last() ?: throw IllegalStateException("Searching word normalization failed")
-            it.value.replace(lastMatchGroup.value, lastMatchGroup.value.stripAccents())
+            it.value.replace(lastMatchGroup.value, lastMatchGroup.value.normalize())
         }
 
     @GetMapping(value = [PATH],

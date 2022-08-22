@@ -7,9 +7,11 @@ import org.jeasy.random.EasyRandomParameters
 import org.jeasy.random.FieldPredicates
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.ApplicationArguments
 import org.springframework.boot.ApplicationRunner
+import org.springframework.boot.context.properties.ConfigurationProperties
+import org.springframework.boot.context.properties.ConstructorBinding
+import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
@@ -28,6 +30,7 @@ import tk.aizydorczyk.kashubian.crud.query.ExampleVariationsGenerator
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.InputStream
+import java.util.Locale
 import java.util.Random
 import java.util.concurrent.atomic.AtomicLong
 import kotlin.math.min
@@ -35,16 +38,17 @@ import kotlin.streams.toList
 
 
 @Component
+@EnableConfigurationProperties(RandomDataInitializerProperties::class)
 class RandomDataInitializer(
     val kashubianEntryController: KashubianEntryController,
     val exampleVariationsGenerator: ExampleVariationsGenerator,
     val repository: KashubianEntryRepository,
-    @Value("\${test.data.initializer.generated.elements.size}") val generatedSize: Int) : ApplicationRunner {
+    private val properties: RandomDataInitializerProperties) : ApplicationRunner {
 
     val logger: Logger = LoggerFactory.getLogger(javaClass.simpleName)
 
     private final val random = Random()
-    private final val faker = Faker(random)
+    private final val faker = Faker(Locale(properties.language), random)
 
     override fun run(args: ApplicationArguments?) {
         if (repository.countAllEntries() > 0
@@ -59,11 +63,11 @@ class RandomDataInitializer(
             }
 
         val generator = EasyRandom(parameters)
-        generator.objects(KashubianEntryDto::class.java, generatedSize)
+        generator.objects(KashubianEntryDto::class.java, properties.size)
             .forEach {
                 kashubianEntryController.create(it)
                     .let { response -> kashubianEntryController.uploadSoundFile(response.entryId, FakeMultipartFile()) }
-                logger.info("Generated entry $generatorCounter from $generatedSize")
+                logger.info("Generated entry $generatorCounter from ${properties.size}")
                 generatorCounter.incrementAndGet()
             }
         logger.info("Entries generation finished")
@@ -95,7 +99,7 @@ class RandomDataInitializer(
             randomize(FieldPredicates.named("others")) {
                 repository.findByTypeAndIds(KashubianEntry::class.java,
                         generateEntitiesAmount(generatorCounter.invoke()))
-                    .map { OtherDto(it.id, selectWordFunction() + generatorCounter.invoke()) }
+                    .map { OtherDto(it.id, selectWordFunction() + generatorCounter.invoke().toInt()) }
             }
 
             randomize(FieldPredicates.named("synonyms")) {
@@ -128,52 +132,23 @@ class RandomDataInitializer(
 
 
     private fun selectRandomWordFromSets(): String = listOf(
-            faker.ancient()::god,
-            faker.ancient()::hero,
-            faker.ancient()::titan,
-            faker.ancient()::primordial,
-            faker.book()::title,
-            faker.animal()::name,
+            faker.address()::country,
+            faker.address()::state,
+            faker.address()::city,
             faker.name()::firstName,
-            faker.app()::name,
-            faker.aquaTeenHungerForce()::character,
-            faker.artist()::name,
-            faker.avatar()::image,
-            faker.aviation()::aircraft,
-            faker.backToTheFuture()::quote,
-            faker.backToTheFuture()::character,
-            faker.beer()::hop,
-            faker.beer()::malt,
-            faker.beer()::name,
-            faker.beer()::style,
-            faker.beer()::yeast,
-            faker.buffy()::bigBads,
-            faker.buffy()::quotes,
-            faker.buffy()::celebrities,
-            faker.buffy()::characters,
-            faker.business()::creditCardType,
-            faker.cat()::breed,
-            faker.cat()::name,
-            faker.cat()::registry,
-            faker.chuckNorris()::fact,
-            faker.color()::name,
-            faker.commerce()::department,
-            faker.commerce()::material,
-            faker.commerce()::productName,
-            faker.country()::capital,
-            faker.country()::name,
-            faker.demographic()::demonym,
-            faker.demographic()::sex,
-            faker.demographic()::race,
-            faker.demographic()::educationalAttainment,
-            faker.demographic()::maritalStatus,
-            faker.dog()::breed,
-            faker.dog()::gender,
-            faker.dog()::memePhrase,
-            faker.job()::position,
-            faker.job()::title
-    ).random().invoke()
+            faker.name()::lastName,
+            faker.name()::prefix,
+            faker.lorem()::word,
+            faker.lorem()::sentence)
+        .random().invoke()
 }
+
+@ConstructorBinding
+@ConfigurationProperties(prefix = "initializer")
+data class RandomDataInitializerProperties(
+    val size: Int,
+    val language: String
+)
 
 class FakeMultipartFile : MultipartFile {
     override fun getInputStream(): InputStream = ByteArrayInputStream.nullInputStream()

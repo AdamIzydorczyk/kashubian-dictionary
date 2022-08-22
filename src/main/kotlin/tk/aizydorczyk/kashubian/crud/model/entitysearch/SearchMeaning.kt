@@ -18,8 +18,8 @@ data class SearchMeaning(
     val id: Long,
     @OneToMany(mappedBy = "meaning")
     val translation: Set<SearchTranslation> = emptySet(),
-    val definition: String? = null,
-    val origin: String? = null,
+    val definition: String?,
+    val origin: String?,
     @OneToMany(mappedBy = "meaning")
     val proverbs: Set<SearchProverb> = emptySet(),
     @OneToMany(mappedBy = "meaning")

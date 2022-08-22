@@ -13,6 +13,7 @@ import tk.aizydorczyk.kashubian.crud.validator.UniqueWord
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotNull
+import javax.validation.constraints.Pattern
 import javax.validation.constraints.Size
 
 @EntryExists(groups = [OnUpdate::class])
@@ -24,6 +25,9 @@ data class KashubianEntryDto(
     @UnchangedToNonUnique(groups = [OnUpdate::class])
     @field:NotBlank(message = "IS_BLANK", groups = [OnCreate::class, OnUpdate::class])
     @field:Size(max = 100, message = "LENGTH_100_EXCEED", groups = [OnCreate::class, OnUpdate::class])
+    @field:Pattern(regexp = "[\\p{L} ]+",
+            message = "NOT_CONTAINS_ONLY_LETTERS_AND_SPACES",
+            groups = [OnCreate::class, OnUpdate::class])
     val word: String?,
     val note: String?,
     val priority: Boolean,

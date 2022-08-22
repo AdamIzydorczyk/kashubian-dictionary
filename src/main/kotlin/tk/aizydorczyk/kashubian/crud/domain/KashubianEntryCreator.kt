@@ -3,7 +3,7 @@ package tk.aizydorczyk.kashubian.crud.domain
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import tk.aizydorczyk.kashubian.crud.extension.stripAccents
+import tk.aizydorczyk.kashubian.crud.extension.normalize
 import tk.aizydorczyk.kashubian.crud.model.entity.KashubianEntry
 import tk.aizydorczyk.kashubian.crud.model.entity.Translation
 import tk.aizydorczyk.kashubian.crud.model.entity.Variation
@@ -13,7 +13,7 @@ import javax.persistence.EntityManager
 class KashubianEntryCreator(@Qualifier("defaultEntityManager") val entityManager: EntityManager) {
     @Transactional
     fun create(entry: KashubianEntry): KashubianEntry {
-        entry.normalizedWord = entry.word?.stripAccents()
+        entry.normalizedWord = entry.word?.normalize()
         entityManager.persist(entry)
 
         entry.others.onEach { it.kashubianEntry = entry.id }.forEach(entityManager::persist)
