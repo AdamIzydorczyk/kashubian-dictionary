@@ -1,5 +1,6 @@
 package tk.aizydorczyk.kashubian.crud.model.entitysearch
 
+import org.hibernate.annotations.Formula
 import org.hibernate.annotations.Immutable
 import javax.persistence.Column
 import javax.persistence.Entity
@@ -26,6 +27,8 @@ data class SearchKashubianEntry(
     val soundFile: Set<SearchSoundFile> = emptySet(),
     @OneToMany(mappedBy = "kashubianEntry")
     val meanings: Set<SearchMeaning> = emptySet(),
+    @Formula("(select count(m.id) from meaning m where m.kashubian_entry_id = id)")
+    val meaningsCount: Long,
     @OneToMany(mappedBy = "kashubianEntry")
     val others: Set<SearchOther> = emptySet()
 ) {
