@@ -1,5 +1,6 @@
 package tk.aizydorczyk.kashubian.crud.exception
 
+import org.apache.tomcat.util.http.fileupload.impl.SizeLimitExceededException
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpStatus
@@ -44,4 +45,16 @@ class ControllerExceptionHandler {
         logger.info("Validation failed with errors: $errorDto")
         return errorDto
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(SizeLimitExceededException::class)
+    fun handleSizeLimitExceededException(
+        ex: SizeLimitExceededException): ValidationErrorDto {
+        val errorDto = ValidationErrorDto(paramErrors = listOf(mapOf("message" to "512_KB_LIMIT_EXCEEDED",
+                "paramName" to "soundFile")))
+        logger.info("Validation failed with errors: $errorDto")
+        return errorDto
+    }
+
 }
+

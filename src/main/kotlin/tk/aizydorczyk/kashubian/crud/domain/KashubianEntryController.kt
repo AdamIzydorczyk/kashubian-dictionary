@@ -25,6 +25,7 @@ import tk.aizydorczyk.kashubian.crud.model.mapper.KashubianEntryMapper
 import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.ENTRY_ID_PATH
 import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.FILE_PATH
 import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.KASHUBIAN_ENTRY_PATH
+import tk.aizydorczyk.kashubian.crud.validator.AudioType
 import tk.aizydorczyk.kashubian.crud.validator.EntryExists
 import tk.aizydorczyk.kashubian.crud.validator.OnCreate
 import tk.aizydorczyk.kashubian.crud.validator.OnUpdate
@@ -56,7 +57,7 @@ class KashubianEntryController(
     @PostMapping(FILE_PATH)
     @ResponseStatus(CREATED)
     fun uploadSoundFile(@EntryExists @PathVariable entryId: Long,
-        @RequestPart(required = true) soundFile: MultipartFile) {
+        @AudioType @RequestPart(required = true) soundFile: MultipartFile) {
         logger.info("File uploading with name: ${soundFile.name}")
         uploader.upload(entryId, soundFile)
     }
