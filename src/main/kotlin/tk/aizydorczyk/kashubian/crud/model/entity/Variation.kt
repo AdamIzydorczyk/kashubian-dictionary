@@ -14,12 +14,16 @@ import javax.persistence.Table
 @TypeDef(name = "jsonb", typeClass = JsonNodeBinaryType::class)
 data class Variation(
     @Id
-    var id: Long,
+    override var id: Long,
     @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
 
     var variation: ObjectNode,
     @Column(name = "kashubian_entry_id")
 
-    val kashubianEntry: Long
-)
+    var kashubianEntry: Long
+) : ChildEntity {
+    override fun setParentId(parentId: Long) {
+        kashubianEntry = parentId
+    }
+}

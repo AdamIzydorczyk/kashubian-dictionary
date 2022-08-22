@@ -12,8 +12,7 @@ import tk.aizydorczyk.kashubian.crud.model.entity.Variation
 import javax.persistence.EntityManager
 
 @Component
-class KashubianEntryUpdater(@Qualifier("defaultEntityManager") val entityManager: EntityManager) :
-    KashubianEntryApplierBase() {
+class KashubianEntryUpdater(@Qualifier("defaultEntityManager") val entityManager: EntityManager) {
     @Transactional
     fun update(entryId: Long, newEntry: KashubianEntry): KashubianEntry {
         newEntry.normalizedWord = newEntry.word?.normalize()
@@ -42,7 +41,7 @@ class KashubianEntryUpdater(@Qualifier("defaultEntityManager") val entityManager
             entityManager.find(Translation::class.java, newMeaning.id)?.let { entityManager.remove(it) }
         } else {
             newMeaning.translation?.let {
-                entityManager.merge(prepareTranslation(newMeaning.id, it))
+                entityManager.merge(it.copyWitchNormalizedFieldsAndAssignedId(newMeaning.id))
             }
         }
 

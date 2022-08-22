@@ -7,6 +7,7 @@ import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import java.lang.System.currentTimeMillis
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
 
@@ -26,7 +27,7 @@ class WebConfiguration : WebMvcConfigurer {
 
             logger.debug("${request.method} ${request.requestURL} called by $currentUser")
 
-            val startTime = System.currentTimeMillis()
+            val startTime = currentTimeMillis()
             request.setAttribute("START_TIME", startTime)
 
             return super.preHandle(request, response, handler)
@@ -37,7 +38,7 @@ class WebConfiguration : WebMvcConfigurer {
             handler: Any,
             ex: Exception?) {
             val startTime = request.getAttribute("START_TIME") as Long
-            val executionTime = System.currentTimeMillis() - startTime
+            val executionTime = currentTimeMillis() - startTime
 
             val currentUserName = SecurityContextHolder.getContext().authentication.name
 

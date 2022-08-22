@@ -3,34 +3,37 @@ package tk.aizydorczyk.kashubian.crud.domain
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
+import tk.aizydorczyk.kashubian.crud.extension.assignParentToAllAndPersist
 import tk.aizydorczyk.kashubian.crud.extension.normalize
 import tk.aizydorczyk.kashubian.crud.model.entity.KashubianEntry
 import tk.aizydorczyk.kashubian.crud.model.entity.Variation
 import javax.persistence.EntityManager
 
 @Component
-class KashubianEntryCreator(@Qualifier("defaultEntityManager") val entityManager: EntityManager) :
-    KashubianEntryApplierBase() {
+class KashubianEntryCreator(@Qualifier("defaultEntityManager") val entityManager: EntityManager) {
     @Transactional
     fun create(entry: KashubianEntry): KashubianEntry {
         entry.normalizedWord = entry.word?.normalize()
         entityManager.persist(entry)
 
-        entry.others.onEach { it.kashubianEntry = entry.id }.forEach(entityManager::persist)
+        entry.others.assignParentToAllAndPersist(entry.id, entityManager)
 
         entry.meanings.forEach { meaning ->
-            meaning.apply { kashubianEntry = entry.id }
-            entityManager.persist(meaning)
+            with(meaning) {
+                apply { kashubianEntry = entry.id }
 
-            meaning.proverbs.onEach { it.meaning = meaning.id }.forEach(entityManager::persist)
-            meaning.phrasalVerbs.onEach { it.meaning = meaning.id }.forEach(entityManager::persist)
-            meaning.quotes.onEach { it.meaning = meaning.id }.forEach(entityManager::persist)
-            meaning.examples.onEach { it.meaning = meaning.id }.forEach(entityManager::persist)
-            meaning.antonyms.onEach { it.meaning = meaning.id }.forEach(entityManager::persist)
-            meaning.synonyms.onEach { it.meaning = meaning.id }.forEach(entityManager::persist)
+                entityManager.persist(this)
 
-            meaning.translation?.let {
-                entityManager.persist(prepareTranslation(meaning.id, it))
+                proverbs.assignParentToAllAndPersist(this.id, entityManager)
+                phrasalVerbs.assignParentToAllAndPersist(this.id, entityManager)
+                quotes.assignParentToAllAndPersist(this.id, entityManager)
+                examples.assignParentToAllAndPersist(this.id, entityManager)
+                antonyms.assignParentToAllAndPersist(this.id, entityManager)
+                synonyms.assignParentToAllAndPersist(this.id, entityManager)
+
+                translation?.let {
+                    entityManager.persist(it.copyWitchNormalizedFieldsAndAssignedId(this.id))
+                }
             }
         }
         return entry.apply {

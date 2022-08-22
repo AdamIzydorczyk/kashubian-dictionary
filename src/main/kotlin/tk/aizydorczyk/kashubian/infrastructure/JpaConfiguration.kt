@@ -1,7 +1,13 @@
 package tk.aizydorczyk.kashubian.infrastructure
 
 import org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
-import org.hibernate.cfg.AvailableSettings
+import org.hibernate.cfg.AvailableSettings.DIALECT
+import org.hibernate.cfg.AvailableSettings.FORMAT_SQL
+import org.hibernate.cfg.AvailableSettings.HBM2DDL_AUTO
+import org.hibernate.cfg.AvailableSettings.IMPLICIT_NAMING_STRATEGY
+import org.hibernate.cfg.AvailableSettings.PHYSICAL_NAMING_STRATEGY
+import org.hibernate.cfg.AvailableSettings.SHOW_SQL
+import org.hibernate.cfg.AvailableSettings.STATEMENT_BATCH_SIZE
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
@@ -26,17 +32,13 @@ class JpaConfiguration(val jpaProperties: JpaProperties) {
     @Qualifier("defaultEntityManagerFactory")
     fun defaultEntityManagerFactory(
         builder: EntityManagerFactoryBuilder,
-        dataSource: DataSource): LocalContainerEntityManagerFactoryBean? {
-
-        val properties: MutableMap<String, Any?> = prepareProperties()
-
-        return builder
+        dataSource: DataSource): LocalContainerEntityManagerFactoryBean? =
+        builder
             .dataSource(dataSource)
             .packages("tk.aizydorczyk.kashubian.crud.model.entity")
             .persistenceUnit("default")
-            .properties(properties)
+            .properties(prepareProperties())
             .build()
-    }
 
     @Bean
     @Primary
@@ -51,39 +53,31 @@ class JpaConfiguration(val jpaProperties: JpaProperties) {
     @Qualifier("graphqlEntityManagerFactory")
     fun graphqlEntityManagerFactory(
         builder: EntityManagerFactoryBuilder,
-        dataSource: DataSource): LocalContainerEntityManagerFactoryBean? {
-
-        val properties: MutableMap<String, Any?> = prepareProperties()
-
-        return builder
+        dataSource: DataSource): LocalContainerEntityManagerFactoryBean? =
+        builder
             .dataSource(dataSource)
             .packages("tk.aizydorczyk.kashubian.crud.model.entitysearch")
-            .persistenceUnit("graphql")
-            .properties(properties)
+            .persistenceUnit("default")
+            .properties(prepareProperties())
             .build()
-    }
 
-    private fun prepareProperties(): MutableMap<String, Any?> {
-        val properties: MutableMap<String, Any?> = HashMap()
-        properties[AvailableSettings.HBM2DDL_AUTO] = jpaProperties.ddlAuto
-        properties[AvailableSettings.DIALECT] = jpaProperties.dialect
-        properties[AvailableSettings.SHOW_SQL] = jpaProperties.showSql
-        properties[AvailableSettings.FORMAT_SQL] = jpaProperties.formatSql
-        properties[AvailableSettings.IMPLICIT_NAMING_STRATEGY] =
-            SpringImplicitNamingStrategy::class.java.name
-        properties[AvailableSettings.PHYSICAL_NAMING_STRATEGY] =
-            CamelCaseToUnderscoresNamingStrategy::class.java.name
-        properties[AvailableSettings.STATEMENT_BATCH_SIZE] = jpaProperties.batchSize
-        return properties
-    }
+    private fun prepareProperties(): Map<String, Any?> = mapOf(
+            HBM2DDL_AUTO to jpaProperties.ddlAuto,
+            DIALECT to jpaProperties.dialect,
+            SHOW_SQL to jpaProperties.showSql,
+            FORMAT_SQL to jpaProperties.formatSql,
+            IMPLICIT_NAMING_STRATEGY to SpringImplicitNamingStrategy::class.java.name,
+            PHYSICAL_NAMING_STRATEGY to CamelCaseToUnderscoresNamingStrategy::class.java.name,
+            STATEMENT_BATCH_SIZE to jpaProperties.batchSize
+    )
 
     @Bean
     @Qualifier("graphqlEntityManager")
-    fun graphqlEntityManager(@Qualifier("graphqlEntityManagerFactory") entityManagerFactory: EntityManagerFactory): SharedEntityManagerBean? {
-        val bean = SharedEntityManagerBean()
-        bean.entityManagerFactory = entityManagerFactory
-        return bean
-    }
+    fun graphqlEntityManager(@Qualifier("graphqlEntityManagerFactory") entityManagerFactory: EntityManagerFactory): SharedEntityManagerBean? =
+        with(SharedEntityManagerBean()) {
+            this.entityManagerFactory = entityManagerFactory
+            this
+        }
 
 }
 
