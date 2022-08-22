@@ -4,16 +4,11 @@ import io.swagger.annotations.Api
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders.CONTENT_DISPOSITION
-import org.springframework.http.HttpStatus.BAD_REQUEST
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.ResponseEntity
-import org.springframework.validation.FieldError
-import org.springframework.validation.ObjectError
 import org.springframework.validation.annotation.Validated
-import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -27,12 +22,14 @@ import org.springframework.web.multipart.MultipartFile
 import tk.aizydorczyk.kashubian.crud.model.dto.KashubianEntryDto
 import tk.aizydorczyk.kashubian.crud.model.dto.ResponseDto
 import tk.aizydorczyk.kashubian.crud.model.mapper.KashubianEntryMapper
+import tk.aizydorczyk.kashubian.crud.validator.EntryExists
 import tk.aizydorczyk.kashubian.crud.validator.OnCreate
 import tk.aizydorczyk.kashubian.crud.validator.OnUpdate
 
 
 @RestController
 @RequestMapping("kashubian-entry")
+@Validated
 @Api("Kashubian Entry", tags = ["KashubianEntry"])
 class KashubianEntryController(
     val kashubianMapper: KashubianEntryMapper,
@@ -55,14 +52,14 @@ class KashubianEntryController(
 
     @PostMapping("/{entryId}/file")
     @ResponseStatus(CREATED)
-    fun uploadSoundFile(@PathVariable entryId: Long,
+    fun uploadSoundFile(@EntryExists @PathVariable entryId: Long,
         @RequestPart(required = true) soundFile: MultipartFile) {
         logger.info("File uploading with name: ${soundFile.name}")
         uploader.upload(entryId, soundFile)
     }
 
     @GetMapping("/{entryId}/file")
-    fun downloadSoundFile(@PathVariable entryId: Long): ResponseEntity<ByteArray> {
+    fun downloadSoundFile(@EntryExists @PathVariable entryId: Long): ResponseEntity<ByteArray> {
         logger.info("File downloading by entry id: $entryId")
         return downloader.download(entryId).let {
             ResponseEntity.ok()
@@ -73,7 +70,7 @@ class KashubianEntryController(
 
     @PutMapping("/{entryId}")
     fun update(
-        @PathVariable entryId: Long,
+        @EntryExists @PathVariable entryId: Long,
         @Validated(OnUpdate::class) @RequestBody entry: KashubianEntryDto): ResponseDto {
         logger.info("Entry id: $entryId updating with payload: $entry")
         return updater.update(entryId, kashubianMapper.toEntity(entry))
@@ -82,30 +79,15 @@ class KashubianEntryController(
 
     @DeleteMapping("/{entryId}")
     @ResponseStatus(NO_CONTENT)
-    fun delete(@PathVariable entryId: Long) {
+    fun delete(@EntryExists @PathVariable entryId: Long) {
         logger.info("Entry id: $entryId deleting")
         remover.remove(entryId)
     }
 
     @DeleteMapping("/{entryId}/file")
     @ResponseStatus(NO_CONTENT)
-    fun deleteFile(@PathVariable entryId: Long) {
+    fun deleteFile(@EntryExists @PathVariable entryId: Long) {
         logger.info("File entry id: $entryId deleting")
         fileRemover.remove(entryId)
-    }
-
-    @ResponseStatus(BAD_REQUEST)
-    @ExceptionHandler(MethodArgumentNotValidException::class)
-    fun handleValidationExceptions(
-        ex: MethodArgumentNotValidException): Map<String, List<Any>> {
-        val groupedErrors = ex.bindingResult.allErrors
-            .groupBy { it.javaClass.simpleName }
-        val objectErrors = groupedErrors["ViolationObjectError"].orEmpty()
-            .map { it as ObjectError }.map { it.defaultMessage.toString() }
-        val messages = groupedErrors["ViolationFieldError"].orEmpty()
-            .map { it as FieldError }.map { mapOf("message" to it.defaultMessage, "fieldName" to it.field) }
-        val validationErrorMessages = mapOf("objectErrors" to objectErrors, "fieldErrors" to messages)
-        logger.info("Validation failed with errors: $validationErrorMessages")
-        return validationErrorMessages
     }
 }

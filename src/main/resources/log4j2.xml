@@ -23,7 +23,7 @@
     <Loggers>
 
         <Logger name="tk.aizydorczyk" additivity="false">
-            <!--            <AppenderRef ref="FileLog" />-->
+            <AppenderRef ref="FileLog"/>
             <AppenderRef ref="Console"/>
         </Logger>
 

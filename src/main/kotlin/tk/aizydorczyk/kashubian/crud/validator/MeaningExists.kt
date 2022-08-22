@@ -10,12 +10,13 @@ import javax.validation.ConstraintValidatorContext
 import javax.validation.Payload
 import kotlin.annotation.AnnotationRetention.RUNTIME
 import kotlin.annotation.AnnotationTarget.FIELD
+import kotlin.annotation.AnnotationTarget.VALUE_PARAMETER
 import kotlin.reflect.KClass
 
 
 @MustBeDocumented
 @Constraint(validatedBy = [MeaningExistsValidator::class])
-@Target(allowedTargets = [FIELD])
+@Target(allowedTargets = [FIELD, VALUE_PARAMETER])
 @Retention(RUNTIME)
 annotation class MeaningExists(
     val message: String = "MEANING_NOT_EXISTS",
