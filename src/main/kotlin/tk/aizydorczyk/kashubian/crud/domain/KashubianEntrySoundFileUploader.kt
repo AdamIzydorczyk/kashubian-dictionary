@@ -5,10 +5,11 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
 import tk.aizydorczyk.kashubian.crud.model.entity.SoundFile
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.DEFAULT_ENTITY_MANAGER
 import javax.persistence.EntityManager
 
 @Component
-class KashubianEntrySoundFileUploader(@Qualifier("defaultEntityManager") val entityManager: EntityManager) {
+class KashubianEntrySoundFileUploader(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityManager: EntityManager) {
     @Transactional
     fun upload(entryId: Long, soundFile: MultipartFile) {
         SoundFile(

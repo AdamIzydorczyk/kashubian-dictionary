@@ -7,10 +7,11 @@ import tk.aizydorczyk.kashubian.crud.extension.assignParentToAllAndPersist
 import tk.aizydorczyk.kashubian.crud.extension.normalize
 import tk.aizydorczyk.kashubian.crud.model.entity.KashubianEntry
 import tk.aizydorczyk.kashubian.crud.model.entity.Variation
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.DEFAULT_ENTITY_MANAGER
 import javax.persistence.EntityManager
 
 @Component
-class KashubianEntryCreator(@Qualifier("defaultEntityManager") val entityManager: EntityManager) {
+class KashubianEntryCreator(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityManager: EntityManager) {
     @Transactional
     fun create(entry: KashubianEntry): KashubianEntry {
         entry.normalizedWord = entry.word?.normalize()
@@ -42,6 +43,5 @@ class KashubianEntryCreator(@Qualifier("defaultEntityManager") val entityManager
             }
         }
     }
-
 
 }

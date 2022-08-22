@@ -6,28 +6,32 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import tk.aizydorczyk.kashubian.crud.model.entity.BaseEntity
 import tk.aizydorczyk.kashubian.crud.model.entity.SoundFile
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.DEFAULT_ENTITY_MANAGER
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.ENTRY_ID
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.MEANING_ID
 import java.math.BigInteger
 import javax.persistence.EntityManager
 import javax.persistence.ParameterMode
 
 @Repository
 @Transactional(propagation = Propagation.SUPPORTS)
-class KashubianEntryRepository(@Qualifier("defaultEntityManager") val entityManager: EntityManager) {
+class KashubianEntryRepository(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityManager: EntityManager) {
 
     fun deleteEntryById(entryId: Long) {
-        entityManager.createQuery("delete from KashubianEntry where id = :entryId")
-            .setParameter("entryId", entryId)
+        entityManager.createQuery("delete from KashubianEntry where id = :$ENTRY_ID")
+            .setParameter(ENTRY_ID, entryId)
             .executeUpdate()
     }
 
     fun findSoundFileByEntryId(entryId: Long): SoundFile =
-        entityManager.createQuery("select f from SoundFile f where f.kashubianEntry = :entryId", SoundFile::class.java)
-            .setParameter("entryId", entryId)
+        entityManager.createQuery("select f from SoundFile f where f.kashubianEntry = :$ENTRY_ID",
+                SoundFile::class.java)
+            .setParameter(ENTRY_ID, entryId)
             .singleResult
 
     fun removeSoundFileByEntryId(entryId: Long) {
-        entityManager.createQuery("delete from SoundFile where kashubianEntry = :entryId")
-            .setParameter("entryId", entryId)
+        entityManager.createQuery("delete from SoundFile where kashubianEntry = :$ENTRY_ID")
+            .setParameter(ENTRY_ID, entryId)
             .executeUpdate()
     }
 
@@ -44,21 +48,21 @@ class KashubianEntryRepository(@Qualifier("defaultEntityManager") val entityMana
         findByMeaningHierarchyElementByProcedure(meaningId, "find_derivative_meanings_ids")
 
     fun countEntriesById(entryId: Long): Long =
-        entityManager.createQuery("select count(e) from KashubianEntry e where e.id = :id",
+        entityManager.createQuery("select count(e) from KashubianEntry e where e.id = :$ENTRY_ID",
                 Long::class.javaObjectType)
-            .setParameter("id", entryId)
+            .setParameter(ENTRY_ID, entryId)
             .singleResult
 
     fun countMeaningsById(meaningId: Long): Long =
-        entityManager.createQuery("select count(m) from Meaning m where m.id = :id",
+        entityManager.createQuery("select count(m) from Meaning m where m.id = :$MEANING_ID",
                 Long::class.javaObjectType)
-            .setParameter("id", meaningId).singleResult
+            .setParameter(MEANING_ID, meaningId).singleResult
 
     fun countEntriesByNormalizedWordExcludeEntryId(entryId: Long, word: String): Long =
-        entityManager.createQuery("select count(e) from KashubianEntry e where e.normalizedWord = :word and e.id != :id",
+        entityManager.createQuery("select count(e) from KashubianEntry e where e.normalizedWord = :word and e.id != :$ENTRY_ID",
                 Long::class.javaObjectType)
             .setParameter("word", word)
-            .setParameter("id", entryId)
+            .setParameter(ENTRY_ID, entryId)
             .singleResult
 
     fun countEntriesByNormalizedWord(word: String): Long =

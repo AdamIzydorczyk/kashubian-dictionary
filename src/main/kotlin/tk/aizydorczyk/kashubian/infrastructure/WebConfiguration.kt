@@ -28,7 +28,7 @@ class WebConfiguration : WebMvcConfigurer {
             logger.debug("${request.method} ${request.requestURL} called by $currentUser")
 
             val startTime = currentTimeMillis()
-            request.setAttribute("START_TIME", startTime)
+            request.setAttribute(START_TIME, startTime)
 
             return super.preHandle(request, response, handler)
         }
@@ -37,7 +37,7 @@ class WebConfiguration : WebMvcConfigurer {
             response: HttpServletResponse,
             handler: Any,
             ex: Exception?) {
-            val startTime = request.getAttribute("START_TIME") as Long
+            val startTime = request.getAttribute(START_TIME) as Long
             val executionTime = currentTimeMillis() - startTime
 
             val currentUserName = SecurityContextHolder.getContext().authentication.name
@@ -46,5 +46,9 @@ class WebConfiguration : WebMvcConfigurer {
 
             super.afterCompletion(request, response, handler, ex)
         }
+    }
+
+    companion object {
+        const val START_TIME = "START_TIME"
     }
 }

@@ -9,10 +9,11 @@ import tk.aizydorczyk.kashubian.crud.model.entity.KashubianEntry
 import tk.aizydorczyk.kashubian.crud.model.entity.Meaning
 import tk.aizydorczyk.kashubian.crud.model.entity.Translation
 import tk.aizydorczyk.kashubian.crud.model.entity.Variation
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.DEFAULT_ENTITY_MANAGER
 import javax.persistence.EntityManager
 
 @Component
-class KashubianEntryUpdater(@Qualifier("defaultEntityManager") val entityManager: EntityManager) {
+class KashubianEntryUpdater(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityManager: EntityManager) {
     @Transactional
     fun update(entryId: Long, newEntry: KashubianEntry): KashubianEntry {
         newEntry.normalizedWord = newEntry.word?.normalize()

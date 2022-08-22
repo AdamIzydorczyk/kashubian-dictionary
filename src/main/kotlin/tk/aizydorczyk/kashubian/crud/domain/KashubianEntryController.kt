@@ -22,13 +22,16 @@ import org.springframework.web.multipart.MultipartFile
 import tk.aizydorczyk.kashubian.crud.model.dto.KashubianEntryDto
 import tk.aizydorczyk.kashubian.crud.model.dto.ResponseDto
 import tk.aizydorczyk.kashubian.crud.model.mapper.KashubianEntryMapper
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.ENTRY_ID_PATH
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.FILE_PATH
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.KASHUBIAN_ENTRY_PATH
 import tk.aizydorczyk.kashubian.crud.validator.EntryExists
 import tk.aizydorczyk.kashubian.crud.validator.OnCreate
 import tk.aizydorczyk.kashubian.crud.validator.OnUpdate
 
 
 @RestController
-@RequestMapping("kashubian-entry")
+@RequestMapping(KASHUBIAN_ENTRY_PATH)
 @Validated
 @Api("Kashubian Entry", tags = ["KashubianEntry"])
 class KashubianEntryController(
@@ -50,7 +53,7 @@ class KashubianEntryController(
             .run { ResponseDto(this.id, this.meanings.map { it.id }) }
     }
 
-    @PostMapping("/{entryId}/file")
+    @PostMapping(FILE_PATH)
     @ResponseStatus(CREATED)
     fun uploadSoundFile(@EntryExists @PathVariable entryId: Long,
         @RequestPart(required = true) soundFile: MultipartFile) {
@@ -58,7 +61,7 @@ class KashubianEntryController(
         uploader.upload(entryId, soundFile)
     }
 
-    @GetMapping("/{entryId}/file")
+    @GetMapping(FILE_PATH)
     fun downloadSoundFile(@EntryExists @PathVariable entryId: Long): ResponseEntity<ByteArray> {
         logger.info("File downloading by entry id: $entryId")
         return downloader.download(entryId).let {
@@ -68,7 +71,7 @@ class KashubianEntryController(
         }
     }
 
-    @PutMapping("/{entryId}")
+    @PutMapping(ENTRY_ID_PATH)
     fun update(
         @EntryExists @PathVariable entryId: Long,
         @Validated(OnUpdate::class) @RequestBody entry: KashubianEntryDto): ResponseDto {
@@ -77,14 +80,14 @@ class KashubianEntryController(
             .run { ResponseDto(this.id, this.meanings.map { it.id }) }
     }
 
-    @DeleteMapping("/{entryId}")
+    @DeleteMapping(ENTRY_ID_PATH)
     @ResponseStatus(NO_CONTENT)
     fun delete(@EntryExists @PathVariable entryId: Long) {
         logger.info("Entry id: $entryId deleting")
         remover.remove(entryId)
     }
 
-    @DeleteMapping("/{entryId}/file")
+    @DeleteMapping(FILE_PATH)
     @ResponseStatus(NO_CONTENT)
     fun deleteFile(@EntryExists @PathVariable entryId: Long) {
         logger.info("File entry id: $entryId deleting")

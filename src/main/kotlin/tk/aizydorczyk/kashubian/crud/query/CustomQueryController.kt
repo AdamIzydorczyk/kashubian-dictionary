@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.MEANING_ID
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType
 import tk.aizydorczyk.kashubian.crud.validator.MeaningExists
 
@@ -21,6 +22,6 @@ class CustomQueryController(val variationBySubtypeFinder: VariationBySubtypeFind
     fun getVariationExampleBySubType(@PathVariable partOfSpeechSubType: PartOfSpeechSubType): ObjectNode? =
         variationBySubtypeFinder.find(partOfSpeechSubType)
 
-    @GetMapping("meaning-hierarchy/{meaningId}")
+    @GetMapping("meaning-hierarchy/{$MEANING_ID}")
     fun findMeaningHierarchy(@MeaningExists @PathVariable meaningId: Long) = hierarchyFinder.find(meaningId)
 }

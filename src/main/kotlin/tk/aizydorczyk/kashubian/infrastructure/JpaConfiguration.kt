@@ -19,6 +19,10 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
 import org.springframework.orm.jpa.support.SharedEntityManagerBean
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.DEFAULT_ENTITY_MANAGER
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.DEFAULT_ENTITY_MANAGER_FACTORY
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.GRAPHQL_ENTITY_MANAGER
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.GRAPHQL_ENTITY_MANAGER_FACTORY
 import javax.persistence.EntityManagerFactory
 import javax.sql.DataSource
 
@@ -29,7 +33,7 @@ class JpaConfiguration(val jpaProperties: JpaProperties) {
 
     @Bean
     @Primary
-    @Qualifier("defaultEntityManagerFactory")
+    @Qualifier(DEFAULT_ENTITY_MANAGER_FACTORY)
     fun defaultEntityManagerFactory(
         builder: EntityManagerFactoryBuilder,
         dataSource: DataSource): LocalContainerEntityManagerFactoryBean? =
@@ -42,15 +46,15 @@ class JpaConfiguration(val jpaProperties: JpaProperties) {
 
     @Bean
     @Primary
-    @Qualifier("defaultEntityManager")
-    fun defaultEntityManager(@Qualifier("defaultEntityManagerFactory") entityManagerFactory: EntityManagerFactory): SharedEntityManagerBean? {
+    @Qualifier(DEFAULT_ENTITY_MANAGER)
+    fun defaultEntityManager(@Qualifier(DEFAULT_ENTITY_MANAGER_FACTORY) entityManagerFactory: EntityManagerFactory): SharedEntityManagerBean? {
         val bean = SharedEntityManagerBean()
         bean.entityManagerFactory = entityManagerFactory
         return bean
     }
 
     @Bean
-    @Qualifier("graphqlEntityManagerFactory")
+    @Qualifier(GRAPHQL_ENTITY_MANAGER_FACTORY)
     fun graphqlEntityManagerFactory(
         builder: EntityManagerFactoryBuilder,
         dataSource: DataSource): LocalContainerEntityManagerFactoryBean? =
@@ -72,8 +76,8 @@ class JpaConfiguration(val jpaProperties: JpaProperties) {
     )
 
     @Bean
-    @Qualifier("graphqlEntityManager")
-    fun graphqlEntityManager(@Qualifier("graphqlEntityManagerFactory") entityManagerFactory: EntityManagerFactory): SharedEntityManagerBean? =
+    @Qualifier(GRAPHQL_ENTITY_MANAGER)
+    fun graphqlEntityManager(@Qualifier(GRAPHQL_ENTITY_MANAGER_FACTORY) entityManagerFactory: EntityManagerFactory): SharedEntityManagerBean? =
         with(SharedEntityManagerBean()) {
             this.entityManagerFactory = entityManagerFactory
             this

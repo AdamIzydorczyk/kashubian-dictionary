@@ -6,6 +6,7 @@ import org.springframework.web.context.annotation.RequestScope
 import org.springframework.web.servlet.HandlerMapping
 import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryRepository
 import tk.aizydorczyk.kashubian.crud.extension.normalize
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.ENTRY_ID
 import javax.servlet.http.HttpServletRequest
 import javax.validation.Constraint
 import javax.validation.ConstraintValidator
@@ -42,7 +43,7 @@ class UnchangedNormalizedWordValidator : ConstraintValidator<UnchangedNormalized
     private fun isChangedNormalizedWordUnique(word: String): Boolean {
         val patchVariables =
             request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE) as LinkedHashMap<String, String>
-        val entryId = patchVariables["entryId"]?.toLong() ?: 0
+        val entryId = patchVariables[ENTRY_ID]?.toLong() ?: 0
         return repository.countEntriesByNormalizedWordExcludeEntryId(entryId, word.normalize()) < 1
     }
 
