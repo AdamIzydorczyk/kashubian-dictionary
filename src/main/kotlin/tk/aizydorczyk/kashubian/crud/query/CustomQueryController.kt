@@ -16,7 +16,8 @@ import tk.aizydorczyk.kashubian.crud.validator.MeaningExists
 @Validated
 @Api("Custom Query", tags = ["CustomQuery"])
 class CustomQueryController(val variationBySubtypeFinder: VariationBySubtypeFinder,
-    val hierarchyFinder: MeaningHierarchyFinder) {
+    val hierarchyFinder: MeaningHierarchyFinder,
+    val wordOfTheDayFinder: WordOfTheDayFinder) {
 
     @GetMapping("variation-example/{partOfSpeechSubType}")
     fun getVariationExampleBySubType(@PathVariable partOfSpeechSubType: PartOfSpeechSubType): ObjectNode? =
@@ -24,4 +25,7 @@ class CustomQueryController(val variationBySubtypeFinder: VariationBySubtypeFind
 
     @GetMapping("meaning-hierarchy/{$MEANING_ID}")
     fun findMeaningHierarchy(@MeaningExists @PathVariable meaningId: Long) = hierarchyFinder.find(meaningId)
+
+    @GetMapping("word-of-the-day")
+    fun findMeaningHierarchy() = wordOfTheDayFinder.find()
 }

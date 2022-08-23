@@ -94,4 +94,9 @@ class KashubianEntryRepository(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityMana
         return procedure.resultList.map { it as BigInteger }
     }
 
+    fun findAllPrioritizedEntryIds(): List<Long> =
+        entityManager.createQuery("select e.id from KashubianEntry e where e.priority = true",
+                Long::class.javaObjectType)
+            .resultList
+
 }

@@ -12,7 +12,6 @@ import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.context.properties.ConfigurationProperties
 import org.springframework.boot.context.properties.ConstructorBinding
 import org.springframework.boot.context.properties.EnableConfigurationProperties
-import org.springframework.http.MediaType
 import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryController
@@ -31,11 +30,12 @@ import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.InputStream
 import java.util.Locale
-import java.util.Random
 import java.util.concurrent.atomic.AtomicLong
 import kotlin.math.min
+import kotlin.random.Random
 import kotlin.streams.toList
 
+typealias JavaRandom = java.util.Random
 
 @Component
 @EnableConfigurationProperties(RandomDataInitializerProperties::class)
@@ -47,7 +47,7 @@ class RandomDataInitializer(
 
     val logger: Logger = LoggerFactory.getLogger(javaClass.simpleName)
 
-    private final val random = Random()
+    private final val random = JavaRandom()
     private final val faker = Faker(Locale(properties.language), random)
 
     override fun run(args: ApplicationArguments?) {
@@ -59,7 +59,7 @@ class RandomDataInitializer(
         val generatorCounter = AtomicLong(1L)
         val parameters =
             prepareGeneratorParameters(generatorCounter::get) {
-                exampleVariationsGenerator.variationsExamples().random(kotlin.random.Random(generatorCounter.get()))
+                exampleVariationsGenerator.variationsExamples().random(Random(generatorCounter.get()))
             }
 
         val generator = EasyRandom(parameters)
@@ -155,9 +155,9 @@ class FakeMultipartFile : MultipartFile {
 
     override fun getName(): String = "test"
 
-    override fun getOriginalFilename(): String = "test.txt"
+    override fun getOriginalFilename(): String = "test.mp3"
 
-    override fun getContentType(): String = MediaType.TEXT_PLAIN_VALUE
+    override fun getContentType(): String = "audio/mp3"
 
     override fun isEmpty(): Boolean = false
 
