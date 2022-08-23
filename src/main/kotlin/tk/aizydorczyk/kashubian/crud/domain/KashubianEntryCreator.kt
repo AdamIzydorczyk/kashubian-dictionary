@@ -3,8 +3,8 @@ package tk.aizydorczyk.kashubian.crud.domain
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
-import tk.aizydorczyk.kashubian.crud.extension.assignParentToAllAndPersist
 import tk.aizydorczyk.kashubian.crud.extension.normalize
+import tk.aizydorczyk.kashubian.crud.model.entity.ChildEntity
 import tk.aizydorczyk.kashubian.crud.model.entity.KashubianEntry
 import tk.aizydorczyk.kashubian.crud.model.entity.Variation
 import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.DEFAULT_ENTITY_MANAGER
@@ -44,4 +44,8 @@ class KashubianEntryCreator(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityManager
         }
     }
 
+}
+
+fun List<ChildEntity>.assignParentToAllAndPersist(parentId: Long, entityManager: EntityManager) {
+    this.onEach { it.setParentId(parentId) }.forEach(entityManager::persist)
 }

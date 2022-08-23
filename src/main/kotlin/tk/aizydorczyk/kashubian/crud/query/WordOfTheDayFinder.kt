@@ -18,8 +18,8 @@ class WordOfTheDayFinder(val kashubianEntryRepository: KashubianEntryRepository)
         val currentDay = now(systemUTC())
         val seed = currentDay.toEpochDay()
 
-        if (cache.get().seed == seed) {
-            return cache.get().wordOfTheDayId
+        if (cache.seed() == seed) {
+            return cache.wordOfTheDayId()
         }
 
         val wordOfTheDayId = kashubianEntryRepository.findAllPrioritizedEntryIds().ifEmpty { listOf(0L) }
@@ -32,3 +32,7 @@ class WordOfTheDayFinder(val kashubianEntryRepository: KashubianEntryRepository)
 
     data class CachedWordOfTheDay(val seed: Long, val wordOfTheDayId: Long)
 }
+
+fun AtomicReference<WordOfTheDayFinder.CachedWordOfTheDay>.seed() = this.get().seed
+
+fun AtomicReference<WordOfTheDayFinder.CachedWordOfTheDay>.wordOfTheDayId() = this.get().wordOfTheDayId

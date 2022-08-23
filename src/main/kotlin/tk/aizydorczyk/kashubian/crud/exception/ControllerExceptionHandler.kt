@@ -25,9 +25,11 @@ class ControllerExceptionHandler {
         val groupedErrors = ex.bindingResult.allErrors
             .groupBy { it.javaClass.simpleName }
         val objectErrors = groupedErrors["ViolationObjectError"].orEmpty()
-            .map { it as ObjectError }.map { it.defaultMessage.toString() }
+            .map { it as ObjectError }
+            .map { mapOf("message" to it.defaultMessage.toString(), "objectName" to it.objectName) }
         val fieldErrors = groupedErrors["ViolationFieldError"].orEmpty()
-            .map { it as FieldError }.map { mapOf("message" to it.defaultMessage.toString(), "fieldName" to it.field) }
+            .map { it as FieldError }
+            .map { mapOf("message" to it.defaultMessage.toString(), "fieldName" to it.field) }
         val errorDto = ValidationErrorDto(objectErrors = objectErrors, fieldErrors = fieldErrors)
         logger.info("Validation failed with errors: $errorDto")
         return errorDto

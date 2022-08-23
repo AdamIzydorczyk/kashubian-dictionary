@@ -79,20 +79,19 @@ class KashubianEntryRepository(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityMana
             Long::class.javaObjectType)
         .singleResult
 
-    private fun findByMeaningHierarchyElementByProcedure(meaningId: Long, procedureName: String): List<BigInteger> {
-        val procedure =
-            entityManager.createStoredProcedureQuery(procedureName)
-        procedure.registerStoredProcedureParameter(
-                1,
-                Void.TYPE,
-                ParameterMode.REF_CURSOR
-        )
-        procedure.registerStoredProcedureParameter(2, Long::class.java, ParameterMode.IN)
-        procedure.setParameter(2, meaningId)
-        procedure.execute()
+    private fun findByMeaningHierarchyElementByProcedure(meaningId: Long, procedureName: String): List<BigInteger> =
+        with(entityManager.createStoredProcedureQuery(procedureName)) {
+            registerStoredProcedureParameter(
+                    1,
+                    Void.TYPE,
+                    ParameterMode.REF_CURSOR
+            )
+            registerStoredProcedureParameter(2, Long::class.java, ParameterMode.IN)
+            setParameter(2, meaningId)
+            execute()
 
-        return procedure.resultList.map { it as BigInteger }
-    }
+            return resultList.map { it as BigInteger }
+        }
 
     fun findAllPrioritizedEntryIds(): List<Long> =
         entityManager.createQuery("select e.id from KashubianEntry e where e.priority = true",
