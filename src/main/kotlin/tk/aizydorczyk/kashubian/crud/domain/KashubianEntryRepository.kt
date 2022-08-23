@@ -93,15 +93,35 @@ class KashubianEntryRepository(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityMana
             return resultList.map { it as BigInteger }
         }
 
-    fun findAllPrioritizedEntryIds(): List<WordOfTheDayProjection> =
-        entityManager.createQuery("""
-            |select new tk.aizydorczyk.kashubian.crud.domain.WordOfTheDayProjection(e.id, e.word, m.definition) 
-            |from KashubianEntry e 
-            |join e.meanings m
-            |where e.priority = true""".trimMargin(),
-                WordOfTheDayProjection::class.java)
-            .resultList
+    fun findRandomWordOfTheDay(seed: Double): List<WordOfTheDayProjection> {
+        entityManager.createNativeQuery("select '' from setseed(:seed)")
+            .setParameter("seed", seed)
+            .singleResult
 
+        return entityManager.createNativeQuery(FIND_RANDOM_WORD_OF_THE_DAY_QUERY.trimMargin())
+            .resultList.map { it as Array<Any> }
+            .map { WordOfTheDayProjection((it[0] as BigInteger).toLong(), it[1] as String, it[2] as String) }
+    }
+
+    companion object {
+        const val FIND_RANDOM_WORD_OF_THE_DAY_QUERY = """
+                |select
+                |	random_word.id as id,
+                |	random_word.word as word,
+                |	m.definition as definition
+                |from
+                |	(
+                |	select
+                |		ke.id, ke.word
+                |	from
+                |		kashubian_entry ke
+                |	where
+                |		ke.priority = true offset floor(random() * ( select COUNT(*) from kashubian_entry))
+                |	limit 1) as random_word
+                |join meaning m on
+                |	m.kashubian_entry_id = random_word.id
+            """
+    }
 }
 
 data class WordOfTheDayProjection(val id: Long, val word: String, val definition: String)

@@ -38,7 +38,7 @@ create unique index sound_file_pk_unique_index on public.sound_file (id);
 -- public.meaning definition
 create table public.meaning (
 	id bigint not null,
-	definition text,
+	definition text not null,
 	origin text,
 	base_id bigint,
 	hyperonym_id bigint,

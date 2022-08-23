@@ -6,6 +6,7 @@ import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechType
 import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.IS_BLANK
 import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.IS_NULL
 import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.LENGTH_100_EXCEED
+import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.NOT_CONTAINS_AT_LEAST_ONE_MEANING
 import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.NOT_CONTAINS_ONLY_LETTERS_AND_SPACES
 import tk.aizydorczyk.kashubian.crud.validator.CorrectVariationJsonFormatByPartOfSpeechSubType
 import tk.aizydorczyk.kashubian.crud.validator.OnCreate
@@ -15,6 +16,7 @@ import tk.aizydorczyk.kashubian.crud.validator.UnchangedNormalizedWordToNonUniqu
 import tk.aizydorczyk.kashubian.crud.validator.UniqueNormalizedWord
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
+import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Pattern
 import javax.validation.constraints.Size
@@ -42,6 +44,7 @@ data class KashubianEntryDto(
     @field:Valid
     val variation: VariationDto?,
     @field:Valid
+    @field:NotEmpty(message = NOT_CONTAINS_AT_LEAST_ONE_MEANING, groups = [OnCreate::class, OnUpdate::class])
     val meanings: List<MeaningDto> = emptyList(),
     @field:Valid
     val others: List<OtherDto> = emptyList()

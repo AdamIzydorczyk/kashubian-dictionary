@@ -78,7 +78,7 @@ class RandomDataInitializer(
         variationWithTypesFunction: () -> Triple<ObjectNode?, PartOfSpeechSubType, PartOfSpeechType>): EasyRandomParameters {
 
         return with(EasyRandomParameters()) {
-            collectionSizeRange(0, 3)
+            collectionSizeRange(1, 3)
 
             randomize(FieldPredicates.named("variation")) {
                 variationWithTypesFunction.invoke().first?.let { VariationDto(it) }

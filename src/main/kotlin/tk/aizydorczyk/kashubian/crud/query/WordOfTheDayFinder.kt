@@ -8,7 +8,6 @@ import tk.aizydorczyk.kashubian.crud.domain.WordOfTheDayProjection
 import java.time.Clock.systemUTC
 import java.time.LocalDate.now
 import java.util.concurrent.atomic.AtomicReference
-import kotlin.random.Random
 
 @Component
 class WordOfTheDayFinder(val kashubianEntryRepository: KashubianEntryRepository) {
@@ -23,9 +22,7 @@ class WordOfTheDayFinder(val kashubianEntryRepository: KashubianEntryRepository)
             return cache.wordOfTheDay()
         }
 
-        val wordOfTheDay = kashubianEntryRepository.findAllPrioritizedEntryIds().let(::groupDefinitions)
-            .ifEmpty { listOf(WordOfTheDay(-1L, "", emptyList())) }
-            .random(Random(seed))
+        val wordOfTheDay = kashubianEntryRepository.findRandomWordOfTheDay("0.$seed".toDouble()).let(::groupDefinitions)
 
         cache.getAndSet(CachedWordOfTheDay(seed = seed, wordOfTheDay = wordOfTheDay))
         logger.info("Word of day for $currentDay selected and cached")
@@ -38,7 +35,7 @@ class WordOfTheDayFinder(val kashubianEntryRepository: KashubianEntryRepository)
                     entryId = it.key.first,
                     word = it.key.second,
                     definitions = it.value.map(WordOfTheDayProjection::definition))
-        }
+        }.ifEmpty { listOf(WordOfTheDay(-1L, "", emptyList())) }.first()
 
 
     data class CachedWordOfTheDay(val seed: Long, val wordOfTheDay: WordOfTheDay)
