@@ -4,7 +4,6 @@ import io.swagger.annotations.ApiModelProperty
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechType
 import tk.aizydorczyk.kashubian.crud.validator.CorrectVariationJsonFormatByPartOfSpeechSubType
-import tk.aizydorczyk.kashubian.crud.validator.EntryExists
 import tk.aizydorczyk.kashubian.crud.validator.OnCreate
 import tk.aizydorczyk.kashubian.crud.validator.OnUpdate
 import tk.aizydorczyk.kashubian.crud.validator.PartOfSpeechAndSubTypeConsistent
@@ -16,7 +15,6 @@ import javax.validation.constraints.NotNull
 import javax.validation.constraints.Pattern
 import javax.validation.constraints.Size
 
-@EntryExists(groups = [OnUpdate::class])
 @CorrectVariationJsonFormatByPartOfSpeechSubType(groups = [OnCreate::class, OnUpdate::class])
 @PartOfSpeechAndSubTypeConsistent(groups = [OnCreate::class, OnUpdate::class])
 data class KashubianEntryDto(
