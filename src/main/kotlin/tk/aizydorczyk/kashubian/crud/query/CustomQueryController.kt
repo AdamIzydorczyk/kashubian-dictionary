@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.MEANING_ID
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.MEANING_ID
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType
 import tk.aizydorczyk.kashubian.crud.validator.MeaningExists
 

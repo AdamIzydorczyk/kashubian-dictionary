@@ -3,6 +3,7 @@ package tk.aizydorczyk.kashubian.crud.validator
 import org.springframework.stereotype.Component
 import org.springframework.web.context.annotation.RequestScope
 import org.springframework.web.multipart.MultipartFile
+import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.NOT_AUDIO_EXTENSION_OR_MIME_TYPE
 import javax.validation.Constraint
 import javax.validation.ConstraintValidator
 import javax.validation.ConstraintValidatorContext
@@ -14,7 +15,7 @@ import kotlin.reflect.KClass
 @Target(allowedTargets = [AnnotationTarget.VALUE_PARAMETER])
 @Retention(AnnotationRetention.RUNTIME)
 annotation class AudioType(
-    val message: String = "NOT_AUDIO_EXTENSION_OR_MIME_TYPE",
+    val message: String = NOT_AUDIO_EXTENSION_OR_MIME_TYPE,
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [])
 

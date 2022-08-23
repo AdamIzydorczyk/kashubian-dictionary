@@ -9,7 +9,7 @@ import tk.aizydorczyk.kashubian.crud.model.entity.KashubianEntry
 import tk.aizydorczyk.kashubian.crud.model.entity.Meaning
 import tk.aizydorczyk.kashubian.crud.model.entity.Translation
 import tk.aizydorczyk.kashubian.crud.model.entity.Variation
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.DEFAULT_ENTITY_MANAGER
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.DEFAULT_ENTITY_MANAGER
 import javax.persistence.EntityManager
 
 @Component

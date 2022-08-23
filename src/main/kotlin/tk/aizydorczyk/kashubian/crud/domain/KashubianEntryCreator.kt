@@ -7,7 +7,7 @@ import tk.aizydorczyk.kashubian.crud.extension.assignParentToAllAndPersist
 import tk.aizydorczyk.kashubian.crud.extension.normalize
 import tk.aizydorczyk.kashubian.crud.model.entity.KashubianEntry
 import tk.aizydorczyk.kashubian.crud.model.entity.Variation
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.DEFAULT_ENTITY_MANAGER
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.DEFAULT_ENTITY_MANAGER
 import javax.persistence.EntityManager
 
 @Component

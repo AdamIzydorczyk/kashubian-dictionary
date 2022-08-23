@@ -36,6 +36,14 @@ import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.PLURAL_MASC
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.PREPOSITION
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.UNINFLECTIV_ADJECTIVE
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.UNINFLECTIV_NUMERAL
+import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.INCORRECT_ADJECTIVE_PRONOUN_VARIATION_JSON_FORMAT
+import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.INCORRECT_ADJECTIVE_VARIATION_JSON_FORMAT
+import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.INCORRECT_ADVERB_VARIATION_JSON_FORMAT
+import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.INCORRECT_NOUN_PRONOUN_VARIATION_JSON_FORMAT
+import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.INCORRECT_NOUN_VARIATION_JSON_FORMAT
+import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.INCORRECT_NUMERAL_VARIATION_JSON_FORMAT
+import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.INCORRECT_VERB_VARIATION_JSON_FORMAT
+import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.VARIATION_IS_NOT_NULL
 import javax.validation.Constraint
 import javax.validation.ConstraintValidator
 import javax.validation.ConstraintValidatorContext
@@ -74,7 +82,7 @@ class CorrectVariationJsonFormatByPartOfSpeechSubTypeValidator :
                         context,
                         dto.variation,
                         NounVariation::class.java,
-                        "INCORRECT_NOUN_VARIATION_JSON_FORMAT")
+                        INCORRECT_NOUN_VARIATION_JSON_FORMAT)
 
                 CONJUGATION_I,
                 CONJUGATION_II,
@@ -83,33 +91,33 @@ class CorrectVariationJsonFormatByPartOfSpeechSubTypeValidator :
                         context,
                         dto.variation,
                         VerbVariation::class.java,
-                        "INCORRECT_VERB_VARIATION_JSON_FORMAT")
+                        INCORRECT_VERB_VARIATION_JSON_FORMAT)
 
                 INFLECTIV_ADJECTIVE,
                 UNINFLECTIV_ADJECTIVE -> isVariationValid(
                         context,
                         dto.variation,
                         AdjectiveVariation::class.java,
-                        "INCORRECT_ADJECTIVE_VARIATION_JSON_FORMAT")
+                        INCORRECT_ADJECTIVE_VARIATION_JSON_FORMAT)
 
                 INFLECTIV_NUMERAL,
                 UNINFLECTIV_NUMERAL -> isVariationValid(
                         context,
                         dto.variation,
                         NumeralVariation::class.java,
-                        "INCORRECT_NUMERAL_VARIATION_JSON_FORMAT")
+                        INCORRECT_NUMERAL_VARIATION_JSON_FORMAT)
 
                 NOUN_PRONOUN -> isVariationValid(
                         context,
                         dto.variation,
                         NounPronounVariation::class.java,
-                        "INCORRECT_NOUN_PRONOUN_VARIATION_JSON_FORMAT")
+                        INCORRECT_NOUN_PRONOUN_VARIATION_JSON_FORMAT)
 
                 ADJECTIVE_PRONOUN -> isVariationValid(
                         context,
                         dto.variation,
                         AdjectivePronounVariation::class.java,
-                        "INCORRECT_ADJECTIVE_PRONOUN_VARIATION_JSON_FORMAT")
+                        INCORRECT_ADJECTIVE_PRONOUN_VARIATION_JSON_FORMAT)
 
                 NUMERAL_PRONOUN,
                 ADVERB_PRONOUN,
@@ -117,13 +125,13 @@ class CorrectVariationJsonFormatByPartOfSpeechSubTypeValidator :
                         context,
                         dto.variation,
                         AdverbVariation::class.java,
-                        "INCORRECT_ADVERB_VARIATION_JSON_FORMAT")
+                        INCORRECT_ADVERB_VARIATION_JSON_FORMAT)
 
                 PREPOSITION,
                 CONJUNCTION,
                 INTERJECTION,
                 PARTICIPLE -> dto.variation?.let {
-                    context.buildConstraintViolationWithTemplate("VARIATION_IS_NOT_NULL")
+                    context.buildConstraintViolationWithTemplate(VARIATION_IS_NOT_NULL)
                         .addConstraintViolation()
                     false
                 } ?: true

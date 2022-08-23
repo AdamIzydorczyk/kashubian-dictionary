@@ -6,9 +6,9 @@ import org.springframework.transaction.annotation.Propagation
 import org.springframework.transaction.annotation.Transactional
 import tk.aizydorczyk.kashubian.crud.model.entity.BaseEntity
 import tk.aizydorczyk.kashubian.crud.model.entity.SoundFile
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.DEFAULT_ENTITY_MANAGER
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.ENTRY_ID
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.MEANING_ID
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.DEFAULT_ENTITY_MANAGER
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.ENTRY_ID
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.MEANING_ID
 import java.math.BigInteger
 import javax.persistence.EntityManager
 import javax.persistence.ParameterMode

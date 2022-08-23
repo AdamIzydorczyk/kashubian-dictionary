@@ -22,9 +22,9 @@ import org.springframework.web.multipart.MultipartFile
 import tk.aizydorczyk.kashubian.crud.model.dto.KashubianEntryDto
 import tk.aizydorczyk.kashubian.crud.model.dto.ResponseDto
 import tk.aizydorczyk.kashubian.crud.model.mapper.KashubianEntryMapper
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.ENTRY_ID_PATH
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.FILE_PATH
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.KASHUBIAN_ENTRY_PATH
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.ENTRY_ID_PATH
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.FILE_PATH
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.KASHUBIAN_ENTRY_PATH
 import tk.aizydorczyk.kashubian.crud.validator.AudioType
 import tk.aizydorczyk.kashubian.crud.validator.EntryExists
 import tk.aizydorczyk.kashubian.crud.validator.OnCreate

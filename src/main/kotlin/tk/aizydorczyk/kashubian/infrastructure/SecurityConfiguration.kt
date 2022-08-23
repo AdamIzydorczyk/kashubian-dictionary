@@ -10,8 +10,8 @@ import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.FILE_PATH
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.KASHUBIAN_ENTRY_PATH
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.FILE_PATH
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.KASHUBIAN_ENTRY_PATH
 
 
 @Configuration

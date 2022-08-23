@@ -19,10 +19,10 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean
 import org.springframework.orm.jpa.support.SharedEntityManagerBean
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.DEFAULT_ENTITY_MANAGER
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.DEFAULT_ENTITY_MANAGER_FACTORY
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.GRAPHQL_ENTITY_MANAGER
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.GRAPHQL_ENTITY_MANAGER_FACTORY
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.DEFAULT_ENTITY_MANAGER
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.DEFAULT_ENTITY_MANAGER_FACTORY
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.GRAPHQL_ENTITY_MANAGER
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.GRAPHQL_ENTITY_MANAGER_FACTORY
 import javax.persistence.EntityManagerFactory
 import javax.sql.DataSource
 

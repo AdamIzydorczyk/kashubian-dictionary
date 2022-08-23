@@ -6,7 +6,8 @@ import org.springframework.web.context.annotation.RequestScope
 import org.springframework.web.servlet.HandlerMapping
 import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryRepository
 import tk.aizydorczyk.kashubian.crud.extension.normalize
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.ENTRY_ID
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.ENTRY_ID
+import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.NORMALIZED_WORD_CHANGED_TO_NON_UNIQUE
 import javax.servlet.http.HttpServletRequest
 import javax.validation.Constraint
 import javax.validation.ConstraintValidator
@@ -22,7 +23,7 @@ import kotlin.reflect.KClass
 @Target(allowedTargets = [FIELD])
 @Retention(RUNTIME)
 annotation class UnchangedNormalizedWordToNonUnique(
-    val message: String = "NORMALIZED_WORD_CHANGED_TO_NON_UNIQUE",
+    val message: String = NORMALIZED_WORD_CHANGED_TO_NON_UNIQUE,
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [])
 

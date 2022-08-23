@@ -5,6 +5,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.context.annotation.RequestScope
 import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryRepository
 import tk.aizydorczyk.kashubian.crud.extension.normalize
+import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.NORMALIZED_WORD_NOT_UNIQUE
 import javax.validation.Constraint
 import javax.validation.ConstraintValidator
 import javax.validation.ConstraintValidatorContext
@@ -19,7 +20,7 @@ import kotlin.reflect.KClass
 @Target(allowedTargets = [FIELD])
 @Retention(RUNTIME)
 annotation class UniqueNormalizedWord(
-    val message: String = "NORMALIZED_WORD_NOT_UNIQUE",
+    val message: String = NORMALIZED_WORD_NOT_UNIQUE,
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [])
 

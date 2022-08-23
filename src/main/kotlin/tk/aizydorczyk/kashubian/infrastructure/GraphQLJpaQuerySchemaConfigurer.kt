@@ -6,7 +6,7 @@ import com.introproventures.graphql.jpa.query.autoconfigure.GraphQLShemaRegistra
 import com.introproventures.graphql.jpa.query.schema.impl.GraphQLJpaSchemaBuilder
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.context.annotation.Configuration
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationsConstants.Companion.GRAPHQL_ENTITY_MANAGER
+import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.GRAPHQL_ENTITY_MANAGER
 import javax.persistence.EntityManager
 
 @Configuration

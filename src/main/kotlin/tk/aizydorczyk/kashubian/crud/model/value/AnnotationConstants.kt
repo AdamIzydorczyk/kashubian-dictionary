@@ -1,6 +1,6 @@
 package tk.aizydorczyk.kashubian.crud.model.value
 
-class AnnotationsConstants {
+class AnnotationConstants {
     companion object {
         const val DEFAULT_ENTITY_MANAGER = "defaultEntityManager"
         const val DEFAULT_ENTITY_MANAGER_FACTORY = "${DEFAULT_ENTITY_MANAGER}Factory"

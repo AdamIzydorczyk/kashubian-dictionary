@@ -3,6 +3,7 @@ package tk.aizydorczyk.kashubian.crud.validator
 import org.springframework.stereotype.Component
 import org.springframework.web.context.annotation.RequestScope
 import tk.aizydorczyk.kashubian.crud.model.dto.KashubianEntryDto
+import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.PART_OF_SPEECH_AND_SUBTYPE_INCONSISTENT
 import javax.validation.Constraint
 import javax.validation.ConstraintValidator
 import javax.validation.ConstraintValidatorContext
@@ -17,7 +18,7 @@ import kotlin.reflect.KClass
 @Target(allowedTargets = [CLASS])
 @Retention(RUNTIME)
 annotation class PartOfSpeechAndSubTypeConsistent(
-    val message: String = "PART_OF_SPEECH_AND_SUBTYPE_INCONSISTENT",
+    val message: String = PART_OF_SPEECH_AND_SUBTYPE_INCONSISTENT,
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [])
 
