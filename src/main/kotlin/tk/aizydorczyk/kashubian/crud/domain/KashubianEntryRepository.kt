@@ -93,9 +93,15 @@ class KashubianEntryRepository(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityMana
             return resultList.map { it as BigInteger }
         }
 
-    fun findAllPrioritizedEntryIds(): List<Long> =
-        entityManager.createQuery("select e.id from KashubianEntry e where e.priority = true",
-                Long::class.javaObjectType)
+    fun findAllPrioritizedEntryIds(): List<WordOfTheDayProjection> =
+        entityManager.createQuery("""
+            |select new tk.aizydorczyk.kashubian.crud.domain.WordOfTheDayProjection(e.id, e.word, m.definition) 
+            |from KashubianEntry e 
+            |join e.meanings m
+            |where e.priority = true""".trimMargin(),
+                WordOfTheDayProjection::class.java)
             .resultList
 
 }
+
+data class WordOfTheDayProjection(val id: Long, val word: String, val definition: String)
