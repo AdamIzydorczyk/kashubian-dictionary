@@ -27,5 +27,5 @@ class CustomQueryController(val variationBySubtypeFinder: VariationBySubtypeFind
     fun findMeaningHierarchy(@MeaningExists @PathVariable meaningId: Long) = hierarchyFinder.find(meaningId)
 
     @GetMapping("word-of-the-day")
-    fun findMeaningHierarchy() = wordOfTheDayFinder.find()
+    fun findWordOfTheDay() = wordOfTheDayFinder.find()
 }

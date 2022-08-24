@@ -135,3 +135,35 @@ return parents_ids;
 end;
 
 $function$;
+
+-- find_word_of_the_day function
+ create or replace
+function public.find_word_of_the_day(seed float8) returns REFCURSOR language plpgsql as $function$
+declare
+	random_result REFCURSOR;
+
+begin
+perform
+	setseed(seed);
+
+open random_result for
+select
+	random_word.id as id,
+	random_word.word as word,
+	m.definition as definition
+from
+	(
+	select
+		ke.id, ke.word
+	from
+		kashubian_entry ke
+	where
+		ke.priority = true offset floor(random() * ( select COUNT(*) from kashubian_entry where priority = true))
+	limit 1 ) as random_word
+join meaning m on
+	m.kashubian_entry_id = random_word.id;
+
+return random_result;
+end;
+
+$function$;

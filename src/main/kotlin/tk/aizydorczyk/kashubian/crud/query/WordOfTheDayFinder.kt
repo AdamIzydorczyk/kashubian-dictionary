@@ -3,6 +3,7 @@ package tk.aizydorczyk.kashubian.crud.query
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryRepository
 import tk.aizydorczyk.kashubian.crud.domain.WordOfTheDayProjection
 import java.time.Clock.systemUTC
@@ -14,6 +15,7 @@ class WordOfTheDayFinder(val kashubianEntryRepository: KashubianEntryRepository)
     val logger: Logger = LoggerFactory.getLogger(javaClass)
     val cache = AtomicReference(CachedWordOfTheDay(0L, WordOfTheDay(-1L, "", emptyList())))
 
+    @Transactional(readOnly = true)
     fun find(): WordOfTheDay {
         val currentDay = now(systemUTC())
         val seed = currentDay.toEpochDay()
