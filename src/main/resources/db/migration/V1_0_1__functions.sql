@@ -167,3 +167,19 @@ return random_result;
 end;
 
 $function$;
+
+-- validate_at_least_one_meaning_related_to_entry function
+create or replace
+function validate_at_least_one_meaning_related_to_entry() returns trigger as $$ begin if not exists (
+select
+	1
+from
+	meaning m
+where
+	m.kashubian_entry_id = new.id limit 1) then raise exception 'entry must have at least one meaning';
+end if;
+
+return new;
+end;
+
+$$ language plpgsql;

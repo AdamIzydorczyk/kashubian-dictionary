@@ -67,7 +67,7 @@ create table public."translation" (
 	normalized_ukrainian varchar(100),
 	meaning_id bigint not null,
 	constraint pk_translation primary key (id),
-	constraint fk_translation_meaning foreign key (meaning_id) references public."meaning"(id) on delete restrict on update restrict
+	constraint fk_translation_meaning foreign key (meaning_id) references public."meaning"(id) on delete cascade on update restrict
 );
 create index translation_meaning_id_index on public."translation" (meaning_id);
 create unique index translation_pk_unique_index on public."translation" (id);
