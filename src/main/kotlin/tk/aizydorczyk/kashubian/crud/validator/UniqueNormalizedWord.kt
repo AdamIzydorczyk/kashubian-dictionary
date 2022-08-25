@@ -31,11 +31,7 @@ class UniqueNormalizedWordValidator : ConstraintValidator<UniqueNormalizedWord, 
     @Autowired
     private lateinit var repository: KashubianEntryRepository
 
-    override fun isValid(word: String?, context: ConstraintValidatorContext?): Boolean {
-        return word?.let(this::isNormalizedWordNonExistOrEqual) ?: true
-    }
+    override fun isValid(word: String?, context: ConstraintValidatorContext?): Boolean =
+        word?.let { repository.notExistsEntriesByNormalizedWord(it.normalize()) } ?: true
 
-    private fun isNormalizedWordNonExistOrEqual(word: String): Boolean {
-        return repository.countEntriesByNormalizedWord(word.normalize()) < 1
-    }
 }

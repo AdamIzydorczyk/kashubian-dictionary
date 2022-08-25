@@ -44,8 +44,8 @@ create table public.meaning (
 	hyperonym_id bigint,
 	kashubian_entry_id bigint not null,
 	constraint pk_meaning primary key (id),
-	constraint fk_meaning_kashubian_entry foreign key (kashubian_entry_id) references public.kashubian_entry(id) on delete restrict on update restrict,
-	constraint fk_meaning_base foreign key (base_id) references public.meaning(id) on delete cascade on update restrict,
+	constraint fk_meaning_kashubian_entry foreign key (kashubian_entry_id) references public.kashubian_entry(id) on delete cascade on update restrict,
+	constraint fk_meaning_base foreign key (base_id) references public.meaning(id) on delete restrict on update restrict,
 	constraint fk_meaning_hyperonym foreign key (hyperonym_id) references public.meaning(id) on delete restrict on update restrict
 );
 create index meaning_kashubian_entry_id_index on public.meaning (kashubian_entry_id);
@@ -84,8 +84,8 @@ create table public.other (
 	other_id bigint not null,
 	kashubian_entry_id bigint not null,
 	constraint pk_other primary key (id),
-	constraint fk_other_kashubian_entry foreign key (kashubian_entry_id) references public.kashubian_entry(id) on delete restrict on update restrict,
-	constraint fk_other_other foreign key (other_id) references public.kashubian_entry(id) on delete cascade on update restrict
+	constraint fk_other_kashubian_entry foreign key (kashubian_entry_id) references public.kashubian_entry(id) on delete cascade on update restrict,
+	constraint fk_other_other foreign key (other_id) references public.kashubian_entry(id) on delete restrict on update restrict
 );
 create index other_kashubian_entry_id_index on public.other (kashubian_entry_id);
 create index other_other_id_index on public.other (other_id);
@@ -99,7 +99,7 @@ create table public.phrasal_verb (
 	phrasal_verb varchar(150) not null,
 	meaning_id bigint not null,
 	constraint pk_phrasal_verb primary key (id),
-	constraint fk_phrasal_verb_meaning foreign key (meaning_id) references public.meaning(id) on delete restrict on update restrict
+	constraint fk_phrasal_verb_meaning foreign key (meaning_id) references public.meaning(id) on delete cascade on update restrict
 );
 create index phrasal_verb_meaning_id_index on public.phrasal_verb (meaning_id);
 create unique index phrasal_verb_pk_unique_index on public.phrasal_verb (id);
@@ -112,7 +112,7 @@ create table public.proverb (
 	proverb varchar(150) not null,
 	meaning_id bigint not null,
 	constraint pk_proverb primary key (id),
-	constraint fk_proverb_meaning foreign key (meaning_id) references public.meaning(id) on delete restrict on update restrict
+	constraint fk_proverb_meaning foreign key (meaning_id) references public.meaning(id) on delete cascade on update restrict
 );
 create index proverb_meaning_id_index on public.proverb (meaning_id);
 create unique index proverb_pk_unique_index on public.proverb (id);
@@ -126,7 +126,7 @@ create table public.quote (
 	quote varchar(150) not null,
 	meaning_id bigint not null,
 	constraint pk_quote primary key (id),
-	constraint fk_quote_meaning foreign key (meaning_id) references public.meaning(id) on delete restrict on update restrict
+	constraint fk_quote_meaning foreign key (meaning_id) references public.meaning(id) on delete cascade on update restrict
 );
 create index quote_meaning_id_index on public.quote (meaning_id);
 create unique index quote_pk_unique_index on public.quote (id);
@@ -140,8 +140,8 @@ create table public.synonym (
 	synonym_id bigint not null,
 	meaning_id bigint not null,
 	constraint pk_synonym primary key (id),
-	constraint fk_synonym_synonym foreign key (synonym_id) references public.meaning(id) on delete cascade on update restrict,
-	constraint fk_synonym_synonym_meaning foreign key (meaning_id) references public.meaning(id) on delete restrict on update restrict
+	constraint fk_synonym_synonym foreign key (synonym_id) references public.meaning(id) on delete restrict on update restrict,
+	constraint fk_synonym_synonym_meaning foreign key (meaning_id) references public.meaning(id) on delete cascade on update restrict
 );
 create index synonym_synonym_id_index on public.synonym (synonym_id);
 create index synonym_meaning_id_index_ on public.synonym (meaning_id);
@@ -156,8 +156,8 @@ create table public.antonym (
 	antonym_id bigint not null,
 	meaning_id bigint not null,
 	constraint pk_antonym primary key (id),
-	constraint fk_antonym_meaning foreign key (meaning_id) references public.meaning(id) on delete restrict on update restrict,
-	constraint fk_antonym_antonym foreign key (antonym_id) references public.meaning(id) on delete cascade on update restrict
+	constraint fk_antonym_meaning foreign key (meaning_id) references public.meaning(id) on delete cascade on update restrict,
+	constraint fk_antonym_antonym foreign key (antonym_id) references public.meaning(id) on delete restrict on update restrict
 );
 create index antonym_meaning_id_index on public.antonym (meaning_id);
 create index antonym_antonym_id_index on public.antonym (antonym_id);
@@ -172,7 +172,7 @@ create table public.example (
 	note text,
 	meaning_id bigint not null,
 	constraint pk_example primary key (id),
-	constraint fk_example_meaning foreign key (meaning_id) references public.meaning(id) on delete restrict on update restrict
+	constraint fk_example_meaning foreign key (meaning_id) references public.meaning(id) on delete cascade on update restrict
 );
 create index example_meaning_id_index on public.example (meaning_id);
 create unique index example_pk_unique_index on public.example (id);

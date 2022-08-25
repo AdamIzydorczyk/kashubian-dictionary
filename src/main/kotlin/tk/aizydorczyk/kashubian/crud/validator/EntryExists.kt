@@ -32,11 +32,7 @@ class EntryExistsIdValidator : ConstraintValidator<EntryExists, Long?> {
     private lateinit var repository: KashubianEntryRepository
 
     override fun isValid(entryId: Long?, context: ConstraintValidatorContext?): Boolean {
-        return entryId?.let(this::isEntryExist) ?: true
-    }
-
-    private fun isEntryExist(entryId: Long): Boolean {
-        return repository.countEntriesById(entryId) > 0
+        return entryId?.let(repository::existsEntryById) ?: true
     }
 
 }

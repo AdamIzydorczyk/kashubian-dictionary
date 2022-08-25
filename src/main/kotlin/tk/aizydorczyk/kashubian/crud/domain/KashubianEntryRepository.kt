@@ -2,7 +2,7 @@ package tk.aizydorczyk.kashubian.crud.domain
 
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Repository
-import org.springframework.transaction.annotation.Propagation
+import org.springframework.transaction.annotation.Propagation.SUPPORTS
 import org.springframework.transaction.annotation.Transactional
 import tk.aizydorczyk.kashubian.crud.model.entity.BaseEntity
 import tk.aizydorczyk.kashubian.crud.model.entity.SoundFile
@@ -14,7 +14,7 @@ import javax.persistence.EntityManager
 import javax.persistence.ParameterMode
 
 @Repository
-@Transactional(propagation = Propagation.SUPPORTS)
+@Transactional(propagation = SUPPORTS)
 class KashubianEntryRepository(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityManager: EntityManager) {
 
     fun deleteEntryById(entryId: Long) {
@@ -47,29 +47,34 @@ class KashubianEntryRepository(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityMana
     fun findDerivativeMeaningsIds(meaningId: Long): List<BigInteger> =
         findByMeaningHierarchyElementByProcedure(meaningId, "find_derivative_meanings_ids")
 
-    fun countEntriesById(entryId: Long): Long =
-        entityManager.createQuery("select count(e) from KashubianEntry e where e.id = :$ENTRY_ID",
-                Long::class.javaObjectType)
+    fun existsEntryById(entryId: Long): Boolean =
+        entityManager.createQuery("select 1 from KashubianEntry e where e.id = :$ENTRY_ID")
             .setParameter(ENTRY_ID, entryId)
-            .singleResult
+            .setMaxResults(1)
+            .resultList
+            .isNotEmpty()
 
-    fun countMeaningsById(meaningId: Long): Long =
-        entityManager.createQuery("select count(m) from Meaning m where m.id = :$MEANING_ID",
-                Long::class.javaObjectType)
-            .setParameter(MEANING_ID, meaningId).singleResult
+    fun existsMeaningById(meaningId: Long): Boolean =
+        entityManager.createQuery("select 1 from Meaning m where m.id = :$MEANING_ID")
+            .setParameter(MEANING_ID, meaningId)
+            .setMaxResults(1)
+            .resultList
+            .isNotEmpty()
 
-    fun countEntriesByNormalizedWordExcludeEntryId(entryId: Long, word: String): Long =
-        entityManager.createQuery("select count(e) from KashubianEntry e where e.normalizedWord = :word and e.id != :$ENTRY_ID",
+    fun notExistsEntriesByNormalizedWordExcludeEntryId(entryId: Long, word: String): Boolean =
+        entityManager.createQuery("select 1 from KashubianEntry e where e.normalizedWord = :word and e.id != :$ENTRY_ID",
                 Long::class.javaObjectType)
             .setParameter("word", word)
             .setParameter(ENTRY_ID, entryId)
-            .singleResult
+            .setMaxResults(1)
+            .resultList
+            .isEmpty()
 
-    fun countEntriesByNormalizedWord(word: String): Long =
-        entityManager.createQuery("select count(e) from KashubianEntry e where e.normalizedWord = :word",
-                Long::class.javaObjectType)
+    fun notExistsEntriesByNormalizedWord(word: String): Boolean =
+        entityManager.createQuery("select 1 from KashubianEntry e where e.normalizedWord = :word")
             .setParameter("word", word)
-            .singleResult
+            .setMaxResults(1)
+            .resultList.isEmpty()
 
     fun <EntityType : BaseEntity> findByTypeAndIds(type: Class<EntityType>, ids: List<Number>): List<EntityType> =
         entityManager.createQuery("select e from ${type.simpleName} e where e.id in (:ids)",

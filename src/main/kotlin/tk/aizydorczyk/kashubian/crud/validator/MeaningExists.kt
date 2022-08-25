@@ -31,11 +31,8 @@ class MeaningExistsValidator : ConstraintValidator<MeaningExists, Long?> {
     @Autowired
     private lateinit var repository: KashubianEntryRepository
 
-    override fun isValid(meaningId: Long?, context: ConstraintValidatorContext?): Boolean {
-        return meaningId?.let(this::isMeaningExist) ?: true
-    }
+    override fun isValid(meaningId: Long?, context: ConstraintValidatorContext?): Boolean =
+        meaningId?.let(repository::existsMeaningById) ?: true
 
-    private fun isMeaningExist(meaningId: Long): Boolean {
-        return repository.countMeaningsById(meaningId) > 0
-    }
+
 }

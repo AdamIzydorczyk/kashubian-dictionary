@@ -1,7 +1,7 @@
 -- remove_meaning_related function
-create or replace
-function remove_meaning_related() returns trigger as $$ begin
-update
+create or replace function remove_meaning_related() returns trigger as $$
+begin
+	update
 	public.meaning
 set
 	"base_id" = null
@@ -18,80 +18,70 @@ where
 return old;
 end;
 
-$$ language 'plpgsql';
+$$ language plpgsql;
 
 -- find_derivative_meanings_ids function
-create or replace
-function public.find_derivative_meanings_ids(meaning_id bigint) returns REFCURSOR language plpgsql as $function$
-declare
-	childs_ids REFCURSOR;
-
-begin open childs_ids for with recursive childs as (
-select
-	meaning_id as id
+create or replace function public.find_derivative_meanings_ids(meaning_id bigint) returns refcursor as $$ declare childs_ids refcursor;
+begin
+	open childs_ids for with recursive childs as (
+	select
+		meaning_id as id
 union all
-select
-	m.id::integer
-from
-	meaning as m
-join childs on
-	childs.id = m.base_id ) (
-select
-	id
-from
-	childs offset 1);
+	select
+		m.id::integer
+	from
+		meaning as m
+	join childs on
+		childs.id = m.base_id ) (
+	select
+		id
+	from
+		childs offset 1);
 
 return childs_ids;
 end;
 
-$function$ ;
+$$ language plpgsql;
 
 -- find_hyponyms_ids function
-create or replace
-function public.find_hyponym_ids(meaning_id bigint) returns REFCURSOR language plpgsql as $function$
-declare
-	childs_ids REFCURSOR;
-
-begin open childs_ids for with recursive childs as (
-select
-	meaning_id as id
+create or replace function public.find_hyponym_ids(meaning_id bigint) returns refcursor as $$ declare childs_ids refcursor;
+begin
+	open childs_ids for with recursive childs as (
+	select
+		meaning_id as id
 union all
-select
-	m.id::integer
-from
-	meaning as m
-join childs on
-	childs.id = m.hyperonym_id ) (
-select
-	id
-from
-	childs offset 1);
+	select
+		m.id::integer
+	from
+		meaning as m
+	join childs on
+		childs.id = m.hyperonym_id ) (
+	select
+		id
+	from
+		childs offset 1);
 
 return childs_ids;
 end;
 
-$function$;
+$$ language plpgsql;
 
 -- find_base_meanings_ids function
-create or replace
-function public.find_base_meanings_ids(meaning_id bigint) returns REFCURSOR language plpgsql as $function$
-declare
-	parents_ids REFCURSOR;
-
-begin open parents_ids for with recursive pl(id, base_id) as (
-select
-	id,
-	base_id
-from
-	meaning
+create or replace function public.find_base_meanings_ids(meaning_id bigint) returns refcursor as $$ declare parents_ids refcursor;
+begin
+	open parents_ids for with recursive pl(id,
+	base_id) as (
+	select
+		id, base_id
+	from
+		meaning
 union
-select
-	pl.id,
-	meaning.base_id
-from
-	pl
-join meaning on
-	pl.base_id = meaning.id )
+	select
+		pl.id, meaning.base_id
+	from
+		pl
+	join meaning on
+		pl.base_id = meaning.id )
 select
 	base_id
 from
@@ -99,31 +89,28 @@ from
 where
 	id = meaning_id
 	and base_id is not null;
+
 return parents_ids;
 end;
 
-$function$;
+$$ language plpgsql;
 
 -- find_base_meanings_ids function
-create or replace
-function public.find_hyperonyms_ids(meaning_id bigint) returns REFCURSOR language plpgsql as $function$
-declare
-	parents_ids REFCURSOR;
-
-begin open parents_ids for with recursive pl(id, hyperonym_id) as (
-select
-	id,
-	hyperonym_id
-from
-	meaning
+create or replace function public.find_hyperonyms_ids(meaning_id bigint) returns refcursor as $$ declare parents_ids refcursor;
+begin
+	open parents_ids for with recursive pl(id,
+	hyperonym_id) as (
+	select
+		id, hyperonym_id
+	from
+		meaning
 union
-select
-	pl.id,
-	meaning.hyperonym_id
-from
-	pl
-join meaning on
-	pl.hyperonym_id = meaning.id )
+	select
+		pl.id, meaning.hyperonym_id
+	from
+		pl
+	join meaning on
+		pl.hyperonym_id = meaning.id )
 select
 	hyperonym_id
 from
@@ -131,20 +118,16 @@ from
 where
 	id = meaning_id
 	and hyperonym_id is not null;
+
 return parents_ids;
 end;
 
-$function$;
+$$ language plpgsql;
 
 -- find_word_of_the_day function
- create or replace
-function public.find_word_of_the_day(seed float8) returns REFCURSOR language plpgsql as $function$
-declare
-	random_result REFCURSOR;
-
+create or replace function public.find_word_of_the_day(seed float8) returns refcursor as $$ declare random_result refcursor;
 begin
-perform
-	setseed(seed);
+	perform setseed(seed);
 
 open random_result for
 select
@@ -158,7 +141,7 @@ from
 	from
 		kashubian_entry ke
 	where
-		ke.priority = true offset floor(random() * ( select COUNT(*) from kashubian_entry where priority = true))
+		ke.priority = true offset floor(random() * ( select count(*) from kashubian_entry where priority = true))
 	limit 1 ) as random_word
 join meaning m on
 	m.kashubian_entry_id = random_word.id;
@@ -166,17 +149,50 @@ join meaning m on
 return random_result;
 end;
 
-$function$;
+$$ language plpgsql;
 
 -- validate_at_least_one_meaning_related_to_entry function
-create or replace
-function validate_at_least_one_meaning_related_to_entry() returns trigger as $$ begin if not exists (
-select
-	1
-from
-	meaning m
-where
-	m.kashubian_entry_id = new.id limit 1) then raise exception 'entry must have at least one meaning';
+create or replace function validate_on_entry_insert_at_least_one_meaning_related() returns trigger as $$
+begin
+	if not exists (
+		select
+    		1
+    	from
+    		meaning m
+    	where
+    		m.kashubian_entry_id = new.id
+	limit 1) then raise exception 'entry must have at least one meaning';
+end if;
+
+return new;
+end;
+
+$$ language plpgsql;
+
+-- validate_at_least_one_meaning_related_to_entry function
+create or replace function validate_on_meaning_delete_at_least_one_meaning_related() returns trigger as $$
+begin
+	if
+	not exists (
+		select
+    		1
+    	from
+    		meaning m
+    	where
+    		m.kashubian_entry_id = old.kashubian_entry_id
+    	limit 1
+	)
+	and
+	exists (
+		select
+    		1
+    	from
+    		kashubian_entry ke
+    	where
+    		ke.id = old.kashubian_entry_id
+    	limit 1
+	)
+	then raise exception 'entry must have at least one meaning';
 end if;
 
 return new;

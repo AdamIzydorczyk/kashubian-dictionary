@@ -45,7 +45,7 @@ class UnchangedNormalizedWordValidator : ConstraintValidator<UnchangedNormalized
         val patchVariables =
             request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE) as LinkedHashMap<String, String>
         val entryId = patchVariables[ENTRY_ID]?.toLong() ?: 0
-        return repository.countEntriesByNormalizedWordExcludeEntryId(entryId, word.normalize()) < 1
+        return repository.notExistsEntriesByNormalizedWordExcludeEntryId(entryId, word.normalize())
     }
 
 
