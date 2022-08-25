@@ -32,7 +32,7 @@ class WordOfTheDayFinder(val kashubianEntryRepository: KashubianEntryRepository)
     }
 
     private fun groupDefinitions(wordOfTheDayProjections: List<WordOfTheDayProjection>) =
-        wordOfTheDayProjections.groupBy { Pair(it.id, it.word) }.map {
+        wordOfTheDayProjections.groupBy { Pair(it.entryId, it.word) }.map {
             WordOfTheDay(
                     entryId = it.key.first,
                     word = it.key.second,

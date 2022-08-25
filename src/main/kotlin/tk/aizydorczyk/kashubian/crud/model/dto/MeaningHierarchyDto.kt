@@ -1,9 +1,9 @@
 package tk.aizydorczyk.kashubian.crud.model.dto
 
-import java.math.BigInteger
+import tk.aizydorczyk.kashubian.crud.domain.MeaningHierarchyElement
 
 data class MeaningHierarchyDto(
-    val derivativeMeaningsIds: List<BigInteger>,
-    val baseMeaningsIds: List<BigInteger>,
-    val hyperonymsIds: List<BigInteger>,
-    val hyponymsIds: List<BigInteger>)
+    val derivativeMeaningsIds: List<MeaningHierarchyElement>,
+    val baseMeaningsIds: List<MeaningHierarchyElement>,
+    val hyperonymsIds: List<MeaningHierarchyElement>,
+    val hyponymsIds: List<MeaningHierarchyElement>)

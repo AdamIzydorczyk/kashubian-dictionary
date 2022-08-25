@@ -21,22 +21,36 @@ end;
 $$ language plpgsql;
 
 -- find_derivative_meanings_ids function
-create or replace function public.find_derivative_meanings_ids(meaning_id bigint) returns refcursor as $$ declare childs_ids refcursor;
-begin
-	open childs_ids for with recursive childs as (
-	select
-		meaning_id as id
+create or replace
+function public.find_derivative_meanings_ids(meaning_id bigint) returns refcursor as $$
+declare
+	childs_ids refcursor;
+
+begin open childs_ids for with recursive childs as (
+select
+	meaning_id::bigint as id,
+	''::text as definition,
+	-1::bigint as entry_id,
+	''::text as word
 union all
-	select
-		m.id::integer
-	from
-		meaning as m
-	join childs on
-		childs.id = m.base_id ) (
-	select
-		id
-	from
-		childs offset 1);
+select
+	m.id,
+	m.definition,
+	ke.id,
+	ke.word
+from
+	meaning as m
+join kashubian_entry ke on
+	ke.id = m.kashubian_entry_id
+join childs on
+	childs.id = m.base_id ) (
+select
+	id,
+	definition,
+	entry_id,
+	word
+from
+	childs offset 1);
 
 return childs_ids;
 end;
@@ -44,22 +58,35 @@ end;
 $$ language plpgsql;
 
 -- find_hyponyms_ids function
-create or replace function public.find_hyponym_ids(meaning_id bigint) returns refcursor as $$ declare childs_ids refcursor;
-begin
-	open childs_ids for with recursive childs as (
-	select
-		meaning_id as id
+create or replace function public.find_hyponym_ids(meaning_id bigint) returns refcursor as $$
+declare
+	childs_ids refcursor;
+
+begin open childs_ids for with recursive childs as (
+select
+	meaning_id::bigint as id,
+	''::text as definition,
+	-1::bigint as entry_id,
+	''::text as word
 union all
-	select
-		m.id::integer
-	from
-		meaning as m
-	join childs on
-		childs.id = m.hyperonym_id ) (
-	select
-		id
-	from
-		childs offset 1);
+select
+	m.id,
+	m.definition,
+	ke.id,
+	ke.word
+from
+	meaning as m
+join kashubian_entry ke on
+	ke.id = m.kashubian_entry_id
+join childs on
+	childs.id = m.hyperonym_id ) (
+select
+	id,
+	definition,
+	entry_id,
+	word
+from
+	childs offset 1);
 
 return childs_ids;
 end;
@@ -67,25 +94,46 @@ end;
 $$ language plpgsql;
 
 -- find_base_meanings_ids function
-create or replace function public.find_base_meanings_ids(meaning_id bigint) returns refcursor as $$ declare parents_ids refcursor;
-begin
-	open parents_ids for with recursive pl(id,
-	base_id) as (
-	select
-		id, base_id
-	from
-		meaning
-union
-	select
-		pl.id, meaning.base_id
-	from
-		pl
-	join meaning on
-		pl.base_id = meaning.id )
+create or replace
+function public.find_base_meanings_ids(meaning_id bigint) returns refcursor as $$
+declare
+	parents_ids refcursor;
+
+begin open parents_ids for with recursive parents(id, base_id, definition, entry_id, word) as (
 select
-	base_id
+	m.id,
+	m.base_id,
+	base.definition,
+	ke.id,
+	ke.word
 from
-	pl
+	meaning m
+join meaning base on
+	m.base_id = base.id
+join kashubian_entry ke on
+	ke.id = base.kashubian_entry_id
+union
+select
+	parents.id,
+	m.base_id,
+	base.definition,
+	ke.id,
+	ke.word
+from
+	parents
+join meaning m on
+	parents.base_id = m.id
+join meaning base on
+	m.base_id = base.id
+join kashubian_entry ke on
+	ke.id = base.kashubian_entry_id )
+select
+	base_id,
+	definition,
+	entry_id,
+	word
+from
+	parents
 where
 	id = meaning_id
 	and base_id is not null;
@@ -96,25 +144,46 @@ end;
 $$ language plpgsql;
 
 -- find_base_meanings_ids function
-create or replace function public.find_hyperonyms_ids(meaning_id bigint) returns refcursor as $$ declare parents_ids refcursor;
-begin
-	open parents_ids for with recursive pl(id,
-	hyperonym_id) as (
-	select
-		id, hyperonym_id
-	from
-		meaning
-union
-	select
-		pl.id, meaning.hyperonym_id
-	from
-		pl
-	join meaning on
-		pl.hyperonym_id = meaning.id )
+create or replace
+function public.find_hyperonyms_ids(meaning_id bigint) returns refcursor as $$
+declare
+	parents_ids refcursor;
+
+begin open parents_ids for with recursive parents(id, hyperonym_id, definition, entry_id, word) as (
 select
-	hyperonym_id
+	m.id,
+	m.hyperonym_id,
+	hyperonym.definition,
+	ke.id,
+	ke.word
 from
-	pl
+	meaning m
+join meaning hyperonym on
+	m.hyperonym_id = hyperonym.id
+join kashubian_entry ke on
+	ke.id = hyperonym.kashubian_entry_id
+union
+select
+	parents.id,
+	m.hyperonym_id,
+	hyperonym.definition,
+	ke.id,
+	ke.word
+from
+	parents
+join meaning m on
+	parents.hyperonym_id = m.id
+join meaning hyperonym on
+	m.hyperonym_id = hyperonym.id
+join kashubian_entry ke on
+	ke.id = hyperonym.kashubian_entry_id )
+select
+	hyperonym_id,
+	definition,
+	entry_id,
+	word
+from
+	parents
 where
 	id = meaning_id
 	and hyperonym_id is not null;
