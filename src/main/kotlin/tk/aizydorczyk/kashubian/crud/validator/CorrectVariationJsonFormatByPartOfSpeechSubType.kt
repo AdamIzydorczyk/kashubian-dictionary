@@ -119,14 +119,14 @@ class CorrectVariationJsonFormatByPartOfSpeechSubTypeValidator :
                         AdjectivePronounVariation::class.java,
                         INCORRECT_ADJECTIVE_PRONOUN_VARIATION_JSON_FORMAT)
 
-                NUMERAL_PRONOUN,
-                ADVERB_PRONOUN,
                 ADVERB -> isVariationValid(
                         context,
                         dto.variation,
                         AdverbVariation::class.java,
                         INCORRECT_ADVERB_VARIATION_JSON_FORMAT)
 
+                NUMERAL_PRONOUN,
+                ADVERB_PRONOUN,
                 PREPOSITION,
                 CONJUNCTION,
                 INTERJECTION,
