@@ -4,7 +4,6 @@ import org.hibernate.annotations.LazyCollection
 import org.hibernate.annotations.LazyCollectionOption
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechType
-import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.EnumType
@@ -37,11 +36,11 @@ data class KashubianEntry(
     val partOfSpeechSubType: PartOfSpeechSubType?,
     @Transient
     var variation: Variation?,
-    @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
+    @OneToMany
     @JoinColumn(name = "kashubian_entry_id", insertable = false, updatable = false, nullable = false)
     @LazyCollection(value = LazyCollectionOption.FALSE)
     val meanings: MutableList<Meaning> = mutableListOf(),
-    @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
+    @OneToMany
     @JoinColumn(name = "kashubian_entry_id", insertable = false, updatable = false, nullable = false)
     @LazyCollection(value = LazyCollectionOption.FALSE)
     val others: MutableList<Other> = mutableListOf()

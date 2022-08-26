@@ -1,6 +1,5 @@
 package tk.aizydorczyk.kashubian.crud.model.entity
 
-import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -26,22 +25,22 @@ data class Meaning(
     var base: Long? = null,
     @Column(name = "hyperonym_id")
     var hyperonym: Long? = null,
-    @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
+    @OneToMany
     @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
     val proverbs: MutableList<Proverb> = mutableListOf(),
-    @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
+    @OneToMany
     @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
     val phrasalVerbs: MutableList<PhrasalVerb> = mutableListOf(),
-    @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
+    @OneToMany
     @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
     val quotes: MutableList<Quote> = mutableListOf(),
-    @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
+    @OneToMany
     @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
     val examples: MutableList<Example> = mutableListOf(),
-    @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
+    @OneToMany
     @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
     val synonyms: MutableList<Synonym> = mutableListOf(),
-    @OneToMany(cascade = [CascadeType.REMOVE], orphanRemoval = true)
+    @OneToMany
     @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
     val antonyms: MutableList<Antonym> = mutableListOf(),
     @Column(name = "kashubian_entry_id")

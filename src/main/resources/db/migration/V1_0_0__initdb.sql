@@ -85,7 +85,7 @@ create table public.other (
 	kashubian_entry_id bigint not null,
 	constraint pk_other primary key (id),
 	constraint fk_other_kashubian_entry foreign key (kashubian_entry_id) references public.kashubian_entry(id) on delete cascade on update restrict,
-	constraint fk_other_other foreign key (other_id) references public.kashubian_entry(id) on delete restrict on update restrict
+	constraint fk_other_other foreign key (other_id) references public.kashubian_entry(id) on delete cascade on update restrict
 );
 create index other_kashubian_entry_id_index on public.other (kashubian_entry_id);
 create index other_other_id_index on public.other (other_id);
@@ -140,7 +140,7 @@ create table public.synonym (
 	synonym_id bigint not null,
 	meaning_id bigint not null,
 	constraint pk_synonym primary key (id),
-	constraint fk_synonym_synonym foreign key (synonym_id) references public.meaning(id) on delete restrict on update restrict,
+	constraint fk_synonym_synonym foreign key (synonym_id) references public.meaning(id) on delete cascade on update restrict,
 	constraint fk_synonym_synonym_meaning foreign key (meaning_id) references public.meaning(id) on delete cascade on update restrict
 );
 create index synonym_synonym_id_index on public.synonym (synonym_id);
@@ -157,7 +157,7 @@ create table public.antonym (
 	meaning_id bigint not null,
 	constraint pk_antonym primary key (id),
 	constraint fk_antonym_meaning foreign key (meaning_id) references public.meaning(id) on delete cascade on update restrict,
-	constraint fk_antonym_antonym foreign key (antonym_id) references public.meaning(id) on delete restrict on update restrict
+	constraint fk_antonym_antonym foreign key (antonym_id) references public.meaning(id) on delete cascade on update restrict
 );
 create index antonym_meaning_id_index on public.antonym (meaning_id);
 create index antonym_antonym_id_index on public.antonym (antonym_id);
