@@ -2,6 +2,8 @@ package tk.aizydorczyk.kashubian.crud.model.dto
 
 import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.IS_NULL
 import tk.aizydorczyk.kashubian.crud.validator.MeaningExists
+import tk.aizydorczyk.kashubian.crud.validator.NotInUpdatedEntryMeaningsHyperonims
+import tk.aizydorczyk.kashubian.crud.validator.NotInUpdatedEntryMeaningsHyponims
 import tk.aizydorczyk.kashubian.crud.validator.NotMeaningOfUpdatedEntry
 import tk.aizydorczyk.kashubian.crud.validator.OnCreate
 import tk.aizydorczyk.kashubian.crud.validator.OnUpdate
@@ -16,6 +18,8 @@ data class MeaningDto(
     val origin: String?,
     @MeaningExists(groups = [OnCreate::class, OnUpdate::class])
     @NotMeaningOfUpdatedEntry(groups = [OnUpdate::class])
+    @NotInUpdatedEntryMeaningsHyperonims(groups = [OnUpdate::class])
+    @NotInUpdatedEntryMeaningsHyponims(groups = [OnUpdate::class])
     var hyperonym: Long?,
     @field:Valid
     val proverbs: List<ProverbDto> = emptyList(),

@@ -35,10 +35,16 @@ class KashubianEntryRepository(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityMana
             .executeUpdate()
     }
 
-    fun findHyponymsIds(meaningId: Long): List<MeaningHierarchyElement> =
+    fun findMeaningIdsByEntryId(entryId: Long): List<Long> =
+        entityManager.createQuery("select m.id from Meaning m where m.kashubianEntry = :$ENTRY_ID",
+                Long::class.javaObjectType)
+            .setParameter(ENTRY_ID, entryId)
+            .resultList
+
+    fun findHyponyms(meaningId: Long): List<MeaningHierarchyElement> =
         findMeaningHierarchyElementByProcedure(meaningId, "find_hyponym_ids")
 
-    fun findHyperonymsIds(meaningId: Long): List<MeaningHierarchyElement> =
+    fun findHyperonyms(meaningId: Long): List<MeaningHierarchyElement> =
         findMeaningHierarchyElementByProcedure(meaningId, "find_hyperonyms_ids")
 
     fun findBases(entryId: Long): List<EntryHierarchyElement> =

@@ -11,7 +11,7 @@ class HyperonymsAndHyponymsFinder(val repository: KashubianEntryRepository) {
 
     @Transactional(readOnly = true)
     fun find(meaningId: Long): HyperonymsAndHyponymsDto = HyperonymsAndHyponymsDto(
-            hyperonyms = repository.findHyperonymsIds(meaningId),
-            hyponyms = repository.findHyponymsIds(meaningId))
+            hyperonyms = repository.findHyperonyms(meaningId),
+            hyponyms = repository.findHyponyms(meaningId))
 
 }
