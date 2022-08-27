@@ -36,6 +36,8 @@ data class KashubianEntry(
     val partOfSpeechSubType: PartOfSpeechSubType?,
     @Transient
     var variation: Variation?,
+    @Column(name = "base_id")
+    var base: Long? = null,
     @OneToMany
     @JoinColumn(name = "kashubian_entry_id", insertable = false, updatable = false, nullable = false)
     @LazyCollection(value = LazyCollectionOption.FALSE)

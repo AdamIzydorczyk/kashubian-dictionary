@@ -7,10 +7,13 @@ create table public.kashubian_entry (
 	part_of_speech_sub_type varchar(21) not null,
 	word varchar(100) not null,
 	normalized_word varchar(100) not null,
-	constraint pk_kashubian_entry primary key (id)
+	base_id bigint,
+	constraint pk_kashubian_entry primary key (id),
+	constraint fk_kashubian_entry_base foreign key (base_id) references public.kashubian_entry(id) on delete restrict on update restrict
 );
 create unique index kashubian_entry_pk_unique_index on public.kashubian_entry (id);
 create unique index kashubian_entry_normalized_word_unique_index on public.kashubian_entry (normalized_word);
+create index kashubian_entry_base_id_index on public.kashubian_entry (base_id);
 create sequence kashubian_entry_id_sequence;
 
 -- public.variation definition
@@ -40,16 +43,13 @@ create table public.meaning (
 	id bigint not null,
 	definition text not null,
 	origin text,
-	base_id bigint,
 	hyperonym_id bigint,
 	kashubian_entry_id bigint not null,
 	constraint pk_meaning primary key (id),
 	constraint fk_meaning_kashubian_entry foreign key (kashubian_entry_id) references public.kashubian_entry(id) on delete cascade on update restrict,
-	constraint fk_meaning_base foreign key (base_id) references public.meaning(id) on delete restrict on update restrict,
 	constraint fk_meaning_hyperonym foreign key (hyperonym_id) references public.meaning(id) on delete restrict on update restrict
 );
 create index meaning_kashubian_entry_id_index on public.meaning (kashubian_entry_id);
-create index meaning_base_id_index on public.meaning (base_id);
 create index meaning_hyperonym_id_index on public.meaning (hyperonym_id);
 create unique index meaning_pk_unique_index on public.meaning (id);
 create sequence meaning_id_sequence;

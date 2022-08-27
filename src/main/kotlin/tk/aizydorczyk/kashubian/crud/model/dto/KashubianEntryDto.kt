@@ -9,6 +9,8 @@ import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.LE
 import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.NOT_CONTAINS_AT_LEAST_ONE_MEANING
 import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.NOT_CONTAINS_ONLY_LETTERS_AND_SPACES
 import tk.aizydorczyk.kashubian.crud.validator.CorrectVariationJsonFormatByPartOfSpeechSubType
+import tk.aizydorczyk.kashubian.crud.validator.EntryExists
+import tk.aizydorczyk.kashubian.crud.validator.NotUpdatedEntry
 import tk.aizydorczyk.kashubian.crud.validator.OnCreate
 import tk.aizydorczyk.kashubian.crud.validator.OnUpdate
 import tk.aizydorczyk.kashubian.crud.validator.PartOfSpeechAndSubTypeConsistent
@@ -43,6 +45,9 @@ data class KashubianEntryDto(
     val partOfSpeechSubType: PartOfSpeechSubType?,
     @field:Valid
     val variation: VariationDto?,
+    @EntryExists(groups = [OnCreate::class, OnUpdate::class])
+    @NotUpdatedEntry(groups = [OnUpdate::class])
+    var base: Long?,
     @field:Valid
     @field:NotEmpty(message = NOT_CONTAINS_AT_LEAST_ONE_MEANING, groups = [OnCreate::class, OnUpdate::class])
     val meanings: List<MeaningDto> = emptyList(),

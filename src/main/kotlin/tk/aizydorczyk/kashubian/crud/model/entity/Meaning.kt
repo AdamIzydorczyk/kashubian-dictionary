@@ -21,8 +21,6 @@ data class Meaning(
     var translation: Translation?,
     val definition: String? = null,
     val origin: String? = null,
-    @Column(name = "base_id")
-    var base: Long? = null,
     @Column(name = "hyperonym_id")
     var hyperonym: Long? = null,
     @OneToMany

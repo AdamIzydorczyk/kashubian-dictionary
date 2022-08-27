@@ -36,16 +36,16 @@ class KashubianEntryRepository(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityMana
     }
 
     fun findHyponymsIds(meaningId: Long): List<MeaningHierarchyElement> =
-        findByMeaningHierarchyElementByProcedure(meaningId, "find_hyponym_ids")
+        findMeaningHierarchyElementByProcedure(meaningId, "find_hyponym_ids")
 
     fun findHyperonymsIds(meaningId: Long): List<MeaningHierarchyElement> =
-        findByMeaningHierarchyElementByProcedure(meaningId, "find_hyperonyms_ids")
+        findMeaningHierarchyElementByProcedure(meaningId, "find_hyperonyms_ids")
 
-    fun findBaseMeaningsIds(meaningId: Long): List<MeaningHierarchyElement> =
-        findByMeaningHierarchyElementByProcedure(meaningId, "find_base_meanings_ids")
+    fun findBases(entryId: Long): List<EntryHierarchyElement> =
+        findEntryHierarchyElementByProcedure(entryId, "find_bases")
 
-    fun findDerivativeMeaningsIds(meaningId: Long): List<MeaningHierarchyElement> =
-        findByMeaningHierarchyElementByProcedure(meaningId, "find_derivative_meanings_ids")
+    fun findDerivatives(entryId: Long): List<EntryHierarchyElement> =
+        findEntryHierarchyElementByProcedure(entryId, "find_derivatives")
 
     fun existsEntryById(entryId: Long): Boolean =
         entityManager.createQuery("select 1 from KashubianEntry e where e.id = :$ENTRY_ID")
@@ -92,8 +92,25 @@ class KashubianEntryRepository(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityMana
             Long::class.javaObjectType)
         .singleResult
 
-    private fun findByMeaningHierarchyElementByProcedure(meaningId: Long,
+    private fun findMeaningHierarchyElementByProcedure(meaningId: Long,
         procedureName: String): List<MeaningHierarchyElement> =
+        executeProcedure(meaningId, procedureName).map { it as Array<*> }
+            .map {
+                MeaningHierarchyElement(meaningId = (it[0] as BigInteger).toLong(),
+                        definition = it[1] as String,
+                        entryId = (it[2] as BigInteger).toLong(),
+                        word = it[3] as String)
+            }
+
+    private fun findEntryHierarchyElementByProcedure(entryId: Long,
+        procedureName: String): List<EntryHierarchyElement> = executeProcedure(entryId, procedureName)
+        .map { it as Array<*> }
+        .map {
+            EntryHierarchyElement(entryId = (it[0] as BigInteger).toLong(),
+                    word = it[1] as String)
+        }
+
+    private fun executeProcedure(id: Long, procedureName: String): MutableList<Any?> =
         with(entityManager.createStoredProcedureQuery(procedureName)) {
             registerStoredProcedureParameter(
                     1,
@@ -101,16 +118,10 @@ class KashubianEntryRepository(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityMana
                     ParameterMode.REF_CURSOR
             )
             registerStoredProcedureParameter(2, Long::class.java, ParameterMode.IN)
-            setParameter(2, meaningId)
+            setParameter(2, id)
             execute()
 
-            return resultList.map { it as Array<*> }
-                .map {
-                    MeaningHierarchyElement(meaningId = (it[0] as BigInteger).toLong(),
-                            definition = it[1] as String,
-                            entryId = (it[2] as BigInteger).toLong(),
-                            word = it[3] as String)
-                }
+            return resultList
         }
 
     fun findRandomWordOfTheDay(seed: Double): List<WordOfTheDayProjection> =
@@ -135,3 +146,4 @@ class KashubianEntryRepository(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityMana
 
 data class WordOfTheDayProjection(val entryId: Long, val word: String, val definition: String)
 data class MeaningHierarchyElement(val meaningId: Long, val definition: String, val entryId: Long, val word: String)
+data class EntryHierarchyElement(val entryId: Long, val word: String)

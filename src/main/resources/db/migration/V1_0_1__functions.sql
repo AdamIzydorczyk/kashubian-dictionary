@@ -1,13 +1,21 @@
--- remove_meaning_related function
-create or replace function remove_meaning_related() returns trigger as $$
+-- clear_kashubian_entry_base_id function
+create or replace function clear_kashubian_entry_base_id() returns trigger as $$
 begin
 	update
-	public.meaning
+	public.kashubian_entry
 set
 	"base_id" = null
 where
 	"base_id" = old.id;
 
+return old;
+end;
+
+$$ language plpgsql;
+
+-- clear_meaning_hyperonym_id function
+create or replace function clear_meaning_hyperonym_id() returns trigger as $$
+begin
 update
 	public.meaning
 set
@@ -22,32 +30,24 @@ $$ language plpgsql;
 
 -- find_derivative_meanings_ids function
 create or replace
-function public.find_derivative_meanings_ids(meaning_id bigint) returns refcursor as $$
+function public.find_derivatives(entry_id bigint) returns refcursor as $$
 declare
 	childs_ids refcursor;
 
 begin open childs_ids for with recursive childs as (
 select
-	meaning_id::bigint as id,
-	''::text as definition,
-	-1::bigint as entry_id,
+	entry_id::bigint as id,
 	''::text as word
 union all
 select
-	m.id,
-	m.definition,
 	ke.id,
 	ke.word
 from
-	meaning as m
-join kashubian_entry ke on
-	ke.id = m.kashubian_entry_id
+	kashubian_entry ke
 join childs on
-	childs.id = m.base_id ) (
+	childs.id = ke.base_id ) (
 select
 	id,
-	definition,
-	entry_id,
 	word
 from
 	childs offset 1);
@@ -95,47 +95,37 @@ $$ language plpgsql;
 
 -- find_base_meanings_ids function
 create or replace
-function public.find_base_meanings_ids(meaning_id bigint) returns refcursor as $$
+function public.find_bases(entry_id bigint) returns refcursor as $$
 declare
 	parents_ids refcursor;
 
-begin open parents_ids for with recursive parents(id, base_id, definition, entry_id, word) as (
+begin open parents_ids for with recursive parents(id, base_id, word) as (
 select
-	m.id,
-	m.base_id,
-	base.definition,
 	ke.id,
-	ke.word
+	ke.base_id,
+	base.word
 from
-	meaning m
-join meaning base on
-	m.base_id = base.id
-join kashubian_entry ke on
-	ke.id = base.kashubian_entry_id
+	kashubian_entry ke
+join kashubian_entry base on
+	ke.base_id = base.id
 union
 select
 	parents.id,
-	m.base_id,
-	base.definition,
-	ke.id,
-	ke.word
+	ke.base_id,
+	base.word
 from
 	parents
-join meaning m on
-	parents.base_id = m.id
-join meaning base on
-	m.base_id = base.id
 join kashubian_entry ke on
-	ke.id = base.kashubian_entry_id )
+	parents.base_id = ke.id
+join kashubian_entry base on
+	ke.base_id = base.id )
 select
 	base_id,
-	definition,
-	entry_id,
 	word
 from
 	parents
 where
-	id = meaning_id
+	id = entry_id
 	and base_id is not null;
 
 return parents_ids;
