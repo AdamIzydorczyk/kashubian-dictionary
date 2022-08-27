@@ -3,11 +3,10 @@ package tk.aizydorczyk.kashubian.crud.validator
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.web.context.annotation.RequestScope
-import org.springframework.web.servlet.HandlerMapping
+import org.springframework.web.servlet.HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE
 import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryRepository
-import tk.aizydorczyk.kashubian.crud.extension.normalize
 import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.ENTRY_ID
-import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.NORMALIZED_WORD_CHANGED_TO_NON_UNIQUE
+import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.MEANING_OF_UPDATED_ENTRY
 import javax.servlet.http.HttpServletRequest
 import javax.validation.Constraint
 import javax.validation.ConstraintValidator
@@ -19,17 +18,17 @@ import kotlin.reflect.KClass
 
 
 @MustBeDocumented
-@Constraint(validatedBy = [UnchangedNormalizedWordValidator::class])
+@Constraint(validatedBy = [NotMeaningOfUpdatedEntryValidator::class])
 @Target(allowedTargets = [FIELD])
 @Retention(RUNTIME)
-annotation class UnchangedNormalizedWordToNonUnique(
-    val message: String = NORMALIZED_WORD_CHANGED_TO_NON_UNIQUE,
+annotation class NotMeaningOfUpdatedEntry(
+    val message: String = MEANING_OF_UPDATED_ENTRY,
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [])
 
 @Component
 @RequestScope
-class UnchangedNormalizedWordValidator : ConstraintValidator<UnchangedNormalizedWordToNonUnique, String?> {
+class NotMeaningOfUpdatedEntryValidator : ConstraintValidator<NotMeaningOfUpdatedEntry, Long?> {
 
     @Autowired
     private lateinit var repository: KashubianEntryRepository
@@ -37,17 +36,16 @@ class UnchangedNormalizedWordValidator : ConstraintValidator<UnchangedNormalized
     @Autowired
     private lateinit var request: HttpServletRequest
 
-    override fun isValid(word: String?, context: ConstraintValidatorContext?): Boolean {
-        return word?.let(this::isChangedNormalizedWordUnique) ?: true
+    override fun isValid(meaningId: Long?, context: ConstraintValidatorContext?): Boolean {
+        return meaningId?.let(this::isMeaningOfUpdatedEntry) ?: true
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun isChangedNormalizedWordUnique(word: String): Boolean {
+    private fun isMeaningOfUpdatedEntry(meaningId: Long): Boolean {
         val patchVariables =
-            request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE) as LinkedHashMap<String, String>
+            request.getAttribute(URI_TEMPLATE_VARIABLES_ATTRIBUTE) as LinkedHashMap<String, String>
         val entryId = patchVariables[ENTRY_ID]?.toLong() ?: 0
-        return repository.notExistsEntriesByNormalizedWordExcludeEntryId(entryId, word.normalize())
+        return repository.notExistsMeaningByEntryIdAndMeaningId(entryId, meaningId)
     }
-
 
 }

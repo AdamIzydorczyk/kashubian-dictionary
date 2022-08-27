@@ -62,8 +62,7 @@ class KashubianEntryRepository(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityMana
             .isNotEmpty()
 
     fun notExistsEntriesByNormalizedWordExcludeEntryId(entryId: Long, word: String): Boolean =
-        entityManager.createQuery("select 1 from KashubianEntry e where e.normalizedWord = :word and e.id != :$ENTRY_ID",
-                Long::class.javaObjectType)
+        entityManager.createQuery("select 1 from KashubianEntry e where e.normalizedWord = :word and e.id != :$ENTRY_ID")
             .setParameter("word", word)
             .setParameter(ENTRY_ID, entryId)
             .setMaxResults(1)
@@ -74,7 +73,16 @@ class KashubianEntryRepository(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityMana
         entityManager.createQuery("select 1 from KashubianEntry e where e.normalizedWord = :word")
             .setParameter("word", word)
             .setMaxResults(1)
-            .resultList.isEmpty()
+            .resultList
+            .isEmpty()
+
+    fun notExistsMeaningByEntryIdAndMeaningId(entryId: Long, meaningId: Long): Boolean =
+        entityManager.createQuery("select 1 from Meaning m where m.id = :$MEANING_ID and m.kashubianEntry = :$ENTRY_ID")
+            .setParameter(MEANING_ID, meaningId)
+            .setParameter(ENTRY_ID, entryId)
+            .setMaxResults(1)
+            .resultList
+            .isEmpty()
 
     fun <EntityType : BaseEntity> findByTypeAndIds(type: Class<EntityType>, ids: List<Number>): List<EntityType> =
         entityManager.createQuery("select e from ${type.simpleName} e where e.id in (:ids)",
