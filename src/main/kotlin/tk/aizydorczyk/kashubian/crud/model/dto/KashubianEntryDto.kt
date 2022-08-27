@@ -10,6 +10,8 @@ import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.NO
 import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.NOT_CONTAINS_ONLY_LETTERS_AND_SPACES
 import tk.aizydorczyk.kashubian.crud.validator.CorrectVariationJsonFormatByPartOfSpeechSubType
 import tk.aizydorczyk.kashubian.crud.validator.EntryExists
+import tk.aizydorczyk.kashubian.crud.validator.HyperonimIdNotInUpdatedEntryMeaningsHyperonims
+import tk.aizydorczyk.kashubian.crud.validator.HyperonimIdsCannotRepeatedInMeanings
 import tk.aizydorczyk.kashubian.crud.validator.NotInUpdatedEntryBases
 import tk.aizydorczyk.kashubian.crud.validator.NotInUpdatedEntryDerivatives
 import tk.aizydorczyk.kashubian.crud.validator.NotUpdatedEntry
@@ -54,6 +56,8 @@ data class KashubianEntryDto(
     var base: Long?,
     @field:Valid
     @field:NotEmpty(message = NOT_CONTAINS_AT_LEAST_ONE_MEANING, groups = [OnCreate::class, OnUpdate::class])
+    @HyperonimIdNotInUpdatedEntryMeaningsHyperonims(groups = [OnUpdate::class])
+    @HyperonimIdsCannotRepeatedInMeanings(groups = [OnUpdate::class])
     val meanings: List<MeaningDto> = emptyList(),
     @field:Valid
     val others: List<OtherDto> = emptyList()

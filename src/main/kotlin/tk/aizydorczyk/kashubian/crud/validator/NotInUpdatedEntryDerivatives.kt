@@ -43,14 +43,14 @@ class NotInUpdatedEntryDerivativesValidator : ConstraintValidator<NotInUpdatedEn
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun isNotInUpdatedEntryDerivatives(entryId: Long): Boolean {
+    private fun isNotInUpdatedEntryDerivatives(newBaseId: Long): Boolean {
         val patchVariables =
             request.getAttribute(URI_TEMPLATE_VARIABLES_ATTRIBUTE) as LinkedHashMap<String, String>
         val updatedEntryId = patchVariables[ENTRY_ID]?.toLong() ?: 0
 
-        val derivativeIds = kashubianEntryRepository.findDerivatives(entryId).map { it.entryId }
+        val derivativeIds = kashubianEntryRepository.findDerivatives(updatedEntryId).map { it.entryId }
 
-        return updatedEntryId !in derivativeIds
+        return newBaseId !in derivativeIds
     }
 
 }

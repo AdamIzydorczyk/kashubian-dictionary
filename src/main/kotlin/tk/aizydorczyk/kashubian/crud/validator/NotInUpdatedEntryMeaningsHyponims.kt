@@ -43,7 +43,7 @@ class NotInUpdatedEntryMeaningsHyponimsValidator : ConstraintValidator<NotInUpda
     }
 
     @Suppress("UNCHECKED_CAST")
-    private fun isNotInUpdatedEntryMeaningsHyponims(meaningId: Long): Boolean {
+    private fun isNotInUpdatedEntryMeaningsHyponims(newHyperonimId: Long): Boolean {
         val patchVariables =
             request.getAttribute(URI_TEMPLATE_VARIABLES_ATTRIBUTE) as LinkedHashMap<String, String>
         val updatedEntryId = patchVariables[ENTRY_ID]?.toLong() ?: 0
@@ -52,7 +52,7 @@ class NotInUpdatedEntryMeaningsHyponimsValidator : ConstraintValidator<NotInUpda
             .map { kashubianEntryRepository.findHyponyms(it) }
             .flatten().map { it.meaningId }
 
-        return meaningId !in hyponimIds
+        return newHyperonimId !in hyponimIds
     }
 
 }

@@ -113,7 +113,8 @@ class RandomDataInitializer(
             }
 
             randomize(FieldPredicates.named("base")) {
-                repository.findByTypeAndIds(Meaning::class.java, generateEntitiesAmount(generatorCounter.invoke()))
+                repository.findByTypeAndIds(KashubianEntry::class.java,
+                        generateEntitiesAmount(generatorCounter.invoke()))
                     .firstOrNull()?.id
             }
 
