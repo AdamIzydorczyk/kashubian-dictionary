@@ -11,6 +11,7 @@ import javax.validation.constraints.NotNull
 
 data class MeaningDto(
     @field:Valid
+    @field:NotNull(message = IS_NULL, groups = [OnCreate::class, OnUpdate::class])
     val translation: TranslationDto?,
     @field:NotNull(message = IS_NULL, groups = [OnCreate::class, OnUpdate::class])
     val definition: String?,
