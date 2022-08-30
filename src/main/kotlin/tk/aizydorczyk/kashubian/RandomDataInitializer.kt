@@ -20,7 +20,6 @@ import tk.aizydorczyk.kashubian.crud.model.dto.AntonymDto
 import tk.aizydorczyk.kashubian.crud.model.dto.KashubianEntryDto
 import tk.aizydorczyk.kashubian.crud.model.dto.OtherDto
 import tk.aizydorczyk.kashubian.crud.model.dto.SynonymDto
-import tk.aizydorczyk.kashubian.crud.model.dto.VariationDto
 import tk.aizydorczyk.kashubian.crud.model.entity.KashubianEntry
 import tk.aizydorczyk.kashubian.crud.model.entity.Meaning
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType
@@ -81,7 +80,7 @@ class RandomDataInitializer(
             collectionSizeRange(1, 3)
 
             randomize(FieldPredicates.named("variation")) {
-                variationWithTypesFunction.invoke().first?.let { VariationDto(it) }
+                variationWithTypesFunction.invoke().first
             }
 
             randomize(PartOfSpeechType::class.java) {

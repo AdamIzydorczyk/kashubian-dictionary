@@ -1,0 +1,9 @@
+type Query {
+    findAllSearchKashubianEntries: [KashubianEntry]
+}
+
+type KashubianEntry {
+    id: ID
+    word: String
+    variation: String
+}

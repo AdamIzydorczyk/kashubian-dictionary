@@ -2,11 +2,11 @@ package tk.aizydorczyk.kashubian.crud.validator
 
 import com.fasterxml.jackson.databind.JsonMappingException
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ObjectNode
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.web.context.annotation.RequestScope
 import tk.aizydorczyk.kashubian.crud.model.dto.KashubianEntryDto
-import tk.aizydorczyk.kashubian.crud.model.dto.VariationDto
 import tk.aizydorczyk.kashubian.crud.model.json.AdjectivePronounVariation
 import tk.aizydorczyk.kashubian.crud.model.json.AdjectiveVariation
 import tk.aizydorczyk.kashubian.crud.model.json.AdverbVariation
@@ -141,10 +141,10 @@ class CorrectVariationJsonFormatByPartOfSpeechSubTypeValidator :
 
 
     private fun <T> isVariationValid(context: ConstraintValidatorContext,
-        variation: VariationDto?,
+        variation: ObjectNode?,
         jsonModelType: Class<T>,
-        message: String): Boolean = variation?.let { dto ->
-        dto.variation?.let {
+        message: String): Boolean = variation?.let { value ->
+        value.let {
             try {
                 objectMapper.treeToValue(it, jsonModelType)
                 true

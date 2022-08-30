@@ -1,12 +1,10 @@
 package tk.aizydorczyk.kashubian.crud.domain
 
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Propagation.SUPPORTS
 import org.springframework.transaction.annotation.Transactional
 import tk.aizydorczyk.kashubian.crud.model.entity.BaseEntity
 import tk.aizydorczyk.kashubian.crud.model.entity.SoundFile
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.DEFAULT_ENTITY_MANAGER
 import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.ENTRY_ID
 import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.MEANING_ID
 import java.math.BigInteger
@@ -15,7 +13,7 @@ import javax.persistence.ParameterMode
 
 @Repository
 @Transactional(propagation = SUPPORTS)
-class KashubianEntryRepository(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityManager: EntityManager) {
+class KashubianEntryRepository(val entityManager: EntityManager) {
 
     fun deleteEntryById(entryId: Long) {
         entityManager.createQuery("delete from KashubianEntry where id = :$ENTRY_ID")

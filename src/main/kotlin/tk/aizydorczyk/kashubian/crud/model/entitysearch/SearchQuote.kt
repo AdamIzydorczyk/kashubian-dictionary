@@ -20,16 +20,4 @@ data class SearchQuote(
     @ManyToOne
     @JoinColumn(name = "meaning_id")
     val meaning: SearchMeaning
-) {
-    override fun hashCode() = id.hashCode()
-    override fun equals(other: Any?): Boolean {
-        if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as SearchQuote
-
-        if (id != other.id) return false
-
-        return true
-    }
-}
+)
