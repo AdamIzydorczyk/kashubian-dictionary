@@ -1,5 +1,7 @@
 package tk.aizydorczyk.kashubian.crud.model.entitysearch
 
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.kashubianentry.SearchKashubianEntry
+
 data class SearchMeaning(
     val id: Long,
     val translation: Set<SearchTranslation> = emptySet(),

@@ -1,6 +1,9 @@
-package tk.aizydorczyk.kashubian.crud.model.entitysearch
+package tk.aizydorczyk.kashubian.crud.model.entitysearch.kashubianentry
 
 import com.fasterxml.jackson.databind.node.ObjectNode
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.SearchMeaning
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.SearchOther
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.SearchSoundFile
 
 data class SearchKashubianEntry(
     val id: Long?,

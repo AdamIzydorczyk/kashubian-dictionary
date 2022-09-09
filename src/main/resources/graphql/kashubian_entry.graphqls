@@ -1,9 +1,38 @@
+scalar JSON
+
+input KashubianEntryCriteriaExpression{
+    id: NumericCriteria
+    word: StringCriteria
+}
+
+input NumericCriteria{
+    EQ: Int
+}
+
+input StringCriteria{
+    EQ: String
+    LIKE: String
+    _LIKE: String
+}
+
+input Page {
+    start: Int
+    limit: Int
+}
+
 type Query {
-    findAllSearchKashubianEntries: [KashubianEntry]
+    findAllSearchKashubianEntries(page: Page, where: KashubianEntryCriteriaExpression): KashubianEntryPaged
+}
+
+type KashubianEntryPaged{
+    pages: Int
+    total: Int
+    select: [KashubianEntry]
 }
 
 type KashubianEntry {
     id: ID
     word: String
-    variation: String
+    variation: JSON
 }
+

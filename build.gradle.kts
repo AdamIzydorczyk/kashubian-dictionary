@@ -27,7 +27,7 @@ configurations {
 }
 
 dependencies {
-    implementation("org.flywaydb:flyway-core:8.5.13")
+    implementation("org.flywaydb:flyway-core:9.2.0")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-jooq")
@@ -37,7 +37,7 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-graphql")
     implementation("org.springframework.boot:spring-boot-starter-jooq:2.7.3")
     implementation("org.springframework.boot:spring-boot-starter-log4j2")
-    implementation("com.vladmihalcea:hibernate-types-4:2.17.3")
+    implementation("com.vladmihalcea:hibernate-types-4:2.18.0")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.mapstruct:mapstruct:1.5.2.Final")
     kapt("org.mapstruct:mapstruct-processor:1.5.2.Final")
@@ -48,6 +48,7 @@ dependencies {
     implementation("org.postgresql:postgresql:42.5.0")
     implementation("io.springfox:springfox-boot-starter:3.0.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("com.graphql-java:graphql-java-extended-scalars:18.1")
     implementation("org.jeasy:easy-random-core:5.0.0")
     implementation("com.github.javafaker:javafaker:1.0.2")
     implementation("org.yaml:snakeyaml:1.28")
