@@ -5,10 +5,10 @@ data class KashubianEntryCriteriaExpression(
     val note: StringCriteria?,
     val word: StringCriteria?,
     val normalizedWord: StringCriteria?,
-    val priority: BooleanCriteria,
-    val soundFile: SoundFileCriteriaExpression,
-    val others: OthersCriteriaExpression,
-    val meanings: MeaningsCriteriaExpression)
+    val priority: BooleanCriteria?,
+    val soundFile: SoundFileCriteriaExpression?,
+    val others: OthersCriteriaExpression?,
+    val meanings: MeaningsCriteriaExpression?)
 
 data class SoundFileCriteriaExpression(
     val id: NumericCriteria?,

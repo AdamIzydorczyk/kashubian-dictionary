@@ -6,6 +6,7 @@ import tk.aizydorczyk.kashubian.crud.model.entitysearch.SearchOther
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.SearchSoundFile
 
 data class SearchKashubianEntry(
+    val denseRank: Long,
     val id: Long?,
     val word: String?,
     val normalizedWord: String?,

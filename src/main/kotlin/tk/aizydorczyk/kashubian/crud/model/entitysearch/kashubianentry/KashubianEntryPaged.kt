@@ -1,3 +1,3 @@
 package tk.aizydorczyk.kashubian.crud.model.entitysearch.kashubianentry
 
-data class KashubianEntryPaged(val pages: Long, val total: Long, val select: List<SearchKashubianEntry>)
+data class KashubianEntryPaged(val pages: Int, val total: Int, val select: List<SearchKashubianEntry>)

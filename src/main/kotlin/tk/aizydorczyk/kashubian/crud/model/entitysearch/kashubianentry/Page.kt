@@ -1,3 +1,3 @@
 package tk.aizydorczyk.kashubian.crud.model.entitysearch.kashubianentry
 
-data class Page(val start: Long, val limit: Long)
+data class Page(val start: Int, val limit: Int)
