@@ -2,11 +2,104 @@ scalar JSON
 
 input KashubianEntryCriteriaExpression{
     id: NumericCriteria
+    note: StringCriteria
     word: StringCriteria
+    normalizedWord: StringCriteria
+    priority: BooleanCriteria
+    soundFile: SoundFileCriteriaExpression
+    others: OthersCriteriaExpression
+    meanings: MeaningsCriteriaExpression
+}
+
+input KashubianEntryCriteriaExpressionSimplified{
+    id: NumericCriteria
+    word: StringCriteria
+}
+
+input MeaningsCriteriaExpression{
+    id: NumericCriteria
+    origin: StringCriteria
+    definition: StringCriteria
+    synonyms: SynonymsCriteriaExpression
+    proverbs: ProverbsCriteriaExpression
+    translation: TranslationCriteriaExpression
+    quotes: QuotesCriteriaExpression
+    antonyms: AntonymsCriteriaExpression
+    examples: ExamplesCriteriaExpression
+    phrasalVerbs: PhrasalVerbsCriteriaExpression
+}
+
+input MeaningsCriteriaExpressionSimplified{
+    id: NumericCriteria
+    definition: StringCriteria
+    kashubianEntry: KashubianEntryCriteriaExpressionSimplified
+}
+
+input TranslationCriteriaExpression{
+    id: NumericCriteria
+    polish: StringCriteria
+    normalizedPolish: StringCriteria
+    english: StringCriteria
+    normalizedEnglish: StringCriteria
+    german: StringCriteria
+    normalizedGerman: StringCriteria
+    ukrainian: StringCriteria
+    normalizedUkrainian: StringCriteria
+}
+
+input SynonymsCriteriaExpression{
+    id: NumericCriteria
+    note: StringCriteria
+    synonym: MeaningsCriteriaExpressionSimplified
+}
+
+input PhrasalVerbsCriteriaExpression{
+    id: NumericCriteria
+    note: StringCriteria
+    phrasalVerb: StringCriteria
+}
+
+input ExamplesCriteriaExpression{
+    id: NumericCriteria
+    note: StringCriteria
+    example: StringCriteria
+}
+
+input AntonymsCriteriaExpression{
+    id: NumericCriteria
+    note: StringCriteria
+    antonym: MeaningsCriteriaExpressionSimplified
+}
+
+input QuotesCriteriaExpression{
+    id: NumericCriteria
+    note: NumericCriteria
+    quote: StringCriteria
+}
+
+input ProverbsCriteriaExpression{
+    id: NumericCriteria
+    note: StringCriteria
+    proverb: StringCriteria
+}
+
+input OthersCriteriaExpression{
+    id: NumericCriteria
+    note: StringCriteria
+}
+
+input SoundFileCriteriaExpression{
+    id: NumericCriteria
+    type: StringCriteria
+    fileName: StringCriteria
 }
 
 input NumericCriteria{
     EQ: Int
+}
+
+input BooleanCriteria{
+    EQ: Boolean
 }
 
 input StringCriteria{
@@ -31,8 +124,135 @@ type KashubianEntryPaged{
 }
 
 type KashubianEntry {
-    id: ID
-    word: String
+    id(orderBy: OrderBy): ID
+    word(orderBy: OrderBy): String
+    normalizedWord(orderBy: OrderBy): String
     variation: JSON
+    priority(orderBy: OrderBy): Boolean
+    note(orderBy: OrderBy): String
+    partOfSpeech(orderBy: OrderBy): PartOfSpeechType
+    partOfSpeechSubType(orderBy: OrderBy): PartOfSpeechSubType
+    meaningsCount(orderBy: OrderBy): Int
+    others: [Other]
+    meanings: [Meaning]
 }
 
+type KashubianEntrySimplified {
+    id(orderBy: OrderBy): ID
+    word(orderBy: OrderBy): String
+}
+
+type Other{
+    id(orderBy: OrderBy): ID
+    other: KashubianEntrySimplified
+    note(orderBy: OrderBy): String
+}
+
+type Meaning{
+    id(orderBy: OrderBy): ID
+    origin(orderBy: OrderBy): String
+    definition(orderBy: OrderBy): String
+    synonyms: [Synonym]
+    proverbs: [Proverb]
+    translation: Translation
+    quotes: [Quote]
+    antonyms: [Antonym]
+    examples: [Example]
+    phrasalVerbs: [PhrasalVerb]
+}
+
+type MeaningSimplified{
+    id(orderBy: OrderBy): ID
+    definition(orderBy: OrderBy): String
+}
+
+type Synonym {
+    id(orderBy: OrderBy): ID
+    synonym: MeaningSimplified
+    note(orderBy: OrderBy): String
+}
+
+type Proverb {
+    id(orderBy: OrderBy): ID
+    note(orderBy: OrderBy): String
+    proverb(orderBy: OrderBy): String
+}
+
+type Translation {
+    id(orderBy: OrderBy): ID
+    polish(orderBy: OrderBy): String
+    normalizedPolish(orderBy: OrderBy): String
+    english(orderBy: OrderBy): String
+    normalizedEnglish(orderBy: OrderBy): String
+    ukrainian(orderBy: OrderBy): String
+    normalizedUkrainian(orderBy: OrderBy): String
+    german(orderBy: OrderBy): String
+    normalizedGerman(orderBy: OrderBy): String
+}
+
+type Quote {
+    id(orderBy: OrderBy): ID
+    note(orderBy: OrderBy): String
+    quote(orderBy: OrderBy): String
+}
+
+type Antonym {
+    id(orderBy: OrderBy): ID
+    note(orderBy: OrderBy): String
+    antonym: MeaningSimplified
+}
+
+type Example {
+    id(orderBy: OrderBy): ID
+    note(orderBy: OrderBy): String
+    example(orderBy: OrderBy): String
+}
+
+type PhrasalVerb {
+    id(orderBy: OrderBy): ID
+    note(orderBy: OrderBy): String
+    phrasalVerb(orderBy: OrderBy): String
+}
+
+enum OrderBy {
+    ASC
+    DESC
+}
+
+enum PartOfSpeechType {
+    NOUN
+    VERB
+    ADJECTIVE
+    NUMERAL
+    PRONOUN
+    ADVERB
+    PREPOSITION
+    CONJUNCTION
+    INTERJECTION
+    PARTICIPLE
+}
+
+enum PartOfSpeechSubType {
+    NEUTER
+    MASCULINE
+    FEMININE
+    PLURAL_MASCULINE
+    NON_MASCULINE
+    CONJUGATION_I
+    CONJUGATION_II
+    CONJUGATION_III
+    CONJUGATION_IV
+    INFLECTIV_ADJECTIVE
+    UNINFLECTIV_ADJECTIVE
+    INFLECTIV_NUMERAL
+    UNINFLECTIV_NUMERAL
+    NOUN_PRONOUN
+    ADJECTIVE_PRONOUN
+    NUMERAL_PRONOUN
+    ADVERB_PRONOUN
+    ADVERB
+    PREPOSITION
+    CONJUNCTION
+    INTERJECTION
+    PARTICIPLE
+}
