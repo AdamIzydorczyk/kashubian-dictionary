@@ -133,6 +133,8 @@ type KashubianEntry {
     partOfSpeech(orderBy: OrderBy): PartOfSpeechType
     partOfSpeechSubType(orderBy: OrderBy): PartOfSpeechSubType
     meaningsCount(orderBy: OrderBy): Int
+    bases: JSON
+    derivatives: JSON
     others: [Other]
     meanings: [Meaning]
 }

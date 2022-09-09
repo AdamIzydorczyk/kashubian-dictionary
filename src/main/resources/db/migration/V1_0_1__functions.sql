@@ -28,13 +28,28 @@ end;
 
 $$ language plpgsql;
 
--- find_derivative_meanings_ids function
-create or replace
-function public.find_derivatives(entry_id bigint) returns refcursor as $$
-declare
-	childs_ids refcursor;
+-- meaning_hierarchy_element type
+create type meaning_hierarchy_element as (
+	meaning_id bigint,
+	definition text,
+	entry_id bigint,
+	word text
+);
 
-begin open childs_ids for with recursive childs as (
+-- entry_hierarchy_element type
+create type entry_hierarchy_element as (
+	entry_id bigint,
+	word text
+);
+
+-- find_derivatives function
+create or replace
+function public.find_derivatives(entry_id bigint) returns json as $$
+declare
+	derivatives json;
+
+begin
+with recursive childs as (
 select
 	entry_id::bigint as id,
 	''::text as word
@@ -46,23 +61,24 @@ from
 	kashubian_entry ke
 join childs on
 	childs.id = ke.base_id ) (
-select
-	id,
-	word
+select into derivatives
+	json_agg((id,
+	word)::entry_hierarchy_element)
 from
-	childs offset 1);
+	childs where id != entry_id);
 
-return childs_ids;
+return derivatives;
 end;
 
 $$ language plpgsql;
 
--- find_hyponyms_ids function
-create or replace function public.find_hyponym_ids(meaning_id bigint) returns refcursor as $$
+-- find_hyponyms function
+create or replace function public.find_hyponyms(meaning_id bigint) returns json as $$
 declare
-	childs_ids refcursor;
+	hyponyms json;
 
-begin open childs_ids for with recursive childs as (
+begin
+with recursive childs(id, definition, entry_id, word) as (
 select
 	meaning_id::bigint as id,
 	''::text as definition,
@@ -80,26 +96,33 @@ join kashubian_entry ke on
 	ke.id = m.kashubian_entry_id
 join childs on
 	childs.id = m.hyperonym_id ) (
-select
-	id,
-	definition,
-	entry_id,
-	word
+select into hyponyms
+	json_agg((c.id,
+	c.definition,
+	c.entry_id,
+	c.word)::meaning_hierarchy_element)
 from
-	childs offset 1);
+	childs c where c.id != meaning_id);
 
-return childs_ids;
+return hyponyms;
 end;
 
 $$ language plpgsql;
 
--- find_base_meanings_ids function
-create or replace
-function public.find_bases(entry_id bigint) returns refcursor as $$
-declare
-	parents_ids refcursor;
+-- find_bases function
+create type base as (
+    base_id bigint,
+    word text
+);
 
-begin open parents_ids for with recursive parents(id, base_id, word) as (
+create or replace
+function public.find_bases(entry_id bigint) returns json as $$
+
+declare
+	bases json;
+
+begin
+with recursive parents(id, base_id, word) as (
 select
 	ke.id,
 	ke.base_id,
@@ -119,27 +142,27 @@ join kashubian_entry ke on
 	parents.base_id = ke.id
 join kashubian_entry base on
 	ke.base_id = base.id )
-select
-	base_id,
-	word
+select into bases
+    json_agg((p.base_id, p.word)::entry_hierarchy_element)
 from
-	parents
+	parents p
 where
-	id = entry_id
-	and base_id is not null;
+	p.id = entry_id
+	and p.base_id is not null;
 
-return parents_ids;
+return bases;
 end;
 
 $$ language plpgsql;
 
--- find_base_meanings_ids function
+-- find_hyperonyms function
 create or replace
-function public.find_hyperonyms_ids(meaning_id bigint) returns refcursor as $$
+function public.find_hyperonyms(meaning_id bigint) returns json as $$
 declare
-	parents_ids refcursor;
+	hyperonyms json;
 
-begin open parents_ids for with recursive parents(id, hyperonym_id, definition, entry_id, word) as (
+begin
+with recursive parents(id, hyperonym_id, definition, entry_id, word) as (
 select
 	m.id,
 	m.hyperonym_id,
@@ -167,18 +190,18 @@ join meaning hyperonym on
 	m.hyperonym_id = hyperonym.id
 join kashubian_entry ke on
 	ke.id = hyperonym.kashubian_entry_id )
-select
-	hyperonym_id,
-	definition,
-	entry_id,
-	word
+select into hyperonyms
+	json_agg((p.hyperonym_id,
+	p.definition,
+	p.entry_id,
+	p.word)::meaning_hierarchy_element)
 from
-	parents
+	parents p
 where
-	id = meaning_id
-	and hyperonym_id is not null;
+	p.id = meaning_id
+	and p.hyperonym_id is not null;
 
-return parents_ids;
+return hyperonyms;
 end;
 
 $$ language plpgsql;
