@@ -35,19 +35,25 @@ class KashubianEntryQuery(val dsl: DSLContext) {
                 "KashubianEntryPaged.select/KashubianEntry.meaningsCount" to field(selectCount().from(MEANING).where(
                         MEANING.KASHUBIAN_ENTRY_ID.eq(KASHUBIAN_ENTRY.ID))).`as`("meanings_count"))
 
-        val databaseFields: MutableList<SelectFieldOrAsterisk?> = env.selectionSet.fields
+        val selectedFields: MutableList<SelectFieldOrAsterisk?> = env.selectionSet.fields
             .map { fieldsRelations[it.fullyQualifiedName] }
             .toMutableList()
 
+        val denseRank = denseRank().over(orderBy(KASHUBIAN_ENTRY.ID)).`as`("dense_rank")
+        selectedFields.add(denseRank)
+
+        val ordersBy = env.selectionSet.fields.filter { it.arguments.isNotEmpty() }.map {
+            when (it.arguments["orderBy"]) {
+                "ASC" -> fieldsRelations[it.fullyQualifiedName]!!.asc()
+                else -> fieldsRelations[it.fullyQualifiedName]!!.desc()
+            }
+        }
 
         val entriesCount = when (isContainsPaginationFields(env.selectionSet.fields)) {
             true -> dsl.fetchCount(KASHUBIAN_ENTRY)
             false -> 0
         }
 
-
-        val denseRank = denseRank().over(orderBy(KASHUBIAN_ENTRY.ID)).`as`("dense_rank")
-        databaseFields.add(denseRank)
 
         val limit = page?.limit ?: 100
         val start = page?.start ?: 0
@@ -58,8 +64,9 @@ class KashubianEntryQuery(val dsl: DSLContext) {
 
 
         return dsl.select(asterisk())
-            .from(select(databaseFields)
-                .from(KASHUBIAN_ENTRY))
+            .from(select(selectedFields)
+                .from(KASHUBIAN_ENTRY)
+                .orderBy(ordersBy))
             .where(field(name("dense_rank")).between(pageStart, pageEnd))
             .apply { logger.info(this.sql) }
             .fetchInto(SearchKashubianEntry::class.java).let { KashubianEntryPaged(pageCount, entriesCount, it) }
