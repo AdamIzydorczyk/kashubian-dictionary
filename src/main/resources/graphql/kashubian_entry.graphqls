@@ -154,6 +154,8 @@ type Meaning{
     id(orderBy: OrderBy): ID
     origin(orderBy: OrderBy): String
     definition(orderBy: OrderBy): String
+    hyperonyms: JSON
+    hyponyms: JSON
     synonyms: [Synonym]
     proverbs: [Proverb]
     translation: Translation
