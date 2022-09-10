@@ -7,6 +7,7 @@ import graphql.schema.DataFetchingEnvironment
 import graphql.schema.SelectedField
 import org.jooq.Condition
 import org.jooq.DSLContext
+import org.jooq.Field
 import org.jooq.SelectFieldOrAsterisk
 import org.jooq.impl.DSL.asterisk
 import org.jooq.impl.DSL.denseRank
@@ -38,14 +39,17 @@ class KashubianEntryQuery(private val dsl: DSLContext, private val objectMapper:
 
 
     private final val joins = mapOf(
-            "KashubianEntryPaged.select/KashubianEntry.others" to Pair(OTHER,
-                    KASHUBIAN_ENTRY.`as`("entry").ID.eq(OTHER.KASHUBIAN_ENTRY_ID)),
-            "KashubianEntryPaged.select/KashubianEntry.others/Other.other" to Pair(KASHUBIAN_ENTRY.`as`("other_entry"),
-                    KASHUBIAN_ENTRY.`as`("other_entry").ID.eq(OTHER.OTHER_ID.`as`("other_id"))),
-            "KashubianEntryPaged.select/KashubianEntry.meanings" to Pair(MEANING.`as`("meaning"),
-                    KASHUBIAN_ENTRY.`as`("entry").ID.eq(MEANING.`as`("meaning").KASHUBIAN_ENTRY_ID)),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation" to Pair(TRANSLATION,
-                    MEANING.`as`("meaning").ID.eq(TRANSLATION.MEANING_ID))
+            "KashubianEntryPaged.select/KashubianEntry.others" to Triple(OTHER,
+                    KASHUBIAN_ENTRY.`as`("entry").ID.eq(OTHER.KASHUBIAN_ENTRY_ID), OTHER.ID.`as`("other_id")),
+            "KashubianEntryPaged.select/KashubianEntry.others/Other.other" to Triple(KASHUBIAN_ENTRY.`as`("other_entry"),
+                    KASHUBIAN_ENTRY.`as`("other_entry").ID.eq(OTHER.OTHER_ID.`as`("other_id")), KASHUBIAN_ENTRY.`as`(
+                    "other_entry").ID.`as`("other_entry_id")),
+            "KashubianEntryPaged.select/KashubianEntry.meanings" to Triple(MEANING.`as`("meaning"),
+                    KASHUBIAN_ENTRY.`as`("entry").ID.eq(MEANING.`as`("meaning").KASHUBIAN_ENTRY_ID),
+                    MEANING.`as`("meaning").ID.`as`("meaning_id")),
+            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation" to Triple(TRANSLATION,
+                    MEANING.`as`("meaning").ID.eq(TRANSLATION.MEANING_ID), TRANSLATION.ID.`as`(
+                    "translation_id"))
     )
 
     private final val fieldsRelations = mapOf(
@@ -67,13 +71,9 @@ class KashubianEntryQuery(private val dsl: DSLContext, private val objectMapper:
                     "bases"),
             "KashubianEntryPaged.select/KashubianEntry.derivatives" to field(select(Routines.findDerivatives(
                     KASHUBIAN_ENTRY.`as`("entry").ID))).`as`("derivatives"),
-            "KashubianEntryPaged.select/KashubianEntry.others/Other.id" to OTHER.ID.`as`("other_id"),
             "KashubianEntryPaged.select/KashubianEntry.others/Other.note" to OTHER.NOTE.`as`("other_note"),
-            "KashubianEntryPaged.select/KashubianEntry.others/Other.other/KashubianEntrySimplified.id" to KASHUBIAN_ENTRY.`as`(
-                    "other_entry").ID.`as`("other_entry_id"),
             "KashubianEntryPaged.select/KashubianEntry.others/Other.other/KashubianEntrySimplified.word" to KASHUBIAN_ENTRY.`as`(
                     "other_entry").WORD.`as`("other_entry_word"),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.id" to MEANING.`as`("meaning").ID.`as`("meaning_id"),
             "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.origin" to MEANING.`as`("meaning").ORIGIN.`as`(
                     "meaning_origin"),
             "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.definition" to MEANING.`as`("meaning").DEFINITION.`as`(
@@ -83,8 +83,6 @@ class KashubianEntryQuery(private val dsl: DSLContext, private val objectMapper:
                     "hyperonyms"),
             "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.hyponyms" to field(select(Routines.findHyponyms(
                     MEANING.`as`("meaning").ID))).`as`("hyponyms"),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.id" to TRANSLATION.ID.`as`(
-                    "translation_id"),
             "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.polish" to TRANSLATION.POLISH.`as`(
                     "translation_polish"),
             "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedPolish" to TRANSLATION.NORMALIZED_POLISH.`as`(
@@ -110,13 +108,18 @@ class KashubianEntryQuery(private val dsl: DSLContext, private val objectMapper:
         env: DataFetchingEnvironment): KashubianEntryPaged {
 
         val selectedFields: MutableList<SelectFieldOrAsterisk?> = env.selectionSet.fields
-            .map { fieldsRelations[it.fullyQualifiedName] }
+            .mapNotNull { fieldsRelations[it.fullyQualifiedName] }
             .toMutableList()
 
-        val selectedJoins = env.selectionSet.fields.map { joins[it.fullyQualifiedName] }.filterNotNull()
+        val selectedJoins = env.selectionSet.fields.mapNotNull { joins[it.fullyQualifiedName] }
 
-        val denseRank = denseRank().over(orderBy(KASHUBIAN_ENTRY.`as`("entry").ID)).`as`("dense_rank")
-        selectedFields.add(denseRank)
+        selectedJoins.forEach {
+            selectedFields.add(it.idColumn())
+        }
+
+        denseRank().over(orderBy(KASHUBIAN_ENTRY.`as`("entry").ID)).`as`("dense_rank")
+            .apply { selectedFields.add(this) }
+
 
         val ordersBy = env.selectionSet.fields.filter { it.arguments.isNotEmpty() }.map {
             when (it.arguments["orderBy"]) {
@@ -179,9 +182,9 @@ class KashubianEntryQuery(private val dsl: DSLContext, private val objectMapper:
     private fun isContainsPaginationFields(fields: MutableList<SelectedField>) =
         fields.any { it.fullyQualifiedName == "KashubianEntryPaged.total" || it.fullyQualifiedName == "KashubianEntryPaged.pages" }
 
-    fun Pair<TableImpl<out UpdatableRecordImpl<*>>, Condition>.table() = this.first
-
-    fun Pair<TableImpl<out UpdatableRecordImpl<*>>, Condition>.joinCondition() = this.second
+    fun Triple<TableImpl<out UpdatableRecordImpl<*>>, Condition, Field<Long>>.table() = this.first
+    fun Triple<TableImpl<out UpdatableRecordImpl<*>>, Condition, Field<Long>>.joinCondition() = this.second
+    fun Triple<TableImpl<out UpdatableRecordImpl<*>>, Condition, Field<Long>>.idColumn() = this.third
 
 }
 
