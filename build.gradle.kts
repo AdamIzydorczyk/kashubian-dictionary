@@ -52,6 +52,7 @@ dependencies {
     implementation("org.jeasy:easy-random-core:5.0.0")
     implementation("com.github.javafaker:javafaker:1.0.2")
     implementation("org.yaml:snakeyaml:1.28")
+    implementation("org.simpleflatmapper:sfm-jooq:8.2.3")
     compileOnly("org.jooq:jooq-codegen-maven:3.17.3")
     jooqGenerator("jakarta.xml.bind:jakarta.xml.bind-api:4.0.0")
     jooqGenerator("org.postgresql:postgresql:42.5.0")
