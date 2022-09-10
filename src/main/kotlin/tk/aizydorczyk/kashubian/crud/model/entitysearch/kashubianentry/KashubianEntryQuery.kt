@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import graphql.schema.DataFetchingEnvironment
 import graphql.schema.SelectedField
+import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.SelectFieldOrAsterisk
 import org.jooq.impl.DSL.asterisk
@@ -14,6 +15,8 @@ import org.jooq.impl.DSL.name
 import org.jooq.impl.DSL.orderBy
 import org.jooq.impl.DSL.select
 import org.jooq.impl.DSL.selectCount
+import org.jooq.impl.TableImpl
+import org.jooq.impl.UpdatableRecordImpl
 import org.postgresql.util.PGobject
 import org.simpleflatmapper.converter.ContextualConverter
 import org.simpleflatmapper.jooq.SelectQueryMapperFactory
@@ -33,62 +36,72 @@ import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.TRANSLATION
 class KashubianEntryQuery(private val dsl: DSLContext, private val objectMapper: ObjectMapper) {
     val logger: Logger = LoggerFactory.getLogger(javaClass)
 
-    private final val fieldsRelations =
-        mapOf(
-                "KashubianEntryPaged.select/KashubianEntry.id" to KASHUBIAN_ENTRY.`as`("entry").ID.`as`("entry_id"),
-                "KashubianEntryPaged.select/KashubianEntry.word" to KASHUBIAN_ENTRY.`as`("entry").WORD.`as`("entry_word"),
-                "KashubianEntryPaged.select/KashubianEntry.normalizedWord" to KASHUBIAN_ENTRY.`as`("entry").NORMALIZED_WORD.`as`(
-                        "entry_normalized_word"),
-                "KashubianEntryPaged.select/KashubianEntry.variation" to KASHUBIAN_ENTRY.`as`("entry").VARIATION.`as`("entry_variation"),
-                "KashubianEntryPaged.select/KashubianEntry.priority" to KASHUBIAN_ENTRY.`as`("entry").PRIORITY.`as`("entry_priority"),
-                "KashubianEntryPaged.select/KashubianEntry.note" to KASHUBIAN_ENTRY.`as`("entry").NOTE.`as`("entry_note"),
-                "KashubianEntryPaged.select/KashubianEntry.partOfSpeech" to KASHUBIAN_ENTRY.`as`("entry").PART_OF_SPEECH.`as`(
-                        "entry_part_of_speech"),
-                "KashubianEntryPaged.select/KashubianEntry.partOfSpeechSubType" to KASHUBIAN_ENTRY.`as`("entry").PART_OF_SPEECH_SUB_TYPE.`as`(
-                        "entry_part_of_speech_sub_type"),
-                "KashubianEntryPaged.select/KashubianEntry.meaningsCount" to field(selectCount().from(MEANING).where(
-                        MEANING.KASHUBIAN_ENTRY_ID.eq(KASHUBIAN_ENTRY.`as`("entry").ID))).`as`("meanings_count"),
-                "KashubianEntryPaged.select/KashubianEntry.bases" to field(select(Routines.findBases(KASHUBIAN_ENTRY.`as`(
-                        "entry").ID))).`as`(
-                        "bases"),
-                "KashubianEntryPaged.select/KashubianEntry.derivatives" to field(select(Routines.findDerivatives(
-                        KASHUBIAN_ENTRY.`as`("entry").ID))).`as`("derivatives"),
-                "KashubianEntryPaged.select/KashubianEntry.others/Other.id" to OTHER.ID.`as`("other_id"),
-                "KashubianEntryPaged.select/KashubianEntry.others/Other.note" to OTHER.NOTE.`as`("other_note"),
-                "KashubianEntryPaged.select/KashubianEntry.others/Other.other/KashubianEntrySimplified.id" to KASHUBIAN_ENTRY.`as`(
-                        "other_entry").ID.`as`("other_entry_id"),
-                "KashubianEntryPaged.select/KashubianEntry.others/Other.other/KashubianEntrySimplified.word" to KASHUBIAN_ENTRY.`as`(
-                        "other_entry").WORD.`as`("other_entry_word"),
-                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.id" to MEANING.`as`("meaning").ID.`as`("meaning_id"),
-                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.origin" to MEANING.`as`("meaning").ORIGIN.`as`(
-                        "meaning_origin"),
-                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.definition" to MEANING.`as`("meaning").DEFINITION.`as`(
-                        "meaning_definition"),
-                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.hyperonyms" to field(select(Routines.findHyperonyms(
-                        MEANING.`as`("meaning").ID))).`as`(
-                        "hyperonyms"),
-                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.hyponyms" to field(select(Routines.findHyponyms(
-                        MEANING.`as`("meaning").ID))).`as`("hyponyms"),
-                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.id" to TRANSLATION.ID.`as`(
-                        "translation_id"),
-                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.polish" to TRANSLATION.POLISH.`as`(
-                        "translation_polish"),
-                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedPolish" to TRANSLATION.NORMALIZED_POLISH.`as`(
-                        "translation_normalized_polish"),
-                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.english" to TRANSLATION.ENGLISH.`as`(
-                        "translation_english"),
-                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedEnglish" to TRANSLATION.NORMALIZED_ENGLISH.`as`(
-                        "translation_normalized_english"),
-                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.german" to TRANSLATION.GERMAN.`as`(
-                        "translation_german"),
-                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedGerman" to TRANSLATION.NORMALIZED_GERMAN.`as`(
-                        "translation_normalized_german"),
-                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.ukrainian" to TRANSLATION.UKRAINIAN.`as`(
-                        "translation_ukrainian"),
-                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedUkrainian" to TRANSLATION.NORMALIZED_UKRAINIAN.`as`(
-                        "translation_normalized_ukrainian"),
-        )
 
+    private final val joins = mapOf(
+            "KashubianEntryPaged.select/KashubianEntry.others" to Pair(OTHER,
+                    KASHUBIAN_ENTRY.`as`("entry").ID.eq(OTHER.KASHUBIAN_ENTRY_ID)),
+            "KashubianEntryPaged.select/KashubianEntry.others/Other.other" to Pair(KASHUBIAN_ENTRY.`as`("other_entry"),
+                    KASHUBIAN_ENTRY.`as`("other_entry").ID.eq(OTHER.OTHER_ID.`as`("other_id"))),
+            "KashubianEntryPaged.select/KashubianEntry.meanings" to Pair(MEANING.`as`("meaning"),
+                    KASHUBIAN_ENTRY.`as`("entry").ID.eq(MEANING.`as`("meaning").KASHUBIAN_ENTRY_ID)),
+            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation" to Pair(TRANSLATION,
+                    MEANING.`as`("meaning").ID.eq(TRANSLATION.MEANING_ID))
+    )
+
+    private final val fieldsRelations = mapOf(
+            "KashubianEntryPaged.select/KashubianEntry.id" to KASHUBIAN_ENTRY.`as`("entry").ID.`as`("entry_id"),
+            "KashubianEntryPaged.select/KashubianEntry.word" to KASHUBIAN_ENTRY.`as`("entry").WORD.`as`("entry_word"),
+            "KashubianEntryPaged.select/KashubianEntry.normalizedWord" to KASHUBIAN_ENTRY.`as`("entry").NORMALIZED_WORD.`as`(
+                    "entry_normalized_word"),
+            "KashubianEntryPaged.select/KashubianEntry.variation" to KASHUBIAN_ENTRY.`as`("entry").VARIATION.`as`("entry_variation"),
+            "KashubianEntryPaged.select/KashubianEntry.priority" to KASHUBIAN_ENTRY.`as`("entry").PRIORITY.`as`("entry_priority"),
+            "KashubianEntryPaged.select/KashubianEntry.note" to KASHUBIAN_ENTRY.`as`("entry").NOTE.`as`("entry_note"),
+            "KashubianEntryPaged.select/KashubianEntry.partOfSpeech" to KASHUBIAN_ENTRY.`as`("entry").PART_OF_SPEECH.`as`(
+                    "entry_part_of_speech"),
+            "KashubianEntryPaged.select/KashubianEntry.partOfSpeechSubType" to KASHUBIAN_ENTRY.`as`("entry").PART_OF_SPEECH_SUB_TYPE.`as`(
+                    "entry_part_of_speech_sub_type"),
+            "KashubianEntryPaged.select/KashubianEntry.meaningsCount" to field(selectCount().from(MEANING).where(
+                    MEANING.KASHUBIAN_ENTRY_ID.eq(KASHUBIAN_ENTRY.`as`("entry").ID))).`as`("meanings_count"),
+            "KashubianEntryPaged.select/KashubianEntry.bases" to field(select(Routines.findBases(KASHUBIAN_ENTRY.`as`(
+                    "entry").ID))).`as`(
+                    "bases"),
+            "KashubianEntryPaged.select/KashubianEntry.derivatives" to field(select(Routines.findDerivatives(
+                    KASHUBIAN_ENTRY.`as`("entry").ID))).`as`("derivatives"),
+            "KashubianEntryPaged.select/KashubianEntry.others/Other.id" to OTHER.ID.`as`("other_id"),
+            "KashubianEntryPaged.select/KashubianEntry.others/Other.note" to OTHER.NOTE.`as`("other_note"),
+            "KashubianEntryPaged.select/KashubianEntry.others/Other.other/KashubianEntrySimplified.id" to KASHUBIAN_ENTRY.`as`(
+                    "other_entry").ID.`as`("other_entry_id"),
+            "KashubianEntryPaged.select/KashubianEntry.others/Other.other/KashubianEntrySimplified.word" to KASHUBIAN_ENTRY.`as`(
+                    "other_entry").WORD.`as`("other_entry_word"),
+            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.id" to MEANING.`as`("meaning").ID.`as`("meaning_id"),
+            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.origin" to MEANING.`as`("meaning").ORIGIN.`as`(
+                    "meaning_origin"),
+            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.definition" to MEANING.`as`("meaning").DEFINITION.`as`(
+                    "meaning_definition"),
+            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.hyperonyms" to field(select(Routines.findHyperonyms(
+                    MEANING.`as`("meaning").ID))).`as`(
+                    "hyperonyms"),
+            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.hyponyms" to field(select(Routines.findHyponyms(
+                    MEANING.`as`("meaning").ID))).`as`("hyponyms"),
+            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.id" to TRANSLATION.ID.`as`(
+                    "translation_id"),
+            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.polish" to TRANSLATION.POLISH.`as`(
+                    "translation_polish"),
+            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedPolish" to TRANSLATION.NORMALIZED_POLISH.`as`(
+                    "translation_normalized_polish"),
+            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.english" to TRANSLATION.ENGLISH.`as`(
+                    "translation_english"),
+            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedEnglish" to TRANSLATION.NORMALIZED_ENGLISH.`as`(
+                    "translation_normalized_english"),
+            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.german" to TRANSLATION.GERMAN.`as`(
+                    "translation_german"),
+            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedGerman" to TRANSLATION.NORMALIZED_GERMAN.`as`(
+                    "translation_normalized_german"),
+            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.ukrainian" to TRANSLATION.UKRAINIAN.`as`(
+                    "translation_ukrainian"),
+            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedUkrainian" to TRANSLATION.NORMALIZED_UKRAINIAN.`as`(
+                    "translation_normalized_ukrainian")
+    )
 
     @QueryMapping
     fun findAllSearchKashubianEntries(
@@ -99,6 +112,8 @@ class KashubianEntryQuery(private val dsl: DSLContext, private val objectMapper:
         val selectedFields: MutableList<SelectFieldOrAsterisk?> = env.selectionSet.fields
             .map { fieldsRelations[it.fullyQualifiedName] }
             .toMutableList()
+
+        val selectedJoins = env.selectionSet.fields.map { joins[it.fullyQualifiedName] }.filterNotNull()
 
         val denseRank = denseRank().over(orderBy(KASHUBIAN_ENTRY.`as`("entry").ID)).`as`("dense_rank")
         selectedFields.add(denseRank)
@@ -145,23 +160,28 @@ class KashubianEntryQuery(private val dsl: DSLContext, private val objectMapper:
                     }))
             .newMapper(KashubianEntryGraphQL::class.java)
 
+
         return dsl.select(asterisk())
             .from(select(selectedFields)
                 .from(KASHUBIAN_ENTRY.`as`("entry"))
-                .join(OTHER)
-                .on(KASHUBIAN_ENTRY.`as`("entry").ID.eq(OTHER.KASHUBIAN_ENTRY_ID))
-                .join(KASHUBIAN_ENTRY.`as`("other_entry"))
-                .on(KASHUBIAN_ENTRY.`as`("other_entry").ID.eq(OTHER.OTHER_ID.`as`("other_id")))
-                .join(MEANING.`as`("meaning"))
-                .on(KASHUBIAN_ENTRY.`as`("entry").ID.eq(MEANING.`as`("meaning").KASHUBIAN_ENTRY_ID))
-                .join(TRANSLATION)
-                .on(MEANING.`as`("meaning").ID.eq(TRANSLATION.MEANING_ID))
+                .apply {
+                    selectedJoins.forEach {
+                        this.join(it.table())
+                            .on(it.joinCondition())
+                    }
+                }
                 .orderBy(ordersBy))
             .where(field(name("dense_rank")).between(pageStart, pageEnd))
+            .apply { logger.info(sql) }
             .let { KashubianEntryPaged(pageCount, entriesCount, mapper.asList(it)) }
     }
 
     private fun isContainsPaginationFields(fields: MutableList<SelectedField>) =
         fields.any { it.fullyQualifiedName == "KashubianEntryPaged.total" || it.fullyQualifiedName == "KashubianEntryPaged.pages" }
 
+    fun Pair<TableImpl<out UpdatableRecordImpl<*>>, Condition>.table() = this.first
+
+    fun Pair<TableImpl<out UpdatableRecordImpl<*>>, Condition>.joinCondition() = this.second
+
 }
+
