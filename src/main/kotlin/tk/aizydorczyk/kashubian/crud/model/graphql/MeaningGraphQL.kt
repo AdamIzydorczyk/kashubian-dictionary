@@ -1,9 +1,11 @@
-package tk.aizydorczyk.kashubian.crud.model.entitysearch.kashubianentry
+package tk.aizydorczyk.kashubian.crud.model.graphql
 
 import com.fasterxml.jackson.databind.JsonNode
 import org.simpleflatmapper.map.annotation.Column
+import org.simpleflatmapper.map.annotation.Key
 
 class MeaningGraphQL {
+    @get:Key
     @get:Column("meaning_id")
     var id: Long? = null
 

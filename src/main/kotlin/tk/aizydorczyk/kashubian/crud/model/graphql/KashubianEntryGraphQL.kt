@@ -1,9 +1,11 @@
-package tk.aizydorczyk.kashubian.crud.model.entitysearch.kashubianentry
+package tk.aizydorczyk.kashubian.crud.model.graphql
 
 import com.fasterxml.jackson.databind.JsonNode
 import org.simpleflatmapper.map.annotation.Column
+import org.simpleflatmapper.map.annotation.Key
 
 class KashubianEntryGraphQL {
+    @get:Key
     @get:Column("entry_id")
     var id: Long? = null
 

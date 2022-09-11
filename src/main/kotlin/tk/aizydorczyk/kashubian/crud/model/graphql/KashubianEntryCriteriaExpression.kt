@@ -1,4 +1,4 @@
-package tk.aizydorczyk.kashubian.crud.model.entitysearch.kashubianentry
+package tk.aizydorczyk.kashubian.crud.model.graphql
 
 data class KashubianEntryCriteriaExpression(
     val id: NumericCriteria?,
