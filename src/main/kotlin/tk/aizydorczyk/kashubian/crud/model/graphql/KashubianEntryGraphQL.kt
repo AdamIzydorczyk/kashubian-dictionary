@@ -38,9 +38,8 @@ class KashubianEntryGraphQL {
 
     @get:Column("meanings_count")
     var meaningsCount: Long? = null
-    var others: List<OtherGraphQL>? = emptyList()
-    var meanings: List<MeaningGraphQL>? = emptyList()
 
-    @get:Column("dense_rank")
-    var denseRank: Long? = null
+    var others: List<OtherGraphQL>? = emptyList()
+
+    var meanings: List<MeaningGraphQL>? = emptyList()
 }

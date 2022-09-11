@@ -3,13 +3,14 @@ package tk.aizydorczyk.kashubian.crud.model.graphql
 import org.simpleflatmapper.map.annotation.Column
 import org.simpleflatmapper.map.annotation.Key
 
-class OtherGraphQL {
+class QuoteGraphQL {
     @get:Key
-    @get:Column("other_id")
+    @get:Column("quote_id")
     var id: Long? = null
 
-    @get:Column("other_note")
+    @get:Column("quote_note")
     var note: String? = null
 
-    var other: OtherEntryGraphQL? = null
+    @get:Column("quote_quote")
+    var quote: String? = null
 }

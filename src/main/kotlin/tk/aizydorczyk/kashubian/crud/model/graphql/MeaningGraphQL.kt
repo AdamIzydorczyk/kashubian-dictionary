@@ -22,4 +22,12 @@ class MeaningGraphQL {
     var hyponyms: JsonNode? = null
 
     var translation: TranslationGraphQL? = null
+
+    var proverbs: List<ProverbGraphQL>? = emptyList()
+
+    var quotes: List<QuoteGraphQL>? = emptyList()
+
+    var examples: List<ExampleGraphQL>? = emptyList()
+
+    var phrasalVerbs: List<PhrasalVerbGraphQL>? = emptyList()
 }

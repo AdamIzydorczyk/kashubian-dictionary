@@ -84,3 +84,4 @@ data class TranslationCriteriaExpression(
 data class NumericCriteria(val EQ: String?)
 data class BooleanCriteria(val EQ: Boolean?)
 data class StringCriteria(val EQ: String?, val LIKE: String?, val _LIKE: String?)
+data class PageCriteria(val start: Int, val limit: Int)

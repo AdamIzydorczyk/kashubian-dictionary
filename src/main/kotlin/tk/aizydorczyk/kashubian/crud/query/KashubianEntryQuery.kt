@@ -18,14 +18,18 @@ import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Routines
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.EXAMPLE
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.KASHUBIAN_ENTRY
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.MEANING
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.OTHER
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.PHRASAL_VERB
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.PROVERB
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.QUOTE
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.TRANSLATION
 import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryCriteriaExpression
 import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryPaged
-import tk.aizydorczyk.kashubian.crud.model.graphql.Page
+import tk.aizydorczyk.kashubian.crud.model.graphql.PageCriteria
 
 @Controller
 class KashubianEntryQuery(
@@ -35,7 +39,7 @@ class KashubianEntryQuery(
 
     @QueryMapping
     fun findAllSearchKashubianEntries(
-        @Argument("page") page: Page?,
+        @Argument("page") page: PageCriteria?,
         @Argument("where") where: KashubianEntryCriteriaExpression?,
         env: DataFetchingEnvironment): KashubianEntryPaged {
         val selectedFields = env.selectionSet.fields
@@ -104,21 +108,37 @@ class KashubianEntryQuery(
     companion object Relations {
         private val FIELD_TO_JOIN_RELATIONS = mapOf(
                 "KashubianEntryPaged.select/KashubianEntry.others" to
-                        Triple(OTHER,
-                                KASHUBIAN_ENTRY.`as`("entry").ID.eq(OTHER.KASHUBIAN_ENTRY_ID),
-                                OTHER.ID.`as`("other_id")),
+                        Triple(OTHER.`as`("other"),
+                                KASHUBIAN_ENTRY.`as`("entry").ID.eq(OTHER.`as`("other").KASHUBIAN_ENTRY_ID),
+                                OTHER.`as`("other").ID.`as`("other_id")),
                 "KashubianEntryPaged.select/KashubianEntry.others/Other.other" to
                         Triple(KASHUBIAN_ENTRY.`as`("other_entry"),
-                                KASHUBIAN_ENTRY.`as`("other_entry").ID.eq(OTHER.OTHER_ID.`as`("other_id")),
+                                KASHUBIAN_ENTRY.`as`("other_entry").ID.eq(OTHER.`as`("other").OTHER_ID.`as`("other_id")),
                                 KASHUBIAN_ENTRY.`as`("other_entry").ID.`as`("other_entry_id")),
                 "KashubianEntryPaged.select/KashubianEntry.meanings" to
                         Triple(MEANING.`as`("meaning"),
                                 KASHUBIAN_ENTRY.`as`("entry").ID.eq(MEANING.`as`("meaning").KASHUBIAN_ENTRY_ID),
                                 MEANING.`as`("meaning").ID.`as`("meaning_id")),
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation" to
-                        Triple(TRANSLATION,
-                                MEANING.`as`("meaning").ID.eq(TRANSLATION.MEANING_ID),
-                                TRANSLATION.ID.`as`("translation_id"))
+                        Triple(TRANSLATION.`as`("translation"),
+                                MEANING.`as`("meaning").ID.eq(TRANSLATION.`as`("translation").MEANING_ID),
+                                TRANSLATION.`as`("translation").ID.`as`("translation_id")),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.proverbs" to
+                        Triple(PROVERB.`as`("proverb"),
+                                MEANING.`as`("meaning").ID.eq(PROVERB.`as`("proverb").MEANING_ID),
+                                PROVERB.`as`("proverb").ID.`as`("proverb_id")),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.quotes" to
+                        Triple(QUOTE.`as`("quote"),
+                                MEANING.`as`("meaning").ID.eq(QUOTE.`as`("quote").MEANING_ID),
+                                QUOTE.`as`("quote").ID.`as`("quote_id")),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.examples" to
+                        Triple(EXAMPLE.`as`("example"),
+                                MEANING.`as`("meaning").ID.eq(EXAMPLE.`as`("example").MEANING_ID),
+                                EXAMPLE.`as`("example").ID.`as`("example_id")),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.phrasalVerbs" to
+                        Triple(PHRASAL_VERB.`as`("phrasal_verb"),
+                                MEANING.`as`("meaning").ID.eq(PHRASAL_VERB.`as`("phrasal_verb").MEANING_ID),
+                                PHRASAL_VERB.`as`("phrasal_verb").ID.`as`("phrasal_verb_id")),
         )
 
         private val FIELD_TO_COLUMN_RELATIONS = mapOf(
@@ -142,11 +162,11 @@ class KashubianEntryQuery(
                         field(selectCount().from(MEANING)
                             .where(MEANING.KASHUBIAN_ENTRY_ID.eq(KASHUBIAN_ENTRY.`as`("entry").ID))).`as`("meanings_count"),
                 "KashubianEntryPaged.select/KashubianEntry.bases" to
-                        field(select(Routines.findBases(KASHUBIAN_ENTRY.`as`("entry").ID))).`as`("bases"),
+                        field(select(Routines.findBases(KASHUBIAN_ENTRY.`as`("entry").ID))).`as`("entry_bases"),
                 "KashubianEntryPaged.select/KashubianEntry.derivatives" to
-                        field(select(Routines.findDerivatives(KASHUBIAN_ENTRY.`as`("entry").ID))).`as`("derivatives"),
+                        field(select(Routines.findDerivatives(KASHUBIAN_ENTRY.`as`("entry").ID))).`as`("entry_derivatives"),
                 "KashubianEntryPaged.select/KashubianEntry.others/Other.note" to
-                        OTHER.NOTE.`as`("other_note"),
+                        OTHER.`as`("other").`as`("other").NOTE.`as`("other_note"),
                 "KashubianEntryPaged.select/KashubianEntry.others/Other.other/KashubianEntrySimplified.word" to
                         KASHUBIAN_ENTRY.`as`("other_entry").WORD.`as`("other_entry_word"),
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.origin" to
@@ -154,25 +174,41 @@ class KashubianEntryQuery(
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.definition" to
                         MEANING.`as`("meaning").DEFINITION.`as`("meaning_definition"),
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.hyperonyms" to
-                        field(select(Routines.findHyperonyms(MEANING.`as`("meaning").ID))).`as`("hyperonyms"),
+                        field(select(Routines.findHyperonyms(MEANING.`as`("meaning").ID))).`as`("meaning_hyperonyms"),
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.hyponyms" to
-                        field(select(Routines.findHyponyms(MEANING.`as`("meaning").ID))).`as`("hyponyms"),
+                        field(select(Routines.findHyponyms(MEANING.`as`("meaning").ID))).`as`("meaning_hyponyms"),
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.polish" to
-                        TRANSLATION.POLISH.`as`("translation_polish"),
+                        TRANSLATION.`as`("translation").POLISH.`as`("translation_polish"),
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedPolish" to
-                        TRANSLATION.NORMALIZED_POLISH.`as`("translation_normalized_polish"),
+                        TRANSLATION.`as`("translation").NORMALIZED_POLISH.`as`("translation_normalized_polish"),
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.english" to
-                        TRANSLATION.ENGLISH.`as`("translation_english"),
+                        TRANSLATION.`as`("translation").ENGLISH.`as`("translation_english"),
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedEnglish" to
-                        TRANSLATION.NORMALIZED_ENGLISH.`as`("translation_normalized_english"),
+                        TRANSLATION.`as`("translation").NORMALIZED_ENGLISH.`as`("translation_normalized_english"),
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.german" to
-                        TRANSLATION.GERMAN.`as`("translation_german"),
+                        TRANSLATION.`as`("translation").GERMAN.`as`("translation_german"),
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedGerman" to
-                        TRANSLATION.NORMALIZED_GERMAN.`as`("translation_normalized_german"),
+                        TRANSLATION.`as`("translation").NORMALIZED_GERMAN.`as`("translation_normalized_german"),
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.ukrainian" to
-                        TRANSLATION.UKRAINIAN.`as`("translation_ukrainian"),
+                        TRANSLATION.`as`("translation").UKRAINIAN.`as`("translation_ukrainian"),
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedUkrainian" to
-                        TRANSLATION.NORMALIZED_UKRAINIAN.`as`("translation_normalized_ukrainian")
+                        TRANSLATION.`as`("translation").NORMALIZED_UKRAINIAN.`as`("translation_normalized_ukrainian"),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.proverbs/Proverb.note" to
+                        PROVERB.`as`("proverb").NOTE.`as`("proverb_note"),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.proverbs/Proverb.proverb" to
+                        PROVERB.`as`("proverb").PROVERB_.`as`("proverb_proverb"),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.quotes/Quote.note" to
+                        QUOTE.`as`("quote").NOTE.`as`("quote_note"),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.quotes/Quote.quote" to
+                        QUOTE.`as`("quote").QUOTE_.`as`("quote_quote"),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.examples/Example.note" to
+                        EXAMPLE.`as`("meaning_example").NOTE.`as`("example_note"),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.examples/Example.example" to
+                        EXAMPLE.`as`("meaning_example").EXAMPLE_.`as`("example_example"),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.phrasalVerbs/PhrasalVerb.note" to
+                        PHRASAL_VERB.`as`("meaning_phrasal_verb").NOTE.`as`("phrasal_verb_note"),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.phrasalVerbs/PhrasalVerb.phrasalVerb" to
+                        PHRASAL_VERB.`as`("meaning_phrasal_verb").PHRASAL_VERB_.`as`("phrasal_verb_phrasal_verb")
         )
     }
 }

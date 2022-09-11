@@ -3,13 +3,14 @@ package tk.aizydorczyk.kashubian.crud.model.graphql
 import org.simpleflatmapper.map.annotation.Column
 import org.simpleflatmapper.map.annotation.Key
 
-class OtherGraphQL {
+class PhrasalVerbGraphQL {
     @get:Key
-    @get:Column("other_id")
+    @get:Column("phrasal_verb_id")
     var id: Long? = null
 
-    @get:Column("other_note")
+    @get:Column("phrasal_verb_note")
     var note: String? = null
 
-    var other: OtherEntryGraphQL? = null
+    @get:Column("phrasal_verb_phrasal_verb")
+    var phrasalVerb: String? = null
 }
