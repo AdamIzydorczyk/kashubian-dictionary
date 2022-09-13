@@ -135,6 +135,7 @@ type KashubianEntry {
     meaningsCount(orderBy: OrderBy): Int
     bases: JSON
     derivatives: JSON
+    soundFile: SoundFile
     others: [Other]
     meanings: [Meaning]
 }
@@ -142,6 +143,12 @@ type KashubianEntry {
 type KashubianEntrySimplified {
     id(orderBy: OrderBy): ID
     word(orderBy: OrderBy): String
+}
+
+type SoundFile{
+    id(orderBy: OrderBy): ID
+    type(orderBy: OrderBy): String
+    fileName(orderBy: OrderBy): String
 }
 
 type Other{

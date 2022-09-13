@@ -15,6 +15,7 @@ data class KashubianEntryGraphQL(
     val variation: JsonNode?,
     val derivatives: JsonNode?,
     val meaningsCount: Long? = 0L,
+    var soundFile: SoundFileGraphQL? = null,
     val others: MutableSet<OtherGraphQL> = mutableSetOf(),
     val meanings: MutableSet<MeaningGraphQL> = mutableSetOf()
 )

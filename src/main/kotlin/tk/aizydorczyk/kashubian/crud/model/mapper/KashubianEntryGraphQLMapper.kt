@@ -14,6 +14,7 @@ import tk.aizydorczyk.kashubian.crud.model.graphql.OtherGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.PhrasalVerbGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.ProverbGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.QuoteGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.SoundFileGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.SynonymGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.TranslationGraphQL
 
@@ -21,6 +22,7 @@ class KashubianEntryGraphQLMapper {
     fun map(results: Result<Record>): List<KashubianEntryGraphQL> {
         val entries = linkedMapOf<Long, KashubianEntryGraphQL>()
         val others = mutableMapOf<Long, OtherGraphQL>()
+        val soundFiles = mutableMapOf<Long, SoundFileGraphQL>()
         val meanings = mutableMapOf<Long, MeaningGraphQL>()
         val translations = mutableMapOf<Long, TranslationGraphQL>()
         val quotes = mutableMapOf<Long, QuoteGraphQL>()
@@ -36,6 +38,7 @@ class KashubianEntryGraphQLMapper {
             mapEntries(record, entries)
             mapOthers(record, others, entries)
             mapOtherEntries(record, simplifiedEntries, others)
+            mapSoundFile(record, soundFiles, entries)
             mapMeanings(record, meanings, entries)
             mapTranslations(record, translations, meanings)
             mapQuotes(record, quotes, meanings)
@@ -51,6 +54,27 @@ class KashubianEntryGraphQLMapper {
         }
 
         return entries.values.toList()
+    }
+
+    private fun mapSoundFile(record: Record,
+        soundFiles: MutableMap<Long, SoundFileGraphQL>,
+        entries: MutableMap<Long, KashubianEntryGraphQL>) {
+        record.mapAndAssignById(
+                "sound_file_id",
+                soundFiles,
+                { id ->
+                    SoundFileGraphQL(
+                            id = id,
+                            type = record.fetchValueOrNull("sound_file_type",
+                                    String::class.java),
+                            fileName = record.fetchValueOrNull("sound_file_file_name",
+                                    String::class.java))
+                },
+                "entry_id",
+                entries,
+                { entry, soundFile ->
+                    entry.soundFile = soundFile
+                })
     }
 
     private fun mapExamples(record: Record,

@@ -25,6 +25,7 @@ import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.OTHER
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.PHRASAL_VERB
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.PROVERB
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.QUOTE
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.SOUND_FILE
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.SYNONYM
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.TRANSLATION
 import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryCriteriaExpression
@@ -115,6 +116,10 @@ class KashubianEntryQuery(
                         Triple(OTHER.`as`("other"),
                                 KASHUBIAN_ENTRY.`as`("entry").ID.eq(OTHER.`as`("other").KASHUBIAN_ENTRY_ID),
                                 OTHER.`as`("other").ID.`as`("other_id")),
+                "KashubianEntryPaged.select/KashubianEntry.soundFile" to
+                        Triple(SOUND_FILE.`as`("sound_file"),
+                                KASHUBIAN_ENTRY.`as`("entry").ID.eq(SOUND_FILE.`as`("sound_file").KASHUBIAN_ENTRY_ID),
+                                SOUND_FILE.`as`("sound_file").ID.`as`("sound_file_id")),
                 "KashubianEntryPaged.select/KashubianEntry.others/Other.other" to
                         Triple(KASHUBIAN_ENTRY.`as`("other_entry"),
                                 OTHER.`as`("other").OTHER_ID.`as`("other_id")
@@ -196,6 +201,10 @@ class KashubianEntryQuery(
                         OTHER.`as`("other").`as`("other").NOTE.`as`("other_note"),
                 "KashubianEntryPaged.select/KashubianEntry.others/Other.other/KashubianEntrySimplified.word" to
                         KASHUBIAN_ENTRY.`as`("other_entry").WORD.`as`("other_entry_word"),
+                "KashubianEntryPaged.select/KashubianEntry.soundFile/SoundFile.type" to
+                        SOUND_FILE.`as`("sound_file").TYPE.`as`("sound_file_type"),
+                "KashubianEntryPaged.select/KashubianEntry.soundFile/SoundFile.fileName" to
+                        SOUND_FILE.`as`("sound_file").FILE_NAME.`as`("sound_file_file_name"),
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.origin" to
                         MEANING.`as`("meaning").ORIGIN.`as`("meaning_origin"),
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.definition" to
