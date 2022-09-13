@@ -1,0 +1,260 @@
+package tk.aizydorczyk.kashubian.crud.model.mapper
+
+import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.ArrayNode
+import org.jooq.Record
+import org.jooq.Result
+import tk.aizydorczyk.kashubian.crud.model.graphql.ExampleGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntrySimplifiedGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.MeaningGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.OtherGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.PhrasalVerbGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.ProverbGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.QuoteGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.TranslationGraphQL
+
+class KashubianEntryGraphQLMapper {
+    fun map(results: Result<Record>): List<KashubianEntryGraphQL> {
+        val entries = linkedMapOf<Long, KashubianEntryGraphQL>()
+        val others = mutableMapOf<Long, OtherGraphQL>()
+        val otherEntries = mutableMapOf<Long, KashubianEntrySimplifiedGraphQL>()
+        val meanings = mutableMapOf<Long, MeaningGraphQL>()
+        val translations = mutableMapOf<Long, TranslationGraphQL>()
+        val quotes = mutableMapOf<Long, QuoteGraphQL>()
+        val proverbs = mutableMapOf<Long, ProverbGraphQL>()
+        val phrasalVerbs = mutableMapOf<Long, PhrasalVerbGraphQL>()
+        val examples = mutableMapOf<Long, ExampleGraphQL>()
+
+        for (record in results) {
+            mapEntries(record, entries)
+            mapOthers(record, others, entries)
+            mapOtherEntries(record, otherEntries, others)
+            mapMeanings(record, meanings, entries)
+            mapTranslations(record, translations, meanings)
+            mapQuotes(record, quotes, meanings)
+            mapProverbs(record, proverbs, meanings)
+            mapPhrasalVerbs(record, phrasalVerbs, meanings)
+            mapExamples(record, examples, meanings)
+        }
+
+        return entries.values.toList()
+    }
+
+    private fun mapExamples(record: Record,
+        examples: MutableMap<Long, ExampleGraphQL>,
+        meanings: MutableMap<Long, MeaningGraphQL>) {
+        record.mapAndAssignById(
+                "example_id",
+                examples,
+                { id ->
+                    ExampleGraphQL(
+                            id = id,
+                            note = record.fetchValueOrNull("example_note", String::class.java),
+                            example = record.fetchValueOrNull("example_example", String::class.java))
+                },
+                "meaning_id",
+                meanings,
+                { meaning, example ->
+                    meaning.examples.add(example)
+                })
+    }
+
+    private fun mapPhrasalVerbs(record: Record,
+        phrasalVerbs: MutableMap<Long, PhrasalVerbGraphQL>,
+        meanings: MutableMap<Long, MeaningGraphQL>) {
+        record.mapAndAssignById(
+                "phrasal_verb_id",
+                phrasalVerbs,
+                { id ->
+                    PhrasalVerbGraphQL(
+                            id = id,
+                            note = record.fetchValueOrNull("phrasal_verb_note", String::class.java),
+                            phrasalVerb = record.fetchValueOrNull("phrasal_verb_phrasal_verb", String::class.java))
+                },
+                "meaning_id",
+                meanings,
+                { meaning, phrasalVerb ->
+                    meaning.phrasalVerbs.add(phrasalVerb)
+                })
+    }
+
+    private fun mapProverbs(record: Record,
+        proverbs: MutableMap<Long, ProverbGraphQL>,
+        meanings: MutableMap<Long, MeaningGraphQL>) {
+        record.mapAndAssignById(
+                "proverb_id",
+                proverbs,
+                { id ->
+                    ProverbGraphQL(
+                            id = id,
+                            note = record.fetchValueOrNull("proverb_note", String::class.java),
+                            proverb = record.fetchValueOrNull("proverb_proverb", String::class.java))
+                },
+                "meaning_id",
+                meanings,
+                { meaning, proverb ->
+                    meaning.proverbs.add(proverb)
+                })
+    }
+
+    private fun mapQuotes(record: Record,
+        quotes: MutableMap<Long, QuoteGraphQL>,
+        meanings: MutableMap<Long, MeaningGraphQL>) {
+        record.mapAndAssignById(
+                "quote_id",
+                quotes,
+                { id ->
+                    QuoteGraphQL(
+                            id = id,
+                            note = record.fetchValueOrNull("quote_note", String::class.java),
+                            quote = record.fetchValueOrNull("quote_quote", String::class.java))
+                },
+                "meaning_id",
+                meanings,
+                { meaning, quote ->
+                    meaning.quotes.add(quote)
+                })
+    }
+
+    private fun mapTranslations(record: Record,
+        translations: MutableMap<Long, TranslationGraphQL>,
+        meanings: MutableMap<Long, MeaningGraphQL>) {
+        record.mapAndAssignById(
+                "translation_id",
+                translations,
+                { id ->
+                    TranslationGraphQL(
+                            id = id,
+                            polish =
+                            record.fetchValueOrNull("translation_polish", String::class.java),
+                            normalizedPolish =
+                            record.fetchValueOrNull("translation_normalized_polish", String::class.java),
+                            english =
+                            record.fetchValueOrNull("translation_english", String::class.java),
+                            normalizedEnglish =
+                            record.fetchValueOrNull("translation_normalized_english", String::class.java),
+                            ukrainian =
+                            record.fetchValueOrNull("translation_ukrainian", String::class.java),
+                            normalizedUkrainian =
+                            record.fetchValueOrNull("translation_normalized_ukrainian", String::class.java),
+                            german =
+                            record.fetchValueOrNull("translation_german", String::class.java),
+                            normalizedGerman =
+                            record.fetchValueOrNull("translation_normalized_german", String::class.java)
+                    )
+                },
+                "meaning_id",
+                meanings,
+                { meaning, translation ->
+                    meaning.translation = translation
+                })
+    }
+
+    private fun mapMeanings(record: Record,
+        meanings: MutableMap<Long, MeaningGraphQL>,
+        entries: LinkedHashMap<Long, KashubianEntryGraphQL>) {
+        record.mapAndAssignById(
+                "meaning_id",
+                meanings,
+                { id ->
+                    MeaningGraphQL(
+                            id = id,
+                            definition =
+                            record.fetchValueOrNull("meaning_definition", String::class.java),
+                            origin =
+                            record.fetchValueOrNull("meaning_origin", String::class.java),
+                            hyperonyms =
+                            record.fetchValueOrNull("meaning_hyperonyms", ArrayNode::class.java),
+                            hyponyms =
+                            record.fetchValueOrNull("meaning_hyponyms", ArrayNode::class.java))
+                },
+                "entry_id",
+                entries,
+                { entry, meaning ->
+                    entry.meanings.add(meaning)
+                })
+    }
+
+    private fun mapOtherEntries(record: Record,
+        otherEntries: MutableMap<Long, KashubianEntrySimplifiedGraphQL>,
+        others: MutableMap<Long, OtherGraphQL>) {
+        record.mapAndAssignById(
+                "other_entry_id",
+                otherEntries,
+                { id ->
+                    KashubianEntrySimplifiedGraphQL(
+                            id = id,
+                            word = record.fetchValueOrNull("other_entry_word", String::class.java)
+                    )
+                },
+                "other_id",
+                others,
+                { other, otherEntry ->
+                    other.other = otherEntry
+                })
+    }
+
+    private fun mapOthers(record: Record,
+        others: MutableMap<Long, OtherGraphQL>,
+        entries: LinkedHashMap<Long, KashubianEntryGraphQL>) {
+        record.mapAndAssignById(
+                "other_entry_id",
+                others,
+                { id ->
+                    OtherGraphQL(
+                            id = id,
+                            note = record.fetchValueOrNull("other_note", String::class.java))
+                },
+                "other_id",
+                entries,
+                { entry, other ->
+                    entry.others.add(other)
+                })
+    }
+
+    private fun mapEntries(record: Record,
+        entries: LinkedHashMap<Long, KashubianEntryGraphQL>) {
+        record.mapAndAssignById<KashubianEntryGraphQL, Unit>(
+                "entry_id",
+                entries,
+                { id ->
+                    KashubianEntryGraphQL(
+                            id = id,
+                            word = record.fetchValueOrNull("entry_word", String::class.java),
+                            normalizedWord = record.fetchValueOrNull("entry_normalized_word", String::class.java),
+                            note = record.fetchValueOrNull("entry_note", String::class.java),
+                            priority = record.fetchValueOrNull("entry_priority", Boolean::class.java),
+                            partOfSpeech = record.fetchValueOrNull("entry_part_of_speech", String::class.java),
+                            partOfSpeechSubType = record.fetchValueOrNull("entry_part_of_speech_sub_type",
+                                    String::class.java),
+                            bases = record.fetchValueOrNull("entry_bases", ArrayNode::class.java),
+                            variation = record.fetchValueOrNull("entry_variation", JsonNode::class.java),
+                            derivatives = record.fetchValueOrNull("entry_derivatives", ArrayNode::class.java),
+                            meaningsCount = record.fetchValueOrNull("meanings_count", Long::class.java))
+                })
+    }
+
+
+    private fun <T> Record.fetchValueOrNull(fieldName: String, type: Class<T>) =
+        if (this.indexOf(fieldName) >= 0) {
+            this.get(fieldName, type)
+        } else null
+
+    private fun <CreatedType, AssignType> Record.mapAndAssignById(
+        createIdFieldName: String,
+        createMap: MutableMap<Long, CreatedType>,
+        createFunction: (Long) -> CreatedType,
+        assignIdFieldName: String = "",
+        assignMap: MutableMap<Long, AssignType> = mutableMapOf(),
+        assignFunction: (AssignType, CreatedType) -> Unit = { _: AssignType, _: CreatedType -> }) {
+        if (this.indexOf(createIdFieldName) >= 0) {
+            this.fetchValueOrNull(createIdFieldName, Long::class.javaObjectType)?.let { idInRecord ->
+                val createdOrCollectedValue = createMap.computeIfAbsent(idInRecord, createFunction)
+                assignMap[this.fetchValueOrNull(assignIdFieldName, Long::class.java)]?.let {
+                    assignFunction(it, createdOrCollectedValue)
+                }
+            }
+        }
+    }
+}

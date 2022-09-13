@@ -11,7 +11,6 @@ import org.jooq.impl.DSL.select
 import org.jooq.impl.DSL.selectCount
 import org.jooq.impl.TableImpl
 import org.jooq.impl.UpdatableRecordImpl
-import org.simpleflatmapper.jooq.SelectQueryMapper
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.graphql.data.method.annotation.Argument
@@ -27,15 +26,16 @@ import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.PROVERB
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.QUOTE
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.TRANSLATION
 import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryCriteriaExpression
-import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryPaged
 import tk.aizydorczyk.kashubian.crud.model.graphql.PageCriteria
+import tk.aizydorczyk.kashubian.crud.model.mapper.KashubianEntryGraphQLMapper
 
 @Controller
 class KashubianEntryQuery(
-    private val dsl: DSLContext,
-    private val mapper: SelectQueryMapper<KashubianEntryGraphQL>) {
+    private val dsl: DSLContext) {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
+
+    private val mapper = KashubianEntryGraphQLMapper()
 
     @QueryMapping
     fun findAllSearchKashubianEntries(
@@ -45,6 +45,8 @@ class KashubianEntryQuery(
         val selectedFields = env.selectionSet.fields
 
         val selectedColumns: MutableList<SelectFieldOrAsterisk?> = selectFields(env)
+        selectedColumns.add(KASHUBIAN_ENTRY.`as`("entry").ID.`as`("entry_id"))
+
         val selectedJoins = selectedFields
             .mapNotNull { FIELD_TO_JOIN_RELATIONS[it.fullyQualifiedName] }
 
@@ -73,7 +75,7 @@ class KashubianEntryQuery(
                         .limit(limit)))
             .orderBy(orderByColumns(selectedFields))
             .apply { logger.info(sql) }
-            .let { KashubianEntryPaged(pageCount, entriesCount, mapper.asList(it)) }
+            .let { KashubianEntryPaged(pageCount, entriesCount, mapper.map(it.fetch())) }
     }
 
     private fun countEntriesIfSelected(selectedFields: MutableList<SelectedField>) =
@@ -142,8 +144,6 @@ class KashubianEntryQuery(
         )
 
         private val FIELD_TO_COLUMN_RELATIONS = mapOf(
-                "KashubianEntryPaged.select/KashubianEntry.id" to
-                        KASHUBIAN_ENTRY.`as`("entry").ID.`as`("entry_id"),
                 "KashubianEntryPaged.select/KashubianEntry.word" to
                         KASHUBIAN_ENTRY.`as`("entry").WORD.`as`("entry_word"),
                 "KashubianEntryPaged.select/KashubianEntry.normalizedWord" to
@@ -202,13 +202,13 @@ class KashubianEntryQuery(
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.quotes/Quote.quote" to
                         QUOTE.`as`("quote").QUOTE_.`as`("quote_quote"),
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.examples/Example.note" to
-                        EXAMPLE.`as`("meaning_example").NOTE.`as`("example_note"),
+                        EXAMPLE.`as`("example").NOTE.`as`("example_note"),
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.examples/Example.example" to
-                        EXAMPLE.`as`("meaning_example").EXAMPLE_.`as`("example_example"),
+                        EXAMPLE.`as`("example").EXAMPLE_.`as`("example_example"),
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.phrasalVerbs/PhrasalVerb.note" to
-                        PHRASAL_VERB.`as`("meaning_phrasal_verb").NOTE.`as`("phrasal_verb_note"),
+                        PHRASAL_VERB.`as`("phrasal_verb").NOTE.`as`("phrasal_verb_note"),
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.phrasalVerbs/PhrasalVerb.phrasalVerb" to
-                        PHRASAL_VERB.`as`("meaning_phrasal_verb").PHRASAL_VERB_.`as`("phrasal_verb_phrasal_verb")
+                        PHRASAL_VERB.`as`("phrasal_verb").PHRASAL_VERB_.`as`("phrasal_verb_phrasal_verb")
         )
     }
 }
