@@ -17,6 +17,7 @@ import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Routines
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.ANTONYM
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.EXAMPLE
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.KASHUBIAN_ENTRY
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.MEANING
@@ -24,6 +25,7 @@ import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.OTHER
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.PHRASAL_VERB
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.PROVERB
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.QUOTE
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.SYNONYM
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.TRANSLATION
 import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryCriteriaExpression
 import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryPaged
@@ -115,7 +117,8 @@ class KashubianEntryQuery(
                                 OTHER.`as`("other").ID.`as`("other_id")),
                 "KashubianEntryPaged.select/KashubianEntry.others/Other.other" to
                         Triple(KASHUBIAN_ENTRY.`as`("other_entry"),
-                                KASHUBIAN_ENTRY.`as`("other_entry").ID.eq(OTHER.`as`("other").OTHER_ID.`as`("other_id")),
+                                OTHER.`as`("other").OTHER_ID.`as`("other_id")
+                                    .eq(KASHUBIAN_ENTRY.`as`("other_entry").ID),
                                 KASHUBIAN_ENTRY.`as`("other_entry").ID.`as`("other_entry_id")),
                 "KashubianEntryPaged.select/KashubianEntry.meanings" to
                         Triple(MEANING.`as`("meaning"),
@@ -141,6 +144,30 @@ class KashubianEntryQuery(
                         Triple(PHRASAL_VERB.`as`("phrasal_verb"),
                                 MEANING.`as`("meaning").ID.eq(PHRASAL_VERB.`as`("phrasal_verb").MEANING_ID),
                                 PHRASAL_VERB.`as`("phrasal_verb").ID.`as`("phrasal_verb_id")),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.synonyms" to
+                        Triple(SYNONYM.`as`("synonym"),
+                                MEANING.`as`("meaning").ID.eq(SYNONYM.`as`("synonym").MEANING_ID),
+                                SYNONYM.`as`("synonym").ID.`as`("synonym_id")),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.antonyms" to
+                        Triple(ANTONYM.`as`("antonym"),
+                                MEANING.`as`("meaning").ID.eq(ANTONYM.`as`("antonym").MEANING_ID),
+                                ANTONYM.`as`("antonym").ID.`as`("antonym_id")),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.synonyms/Synonym.synonym" to
+                        Triple(MEANING.`as`("synonym_meaning"),
+                                SYNONYM.`as`("synonym").MEANING_ID.eq(MEANING.`as`("synonym_meaning").ID),
+                                MEANING.`as`("synonym_meaning").ID.`as`("synonym_meaning_id")),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.antonyms/Antonym.antonym" to
+                        Triple(MEANING.`as`("antonym_meaning"),
+                                ANTONYM.`as`("antonym").MEANING_ID.eq(MEANING.`as`("antonym_meaning").ID),
+                                MEANING.`as`("antonym_meaning").ID.`as`("antonym_meaning_id")),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.synonyms/Synonym.synonym/MeaningSimplified.kashubianEntry" to
+                        Triple(KASHUBIAN_ENTRY.`as`("synonym_meaning_entry"),
+                                MEANING.`as`("synonym_meaning").KASHUBIAN_ENTRY_ID.eq(KASHUBIAN_ENTRY.`as`("synonym_meaning_entry").ID),
+                                KASHUBIAN_ENTRY.`as`("synonym_meaning_entry").ID.`as`("synonym_meaning_entry_id")),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.antonyms/Antonym.antonym/MeaningSimplified.kashubianEntry" to
+                        Triple(KASHUBIAN_ENTRY.`as`("antonym_meaning_entry"),
+                                MEANING.`as`("antonym_meaning").KASHUBIAN_ENTRY_ID.eq(KASHUBIAN_ENTRY.`as`("antonym_meaning_entry").ID),
+                                KASHUBIAN_ENTRY.`as`("antonym_meaning_entry").ID.`as`("antonym_meaning_entry_id"))
         )
 
         private val FIELD_TO_COLUMN_RELATIONS = mapOf(
@@ -208,7 +235,19 @@ class KashubianEntryQuery(
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.phrasalVerbs/PhrasalVerb.note" to
                         PHRASAL_VERB.`as`("phrasal_verb").NOTE.`as`("phrasal_verb_note"),
                 "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.phrasalVerbs/PhrasalVerb.phrasalVerb" to
-                        PHRASAL_VERB.`as`("phrasal_verb").PHRASAL_VERB_.`as`("phrasal_verb_phrasal_verb")
+                        PHRASAL_VERB.`as`("phrasal_verb").PHRASAL_VERB_.`as`("phrasal_verb_phrasal_verb"),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.synonyms/Synonym.note" to
+                        SYNONYM.`as`("synonym").NOTE.`as`("synonym_note"),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.antonyms/Antonym.note" to
+                        ANTONYM.`as`("antonym").NOTE.`as`("antonym_note"),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.synonyms/Synonym.synonym/MeaningSimplified.definition" to
+                        MEANING.`as`("synonym_meaning").DEFINITION.`as`("synonym_meaning_definition"),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.antonyms/Antonym.antonym/MeaningSimplified.definition" to
+                        MEANING.`as`("antonym_meaning").DEFINITION.`as`("antonym_meaning_definition"),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.synonyms/Synonym.synonym/MeaningSimplified.kashubianEntry/KashubianEntrySimplified.word" to
+                        KASHUBIAN_ENTRY.`as`("synonym_meaning_entry").WORD.`as`("synonym_meaning_entry_word"),
+                "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.antonyms/Antonym.antonym/MeaningSimplified.kashubianEntry/KashubianEntrySimplified.word" to
+                        KASHUBIAN_ENTRY.`as`("antonym_meaning_entry").WORD.`as`("antonym_meaning_entry_word")
         )
     }
 }

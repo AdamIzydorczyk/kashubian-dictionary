@@ -4,38 +4,50 @@ import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
 import org.jooq.Record
 import org.jooq.Result
+import tk.aizydorczyk.kashubian.crud.model.graphql.AntonymGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.ExampleGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntrySimplifiedGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.MeaningGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.MeaningSimplifiedGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.OtherGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.PhrasalVerbGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.ProverbGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.QuoteGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.SynonymGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.TranslationGraphQL
 
 class KashubianEntryGraphQLMapper {
     fun map(results: Result<Record>): List<KashubianEntryGraphQL> {
         val entries = linkedMapOf<Long, KashubianEntryGraphQL>()
         val others = mutableMapOf<Long, OtherGraphQL>()
-        val otherEntries = mutableMapOf<Long, KashubianEntrySimplifiedGraphQL>()
         val meanings = mutableMapOf<Long, MeaningGraphQL>()
         val translations = mutableMapOf<Long, TranslationGraphQL>()
         val quotes = mutableMapOf<Long, QuoteGraphQL>()
         val proverbs = mutableMapOf<Long, ProverbGraphQL>()
         val phrasalVerbs = mutableMapOf<Long, PhrasalVerbGraphQL>()
         val examples = mutableMapOf<Long, ExampleGraphQL>()
+        val synonyms = mutableMapOf<Long, SynonymGraphQL>()
+        val antonyms = mutableMapOf<Long, AntonymGraphQL>()
+        val simplifiedEntries = mutableMapOf<Long, KashubianEntrySimplifiedGraphQL>()
+        val simplifiedMeanings = mutableMapOf<Long, MeaningSimplifiedGraphQL>()
 
         for (record in results) {
             mapEntries(record, entries)
             mapOthers(record, others, entries)
-            mapOtherEntries(record, otherEntries, others)
+            mapOtherEntries(record, simplifiedEntries, others)
             mapMeanings(record, meanings, entries)
             mapTranslations(record, translations, meanings)
             mapQuotes(record, quotes, meanings)
             mapProverbs(record, proverbs, meanings)
             mapPhrasalVerbs(record, phrasalVerbs, meanings)
             mapExamples(record, examples, meanings)
+            mapSynonyms(record, synonyms, meanings)
+            mapAntonyms(record, antonyms, meanings)
+            mapSynonymMeanings(record, simplifiedMeanings, synonyms)
+            mapAntonymMeanings(record, simplifiedMeanings, antonyms)
+            mapSynonymMeaningEntries(record, simplifiedEntries, simplifiedMeanings)
+            mapAntonymMeaningEntries(record, simplifiedEntries, simplifiedMeanings)
         }
 
         return entries.values.toList()
@@ -50,8 +62,10 @@ class KashubianEntryGraphQLMapper {
                 { id ->
                     ExampleGraphQL(
                             id = id,
-                            note = record.fetchValueOrNull("example_note", String::class.java),
-                            example = record.fetchValueOrNull("example_example", String::class.java))
+                            note = record.fetchValueOrNull("example_note",
+                                    String::class.java),
+                            example = record.fetchValueOrNull("example_example",
+                                    String::class.java))
                 },
                 "meaning_id",
                 meanings,
@@ -69,8 +83,10 @@ class KashubianEntryGraphQLMapper {
                 { id ->
                     PhrasalVerbGraphQL(
                             id = id,
-                            note = record.fetchValueOrNull("phrasal_verb_note", String::class.java),
-                            phrasalVerb = record.fetchValueOrNull("phrasal_verb_phrasal_verb", String::class.java))
+                            note = record.fetchValueOrNull("phrasal_verb_note",
+                                    String::class.java),
+                            phrasalVerb = record.fetchValueOrNull("phrasal_verb_phrasal_verb",
+                                    String::class.java))
                 },
                 "meaning_id",
                 meanings,
@@ -88,8 +104,10 @@ class KashubianEntryGraphQLMapper {
                 { id ->
                     ProverbGraphQL(
                             id = id,
-                            note = record.fetchValueOrNull("proverb_note", String::class.java),
-                            proverb = record.fetchValueOrNull("proverb_proverb", String::class.java))
+                            note = record.fetchValueOrNull("proverb_note",
+                                    String::class.java),
+                            proverb = record.fetchValueOrNull("proverb_proverb",
+                                    String::class.java))
                 },
                 "meaning_id",
                 meanings,
@@ -107,8 +125,10 @@ class KashubianEntryGraphQLMapper {
                 { id ->
                     QuoteGraphQL(
                             id = id,
-                            note = record.fetchValueOrNull("quote_note", String::class.java),
-                            quote = record.fetchValueOrNull("quote_quote", String::class.java))
+                            note = record.fetchValueOrNull("quote_note",
+                                    String::class.java),
+                            quote = record.fetchValueOrNull("quote_quote",
+                                    String::class.java))
                 },
                 "meaning_id",
                 meanings,
@@ -127,21 +147,29 @@ class KashubianEntryGraphQLMapper {
                     TranslationGraphQL(
                             id = id,
                             polish =
-                            record.fetchValueOrNull("translation_polish", String::class.java),
+                            record.fetchValueOrNull("translation_polish",
+                                    String::class.java),
                             normalizedPolish =
-                            record.fetchValueOrNull("translation_normalized_polish", String::class.java),
+                            record.fetchValueOrNull("translation_normalized_polish",
+                                    String::class.java),
                             english =
-                            record.fetchValueOrNull("translation_english", String::class.java),
+                            record.fetchValueOrNull("translation_english",
+                                    String::class.java),
                             normalizedEnglish =
-                            record.fetchValueOrNull("translation_normalized_english", String::class.java),
+                            record.fetchValueOrNull("translation_normalized_english",
+                                    String::class.java),
                             ukrainian =
-                            record.fetchValueOrNull("translation_ukrainian", String::class.java),
+                            record.fetchValueOrNull("translation_ukrainian",
+                                    String::class.java),
                             normalizedUkrainian =
-                            record.fetchValueOrNull("translation_normalized_ukrainian", String::class.java),
+                            record.fetchValueOrNull("translation_normalized_ukrainian",
+                                    String::class.java),
                             german =
-                            record.fetchValueOrNull("translation_german", String::class.java),
+                            record.fetchValueOrNull("translation_german",
+                                    String::class.java),
                             normalizedGerman =
-                            record.fetchValueOrNull("translation_normalized_german", String::class.java)
+                            record.fetchValueOrNull("translation_normalized_german",
+                                    String::class.java)
                     )
                 },
                 "meaning_id",
@@ -161,13 +189,17 @@ class KashubianEntryGraphQLMapper {
                     MeaningGraphQL(
                             id = id,
                             definition =
-                            record.fetchValueOrNull("meaning_definition", String::class.java),
+                            record.fetchValueOrNull("meaning_definition",
+                                    String::class.java),
                             origin =
-                            record.fetchValueOrNull("meaning_origin", String::class.java),
+                            record.fetchValueOrNull("meaning_origin",
+                                    String::class.java),
                             hyperonyms =
-                            record.fetchValueOrNull("meaning_hyperonyms", ArrayNode::class.java),
+                            record.fetchValueOrNull("meaning_hyperonyms",
+                                    ArrayNode::class.java),
                             hyponyms =
-                            record.fetchValueOrNull("meaning_hyponyms", ArrayNode::class.java))
+                            record.fetchValueOrNull("meaning_hyponyms",
+                                    ArrayNode::class.java))
                 },
                 "entry_id",
                 entries,
@@ -185,7 +217,8 @@ class KashubianEntryGraphQLMapper {
                 { id ->
                     KashubianEntrySimplifiedGraphQL(
                             id = id,
-                            word = record.fetchValueOrNull("other_entry_word", String::class.java)
+                            word = record.fetchValueOrNull("other_entry_word",
+                                    String::class.java)
                     )
                 },
                 "other_id",
@@ -204,7 +237,8 @@ class KashubianEntryGraphQLMapper {
                 { id ->
                     OtherGraphQL(
                             id = id,
-                            note = record.fetchValueOrNull("other_note", String::class.java))
+                            note = record.fetchValueOrNull("other_note",
+                                    String::class.java))
                 },
                 "other_id",
                 entries,
@@ -221,20 +255,142 @@ class KashubianEntryGraphQLMapper {
                 { id ->
                     KashubianEntryGraphQL(
                             id = id,
-                            word = record.fetchValueOrNull("entry_word", String::class.java),
-                            normalizedWord = record.fetchValueOrNull("entry_normalized_word", String::class.java),
-                            note = record.fetchValueOrNull("entry_note", String::class.java),
-                            priority = record.fetchValueOrNull("entry_priority", Boolean::class.java),
-                            partOfSpeech = record.fetchValueOrNull("entry_part_of_speech", String::class.java),
+                            word = record.fetchValueOrNull("entry_word",
+                                    String::class.java),
+                            normalizedWord = record.fetchValueOrNull("entry_normalized_word",
+                                    String::class.java),
+                            note = record.fetchValueOrNull("entry_note",
+                                    String::class.java),
+                            priority = record.fetchValueOrNull("entry_priority",
+                                    Boolean::class.java),
+                            partOfSpeech = record.fetchValueOrNull("entry_part_of_speech",
+                                    String::class.java),
                             partOfSpeechSubType = record.fetchValueOrNull("entry_part_of_speech_sub_type",
                                     String::class.java),
-                            bases = record.fetchValueOrNull("entry_bases", ArrayNode::class.java),
-                            variation = record.fetchValueOrNull("entry_variation", JsonNode::class.java),
-                            derivatives = record.fetchValueOrNull("entry_derivatives", ArrayNode::class.java),
-                            meaningsCount = record.fetchValueOrNull("meanings_count", Long::class.java))
+                            bases = record.fetchValueOrNull("entry_bases",
+                                    ArrayNode::class.java),
+                            variation = record.fetchValueOrNull("entry_variation",
+                                    JsonNode::class.java),
+                            derivatives = record.fetchValueOrNull("entry_derivatives",
+                                    ArrayNode::class.java),
+                            meaningsCount = record.fetchValueOrNull("meanings_count",
+                                    Long::class.java))
                 })
     }
 
+    private fun mapAntonyms(record: Record,
+        antonyms: MutableMap<Long, AntonymGraphQL>,
+        meanings: MutableMap<Long, MeaningGraphQL>) {
+        record.mapAndAssignById(
+                "antonym_id",
+                antonyms,
+                { id ->
+                    AntonymGraphQL(
+                            id = id,
+                            note = record.fetchValueOrNull("antonym_note",
+                                    String::class.java))
+                },
+                "meaning_id",
+                meanings,
+                { meaning, antonym ->
+                    meaning.antonyms.add(antonym)
+                })
+    }
+
+    private fun mapSynonyms(record: Record,
+        synonyms: MutableMap<Long, SynonymGraphQL>,
+        meanings: MutableMap<Long, MeaningGraphQL>) {
+        record.mapAndAssignById(
+                "synonym_id",
+                synonyms,
+                { id ->
+                    SynonymGraphQL(
+                            id = id,
+                            note = record.fetchValueOrNull("synonym_note",
+                                    String::class.java))
+                },
+                "meaning_id",
+                meanings,
+                { meaning, synonym ->
+                    meaning.synonyms.add(synonym)
+                })
+    }
+
+    private fun mapSynonymMeanings(record: Record,
+        simplifyMeanings: MutableMap<Long, MeaningSimplifiedGraphQL>,
+        synonyms: MutableMap<Long, SynonymGraphQL>) {
+        record.mapAndAssignById(
+                "synonym_meaning_id",
+                simplifyMeanings,
+                { id ->
+                    MeaningSimplifiedGraphQL(
+                            id = id,
+                            definition = record.fetchValueOrNull("synonym_meaning_definition",
+                                    String::class.java))
+                },
+                "synonym_id",
+                synonyms,
+                { synonym, simplifyMeaning ->
+                    synonym.synonym = simplifyMeaning
+                })
+    }
+
+    private fun mapAntonymMeanings(record: Record,
+        simplifyMeanings: MutableMap<Long, MeaningSimplifiedGraphQL>,
+        antonyms: MutableMap<Long, AntonymGraphQL>) {
+        record.mapAndAssignById(
+                "antonym_meaning_id",
+                simplifyMeanings,
+                { id ->
+                    MeaningSimplifiedGraphQL(
+                            id = id,
+                            definition = record.fetchValueOrNull("antonym_meaning_definition",
+                                    String::class.java))
+                },
+                "antonym_id",
+                antonyms,
+                { antonym, simplifyMeaning ->
+                    antonym.antonym = simplifyMeaning
+                })
+    }
+
+    private fun mapSynonymMeaningEntries(record: Record,
+        simplifyEntries: MutableMap<Long, KashubianEntrySimplifiedGraphQL>,
+        simplifyMeanings: MutableMap<Long, MeaningSimplifiedGraphQL>) {
+        record.mapAndAssignById(
+                "synonym_meaning_entry_id",
+                simplifyEntries,
+                { id ->
+                    KashubianEntrySimplifiedGraphQL(
+                            id = id,
+                            word = record.fetchValueOrNull("synonym_meaning_entry_word",
+                                    String::class.java))
+                },
+                "synonym_meaning_id",
+                simplifyMeanings,
+                { simplifyMeaning, simplifyEntry ->
+                    simplifyMeaning.kashubianEntry = simplifyEntry
+                })
+    }
+
+    private fun mapAntonymMeaningEntries(record: Record,
+        simplifyEntries: MutableMap<Long, KashubianEntrySimplifiedGraphQL>,
+        simplifyMeanings: MutableMap<Long, MeaningSimplifiedGraphQL>) {
+        record.mapAndAssignById(
+                "antonym_meaning_entry_id",
+                simplifyEntries,
+                { id ->
+                    KashubianEntrySimplifiedGraphQL(
+                            id = id,
+                            word = record.fetchValueOrNull("antonym_meaning_entry_word",
+                                    String::class.java))
+                },
+                "antonym_meaning_id",
+                simplifyMeanings,
+                { simplifyMeaning, simplifyEntry ->
+                    simplifyMeaning.kashubianEntry = simplifyEntry
+                })
+    }
 
     private fun <T> Record.fetchValueOrNull(fieldName: String, type: Class<T>) =
         if (this.indexOf(fieldName) >= 0) {

@@ -168,6 +168,7 @@ type Meaning{
 type MeaningSimplified{
     id(orderBy: OrderBy): ID
     definition(orderBy: OrderBy): String
+    kashubianEntry: KashubianEntrySimplified
 }
 
 type Synonym {
