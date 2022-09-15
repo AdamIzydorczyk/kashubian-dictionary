@@ -88,7 +88,7 @@ class KashubianEntryQuery(
                         .offset(pageStart)
                         .limit(limit)))
             .orderBy(orderByColumns(selectedFields))
-            .apply { logger.info("Count query: $sql") }
+            .apply { logger.info("Select query: $sql") }
             .let { KashubianEntryPaged(pageCount, entriesCount, mapper.map(it.fetch())) }
     }
 

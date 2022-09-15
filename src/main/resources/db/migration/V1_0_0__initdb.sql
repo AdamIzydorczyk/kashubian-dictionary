@@ -15,6 +15,7 @@ create table public.kashubian_entry (
 create unique index kashubian_entry_pk_unique_index on public.kashubian_entry (id);
 create unique index kashubian_entry_normalized_word_unique_index on public.kashubian_entry (normalized_word);
 create index kashubian_entry_base_id_index on public.kashubian_entry (base_id);
+create index kashubian_entry_word_index on public.kashubian_entry (word);
 create sequence kashubian_entry_id_sequence;
 
 -- public.sound_file definition
