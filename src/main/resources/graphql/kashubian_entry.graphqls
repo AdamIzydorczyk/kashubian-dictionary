@@ -86,6 +86,7 @@ input ProverbsCriteriaExpression{
 input OthersCriteriaExpression{
     id: NumericCriteria
     note: StringCriteria
+    other: KashubianEntryCriteriaExpressionSimplified
 }
 
 input SoundFileCriteriaExpression{
