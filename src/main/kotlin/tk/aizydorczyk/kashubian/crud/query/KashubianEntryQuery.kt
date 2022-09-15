@@ -23,6 +23,8 @@ import tk.aizydorczyk.kashubian.crud.model.mapper.KashubianEntryGraphQLMapper
 import tk.aizydorczyk.kashubian.crud.query.KashubianEntryQueryRelations.CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN
 import tk.aizydorczyk.kashubian.crud.query.KashubianEntryQueryRelations.FIELD_TO_COLUMN_RELATIONS
 import tk.aizydorczyk.kashubian.crud.query.KashubianEntryQueryRelations.FIELD_TO_JOIN_RELATIONS
+import tk.aizydorczyk.kashubian.crud.query.KashubianEntryQueryRelations.entryId
+import tk.aizydorczyk.kashubian.crud.query.KashubianEntryQueryRelations.entryTable
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.declaredMemberProperties
@@ -42,13 +44,13 @@ class KashubianEntryQuery(
         val selectedFields = env.selectionSet.fields
         val wheresWithJoins = prepareWheresWithJoins(where)
 
-        val wheres = wheresWithJoins.map { it.first }
-        val whereJoins = wheresWithJoins.map { it.second }
+        val wheres = wheresWithJoins.map { it.condition() }
+        val whereJoins = wheresWithJoins.map { it.joins() }
             .flatten()
             .distinct()
 
         val selectedColumns: MutableList<SelectFieldOrAsterisk?> = selectFields(env)
-        selectedColumns.add(KASHUBIAN_ENTRY.`as`("entry").ID.`as`("entry_id"))
+        selectedColumns.add(entryId())
 
         val selectedJoins = selectedFields
             .mapNotNull { FIELD_TO_JOIN_RELATIONS[it.fullyQualifiedName] }
@@ -65,20 +67,19 @@ class KashubianEntryQuery(
         val pageCount: Int = (entriesCount + limit - 1) / limit
 
         return dsl.select(selectedColumns)
-            .from(KASHUBIAN_ENTRY.`as`("entry"))
+            .from(entryTable())
             .apply {
                 selectedJoins.forEach {
-                    leftJoin(it.table()).on(it.joinCondition())
+                    leftJoin(it.joinTable()).on(it.joinCondition())
                 }
             }
-            .where(KASHUBIAN_ENTRY.`as`("entry").ID.`in`(
-                    select(KASHUBIAN_ENTRY.`as`("entry").ID)
-                        .from(KASHUBIAN_ENTRY.`as`("entry"))
+            .where(entryTable().ID.`in`(
+                    select(entryTable().ID)
+                        .from(entryTable())
                         .apply {
                             whereJoins.forEach {
-                                leftJoin(it.first).on(it.second)
+                                leftJoin(it.joinTable).on(it.joinCondition)
                             }
-
                             wheres.forEach {
                                 where(it)
                             }
@@ -96,10 +97,10 @@ class KashubianEntryQuery(
         }.filter { it.instance != null }
             .map { Pair(it.field.call(it.instance), it.fieldPath) }
             .filter { it.first != null }
-            .map { fieldWithInstance ->
-                val instance = fieldWithInstance.first!!
-                val fieldPath = fieldWithInstance.second
-                val field = CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN[fieldPath]!!.first as Field<Any>?
+            .map { instanceWithField ->
+                val instance = instanceWithField.first!!
+                val fieldPath = instanceWithField.second
+                val field = CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN[fieldPath]!!.first as Field<Any>
                 val condition = prepareCondition(fieldPath, field, instance)
 
                 val joins = CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN[fieldPath]!!.second
@@ -108,40 +109,39 @@ class KashubianEntryQuery(
             }
 
     private fun prepareCondition(fieldPath: String,
-        field: Field<Any>?,
+        field: Field<Any>,
         instance: Any) = when {
-        fieldPath.endsWith(".EQ") -> field!!.eq(instance)
-        fieldPath.endsWith(".LIKE_") -> field!!.likeIgnoreCase(instance as String)
-        fieldPath.endsWith(".LIKE") -> field!!.like(instance as String)
+        fieldPath.endsWith(".EQ") -> field.eq(instance)
+        fieldPath.endsWith(".LIKE_") -> field.likeIgnoreCase("%$instance%")
+        fieldPath.endsWith(".LIKE") -> field.like("%$instance%")
         else -> null
     }
 
     private fun countEntriesIfSelected(
         selectedFields: MutableList<SelectedField>,
-        whereJoins: List<Pair<TableImpl<out UpdatableRecordImpl<*>>, Condition>>,
+        whereJoins: List<KashubianEntryQueryRelations.JoinTableWithCondition>,
         wheres: List<Condition?>) =
         when (isContainsPaginationFields(selectedFields)) {
             true -> dsl.select(count())
                 .from(KASHUBIAN_ENTRY.`as`("entry"))
                 .apply {
                     whereJoins.forEach {
-                        leftJoin(it.first).on(it.second)
+                        leftJoin(it.joinTable).on(it.joinCondition)
                     }
 
                     wheres.forEach {
                         where(it)
                     }
-                    logger.info("Count query: $sql")
+                    logger.info("Select query: $sql")
                 }.fetchOne(0, Int::class.java) ?: 0
-
             false -> 0
         }
 
     private fun orderByColumns(selectedFields: MutableList<SelectedField>) =
-        selectedFields.filter { it.arguments.isNotEmpty() }.map {
+        selectedFields.filter { it.arguments.isNotEmpty() }.mapNotNull {
             when (it.arguments["orderBy"]) {
-                "ASC" -> FIELD_TO_COLUMN_RELATIONS[it.fullyQualifiedName]!!.asc()
-                else -> FIELD_TO_COLUMN_RELATIONS[it.fullyQualifiedName]!!.desc()
+                "ASC" -> FIELD_TO_COLUMN_RELATIONS[it.fullyQualifiedName]?.asc()
+                else -> FIELD_TO_COLUMN_RELATIONS[it.fullyQualifiedName]?.desc()
             }
         }
 
@@ -156,10 +156,12 @@ class KashubianEntryQuery(
                     || it.fullyQualifiedName == "KashubianEntryPaged.pages"
         }
 
-    fun Triple<TableImpl<out UpdatableRecordImpl<*>>, Condition, Field<Long>>.table() = this.first
+    fun Triple<TableImpl<out UpdatableRecordImpl<*>>, Condition, Field<Long>>.joinTable() = this.first
     fun Triple<TableImpl<out UpdatableRecordImpl<*>>, Condition, Field<Long>>.joinCondition() = this.second
     fun Triple<TableImpl<out UpdatableRecordImpl<*>>, Condition, Field<Long>>.idColumn() = this.third
 
+    fun Pair<Condition?, List<KashubianEntryQueryRelations.JoinTableWithCondition>>.condition() = this.first
+    fun Pair<Condition?, List<KashubianEntryQueryRelations.JoinTableWithCondition>>.joins() = this.second
 
     val listOfTypesToFetch = listOf(String::class, Boolean::class, Long::class).map { it.createType(nullable = true) }
 

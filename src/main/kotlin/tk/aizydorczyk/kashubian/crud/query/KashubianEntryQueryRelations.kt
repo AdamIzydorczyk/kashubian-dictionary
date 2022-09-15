@@ -1,10 +1,13 @@
 package tk.aizydorczyk.kashubian.crud.query
 
+import org.jooq.Condition
+import org.jooq.QueryPart
 import org.jooq.impl.DSL
+import org.jooq.impl.TableImpl
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Routines
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables
 
-internal object KashubianEntryQueryRelations {
+object KashubianEntryQueryRelations {
     internal val FIELD_TO_JOIN_RELATIONS = mapOf(
             "KashubianEntryPaged.select/KashubianEntry.others" to
                     Triple(otherTable(),
@@ -151,154 +154,154 @@ internal object KashubianEntryQueryRelations {
                     antonymMeaningEntryWord()
     )
 
-
-    internal val CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN =
+    val CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN =
         listOf(
-                "entry.id" to Pair(entryTable().ID, emptyList()),
-                "entry.note" to Pair(entryTable().NOTE, emptyList()),
-                "entry.word" to Pair(entryTable().WORD, emptyList()),
-                "entry.normalizedWord" to Pair(entryTable().NORMALIZED_WORD, emptyList()),
-                "entry.priority" to Pair(entryTable().PRIORITY, emptyList()),
-                "entry.soundFile.id" to Pair(soundFileTable().ID, emptyList()),
-                "entry.soundFile.type" to Pair(soundFileTable().TYPE, emptyList()),
-                "entry.soundFile.fileName" to Pair(soundFileTable().FILE_NAME, emptyList()),
-                "entry.others.id" to Pair(
-                        otherTable().ID,
-                        listOf(otherTable() to entryTable().ID.eq(otherTable().KASHUBIAN_ENTRY_ID))),
-                "entry.others.note" to Pair(
-                        otherTable().NOTE,
-                        listOf(otherTable() to entryTable().ID.eq(otherTable().KASHUBIAN_ENTRY_ID))),
-                "entry.others.other.id" to Pair(otherEntryTable().ID,
-                        listOf(otherTable() to entryTable().ID.eq(otherTable().KASHUBIAN_ENTRY_ID),
-                                otherEntryTable() to otherTable().OTHER_ID.`as`("other_id").eq(otherEntryTable().ID))),
-                "entry.others.other.word" to Pair(otherEntryTable().WORD,
-                        listOf(otherTable() to entryTable().ID.eq(otherTable().KASHUBIAN_ENTRY_ID),
-                                otherEntryTable() to otherTable().OTHER_ID.`as`("other_id").eq(otherEntryTable().ID))),
-                "entry.meanings.id" to Pair(meaningTable().ID,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
-                "entry.meanings.origin" to Pair(meaningTable().ORIGIN,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
-                "entry.meanings.definition" to Pair(meaningTable().DEFINITION,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
-                "entry.meanings.synonyms.id" to Pair(synonymTable().ID,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                synonymTable() to meaningTable().ID.eq(synonymTable().MEANING_ID))),
-                "entry.meanings.synonyms.note" to Pair(synonymTable().NOTE,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                synonymTable() to meaningTable().ID.eq(synonymTable().MEANING_ID))),
-                "entry.meanings.synonyms.synonym.id" to Pair(synonymMeaningTable(),
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                synonymTable() to meaningTable().ID.eq(synonymTable().MEANING_ID),
-                                synonymMeaningTable() to synonymTable().MEANING_ID.eq(synonymMeaningTable().ID))),
-                "entry.meanings.synonyms.synonym.definition" to Pair(synonymMeaningTable().DEFINITION,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                synonymTable() to meaningTable().ID.eq(synonymTable().MEANING_ID),
-                                synonymMeaningTable() to synonymTable().MEANING_ID.eq(synonymMeaningTable().ID))),
-                "entry.meanings.synonyms.synonym.kashubianEntry.id" to Pair(synonymMeaningEntryTable().ID,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                synonymTable() to meaningTable().ID.eq(synonymTable().MEANING_ID),
-                                synonymMeaningTable() to synonymTable().MEANING_ID.eq(synonymMeaningTable().ID),
-                                synonymMeaningEntryTable() to synonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
+                "entry.id" to (entryTable().ID joinedBy emptyList()),
+                "entry.note" to (entryTable().NOTE joinedBy emptyList()),
+                "entry.word" to (entryTable().WORD joinedBy emptyList()),
+                "entry.normalizedWord" to (entryTable().NORMALIZED_WORD joinedBy emptyList()),
+                "entry.priority" to (entryTable().PRIORITY joinedBy emptyList()),
+                "entry.soundFile.id" to (soundFileTable().ID joinedBy emptyList()),
+                "entry.soundFile.type" to (soundFileTable().TYPE joinedBy emptyList()),
+                "entry.soundFile.fileName" to (soundFileTable().FILE_NAME joinedBy emptyList()),
+                "entry.others.id" to (
+                        otherTable().ID joinedBy
+                                listOf(otherTable() on entryTable().ID.eq(otherTable().KASHUBIAN_ENTRY_ID))),
+                "entry.others.note" to (
+                        otherTable().NOTE joinedBy
+                                listOf(otherTable() on entryTable().ID.eq(otherTable().KASHUBIAN_ENTRY_ID))),
+                "entry.others.other.id" to (otherEntryTable().ID joinedBy
+                        listOf(otherTable() on entryTable().ID.eq(otherTable().KASHUBIAN_ENTRY_ID),
+                                otherEntryTable() on otherTable().OTHER_ID.`as`("other_id").eq(otherEntryTable().ID))),
+                "entry.others.other.word" to (otherEntryTable().WORD joinedBy
+                        listOf(otherTable() on entryTable().ID.eq(otherTable().KASHUBIAN_ENTRY_ID),
+                                otherEntryTable() on otherTable().OTHER_ID.`as`("other_id").eq(otherEntryTable().ID))),
+                "entry.meanings.id" to (meaningTable().ID joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
+                "entry.meanings.origin" to (meaningTable().ORIGIN joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
+                "entry.meanings.definition" to (meaningTable().DEFINITION joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
+                "entry.meanings.synonyms.id" to (synonymTable().ID joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID))),
+                "entry.meanings.synonyms.note" to (synonymTable().NOTE joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID))),
+                "entry.meanings.synonyms.synonym.id" to (synonymMeaningTable() joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
+                                synonymMeaningTable() on synonymTable().MEANING_ID.eq(synonymMeaningTable().ID))),
+                "entry.meanings.synonyms.synonym.definition" to (synonymMeaningTable().DEFINITION joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
+                                synonymMeaningTable() on synonymTable().MEANING_ID.eq(synonymMeaningTable().ID))),
+                "entry.meanings.synonyms.synonym.kashubianEntry.id" to (synonymMeaningEntryTable().ID joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
+                                synonymMeaningTable() on synonymTable().MEANING_ID.eq(synonymMeaningTable().ID),
+                                synonymMeaningEntryTable() on synonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
                                         synonymMeaningEntryTable().ID))),
-                "entry.meanings.synonyms.synonym.kashubianEntry.word" to Pair(synonymMeaningEntryTable().WORD,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                synonymTable() to meaningTable().ID.eq(synonymTable().MEANING_ID),
-                                synonymMeaningTable() to synonymTable().MEANING_ID.eq(synonymMeaningTable().ID),
-                                synonymMeaningEntryTable() to synonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
+                "entry.meanings.synonyms.synonym.kashubianEntry.word" to (synonymMeaningEntryTable().WORD joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
+                                synonymMeaningTable() on synonymTable().MEANING_ID.eq(synonymMeaningTable().ID),
+                                synonymMeaningEntryTable() on synonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
                                         synonymMeaningEntryTable().ID))),
-                "entry.meanings.proverbs.id" to Pair(proverbTable().ID,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                proverbTable() to meaningTable().ID.eq(proverbTable().MEANING_ID))),
-                "entry.meanings.proverbs.note" to Pair(proverbTable().NOTE,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                proverbTable() to meaningTable().ID.eq(proverbTable().MEANING_ID))),
-                "entry.meanings.proverbs.proverb" to Pair(proverbTable().PROVERB_,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                proverbTable() to meaningTable().ID.eq(proverbTable().MEANING_ID))),
-                "entry.meanings.translation.id" to Pair(translationTable().ID,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                translationTable() to meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "entry.meanings.translation.polish" to Pair(translationTable().POLISH,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                translationTable() to meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "entry.meanings.translation.normalizedPolish" to Pair(translationTable().NORMALIZED_POLISH,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                translationTable() to meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "entry.meanings.translation.english" to Pair(translationTable().ENGLISH,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                translationTable() to meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "entry.meanings.translation.normalizedEnglish" to Pair(translationTable().NORMALIZED_ENGLISH,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                translationTable() to meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "entry.meanings.translation.german" to Pair(translationTable().GERMAN,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                translationTable() to meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "entry.meanings.translation.normalizedGerman" to Pair(translationTable().NORMALIZED_GERMAN,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                translationTable() to meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "entry.meanings.translation.ukrainian" to Pair(translationTable().UKRAINIAN,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                translationTable() to meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "entry.meanings.translation.normalizedUkrainian" to Pair(translationTable().NORMALIZED_UKRAINIAN,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                translationTable() to meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "entry.meanings.quotes.id" to Pair(quoteTable().ID,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                quoteTable() to meaningTable().ID.eq(quoteTable().MEANING_ID))),
-                "entry.meanings.quotes.note" to Pair(quoteTable().NOTE,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                quoteTable() to meaningTable().ID.eq(quoteTable().MEANING_ID))),
-                "entry.meanings.quotes.quote" to Pair(quoteTable().QUOTE_,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                quoteTable() to meaningTable().ID.eq(quoteTable().MEANING_ID))),
-                "entry.meanings.antonyms.id" to Pair(antonymTable().ID,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                antonymTable() to meaningTable().ID.eq(antonymTable().MEANING_ID))),
-                "entry.meanings.antonyms.note" to Pair(antonymTable().NOTE,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                antonymTable() to meaningTable().ID.eq(antonymTable().MEANING_ID))),
-                "entry.meanings.antonyms.antonym.id" to Pair(antonymMeaningTable().ID,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                antonymTable() to meaningTable().ID.eq(antonymTable().MEANING_ID),
-                                antonymMeaningTable() to antonymTable().MEANING_ID.eq(antonymMeaningTable().ID))),
-                "entry.meanings.antonyms.antonym.definition" to Pair(antonymMeaningTable().DEFINITION,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                antonymTable() to meaningTable().ID.eq(antonymTable().MEANING_ID),
-                                antonymMeaningTable() to antonymTable().MEANING_ID.eq(antonymMeaningTable().ID))),
-                "entry.meanings.antonyms.antonym.kashubianEntry.id" to Pair(antonymMeaningEntryTable().ID,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                antonymTable() to meaningTable().ID.eq(antonymTable().MEANING_ID),
-                                antonymMeaningTable() to antonymTable().MEANING_ID.eq(antonymMeaningTable().ID),
-                                antonymMeaningEntryTable() to antonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
+                "entry.meanings.proverbs.id" to (proverbTable().ID joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                proverbTable() on meaningTable().ID.eq(proverbTable().MEANING_ID))),
+                "entry.meanings.proverbs.note" to (proverbTable().NOTE joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                proverbTable() on meaningTable().ID.eq(proverbTable().MEANING_ID))),
+                "entry.meanings.proverbs.proverb" to (proverbTable().PROVERB_ joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                proverbTable() on meaningTable().ID.eq(proverbTable().MEANING_ID))),
+                "entry.meanings.translation.id" to (translationTable().ID joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
+                "entry.meanings.translation.polish" to (translationTable().POLISH joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
+                "entry.meanings.translation.normalizedPolish" to (translationTable().NORMALIZED_POLISH joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
+                "entry.meanings.translation.english" to (translationTable().ENGLISH joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
+                "entry.meanings.translation.normalizedEnglish" to (translationTable().NORMALIZED_ENGLISH joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
+                "entry.meanings.translation.german" to (translationTable().GERMAN joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
+                "entry.meanings.translation.normalizedGerman" to (translationTable().NORMALIZED_GERMAN joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
+                "entry.meanings.translation.ukrainian" to (translationTable().UKRAINIAN joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
+                "entry.meanings.translation.normalizedUkrainian" to (translationTable().NORMALIZED_UKRAINIAN joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
+                "entry.meanings.quotes.id" to (quoteTable().ID joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                quoteTable() on meaningTable().ID.eq(quoteTable().MEANING_ID))),
+                "entry.meanings.quotes.note" to (quoteTable().NOTE joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                quoteTable() on meaningTable().ID.eq(quoteTable().MEANING_ID))),
+                "entry.meanings.quotes.quote" to (quoteTable().QUOTE_ joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                quoteTable() on meaningTable().ID.eq(quoteTable().MEANING_ID))),
+                "entry.meanings.antonyms.id" to (antonymTable().ID joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID))),
+                "entry.meanings.antonyms.note" to (antonymTable().NOTE joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID))),
+                "entry.meanings.antonyms.antonym.id" to (antonymMeaningTable().ID joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
+                                antonymMeaningTable() on antonymTable().MEANING_ID.eq(antonymMeaningTable().ID))),
+                "entry.meanings.antonyms.antonym.definition" to (antonymMeaningTable().DEFINITION joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
+                                antonymMeaningTable() on antonymTable().MEANING_ID.eq(antonymMeaningTable().ID))),
+                "entry.meanings.antonyms.antonym.kashubianEntry.id" to (antonymMeaningEntryTable().ID joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
+                                antonymMeaningTable() on antonymTable().MEANING_ID.eq(antonymMeaningTable().ID),
+                                antonymMeaningEntryTable() on antonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
                                         antonymMeaningEntryTable().ID))),
-                "entry.meanings.antonyms.antonym.kashubianEntry.word" to Pair(antonymMeaningEntryTable().WORD,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                antonymTable() to meaningTable().ID.eq(antonymTable().MEANING_ID),
-                                antonymMeaningTable() to antonymTable().MEANING_ID.eq(antonymMeaningTable().ID),
-                                antonymMeaningEntryTable() to antonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
+                "entry.meanings.antonyms.antonym.kashubianEntry.word" to (antonymMeaningEntryTable().WORD joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
+                                antonymMeaningTable() on antonymTable().MEANING_ID.eq(antonymMeaningTable().ID),
+                                antonymMeaningEntryTable() on antonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
                                         antonymMeaningEntryTable().ID))),
-                "entry.meanings.examples.id" to Pair(exampleTable().ID,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                exampleTable() to meaningTable().ID.eq(exampleTable().MEANING_ID))),
-                "entry.meanings.examples.note" to Pair(exampleTable().NOTE,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                exampleTable() to meaningTable().ID.eq(exampleTable().MEANING_ID))),
-                "entry.meanings.examples.example" to Pair(exampleTable().EXAMPLE_,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                exampleTable() to meaningTable().ID.eq(exampleTable().MEANING_ID))),
-                "entry.meanings.phrasalVerbs.id" to Pair(phrasalVerbTable().ID,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                phrasalVerbTable() to meaningTable().ID.eq(phrasalVerbTable().MEANING_ID))),
-                "entry.meanings.phrasalVerbs.note" to Pair(phrasalVerbTable().NOTE,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                phrasalVerbTable() to meaningTable().ID.eq(phrasalVerbTable().MEANING_ID))),
-                "entry.meanings.phrasalVerbs.phrasalVerb" to Pair(phrasalVerbTable().PHRASAL_VERB_,
-                        listOf(meaningTable() to entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                phrasalVerbTable() to meaningTable().ID.eq(phrasalVerbTable().MEANING_ID))),
+                "entry.meanings.examples.id" to (exampleTable().ID joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                exampleTable() on meaningTable().ID.eq(exampleTable().MEANING_ID))),
+                "entry.meanings.examples.note" to (exampleTable().NOTE joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                exampleTable() on meaningTable().ID.eq(exampleTable().MEANING_ID))),
+                "entry.meanings.examples.example" to (exampleTable().EXAMPLE_ joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                exampleTable() on meaningTable().ID.eq(exampleTable().MEANING_ID))),
+                "entry.meanings.phrasalVerbs.id" to (phrasalVerbTable().ID joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID))),
+                "entry.meanings.phrasalVerbs.note" to (phrasalVerbTable().NOTE joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID))),
+                "entry.meanings.phrasalVerbs.phrasalVerb" to (phrasalVerbTable().PHRASAL_VERB_ joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID)))
         ).map { criteriaAndField ->
+            val criteriaAndField1 = criteriaAndField
             listOf(".EQ", ".LIKE_", ".LIKE").map {
-                Pair(criteriaAndField.first + it,
-                        Pair(criteriaAndField.second.first, criteriaAndField.second.second))
+                criteriaAndField.fieldPath() + it to
+                        (criteriaAndField.fieldWithJoins().field to criteriaAndField.fieldWithJoins().joins)
             }
         }.flatten().associate { it.first to it.second }
 
@@ -331,6 +334,8 @@ internal object KashubianEntryQueryRelations {
     private fun soundFileId() = soundFileTable().ID.`as`("sound_file_id")
 
     private fun otherId() = otherTable().ID.`as`("other_id")
+
+    fun entryId() = Tables.KASHUBIAN_ENTRY.`as`("entry").ID.`as`("entry_id")
 
     private fun antonymMeaningEntryWord() = antonymMeaningEntryTable().WORD.`as`("antonym_meaning_entry_word")
 
@@ -450,6 +455,20 @@ internal object KashubianEntryQueryRelations {
 
     private fun otherTable() = Tables.OTHER.`as`("other")
 
-    private fun entryTable() = Tables.KASHUBIAN_ENTRY.`as`("entry")
+    fun entryTable() = Tables.KASHUBIAN_ENTRY.`as`("entry")
+
+
+    private fun Pair<String, FieldWithJoins>.fieldPath() = this.first
+    private fun Pair<String, FieldWithJoins>.fieldWithJoins() = this.second
+    data class JoinTableWithCondition(val joinTable: TableImpl<*>, val joinCondition: Condition)
+
+    private infix fun TableImpl<*>.on(that: Condition): JoinTableWithCondition =
+        JoinTableWithCondition(this, that)
+
+    data class FieldWithJoins(val field: QueryPart, val joins: List<JoinTableWithCondition>)
+
+    private infix fun QueryPart.joinedBy(that: List<JoinTableWithCondition>): FieldWithJoins =
+        FieldWithJoins(this, that)
+
 
 }
