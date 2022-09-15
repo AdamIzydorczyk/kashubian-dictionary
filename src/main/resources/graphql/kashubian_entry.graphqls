@@ -119,7 +119,7 @@ input Page {
 }
 
 type Query {
-    findAllSearchKashubianEntries(page: Page, where: KashubianEntryCriteriaExpression): KashubianEntryPaged
+    findAllKashubianEntries(page: Page, where: KashubianEntryCriteriaExpression): KashubianEntryPaged
 }
 
 type KashubianEntryPaged{

@@ -38,7 +38,7 @@ class KashubianEntryQuery(
     private val mapper = KashubianEntryGraphQLMapper()
 
     @QueryMapping
-    fun findAllSearchKashubianEntries(
+    fun findAllKashubianEntries(
         @Argument("page") page: PageCriteria?,
         @Argument("where") where: KashubianEntryCriteriaExpression?,
         env: DataFetchingEnvironment): KashubianEntryPaged {
