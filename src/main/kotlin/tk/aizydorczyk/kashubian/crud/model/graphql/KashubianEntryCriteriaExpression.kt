@@ -4,7 +4,7 @@ data class KashubianEntryCriteriaExpression(
     val id: NumericCriteria?,
     val note: StringCriteria?,
     val word: StringCriteria?,
-    val normalizedWord: StringCriteria?,
+    val normalizedWord: NormalizedCriteria?,
     val priority: BooleanCriteria?,
     val soundFile: SoundFileCriteriaExpression?,
     val others: OthersCriteriaExpression?,
@@ -73,15 +73,16 @@ data class PhrasalVerbsCriteriaExpression(
 data class TranslationCriteriaExpression(
     val id: NumericCriteria?,
     val polish: StringCriteria?,
-    val normalizedPolish: StringCriteria?,
+    val normalizedPolish: NormalizedCriteria?,
     val english: StringCriteria?,
-    val normalizedEnglish: StringCriteria?,
+    val normalizedEnglish: NormalizedCriteria?,
     val german: StringCriteria?,
-    val normalizedGerman: StringCriteria?,
+    val normalizedGerman: NormalizedCriteria?,
     val ukrainian: StringCriteria?,
-    val normalizedUkrainian: StringCriteria?)
+    val normalizedUkrainian: NormalizedCriteria?)
 
 data class NumericCriteria(val EQ: String?)
 data class BooleanCriteria(val EQ: Boolean?)
 data class StringCriteria(val EQ: String?, val LIKE: String?, val _LIKE: String?)
+data class NormalizedCriteria(val BY_NORMALIZED: String?)
 data class PageCriteria(val start: Int, val limit: Int)

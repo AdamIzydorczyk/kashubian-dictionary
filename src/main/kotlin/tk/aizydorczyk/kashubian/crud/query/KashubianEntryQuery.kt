@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
+import tk.aizydorczyk.kashubian.crud.extension.normalize
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.KASHUBIAN_ENTRY
 import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryCriteriaExpression
 import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryPaged
@@ -114,6 +115,7 @@ class KashubianEntryQuery(
         fieldPath.endsWith(".EQ") -> field.eq(instance)
         fieldPath.endsWith(".LIKE_") -> field.likeIgnoreCase("%$instance%")
         fieldPath.endsWith(".LIKE") -> field.like("%$instance%")
+        fieldPath.endsWith(".BY_NORMALIZED") -> field.like("%${instance.toString().normalize()}%")
         else -> null
     }
 

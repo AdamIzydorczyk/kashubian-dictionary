@@ -4,7 +4,7 @@ input KashubianEntryCriteriaExpression{
     id: NumericCriteria
     note: StringCriteria
     word: StringCriteria
-    normalizedWord: StringCriteria
+    normalizedWord: NormalizedCriteria
     priority: BooleanCriteria
     soundFile: SoundFileCriteriaExpression
     others: OthersCriteriaExpression
@@ -38,13 +38,13 @@ input MeaningsCriteriaExpressionSimplified{
 input TranslationCriteriaExpression{
     id: NumericCriteria
     polish: StringCriteria
-    normalizedPolish: StringCriteria
+    normalizedPolish: NormalizedCriteria
     english: StringCriteria
-    normalizedEnglish: StringCriteria
+    normalizedEnglish: NormalizedCriteria
     german: StringCriteria
-    normalizedGerman: StringCriteria
+    normalizedGerman: NormalizedCriteria
     ukrainian: StringCriteria
-    normalizedUkrainian: StringCriteria
+    normalizedUkrainian: NormalizedCriteria
 }
 
 input SynonymsCriteriaExpression{
@@ -107,6 +107,10 @@ input StringCriteria{
     EQ: String
     LIKE: String
     _LIKE: String
+}
+
+input NormalizedCriteria{
+    BY_NORMALIZED: String
 }
 
 input Page {

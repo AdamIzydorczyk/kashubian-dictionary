@@ -299,7 +299,7 @@ object KashubianEntryQueryRelations {
                                 phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID)))
         ).map { criteriaAndField ->
             val criteriaAndField1 = criteriaAndField
-            listOf(".EQ", ".LIKE_", ".LIKE").map {
+            listOf(".EQ", ".LIKE_", ".LIKE", ".BY_NORMALIZED").map {
                 criteriaAndField.fieldPath() + it to
                         (criteriaAndField.fieldWithJoins().field to criteriaAndField.fieldWithJoins().joins)
             }
