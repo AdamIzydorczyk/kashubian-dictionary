@@ -1,5 +1,19 @@
 scalar JSON
 
+type Query {
+    findKashubianEntry(id:Int): KashubianEntry
+    findAllKashubianEntries(page: Page, where: KashubianEntryCriteriaExpression): KashubianEntryPaged
+}
+
+#-------------------------------------
+#INPUTS
+#-------------------------------------
+
+input Page {
+    start: Int
+    limit: Int
+}
+
 input KashubianEntryCriteriaExpression{
     id: NumericCriteria
     note: StringCriteria
@@ -113,14 +127,9 @@ input NormalizedCriteria{
     BY_NORMALIZED: String
 }
 
-input Page {
-    start: Int
-    limit: Int
-}
-
-type Query {
-    findAllKashubianEntries(page: Page, where: KashubianEntryCriteriaExpression): KashubianEntryPaged
-}
+#-------------------------------------
+#TYPES
+#-------------------------------------
 
 type KashubianEntryPaged{
     pages: Int

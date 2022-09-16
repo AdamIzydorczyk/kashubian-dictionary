@@ -6,6 +6,7 @@ import org.jooq.Condition
 import org.jooq.DSLContext
 import org.jooq.Field
 import org.jooq.SelectFieldOrAsterisk
+import org.jooq.SortField
 import org.jooq.impl.DSL.count
 import org.jooq.impl.DSL.select
 import org.jooq.impl.TableImpl
@@ -18,14 +19,18 @@ import org.springframework.stereotype.Controller
 import tk.aizydorczyk.kashubian.crud.extension.normalize
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.KASHUBIAN_ENTRY
 import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryCriteriaExpression
+import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryPaged
 import tk.aizydorczyk.kashubian.crud.model.graphql.PageCriteria
 import tk.aizydorczyk.kashubian.crud.model.mapper.KashubianEntryGraphQLMapper
 import tk.aizydorczyk.kashubian.crud.query.KashubianEntryQueryRelations.CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN
-import tk.aizydorczyk.kashubian.crud.query.KashubianEntryQueryRelations.FIELD_TO_COLUMN_RELATIONS
-import tk.aizydorczyk.kashubian.crud.query.KashubianEntryQueryRelations.FIELD_TO_JOIN_RELATIONS
+import tk.aizydorczyk.kashubian.crud.query.KashubianEntryQueryRelations.FIND_ALL_FIELD_TO_COLUMN_RELATIONS
+import tk.aizydorczyk.kashubian.crud.query.KashubianEntryQueryRelations.FIND_ALL_FIELD_TO_JOIN_RELATIONS
+import tk.aizydorczyk.kashubian.crud.query.KashubianEntryQueryRelations.FIND_ONE_FIELD_TO_COLUMN_RELATIONS
+import tk.aizydorczyk.kashubian.crud.query.KashubianEntryQueryRelations.FIND_ONE_FIELD_TO_JOIN_RELATIONS
 import tk.aizydorczyk.kashubian.crud.query.KashubianEntryQueryRelations.entryId
 import tk.aizydorczyk.kashubian.crud.query.KashubianEntryQueryRelations.entryTable
+import java.io.Serializable
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.createType
 import kotlin.reflect.full.declaredMemberProperties
@@ -38,11 +43,36 @@ class KashubianEntryQuery(
     private val mapper = KashubianEntryGraphQLMapper()
 
     @QueryMapping
+    fun findKashubianEntry(@Argument("id") id: Long, env: DataFetchingEnvironment): KashubianEntryGraphQL? {
+        val selectedFields = env.selectionSet.fields
+        val selectedColumns: MutableList<SelectFieldOrAsterisk?> =
+            selectColumns(selectedFields, FIND_ONE_FIELD_TO_COLUMN_RELATIONS)
+        selectedColumns.add(entryId())
+
+        val selectedJoins = selectedFields
+            .mapNotNull { FIND_ONE_FIELD_TO_JOIN_RELATIONS[it.fullyQualifiedName] }
+
+        selectedJoins.forEach {
+            selectedColumns.add(it.idColumn())
+        }
+
+        return dsl.select(selectedColumns)
+            .from(entryTable())
+            .apply {
+                selectedJoins.forEach {
+                    leftJoin(it.joinTable()).on(it.joinCondition())
+                }
+            }
+            .where(entryTable().ID.eq(id))
+            .apply { logger.info("Select query: $sql") }
+            .let { mapper.map(it.fetch()).firstOrNull() }
+    }
+
+    @QueryMapping
     fun findAllKashubianEntries(
         @Argument("page") page: PageCriteria?,
         @Argument("where") where: KashubianEntryCriteriaExpression?,
         env: DataFetchingEnvironment): KashubianEntryPaged {
-        val selectedFields = env.selectionSet.fields
         val wheresWithJoins = prepareWheresWithJoins(where)
 
         val wheres = wheresWithJoins.map { it.condition() }
@@ -50,11 +80,13 @@ class KashubianEntryQuery(
             .flatten()
             .distinct()
 
-        val selectedColumns: MutableList<SelectFieldOrAsterisk?> = selectFields(env)
+        val selectedFields = env.selectionSet.fields
+        val selectedColumns: MutableList<SelectFieldOrAsterisk?> = selectColumns(selectedFields,
+                FIND_ALL_FIELD_TO_COLUMN_RELATIONS)
         selectedColumns.add(entryId())
 
         val selectedJoins = selectedFields
-            .mapNotNull { FIELD_TO_JOIN_RELATIONS[it.fullyQualifiedName] }
+            .mapNotNull { FIND_ALL_FIELD_TO_JOIN_RELATIONS[it.fullyQualifiedName] }
 
         selectedJoins.forEach {
             selectedColumns.add(it.idColumn())
@@ -66,6 +98,8 @@ class KashubianEntryQuery(
         val start = page?.start ?: 0
         val pageStart = start * limit
         val pageCount: Int = (entriesCount + limit - 1) / limit
+
+        val ordersBy: List<SortField<*>> = orderByColumns(selectedFields, FIND_ALL_FIELD_TO_COLUMN_RELATIONS)
 
         return dsl.select(selectedColumns)
             .from(entryTable())
@@ -87,7 +121,7 @@ class KashubianEntryQuery(
                         }
                         .offset(pageStart)
                         .limit(limit)))
-            .orderBy(orderByColumns(selectedFields))
+            .orderBy(ordersBy)
             .apply { logger.info("Select query: $sql") }
             .let { KashubianEntryPaged(pageCount, entriesCount, mapper.map(it.fetch())) }
     }
@@ -136,20 +170,23 @@ class KashubianEntryQuery(
                     }
                     logger.info("Select query: $sql")
                 }.fetchOne(0, Int::class.java) ?: 0
+
             false -> 0
         }
 
-    private fun orderByColumns(selectedFields: MutableList<SelectedField>) =
+    private fun orderByColumns(selectedFields: MutableList<SelectedField>,
+        fieldToColumnRelations: Map<String, Field<out Serializable>>): List<SortField<*>> =
         selectedFields.filter { it.arguments.isNotEmpty() }.mapNotNull {
             when (it.arguments["orderBy"]) {
-                "ASC" -> FIELD_TO_COLUMN_RELATIONS[it.fullyQualifiedName]?.asc()
-                else -> FIELD_TO_COLUMN_RELATIONS[it.fullyQualifiedName]?.desc()
+                "ASC" -> fieldToColumnRelations[it.fullyQualifiedName]?.asc()
+                else -> fieldToColumnRelations[it.fullyQualifiedName]?.desc()
             }
         }
 
-    private fun selectFields(env: DataFetchingEnvironment): MutableList<SelectFieldOrAsterisk?> =
-        env.selectionSet.fields
-            .mapNotNull { FIELD_TO_COLUMN_RELATIONS[it.fullyQualifiedName] }
+    private fun selectColumns(selectedFields: MutableList<SelectedField>,
+        fieldToColumnRelations: Map<String, Field<out Serializable>>): MutableList<SelectFieldOrAsterisk?> =
+        selectedFields
+            .mapNotNull { fieldToColumnRelations[it.fullyQualifiedName] }
             .toMutableList()
 
     private fun isContainsPaginationFields(fields: MutableList<SelectedField>) =

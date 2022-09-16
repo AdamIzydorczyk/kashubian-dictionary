@@ -81,7 +81,7 @@ data class TranslationCriteriaExpression(
     val ukrainian: StringCriteria?,
     val normalizedUkrainian: NormalizedCriteria?)
 
-data class NumericCriteria(val EQ: String?)
+data class NumericCriteria(val EQ: Int?)
 data class BooleanCriteria(val EQ: Boolean?)
 data class StringCriteria(val EQ: String?, val LIKE: String?, val _LIKE: String?)
 data class NormalizedCriteria(val BY_NORMALIZED: String?)

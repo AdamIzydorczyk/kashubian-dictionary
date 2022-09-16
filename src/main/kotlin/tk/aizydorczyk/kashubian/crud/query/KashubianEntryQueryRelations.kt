@@ -8,7 +8,7 @@ import tk.aizydorczyk.kashubian.crud.model.entitysearch.Routines
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables
 
 object KashubianEntryQueryRelations {
-    internal val FIELD_TO_JOIN_RELATIONS = mapOf(
+    internal val FIND_ALL_FIELD_TO_JOIN_RELATIONS = mapOf(
             "KashubianEntryPaged.select/KashubianEntry.others" to
                     Triple(otherTable(),
                             entryTable().ID.eq(otherTable().KASHUBIAN_ENTRY_ID),
@@ -71,7 +71,11 @@ object KashubianEntryQueryRelations {
                             antonymMeaningEntryId())
     )
 
-    internal val FIELD_TO_COLUMN_RELATIONS = mapOf(
+    internal val FIND_ONE_FIELD_TO_JOIN_RELATIONS = FIND_ALL_FIELD_TO_JOIN_RELATIONS.mapKeys {
+        it.key.removePrefix("KashubianEntryPaged.select/")
+    }
+
+    internal val FIND_ALL_FIELD_TO_COLUMN_RELATIONS = mapOf(
             "KashubianEntryPaged.select/KashubianEntry.word" to
                     entryWord(),
             "KashubianEntryPaged.select/KashubianEntry.normalizedWord" to
@@ -153,6 +157,10 @@ object KashubianEntryQueryRelations {
             "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.antonyms/Antonym.antonym/MeaningSimplified.kashubianEntry/KashubianEntrySimplified.word" to
                     antonymMeaningEntryWord()
     )
+
+    internal val FIND_ONE_FIELD_TO_COLUMN_RELATIONS = FIND_ALL_FIELD_TO_COLUMN_RELATIONS.mapKeys {
+        it.key.removePrefix("KashubianEntryPaged.select/")
+    }
 
     val CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN =
         listOf(
