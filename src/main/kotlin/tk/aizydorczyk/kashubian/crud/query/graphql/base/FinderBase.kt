@@ -1,4 +1,4 @@
-package tk.aizydorczyk.kashubian.crud.query
+package tk.aizydorczyk.kashubian.crud.query.graphql.base
 
 import graphql.schema.SelectedField
 import org.jooq.Condition

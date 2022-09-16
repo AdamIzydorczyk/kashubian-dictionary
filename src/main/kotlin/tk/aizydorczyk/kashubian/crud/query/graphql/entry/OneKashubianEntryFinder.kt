@@ -1,4 +1,4 @@
-package tk.aizydorczyk.kashubian.crud.query
+package tk.aizydorczyk.kashubian.crud.query.graphql.entry
 
 import graphql.schema.SelectedField
 import org.jooq.DSLContext
@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryGraphQL
 import tk.aizydorczyk.kashubian.crud.model.mapper.KashubianEntryGraphQLMapper
+import tk.aizydorczyk.kashubian.crud.query.graphql.base.OneFinderBase
 
 @Component
 class OneKashubianEntryFinder(private val dsl: DSLContext) : OneFinderBase() {

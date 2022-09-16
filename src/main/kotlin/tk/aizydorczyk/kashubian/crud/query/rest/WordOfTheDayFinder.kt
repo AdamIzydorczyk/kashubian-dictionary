@@ -1,4 +1,4 @@
-package tk.aizydorczyk.kashubian.crud.query
+package tk.aizydorczyk.kashubian.crud.query.rest
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory

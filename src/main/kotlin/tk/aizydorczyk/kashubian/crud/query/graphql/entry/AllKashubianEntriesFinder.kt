@@ -1,4 +1,4 @@
-package tk.aizydorczyk.kashubian.crud.query
+package tk.aizydorczyk.kashubian.crud.query.graphql.entry
 
 import graphql.schema.SelectedField
 import org.jooq.Condition
@@ -15,9 +15,10 @@ import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntriesPaged
 import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryCriteriaExpression
 import tk.aizydorczyk.kashubian.crud.model.graphql.PageCriteria
 import tk.aizydorczyk.kashubian.crud.model.mapper.KashubianEntryGraphQLMapper
-import tk.aizydorczyk.kashubian.crud.query.KashubianEntryQueryRelations.CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN
-import tk.aizydorczyk.kashubian.crud.query.KashubianEntryQueryRelations.FIND_ALL_FIELD_TO_COLUMN_RELATIONS
-import tk.aizydorczyk.kashubian.crud.query.KashubianEntryQueryRelations.FIND_ALL_FIELD_TO_JOIN_RELATIONS
+import tk.aizydorczyk.kashubian.crud.query.graphql.base.AllFinderBase
+import tk.aizydorczyk.kashubian.crud.query.graphql.entry.KashubianEntryQueryRelations.CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN
+import tk.aizydorczyk.kashubian.crud.query.graphql.entry.KashubianEntryQueryRelations.FIND_ALL_FIELD_TO_COLUMN_RELATIONS
+import tk.aizydorczyk.kashubian.crud.query.graphql.entry.KashubianEntryQueryRelations.FIND_ALL_FIELD_TO_JOIN_RELATIONS
 import kotlin.reflect.full.declaredMemberProperties
 
 @Component

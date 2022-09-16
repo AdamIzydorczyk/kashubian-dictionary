@@ -1,4 +1,4 @@
-package tk.aizydorczyk.kashubian.crud.query
+package tk.aizydorczyk.kashubian.crud.query.graphql
 
 import graphql.schema.DataFetchingEnvironment
 import org.springframework.graphql.data.method.annotation.Argument
@@ -11,9 +11,13 @@ import tk.aizydorczyk.kashubian.crud.model.graphql.MeaningGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.MeaningsCriteriaExpression
 import tk.aizydorczyk.kashubian.crud.model.graphql.MeaningsPaged
 import tk.aizydorczyk.kashubian.crud.model.graphql.PageCriteria
+import tk.aizydorczyk.kashubian.crud.query.graphql.entry.AllKashubianEntriesFinder
+import tk.aizydorczyk.kashubian.crud.query.graphql.entry.OneKashubianEntryFinder
+import tk.aizydorczyk.kashubian.crud.query.graphql.meaning.AllMeaningsFinder
+import tk.aizydorczyk.kashubian.crud.query.graphql.meaning.OneMeaningFinder
 
 @Controller
-class KashubianEntryQuery(
+class GraphQLQueries(
     val oneKashubianEntryFinder: OneKashubianEntryFinder,
     val allKashubianEntriesFinder: AllKashubianEntriesFinder,
     val oneMeaningFinder: OneMeaningFinder,

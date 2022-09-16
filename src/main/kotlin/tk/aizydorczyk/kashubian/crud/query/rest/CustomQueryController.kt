@@ -1,4 +1,4 @@
-package tk.aizydorczyk.kashubian.crud.query
+package tk.aizydorczyk.kashubian.crud.query.rest
 
 import com.fasterxml.jackson.databind.node.ObjectNode
 import io.swagger.annotations.Api

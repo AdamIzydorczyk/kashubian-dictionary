@@ -24,7 +24,7 @@ import tk.aizydorczyk.kashubian.crud.model.entity.KashubianEntry
 import tk.aizydorczyk.kashubian.crud.model.entity.Meaning
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechType
-import tk.aizydorczyk.kashubian.crud.query.ExampleVariationsGenerator
+import tk.aizydorczyk.kashubian.crud.query.rest.ExampleVariationsGenerator
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.InputStream

@@ -1,4 +1,4 @@
-package tk.aizydorczyk.kashubian.crud.query
+package tk.aizydorczyk.kashubian.crud.query.graphql.entry
 
 import org.jooq.impl.DSL
 import tk.aizydorczyk.kashubian.crud.extension.fieldPath

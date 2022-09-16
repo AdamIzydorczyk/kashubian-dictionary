@@ -1,4 +1,4 @@
-package tk.aizydorczyk.kashubian.crud.query
+package tk.aizydorczyk.kashubian.crud.query.graphql.meaning
 
 import graphql.schema.SelectedField
 import org.jooq.Condition
@@ -14,9 +14,10 @@ import tk.aizydorczyk.kashubian.crud.model.graphql.MeaningsCriteriaExpression
 import tk.aizydorczyk.kashubian.crud.model.graphql.MeaningsPaged
 import tk.aizydorczyk.kashubian.crud.model.graphql.PageCriteria
 import tk.aizydorczyk.kashubian.crud.model.mapper.MeaningGraphQLMapper
-import tk.aizydorczyk.kashubian.crud.query.MeaningQueryRelations.CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN
-import tk.aizydorczyk.kashubian.crud.query.MeaningQueryRelations.FIND_ALL_FIELD_TO_COLUMN_RELATIONS
-import tk.aizydorczyk.kashubian.crud.query.MeaningQueryRelations.FIND_ALL_FIELD_TO_JOIN_RELATIONS
+import tk.aizydorczyk.kashubian.crud.query.graphql.base.AllFinderBase
+import tk.aizydorczyk.kashubian.crud.query.graphql.meaning.MeaningQueryRelations.CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN
+import tk.aizydorczyk.kashubian.crud.query.graphql.meaning.MeaningQueryRelations.FIND_ALL_FIELD_TO_COLUMN_RELATIONS
+import tk.aizydorczyk.kashubian.crud.query.graphql.meaning.MeaningQueryRelations.FIND_ALL_FIELD_TO_JOIN_RELATIONS
 import kotlin.reflect.full.declaredMemberProperties
 
 @Component
