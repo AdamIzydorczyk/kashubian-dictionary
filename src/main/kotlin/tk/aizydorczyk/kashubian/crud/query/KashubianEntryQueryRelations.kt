@@ -9,157 +9,157 @@ import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables
 
 object KashubianEntryQueryRelations {
     internal val FIND_ALL_FIELD_TO_JOIN_RELATIONS = mapOf(
-            "KashubianEntryPaged.select/KashubianEntry.others" to
+            "KashubianEntriesPaged.select/KashubianEntry.others" to
                     Triple(otherTable(),
                             entryTable().ID.eq(otherTable().KASHUBIAN_ENTRY_ID),
                             otherId()),
-            "KashubianEntryPaged.select/KashubianEntry.soundFile" to
+            "KashubianEntriesPaged.select/KashubianEntry.soundFile" to
                     Triple(soundFileTable(),
                             entryTable().ID.eq(soundFileTable().KASHUBIAN_ENTRY_ID),
                             soundFileId()),
-            "KashubianEntryPaged.select/KashubianEntry.others/Other.other" to
+            "KashubianEntriesPaged.select/KashubianEntry.others/Other.other" to
                     Triple(otherEntryTable(),
                             otherTable().OTHER_ID.`as`("other_id").eq(otherEntryTable().ID),
                             otherEntryId()),
-            "KashubianEntryPaged.select/KashubianEntry.meanings" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings" to
                     Triple(meaningTable(),
                             entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
                             meaningId()),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.translation" to
                     Triple(translationTable(),
                             meaningTable().ID.eq(translationTable().MEANING_ID),
                             translationId()),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.proverbs" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.proverbs" to
                     Triple(proverbTable(),
                             meaningTable().ID.eq(proverbTable().MEANING_ID),
                             proverbId()),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.quotes" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.quotes" to
                     Triple(quoteTable(),
                             meaningTable().ID.eq(quoteTable().MEANING_ID),
                             quoteId()),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.examples" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.examples" to
                     Triple(exampleTable(),
                             meaningTable().ID.eq(exampleTable().MEANING_ID),
                             exampleId()),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.phrasalVerbs" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.phrasalVerbs" to
                     Triple(phrasalVerbTable(),
                             meaningTable().ID.eq(phrasalVerbTable().MEANING_ID),
                             phrasalVerbId()),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.synonyms" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.synonyms" to
                     Triple(synonymTable(),
                             meaningTable().ID.eq(synonymTable().MEANING_ID),
                             synonymId()),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.antonyms" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.antonyms" to
                     Triple(antonymTable(),
                             meaningTable().ID.eq(antonymTable().MEANING_ID),
                             antonymId()),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.synonyms/Synonym.synonym" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.synonyms/Synonym.synonym" to
                     Triple(synonymMeaningTable(),
                             synonymTable().MEANING_ID.eq(synonymMeaningTable().ID),
                             synonymMeaningId()),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.antonyms/Antonym.antonym" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.antonyms/Antonym.antonym" to
                     Triple(antonymMeaningTable(),
                             antonymTable().MEANING_ID.eq(antonymMeaningTable().ID),
                             antonymMeaningId()),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.synonyms/Synonym.synonym/MeaningSimplified.kashubianEntry" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.synonyms/Synonym.synonym/MeaningSimplified.kashubianEntry" to
                     Triple(synonymMeaningEntryTable(),
                             synonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(synonymMeaningEntryTable().ID),
                             synonymMeaningEntryId()),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.antonyms/Antonym.antonym/MeaningSimplified.kashubianEntry" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.antonyms/Antonym.antonym/MeaningSimplified.kashubianEntry" to
                     Triple(antonymMeaningEntryTable(),
                             antonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(antonymMeaningEntryTable().ID),
                             antonymMeaningEntryId())
     )
 
     internal val FIND_ONE_FIELD_TO_JOIN_RELATIONS = FIND_ALL_FIELD_TO_JOIN_RELATIONS.mapKeys {
-        it.key.removePrefix("KashubianEntryPaged.select/")
+        it.key.removePrefix("KashubianEntriesPaged.select/")
     }
 
     internal val FIND_ALL_FIELD_TO_COLUMN_RELATIONS = mapOf(
-            "KashubianEntryPaged.select/KashubianEntry.word" to
+            "KashubianEntriesPaged.select/KashubianEntry.word" to
                     entryWord(),
-            "KashubianEntryPaged.select/KashubianEntry.normalizedWord" to
+            "KashubianEntriesPaged.select/KashubianEntry.normalizedWord" to
                     entryNormalizedWord(),
-            "KashubianEntryPaged.select/KashubianEntry.variation" to
+            "KashubianEntriesPaged.select/KashubianEntry.variation" to
                     entryVariation(),
-            "KashubianEntryPaged.select/KashubianEntry.priority" to
+            "KashubianEntriesPaged.select/KashubianEntry.priority" to
                     entryPriority(),
-            "KashubianEntryPaged.select/KashubianEntry.note" to
+            "KashubianEntriesPaged.select/KashubianEntry.note" to
                     entryNote(),
-            "KashubianEntryPaged.select/KashubianEntry.partOfSpeech" to
+            "KashubianEntriesPaged.select/KashubianEntry.partOfSpeech" to
                     entryPartOfSpeech(),
-            "KashubianEntryPaged.select/KashubianEntry.partOfSpeechSubType" to
+            "KashubianEntriesPaged.select/KashubianEntry.partOfSpeechSubType" to
                     entryPartOfSpeechSubType(),
-            "KashubianEntryPaged.select/KashubianEntry.meaningsCount" to
+            "KashubianEntriesPaged.select/KashubianEntry.meaningsCount" to
                     meaningsCount(),
-            "KashubianEntryPaged.select/KashubianEntry.bases" to
+            "KashubianEntriesPaged.select/KashubianEntry.bases" to
                     entryBases(),
-            "KashubianEntryPaged.select/KashubianEntry.derivatives" to
+            "KashubianEntriesPaged.select/KashubianEntry.derivatives" to
                     entryDerivatives(),
-            "KashubianEntryPaged.select/KashubianEntry.others/Other.note" to
+            "KashubianEntriesPaged.select/KashubianEntry.others/Other.note" to
                     otherNote(),
-            "KashubianEntryPaged.select/KashubianEntry.others/Other.other/KashubianEntrySimplified.word" to
+            "KashubianEntriesPaged.select/KashubianEntry.others/Other.other/KashubianEntrySimplified.word" to
                     otherEntryWord(),
-            "KashubianEntryPaged.select/KashubianEntry.soundFile/SoundFile.type" to
+            "KashubianEntriesPaged.select/KashubianEntry.soundFile/SoundFile.type" to
                     soundFileType(),
-            "KashubianEntryPaged.select/KashubianEntry.soundFile/SoundFile.fileName" to
+            "KashubianEntriesPaged.select/KashubianEntry.soundFile/SoundFile.fileName" to
                     soundFileFileName(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.origin" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.origin" to
                     meaningOrigin(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.definition" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.definition" to
                     meaningDefinition(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.hyperonyms" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.hyperonyms" to
                     meaningHyperonyms(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.hyponyms" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.hyponyms" to
                     meaningHyponyms(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.polish" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.polish" to
                     translationPolish(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedPolish" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedPolish" to
                     translationPolishNormalizedWord(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.english" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.english" to
                     translationEnglish(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedEnglish" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedEnglish" to
                     translationNormalizedEnglish(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.german" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.german" to
                     translationGerman(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedGerman" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedGerman" to
                     translationNormalizedGerman(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.ukrainian" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.ukrainian" to
                     translationUkrainian(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedUkrainian" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedUkrainian" to
                     translationNormalizedUkrainian(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.proverbs/Proverb.note" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.proverbs/Proverb.note" to
                     proverbNote(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.proverbs/Proverb.proverb" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.proverbs/Proverb.proverb" to
                     proverbProverb(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.quotes/Quote.note" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.quotes/Quote.note" to
                     quoteNote(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.quotes/Quote.quote" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.quotes/Quote.quote" to
                     quoteQuote(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.examples/Example.note" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.examples/Example.note" to
                     exampleNote(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.examples/Example.example" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.examples/Example.example" to
                     exampleExample(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.phrasalVerbs/PhrasalVerb.note" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.phrasalVerbs/PhrasalVerb.note" to
                     phrasalVerbNote(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.phrasalVerbs/PhrasalVerb.phrasalVerb" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.phrasalVerbs/PhrasalVerb.phrasalVerb" to
                     phrasalVerbPhrasalVerb(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.synonyms/Synonym.note" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.synonyms/Synonym.note" to
                     synonymNote(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.antonyms/Antonym.note" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.antonyms/Antonym.note" to
                     antonymNote(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.synonyms/Synonym.synonym/MeaningSimplified.definition" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.synonyms/Synonym.synonym/MeaningSimplified.definition" to
                     synonymMeaningDefinition(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.antonyms/Antonym.antonym/MeaningSimplified.definition" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.antonyms/Antonym.antonym/MeaningSimplified.definition" to
                     antonymMeaningDefinition(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.synonyms/Synonym.synonym/MeaningSimplified.kashubianEntry/KashubianEntrySimplified.word" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.synonyms/Synonym.synonym/MeaningSimplified.kashubianEntry/KashubianEntrySimplified.word" to
                     synonymMeaningEntryWord(),
-            "KashubianEntryPaged.select/KashubianEntry.meanings/Meaning.antonyms/Antonym.antonym/MeaningSimplified.kashubianEntry/KashubianEntrySimplified.word" to
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.antonyms/Antonym.antonym/MeaningSimplified.kashubianEntry/KashubianEntrySimplified.word" to
                     antonymMeaningEntryWord()
     )
 
     internal val FIND_ONE_FIELD_TO_COLUMN_RELATIONS = FIND_ALL_FIELD_TO_COLUMN_RELATIONS.mapKeys {
-        it.key.removePrefix("KashubianEntryPaged.select/")
+        it.key.removePrefix("KashubianEntriesPaged.select/")
     }
 
     val CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN =

@@ -2,6 +2,7 @@ package tk.aizydorczyk.kashubian.crud.model.mapper
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ArrayNode
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.jooq.Record
 import org.jooq.Result
 import tk.aizydorczyk.kashubian.crud.model.graphql.AntonymGraphQL
@@ -220,10 +221,10 @@ class KashubianEntryGraphQLMapper {
                                     String::class.java),
                             hyperonyms =
                             record.fetchValueOrNull("meaning_hyperonyms",
-                                    ArrayNode::class.java),
+                                    ArrayNode::class.java) ?: jacksonObjectMapper().createArrayNode(),
                             hyponyms =
                             record.fetchValueOrNull("meaning_hyponyms",
-                                    ArrayNode::class.java))
+                                    ArrayNode::class.java) ?: jacksonObjectMapper().createArrayNode())
                 },
                 "entry_id",
                 entries,
@@ -292,11 +293,11 @@ class KashubianEntryGraphQLMapper {
                             partOfSpeechSubType = record.fetchValueOrNull("entry_part_of_speech_sub_type",
                                     String::class.java),
                             bases = record.fetchValueOrNull("entry_bases",
-                                    ArrayNode::class.java),
+                                    ArrayNode::class.java) ?: jacksonObjectMapper().createArrayNode(),
                             variation = record.fetchValueOrNull("entry_variation",
-                                    JsonNode::class.java),
+                                    JsonNode::class.java) ?: jacksonObjectMapper().createObjectNode(),
                             derivatives = record.fetchValueOrNull("entry_derivatives",
-                                    ArrayNode::class.java),
+                                    ArrayNode::class.java) ?: jacksonObjectMapper().createArrayNode(),
                             meaningsCount = record.fetchValueOrNull("meanings_count",
                                     Long::class.java))
                 })

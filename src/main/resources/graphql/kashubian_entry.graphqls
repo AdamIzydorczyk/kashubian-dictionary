@@ -2,7 +2,9 @@ scalar JSON
 
 type Query {
     findKashubianEntry(id:Int): KashubianEntry
-    findAllKashubianEntries(page: Page, where: KashubianEntryCriteriaExpression): KashubianEntryPaged
+    findAllKashubianEntries(page: Page, where: KashubianEntryCriteriaExpression): KashubianEntriesPaged
+    findMeaning(id:Int): Meaning
+    findAllMeanings(page: Page, where: MeaningsCriteriaExpression): MeaningsPaged
 }
 
 #-------------------------------------
@@ -131,10 +133,16 @@ input NormalizedCriteria{
 #TYPES
 #-------------------------------------
 
-type KashubianEntryPaged{
+type KashubianEntriesPaged{
     pages: Int
     total: Int
     select: [KashubianEntry]
+}
+
+type MeaningsPaged{
+    pages: Int
+    total: Int
+    select: [Meaning]
 }
 
 type KashubianEntry {
