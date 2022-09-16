@@ -1,9 +1,10 @@
 package tk.aizydorczyk.kashubian.crud.query
 
-import org.jooq.Condition
-import org.jooq.QueryPart
 import org.jooq.impl.DSL
-import org.jooq.impl.TableImpl
+import tk.aizydorczyk.kashubian.crud.extension.fieldPath
+import tk.aizydorczyk.kashubian.crud.extension.fieldWithJoins
+import tk.aizydorczyk.kashubian.crud.extension.joinedBy
+import tk.aizydorczyk.kashubian.crud.extension.on
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Routines
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables
 
@@ -306,7 +307,6 @@ object KashubianEntryQueryRelations {
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
                                 phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID)))
         ).map { criteriaAndField ->
-            val criteriaAndField1 = criteriaAndField
             listOf(".EQ", ".LIKE_", ".LIKE", ".BY_NORMALIZED").map {
                 criteriaAndField.fieldPath() + it to
                         (criteriaAndField.fieldWithJoins().field to criteriaAndField.fieldWithJoins().joins)
@@ -464,19 +464,5 @@ object KashubianEntryQueryRelations {
     private fun otherTable() = Tables.OTHER.`as`("other")
 
     fun entryTable() = Tables.KASHUBIAN_ENTRY.`as`("entry")
-
-
-    private fun Pair<String, FieldWithJoins>.fieldPath() = this.first
-    private fun Pair<String, FieldWithJoins>.fieldWithJoins() = this.second
-    data class JoinTableWithCondition(val joinTable: TableImpl<*>, val joinCondition: Condition)
-
-    private infix fun TableImpl<*>.on(that: Condition): JoinTableWithCondition =
-        JoinTableWithCondition(this, that)
-
-    data class FieldWithJoins(val field: QueryPart, val joins: List<JoinTableWithCondition>)
-
-    private infix fun QueryPart.joinedBy(that: List<JoinTableWithCondition>): FieldWithJoins =
-        FieldWithJoins(this, that)
-
 
 }

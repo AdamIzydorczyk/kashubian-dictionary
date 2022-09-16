@@ -10,7 +10,7 @@ import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryGraphQL
 import tk.aizydorczyk.kashubian.crud.model.mapper.KashubianEntryGraphQLMapper
 
 @Component
-class OneKashubianEntryFinder(private val dsl: DSLContext) : FinderBase() {
+class OneKashubianEntryFinder(private val dsl: DSLContext) : OneFinderBase() {
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
     private val mapper = KashubianEntryGraphQLMapper()
 

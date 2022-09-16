@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component
 import tk.aizydorczyk.kashubian.crud.model.graphql.MeaningGraphQL
 
 @Component
-class OneMeaningFinder {
+class OneMeaningFinder : OneFinderBase() {
     fun findOne(selectedFields: List<SelectedField>, id: Long): MeaningGraphQL? {
         TODO("Not yet implemented")
     }

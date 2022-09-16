@@ -6,11 +6,12 @@ import org.jooq.Field
 import org.jooq.SelectFieldOrAsterisk
 import org.jooq.impl.TableImpl
 import org.jooq.impl.UpdatableRecordImpl
+import tk.aizydorczyk.kashubian.crud.model.graphql.JoinTableWithCondition
 import java.io.Serializable
 import kotlin.reflect.KProperty1
 
 abstract class FinderBase {
-    protected fun selectColumns(selectedFields: MutableList<SelectedField>,
+    protected fun selectColumns(selectedFields: List<SelectedField>,
         fieldToColumnRelations: Map<String, Field<out Serializable>>): MutableList<SelectFieldOrAsterisk?> =
         selectedFields
             .mapNotNull { fieldToColumnRelations[it.fullyQualifiedName] }
@@ -20,8 +21,8 @@ abstract class FinderBase {
     fun Triple<TableImpl<out UpdatableRecordImpl<*>>, Condition, Field<Long>>.joinCondition() = this.second
     fun Triple<TableImpl<out UpdatableRecordImpl<*>>, Condition, Field<Long>>.idColumn() = this.third
 
-    fun Pair<Condition?, List<KashubianEntryQueryRelations.JoinTableWithCondition>>.condition() = this.first
-    fun Pair<Condition?, List<KashubianEntryQueryRelations.JoinTableWithCondition>>.joins() = this.second
+    fun Pair<Condition?, List<JoinTableWithCondition>>.condition() = this.first
+    fun Pair<Condition?, List<JoinTableWithCondition>>.joins() = this.second
 
     data class FieldWithInstance(val field: KProperty1<*, *>, val instance: Any?, val fieldPath: String)
 }

@@ -8,7 +8,9 @@ data class KashubianEntryCriteriaExpression(
     val priority: BooleanCriteria?,
     val soundFile: SoundFileCriteriaExpression?,
     val others: OthersCriteriaExpression?,
-    val meanings: MeaningsCriteriaExpression?)
+    val meanings: MeaningsCriteriaExpression?) : CriteriaExpression
+
+interface CriteriaExpression
 
 data class SoundFileCriteriaExpression(
     val id: NumericCriteria?,
@@ -33,7 +35,7 @@ data class MeaningsCriteriaExpression(
     val quotes: QuotesCriteriaExpression?,
     val antonyms: AntonymsCriteriaExpression?,
     val examples: ExamplesCriteriaExpression?,
-    val phrasalVerbs: PhrasalVerbsCriteriaExpression?)
+    val phrasalVerbs: PhrasalVerbsCriteriaExpression?) : CriteriaExpression
 
 data class MeaningsCriteriaExpressionSimplified(
     val id: NumericCriteria?,
