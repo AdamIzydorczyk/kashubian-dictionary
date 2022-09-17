@@ -19,8 +19,8 @@ import tk.aizydorczyk.kashubian.crud.model.graphql.SoundFileGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.SynonymGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.TranslationGraphQL
 
-class KashubianEntryGraphQLMapper {
-    fun map(results: Result<Record>): List<KashubianEntryGraphQL> {
+class KashubianEntryGraphQLMapper : GraphQLMapper<KashubianEntryGraphQL> {
+    override fun map(results: Result<Record>): List<KashubianEntryGraphQL> {
         val entries = linkedMapOf<Long, KashubianEntryGraphQL>()
         val others = mutableMapOf<Long, OtherGraphQL>()
         val soundFiles = mutableMapOf<Long, SoundFileGraphQL>()

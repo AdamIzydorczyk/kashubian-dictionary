@@ -2,10 +2,9 @@ package tk.aizydorczyk.kashubian.crud.query.graphql.meaning
 
 import graphql.schema.SelectedField
 import org.jooq.DSLContext
-import org.jooq.SelectFieldOrAsterisk
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import org.jooq.Field
 import org.springframework.stereotype.Component
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.tables.Meaning
 import tk.aizydorczyk.kashubian.crud.model.graphql.MeaningGraphQL
 import tk.aizydorczyk.kashubian.crud.model.mapper.MeaningGraphQLMapper
 import tk.aizydorczyk.kashubian.crud.query.graphql.base.OneFinderBase
@@ -15,30 +14,12 @@ import tk.aizydorczyk.kashubian.crud.query.graphql.meaning.MeaningQueryRelations
 import tk.aizydorczyk.kashubian.crud.query.graphql.meaning.MeaningQueryRelations.meaningTable
 
 @Component
-class OneMeaningFinder(private val dsl: DSLContext) : OneFinderBase() {
-    private val logger: Logger = LoggerFactory.getLogger(javaClass)
-    private val mapper = MeaningGraphQLMapper()
-    fun findOne(selectedFields: List<SelectedField>, id: Long): MeaningGraphQL? {
-        val selectedColumns: MutableList<SelectFieldOrAsterisk?> =
-            selectColumns(selectedFields, FIND_ONE_FIELD_TO_COLUMN_RELATIONS)
-        selectedColumns.add(meaningId())
-
-        val selectedJoins = selectedFields
-            .mapNotNull { FIND_ONE_FIELD_TO_JOIN_RELATIONS[it.fullyQualifiedName] }
-
-        selectedJoins.forEach {
-            selectedColumns.add(it.idColumn())
-        }
-
-        return dsl.select(selectedColumns)
-            .from(meaningTable())
-            .apply {
-                selectedJoins.forEach {
-                    leftJoin(it.joinTable()).on(it.joinCondition())
-                }
-            }
-            .where(meaningTable().ID.eq(id))
-            .apply { logger.info("Select query: $sql") }
-            .let { mapper.map(it.fetch()).firstOrNull() }
-    }
+class OneMeaningFinder(override val dsl: DSLContext)
+    : OneFinderBase<MeaningGraphQL>(dsl, MeaningGraphQLMapper()) {
+    fun findOneMeaning(selectedFields: List<SelectedField>, id: Long): MeaningGraphQL? = findOne(selectedFields, id)
+    override fun idField(): Field<Long> = meaningTable().ID
+    override fun idFieldWithAlias(): Field<Long> = meaningId()
+    override fun table(): Meaning = meaningTable()
+    override fun fieldToJoinRelations() = FIND_ONE_FIELD_TO_JOIN_RELATIONS
+    override fun fieldToColumnRelations(): Map<String, Field<*>> = FIND_ONE_FIELD_TO_COLUMN_RELATIONS
 }

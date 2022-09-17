@@ -1,4 +1,6 @@
+import nu.studer.gradle.jooq.JooqEdition.OSS
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.lang.System.getenv
 
 plugins {
     id("io.spring.dependency-management") version "1.0.13.RELEASE"
@@ -75,26 +77,26 @@ tasks.withType<Test> {
 flyway {
     locations = arrayOf("filesystem:./src/main/resources/db/migration")
     driver = "org.postgresql.Driver"
-    url = "jdbc:postgresql://localhost:5555/kas"
-    user = "kas"
-    password = "kas"
+    url = getenv("DB_URL")
+    user = getenv("DB_USER")
+    password = getenv("DB_PASSWORD")
 }
 
 
 jooq {
-    version.set("3.17.3")  // default (can be omitted)
-    edition.set(nu.studer.gradle.jooq.JooqEdition.OSS)  // default (can be omitted)
+    version.set("3.17.3")
+    edition.set(OSS)
 
     configurations {
-        create("main") {  // name of the jOOQ configuration
-            generateSchemaSourceOnCompilation.set(true)  // default (can be omitted)
+        create("main") {
+            generateSchemaSourceOnCompilation.set(true)
 
             jooqConfiguration.apply {
                 jdbc.apply {
                     driver = "org.postgresql.Driver"
-                    url = "jdbc:postgresql://localhost:5555/kas"
-                    user = "kas"
-                    password = "kas"
+                    url = getenv("DB_URL")
+                    user = getenv("DB_USER")
+                    password = getenv("DB_PASSWORD")
                 }
                 generator.apply {
                     name = "org.jooq.codegen.DefaultGenerator"

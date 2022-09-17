@@ -15,8 +15,8 @@ import tk.aizydorczyk.kashubian.crud.model.graphql.QuoteGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.SynonymGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.TranslationGraphQL
 
-class MeaningGraphQLMapper {
-    fun map(results: Result<Record>): List<MeaningGraphQL> {
+class MeaningGraphQLMapper : GraphQLMapper<MeaningGraphQL> {
+    override fun map(results: Result<Record>): List<MeaningGraphQL> {
         val meanings = linkedMapOf<Long, MeaningGraphQL>()
         val translations = mutableMapOf<Long, TranslationGraphQL>()
         val quotes = mutableMapOf<Long, QuoteGraphQL>()

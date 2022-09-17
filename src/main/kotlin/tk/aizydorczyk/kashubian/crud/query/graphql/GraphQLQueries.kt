@@ -24,9 +24,10 @@ class GraphQLQueries(
     val allMeaningsFinder: AllMeaningsFinder) {
 
     @QueryMapping
-    fun findKashubianEntry(@Argument("id") id: Long, env: DataFetchingEnvironment): KashubianEntryGraphQL? {
+    fun findKashubianEntry(@Argument("id") id: Long,
+        env: DataFetchingEnvironment): KashubianEntryGraphQL? {
         val selectedFields = env.selectionSet.fields
-        return oneKashubianEntryFinder.findOne(selectedFields, id)
+        return oneKashubianEntryFinder.findOneKashubianEntry(selectedFields, id)
     }
 
     @QueryMapping
@@ -35,13 +36,14 @@ class GraphQLQueries(
         @Argument("where") where: KashubianEntryCriteriaExpression?,
         env: DataFetchingEnvironment): KashubianEntriesPaged {
         val selectedFields = env.selectionSet.fields
-        return allKashubianEntriesFinder.findAll(where, selectedFields, page)
+        return allKashubianEntriesFinder.findAllKashubianEntries(where, selectedFields, page)
     }
 
     @QueryMapping
-    fun findMeaning(@Argument("id") id: Long, env: DataFetchingEnvironment): MeaningGraphQL? {
+    fun findMeaning(@Argument("id") id: Long,
+        env: DataFetchingEnvironment): MeaningGraphQL? {
         val selectedFields = env.selectionSet.fields
-        return oneMeaningFinder.findOne(selectedFields, id)
+        return oneMeaningFinder.findOneMeaning(selectedFields, id)
     }
 
     @QueryMapping
@@ -50,6 +52,6 @@ class GraphQLQueries(
         @Argument("where") where: MeaningsCriteriaExpression?,
         env: DataFetchingEnvironment): MeaningsPaged {
         val selectedFields = env.selectionSet.fields
-        return allMeaningsFinder.findAll(where, selectedFields, page)
+        return allMeaningsFinder.findAllMeanings(where, selectedFields, page)
     }
 }

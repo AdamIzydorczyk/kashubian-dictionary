@@ -121,123 +121,123 @@ object MeaningQueryRelations {
 
     val CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN =
         listOf(
-                "meaning.id" to (meaningTable().ID joinedBy
+                "select.id" to (meaningTable().ID joinedBy
                         emptyList()),
-                "meaning.origin" to (meaningTable().ORIGIN joinedBy emptyList()),
-                "meaning.definition" to (meaningTable().DEFINITION joinedBy emptyList()),
-                "meaning.synonyms.id" to (synonymTable().ID joinedBy
+                "select.origin" to (meaningTable().ORIGIN joinedBy emptyList()),
+                "select.definition" to (meaningTable().DEFINITION joinedBy emptyList()),
+                "select.synonyms.id" to (synonymTable().ID joinedBy
                         listOf(
                                 synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID))),
-                "meaning.synonyms.note" to (synonymTable().NOTE joinedBy
+                "select.synonyms.note" to (synonymTable().NOTE joinedBy
                         listOf(
                                 synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID))),
-                "meaning.synonyms.synonym.id" to (synonymMeaningTable() joinedBy
+                "select.synonyms.synonym.id" to (synonymMeaningTable() joinedBy
                         listOf(
                                 synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
                                 synonymMeaningTable() on synonymTable().MEANING_ID.eq(synonymMeaningTable().ID))),
-                "meaning.synonyms.synonym.definition" to (synonymMeaningTable().DEFINITION joinedBy
+                "select.synonyms.synonym.definition" to (synonymMeaningTable().DEFINITION joinedBy
                         listOf(
                                 synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
                                 synonymMeaningTable() on synonymTable().MEANING_ID.eq(synonymMeaningTable().ID))),
-                "meaning.synonyms.synonym.kashubianEntry.id" to (synonymMeaningEntryTable().ID joinedBy
+                "select.synonyms.synonym.kashubianEntry.id" to (synonymMeaningEntryTable().ID joinedBy
                         listOf(
                                 synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
                                 synonymMeaningTable() on synonymTable().MEANING_ID.eq(synonymMeaningTable().ID),
                                 synonymMeaningEntryTable() on synonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
                                         synonymMeaningEntryTable().ID))),
-                "meaning.synonyms.synonym.kashubianEntry.word" to (synonymMeaningEntryTable().WORD joinedBy
+                "select.synonyms.synonym.kashubianEntry.word" to (synonymMeaningEntryTable().WORD joinedBy
                         listOf(
                                 synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
                                 synonymMeaningTable() on synonymTable().MEANING_ID.eq(synonymMeaningTable().ID),
                                 synonymMeaningEntryTable() on synonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
                                         synonymMeaningEntryTable().ID))),
-                "meaning.proverbs.id" to (proverbTable().ID joinedBy
+                "select.proverbs.id" to (proverbTable().ID joinedBy
                         listOf(
                                 proverbTable() on meaningTable().ID.eq(proverbTable().MEANING_ID))),
-                "meaning.proverbs.note" to (proverbTable().NOTE joinedBy
+                "select.proverbs.note" to (proverbTable().NOTE joinedBy
                         listOf(
                                 proverbTable() on meaningTable().ID.eq(proverbTable().MEANING_ID))),
-                "meaning.proverbs.proverb" to (proverbTable().PROVERB_ joinedBy
+                "select.proverbs.proverb" to (proverbTable().PROVERB_ joinedBy
                         listOf(
                                 proverbTable() on meaningTable().ID.eq(proverbTable().MEANING_ID))),
-                "meaning.translation.id" to (translationTable().ID joinedBy
+                "select.translation.id" to (translationTable().ID joinedBy
                         listOf(
                                 translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "meaning.translation.polish" to (translationTable().POLISH joinedBy
+                "select.translation.polish" to (translationTable().POLISH joinedBy
                         listOf(
                                 translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "meaning.translation.normalizedPolish" to (translationTable().NORMALIZED_POLISH joinedBy
+                "select.translation.normalizedPolish" to (translationTable().NORMALIZED_POLISH joinedBy
                         listOf(
                                 translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "meaning.translation.english" to (translationTable().ENGLISH joinedBy
+                "select.translation.english" to (translationTable().ENGLISH joinedBy
                         listOf(
                                 translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "meaning.translation.normalizedEnglish" to (translationTable().NORMALIZED_ENGLISH joinedBy
+                "select.translation.normalizedEnglish" to (translationTable().NORMALIZED_ENGLISH joinedBy
                         listOf(
                                 translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "meaning.translation.german" to (translationTable().GERMAN joinedBy
+                "select.translation.german" to (translationTable().GERMAN joinedBy
                         listOf(
                                 translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "meaning.translation.normalizedGerman" to (translationTable().NORMALIZED_GERMAN joinedBy
+                "select.translation.normalizedGerman" to (translationTable().NORMALIZED_GERMAN joinedBy
                         listOf(
                                 translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "meaning.translation.ukrainian" to (translationTable().UKRAINIAN joinedBy
+                "select.translation.ukrainian" to (translationTable().UKRAINIAN joinedBy
                         listOf(
                                 translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "meaning.translation.normalizedUkrainian" to (translationTable().NORMALIZED_UKRAINIAN joinedBy
+                "select.translation.normalizedUkrainian" to (translationTable().NORMALIZED_UKRAINIAN joinedBy
                         listOf(
                                 translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "meaning.quotes.id" to (quoteTable().ID joinedBy
+                "select.quotes.id" to (quoteTable().ID joinedBy
                         listOf(
                                 quoteTable() on meaningTable().ID.eq(quoteTable().MEANING_ID))),
-                "meaning.quotes.note" to (quoteTable().NOTE joinedBy
+                "select.quotes.note" to (quoteTable().NOTE joinedBy
                         listOf(
                                 quoteTable() on meaningTable().ID.eq(quoteTable().MEANING_ID))),
-                "meaning.quotes.quote" to (quoteTable().QUOTE_ joinedBy
+                "select.quotes.quote" to (quoteTable().QUOTE_ joinedBy
                         listOf(
                                 quoteTable() on meaningTable().ID.eq(quoteTable().MEANING_ID))),
-                "meaning.antonyms.id" to (antonymTable().ID joinedBy
+                "select.antonyms.id" to (antonymTable().ID joinedBy
                         listOf(
                                 antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID))),
-                "meaning.antonyms.note" to (antonymTable().NOTE joinedBy
+                "select.antonyms.note" to (antonymTable().NOTE joinedBy
                         listOf(
                                 antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID))),
-                "meaning.antonyms.antonym.id" to (antonymMeaningTable().ID joinedBy
+                "select.antonyms.antonym.id" to (antonymMeaningTable().ID joinedBy
                         listOf(
                                 antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
                                 antonymMeaningTable() on antonymTable().MEANING_ID.eq(antonymMeaningTable().ID))),
-                "meaning.antonyms.antonym.definition" to (antonymMeaningTable().DEFINITION joinedBy
+                "select.antonyms.antonym.definition" to (antonymMeaningTable().DEFINITION joinedBy
                         listOf(
                                 antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
                                 antonymMeaningTable() on antonymTable().MEANING_ID.eq(antonymMeaningTable().ID))),
-                "meaning.antonyms.antonym.kashubianEntry.id" to (antonymMeaningEntryTable().ID joinedBy
+                "select.antonyms.antonym.kashubianEntry.id" to (antonymMeaningEntryTable().ID joinedBy
                         listOf(
                                 antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
                                 antonymMeaningTable() on antonymTable().MEANING_ID.eq(antonymMeaningTable().ID),
                                 antonymMeaningEntryTable() on antonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
                                         antonymMeaningEntryTable().ID))),
-                "meaning.antonyms.antonym.kashubianEntry.word" to (antonymMeaningEntryTable().WORD joinedBy
+                "select.antonyms.antonym.kashubianEntry.word" to (antonymMeaningEntryTable().WORD joinedBy
                         listOf(
                                 antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
                                 antonymMeaningTable() on antonymTable().MEANING_ID.eq(antonymMeaningTable().ID),
                                 antonymMeaningEntryTable() on antonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
                                         antonymMeaningEntryTable().ID))),
-                "meaning.examples.id" to (exampleTable().ID joinedBy
+                "select.examples.id" to (exampleTable().ID joinedBy
                         listOf(
                                 exampleTable() on meaningTable().ID.eq(exampleTable().MEANING_ID))),
-                "meaning.examples.note" to (exampleTable().NOTE joinedBy
+                "select.examples.note" to (exampleTable().NOTE joinedBy
                         listOf(
                                 exampleTable() on meaningTable().ID.eq(exampleTable().MEANING_ID))),
-                "meaning.examples.example" to (exampleTable().EXAMPLE_ joinedBy
+                "select.examples.example" to (exampleTable().EXAMPLE_ joinedBy
                         listOf(
                                 exampleTable() on meaningTable().ID.eq(exampleTable().MEANING_ID))),
-                "meaning.phrasalVerbs.id" to (phrasalVerbTable().ID joinedBy
+                "select.phrasalVerbs.id" to (phrasalVerbTable().ID joinedBy
                         listOf(
                                 phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID))),
-                "meaning.phrasalVerbs.note" to (phrasalVerbTable().NOTE joinedBy
+                "select.phrasalVerbs.note" to (phrasalVerbTable().NOTE joinedBy
                         listOf(
                                 phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID))),
-                "meaning.phrasalVerbs.phrasalVerb" to (phrasalVerbTable().PHRASAL_VERB_ joinedBy
+                "select.phrasalVerbs.phrasalVerb" to (phrasalVerbTable().PHRASAL_VERB_ joinedBy
                         listOf(
                                 phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID)))
         ).map { criteriaAndField ->

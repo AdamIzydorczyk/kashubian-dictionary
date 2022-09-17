@@ -2,41 +2,29 @@ package tk.aizydorczyk.kashubian.crud.query.graphql.entry
 
 import graphql.schema.SelectedField
 import org.jooq.DSLContext
-import org.jooq.SelectFieldOrAsterisk
-import org.slf4j.Logger
-import org.slf4j.LoggerFactory
+import org.jooq.Field
+import org.jooq.impl.TableImpl
 import org.springframework.stereotype.Component
 import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryGraphQL
 import tk.aizydorczyk.kashubian.crud.model.mapper.KashubianEntryGraphQLMapper
 import tk.aizydorczyk.kashubian.crud.query.graphql.base.OneFinderBase
+import tk.aizydorczyk.kashubian.crud.query.graphql.entry.KashubianEntryQueryRelations.FIND_ONE_FIELD_TO_COLUMN_RELATIONS
+import tk.aizydorczyk.kashubian.crud.query.graphql.entry.KashubianEntryQueryRelations.FIND_ONE_FIELD_TO_JOIN_RELATIONS
+import tk.aizydorczyk.kashubian.crud.query.graphql.entry.KashubianEntryQueryRelations.entryId
+import tk.aizydorczyk.kashubian.crud.query.graphql.entry.KashubianEntryQueryRelations.entryTable
 
 @Component
-class OneKashubianEntryFinder(private val dsl: DSLContext) : OneFinderBase() {
-    private val logger: Logger = LoggerFactory.getLogger(javaClass)
-    private val mapper = KashubianEntryGraphQLMapper()
+class OneKashubianEntryFinder(override val dsl: DSLContext) :
+    OneFinderBase<KashubianEntryGraphQL>(dsl, KashubianEntryGraphQLMapper()) {
 
-    fun findOne(selectedFields: MutableList<SelectedField>,
-        id: Long): KashubianEntryGraphQL? {
-        val selectedColumns: MutableList<SelectFieldOrAsterisk?> =
-            selectColumns(selectedFields, KashubianEntryQueryRelations.FIND_ONE_FIELD_TO_COLUMN_RELATIONS)
-        selectedColumns.add(KashubianEntryQueryRelations.entryId())
+    fun findOneKashubianEntry(selectedFields: List<SelectedField>, id: Long): KashubianEntryGraphQL? =
+        findOne(selectedFields, id)
 
-        val selectedJoins = selectedFields
-            .mapNotNull { KashubianEntryQueryRelations.FIND_ONE_FIELD_TO_JOIN_RELATIONS[it.fullyQualifiedName] }
+    override fun idField(): Field<Long> = entryTable().ID
+    override fun idFieldWithAlias(): Field<Long> = entryId()
+    override fun table(): TableImpl<*> = entryTable()
+    override fun fieldToJoinRelations() = FIND_ONE_FIELD_TO_JOIN_RELATIONS
+    override fun fieldToColumnRelations(): Map<String, Field<*>> =
+        FIND_ONE_FIELD_TO_COLUMN_RELATIONS
 
-        selectedJoins.forEach {
-            selectedColumns.add(it.idColumn())
-        }
-
-        return dsl.select(selectedColumns)
-            .from(KashubianEntryQueryRelations.entryTable())
-            .apply {
-                selectedJoins.forEach {
-                    leftJoin(it.joinTable()).on(it.joinCondition())
-                }
-            }
-            .where(KashubianEntryQueryRelations.entryTable().ID.eq(id))
-            .apply { logger.info("Select query: $sql") }
-            .let { mapper.map(it.fetch()).firstOrNull() }
-    }
 }

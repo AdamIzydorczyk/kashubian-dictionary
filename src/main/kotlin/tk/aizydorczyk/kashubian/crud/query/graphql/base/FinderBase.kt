@@ -7,12 +7,11 @@ import org.jooq.SelectFieldOrAsterisk
 import org.jooq.impl.TableImpl
 import org.jooq.impl.UpdatableRecordImpl
 import tk.aizydorczyk.kashubian.crud.model.graphql.JoinTableWithCondition
-import java.io.Serializable
 import kotlin.reflect.KProperty1
 
 abstract class FinderBase {
     protected fun selectColumns(selectedFields: List<SelectedField>,
-        fieldToColumnRelations: Map<String, Field<out Serializable>>): MutableList<SelectFieldOrAsterisk?> =
+        fieldToColumnRelations: Map<String, Field<*>>): MutableList<SelectFieldOrAsterisk?> =
         selectedFields
             .mapNotNull { fieldToColumnRelations[it.fullyQualifiedName] }
             .toMutableList()
