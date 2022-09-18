@@ -1,5 +1,6 @@
 package tk.aizydorczyk.kashubian.crud.model.graphql
 
+import com.fasterxml.jackson.databind.JsonNode
 import tk.aizydorczyk.kashubian.crud.query.graphql.base.CriteriaExpression
 
 data class KashubianEntryCriteriaExpression(
@@ -84,10 +85,9 @@ data class TranslationCriteriaExpression(
     val ukrainian: StringCriteria?,
     val normalizedUkrainian: NormalizedCriteria?)
 
-
 data class NumericCriteria(val EQ: Int?)
 data class BooleanCriteria(val EQ: Boolean?)
 data class StringCriteria(val EQ: String?, val LIKE: String?, val _LIKE: String?)
 data class NormalizedCriteria(val BY_NORMALIZED: String?)
 data class PageCriteria(val start: Int, val limit: Int)
-data class JsonCriteria(val BY_JSON: String?)
+data class JsonCriteria(val BY_JSON: JsonNode?)

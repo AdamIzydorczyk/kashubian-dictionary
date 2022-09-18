@@ -1,5 +1,6 @@
 package tk.aizydorczyk.kashubian.crud.query.graphql.base
 
+import com.fasterxml.jackson.databind.JsonNode
 import graphql.schema.SelectedField
 import org.jooq.Condition
 import org.jooq.DSLContext
@@ -209,7 +210,10 @@ abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
         }
 
     private val listOfTypesToFetch =
-        listOf(String::class, Boolean::class, Long::class).map { it.createType(nullable = true) }
+        listOf(String::class.createType(nullable = true),
+                Boolean::class.createType(nullable = true),
+                Long::class.createType(nullable = true),
+                JsonNode::class.createType(nullable = true))
 
     private fun flatMapObjectFields(field: KProperty1<*, *>,
         instance: Any?,

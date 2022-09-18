@@ -1,4 +1,5 @@
 scalar JSON
+scalar JsonNode
 
 type Query {
     findKashubianEntry(id:Int): KashubianEntry
@@ -131,7 +132,7 @@ input NormalizedCriteria{
 }
 
 input JsonCriteria{
-    BY_JSON: String
+    BY_JSON: JsonNode
 }
 
 #-------------------------------------
