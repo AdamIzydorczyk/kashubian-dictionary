@@ -23,6 +23,8 @@ input KashubianEntryCriteriaExpression{
     word: StringCriteria
     normalizedWord: NormalizedCriteria
     variation: JsonCriteria
+    bases: JsonCriteria
+    derivatives: JsonCriteria
     priority: BooleanCriteria
     soundFile: SoundFileCriteriaExpression
     others: OthersCriteriaExpression

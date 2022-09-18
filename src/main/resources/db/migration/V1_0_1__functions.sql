@@ -44,9 +44,9 @@ create type entry_hierarchy_element as (
 
 -- find_derivatives function
 create or replace
-function public.find_derivatives(entry_id bigint) returns json as $$
+function public.find_derivatives(entry_id bigint) returns jsonb as $$
 declare
-	derivatives json;
+	derivatives jsonb;
 
 begin
 with recursive childs as (
@@ -73,9 +73,9 @@ end;
 $$ language plpgsql;
 
 -- find_hyponyms function
-create or replace function public.find_hyponyms(meaning_id bigint) returns json as $$
+create or replace function public.find_hyponyms(meaning_id bigint) returns jsonb as $$
 declare
-	hyponyms json;
+	hyponyms jsonb;
 
 begin
 with recursive childs(id, definition, entry_id, word) as (
@@ -116,10 +116,10 @@ create type base as (
 );
 
 create or replace
-function public.find_bases(entry_id bigint) returns json as $$
+function public.find_bases(entry_id bigint) returns jsonb as $$
 
 declare
-	bases json;
+	bases jsonb;
 
 begin
 with recursive parents(id, base_id, word) as (
@@ -157,9 +157,9 @@ $$ language plpgsql;
 
 -- find_hyperonyms function
 create or replace
-function public.find_hyperonyms(meaning_id bigint) returns json as $$
+function public.find_hyperonyms(meaning_id bigint) returns jsonb as $$
 declare
-	hyperonyms json;
+	hyperonyms jsonb;
 
 begin
 with recursive parents(id, hyperonym_id, definition, entry_id, word) as (

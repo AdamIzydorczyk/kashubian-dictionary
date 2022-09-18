@@ -11,6 +11,7 @@ import org.jooq.SelectFieldOrAsterisk
 import org.jooq.SelectSeekStepN
 import org.jooq.SortField
 import org.jooq.impl.DSL
+import org.jooq.impl.DSL.condition
 import org.jooq.impl.TableImpl
 import org.jooq.impl.UpdatableRecordImpl
 import org.slf4j.Logger
@@ -186,7 +187,7 @@ abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
     }
 
     private fun jsonContains(field: Field<Any>, value: String): Condition {
-        return DSL.condition("{0} @> {1}", field, DSL.`val`(value, field))
+        return condition("{0} @> {1}", field, DSL.`val`(value, field))
     }
 
     private fun orderByColumns(selectedFields: List<SelectedField>,

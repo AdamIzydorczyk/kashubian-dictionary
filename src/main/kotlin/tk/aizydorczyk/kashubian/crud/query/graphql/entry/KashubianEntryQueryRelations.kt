@@ -1,12 +1,16 @@
 package tk.aizydorczyk.kashubian.crud.query.graphql.entry
 
-import org.jooq.impl.DSL
+import org.jooq.QueryPart
+import org.jooq.impl.DSL.field
+import org.jooq.impl.DSL.select
+import org.jooq.impl.DSL.selectCount
 import tk.aizydorczyk.kashubian.crud.extension.fieldPath
 import tk.aizydorczyk.kashubian.crud.extension.fieldWithJoins
 import tk.aizydorczyk.kashubian.crud.extension.joinedBy
 import tk.aizydorczyk.kashubian.crud.extension.on
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Routines
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables
+import tk.aizydorczyk.kashubian.crud.query.graphql.base.JoinTableWithCondition
 
 object KashubianEntryQueryRelations {
     internal val FIND_ALL_FIELD_TO_JOIN_RELATIONS = mapOf(
@@ -94,9 +98,9 @@ object KashubianEntryQueryRelations {
             "KashubianEntriesPaged.select/KashubianEntry.meaningsCount" to
                     meaningsCount(),
             "KashubianEntriesPaged.select/KashubianEntry.bases" to
-                    entryBases(),
+                    entryBasesWithAlias(),
             "KashubianEntriesPaged.select/KashubianEntry.derivatives" to
-                    entryDerivatives(),
+                    entryDerivativesWithAlias(),
             "KashubianEntriesPaged.select/KashubianEntry.others/Other.note" to
                     otherNote(),
             "KashubianEntriesPaged.select/KashubianEntry.others/Other.other/KashubianEntrySimplified.word" to
@@ -163,12 +167,14 @@ object KashubianEntryQueryRelations {
         it.key.removePrefix("KashubianEntriesPaged.select/")
     }
 
-    val CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN =
+    val CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN: Map<String, Pair<QueryPart, List<JoinTableWithCondition>>> =
         listOf(
                 "select.id" to (entryTable().ID joinedBy emptyList()),
                 "select.note" to (entryTable().NOTE joinedBy emptyList()),
                 "select.word" to (entryTable().WORD joinedBy emptyList()),
                 "select.variation" to (entryTable().VARIATION joinedBy emptyList()),
+                "select.bases" to (entryBases() joinedBy emptyList()),
+                "select.derivatives" to (entryDerivatives() joinedBy emptyList()),
                 "select.normalizedWord" to (entryTable().NORMALIZED_WORD joinedBy emptyList()),
                 "select.priority" to (entryTable().PRIORITY joinedBy emptyList()),
                 "select.soundFile.id" to (soundFileTable().ID joinedBy emptyList()),
@@ -399,10 +405,10 @@ object KashubianEntryQueryRelations {
     private fun translationPolish() = translationTable().POLISH.`as`("translation_polish")
 
     private fun meaningHyponyms() =
-        DSL.field(DSL.select(Routines.findHyponyms(meaningTable().ID))).`as`("meaning_hyponyms")
+        field(select(Routines.findHyponyms(meaningTable().ID))).`as`("meaning_hyponyms")
 
     private fun meaningHyperonyms() =
-        DSL.field(DSL.select(Routines.findHyperonyms(meaningTable().ID))).`as`("meaning_hyperonyms")
+        field(select(Routines.findHyperonyms(meaningTable().ID))).`as`("meaning_hyperonyms")
 
     private fun soundFileFileName() = soundFileTable().FILE_NAME.`as`("sound_file_file_name")
 
@@ -412,12 +418,16 @@ object KashubianEntryQueryRelations {
 
     private fun otherNote() = otherTable().NOTE.`as`("other_note")
 
+    private fun entryDerivativesWithAlias() =
+        field(select(Routines.findDerivatives(entryTable().ID))).`as`("entry_derivatives")
+
     private fun entryDerivatives() =
-        DSL.field(DSL.select(Routines.findDerivatives(entryTable().ID))).`as`("entry_derivatives")
+        field(select(Routines.findDerivatives(entryTable().ID)))
 
-    private fun entryBases() = DSL.field(DSL.select(Routines.findBases(entryTable().ID))).`as`("entry_bases")
+    private fun entryBasesWithAlias() = field(select(Routines.findBases(entryTable().ID))).`as`("entry_bases")
+    private fun entryBases() = field(select(Routines.findBases(entryTable().ID)))
 
-    private fun meaningsCount() = DSL.field(DSL.selectCount().from(Tables.MEANING)
+    private fun meaningsCount() = field(selectCount().from(Tables.MEANING)
         .where(Tables.MEANING.KASHUBIAN_ENTRY_ID.eq(entryTable().ID))).`as`("meanings_count")
 
     private fun entryPartOfSpeechSubType() = entryTable().PART_OF_SPEECH_SUB_TYPE.`as`("entry_part_of_speech_sub_type")

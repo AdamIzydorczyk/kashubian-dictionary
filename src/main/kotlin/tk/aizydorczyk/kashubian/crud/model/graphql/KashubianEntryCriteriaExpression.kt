@@ -8,6 +8,8 @@ data class KashubianEntryCriteriaExpression(
     val note: StringCriteria?,
     val word: StringCriteria?,
     val variation: JsonCriteria?,
+    val bases: JsonCriteria?,
+    val derivatives: JsonCriteria?,
     val normalizedWord: NormalizedCriteria?,
     val priority: BooleanCriteria?,
     val soundFile: SoundFileCriteriaExpression?,
