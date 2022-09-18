@@ -1,4 +1,4 @@
-package tk.aizydorczyk.kashubian.crud.model.mapper
+package tk.aizydorczyk.kashubian.crud.query.graphql.base
 
 import org.jooq.Record
 import org.jooq.Result

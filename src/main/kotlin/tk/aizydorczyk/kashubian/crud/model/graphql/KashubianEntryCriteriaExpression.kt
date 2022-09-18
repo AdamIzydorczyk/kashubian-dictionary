@@ -1,16 +1,17 @@
 package tk.aizydorczyk.kashubian.crud.model.graphql
 
+import tk.aizydorczyk.kashubian.crud.query.graphql.base.CriteriaExpression
+
 data class KashubianEntryCriteriaExpression(
     val id: NumericCriteria?,
     val note: StringCriteria?,
     val word: StringCriteria?,
+    val variation: JsonCriteria?,
     val normalizedWord: NormalizedCriteria?,
     val priority: BooleanCriteria?,
     val soundFile: SoundFileCriteriaExpression?,
     val others: OthersCriteriaExpression?,
     val meanings: MeaningsCriteriaExpression?) : CriteriaExpression
-
-interface CriteriaExpression
 
 data class SoundFileCriteriaExpression(
     val id: NumericCriteria?,
@@ -83,8 +84,10 @@ data class TranslationCriteriaExpression(
     val ukrainian: StringCriteria?,
     val normalizedUkrainian: NormalizedCriteria?)
 
+
 data class NumericCriteria(val EQ: Int?)
 data class BooleanCriteria(val EQ: Boolean?)
 data class StringCriteria(val EQ: String?, val LIKE: String?, val _LIKE: String?)
 data class NormalizedCriteria(val BY_NORMALIZED: String?)
 data class PageCriteria(val start: Int, val limit: Int)
+data class JsonCriteria(val BY_JSON: String?)

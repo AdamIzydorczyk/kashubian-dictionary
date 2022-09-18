@@ -21,6 +21,7 @@ input KashubianEntryCriteriaExpression{
     note: StringCriteria
     word: StringCriteria
     normalizedWord: NormalizedCriteria
+    variation: JsonCriteria
     priority: BooleanCriteria
     soundFile: SoundFileCriteriaExpression
     others: OthersCriteriaExpression
@@ -127,6 +128,10 @@ input StringCriteria{
 
 input NormalizedCriteria{
     BY_NORMALIZED: String
+}
+
+input JsonCriteria{
+    BY_JSON: String
 }
 
 #-------------------------------------

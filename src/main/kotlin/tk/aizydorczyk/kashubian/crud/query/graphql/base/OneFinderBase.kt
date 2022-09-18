@@ -9,7 +9,6 @@ import org.jooq.impl.TableImpl
 import org.jooq.impl.UpdatableRecordImpl
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import tk.aizydorczyk.kashubian.crud.model.mapper.GraphQLMapper
 
 abstract class OneFinderBase<out GraphQLModel>(open val dsl: DSLContext, open val mapper: GraphQLMapper<GraphQLModel>) :
     FinderBase() {

@@ -14,6 +14,7 @@ import tk.aizydorczyk.kashubian.crud.model.graphql.ProverbGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.QuoteGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.SynonymGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.TranslationGraphQL
+import tk.aizydorczyk.kashubian.crud.query.graphql.base.GraphQLMapper
 
 class MeaningGraphQLMapper : GraphQLMapper<MeaningGraphQL> {
     override fun map(results: Result<Record>): List<MeaningGraphQL> {

@@ -4,8 +4,8 @@ import org.apache.commons.lang3.StringUtils
 import org.jooq.Condition
 import org.jooq.QueryPart
 import org.jooq.impl.TableImpl
-import tk.aizydorczyk.kashubian.crud.model.graphql.FieldWithJoins
-import tk.aizydorczyk.kashubian.crud.model.graphql.JoinTableWithCondition
+import tk.aizydorczyk.kashubian.crud.query.graphql.base.FieldWithJoins
+import tk.aizydorczyk.kashubian.crud.query.graphql.base.JoinTableWithCondition
 
 fun String.normalize(): String = this.let(StringUtils::stripAccents)
     .replace("\\s".toRegex(), "")

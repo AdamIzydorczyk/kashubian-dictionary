@@ -1,6 +1,7 @@
 package tk.aizydorczyk.kashubian.crud.model.graphql
 
 import com.fasterxml.jackson.databind.JsonNode
+import tk.aizydorczyk.kashubian.crud.query.graphql.base.GraphQLModel
 
 data class MeaningGraphQL(
     val id: Long?,

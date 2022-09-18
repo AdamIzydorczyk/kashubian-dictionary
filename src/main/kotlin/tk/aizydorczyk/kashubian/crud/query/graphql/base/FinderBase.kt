@@ -6,7 +6,6 @@ import org.jooq.Field
 import org.jooq.SelectFieldOrAsterisk
 import org.jooq.impl.TableImpl
 import org.jooq.impl.UpdatableRecordImpl
-import tk.aizydorczyk.kashubian.crud.model.graphql.JoinTableWithCondition
 import kotlin.reflect.KProperty1
 
 abstract class FinderBase {

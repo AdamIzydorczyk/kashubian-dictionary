@@ -15,11 +15,7 @@ import org.jooq.impl.UpdatableRecordImpl
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import tk.aizydorczyk.kashubian.crud.extension.normalize
-import tk.aizydorczyk.kashubian.crud.model.graphql.CriteriaExpression
-import tk.aizydorczyk.kashubian.crud.model.graphql.GraphQLPagedModel
-import tk.aizydorczyk.kashubian.crud.model.graphql.JoinTableWithCondition
 import tk.aizydorczyk.kashubian.crud.model.graphql.PageCriteria
-import tk.aizydorczyk.kashubian.crud.model.mapper.GraphQLMapper
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.createType
@@ -184,7 +180,12 @@ abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
         fieldPath.endsWith(".LIKE_") -> field.likeIgnoreCase("%$instance%")
         fieldPath.endsWith(".LIKE") -> field.like("%$instance%")
         fieldPath.endsWith(".BY_NORMALIZED") -> field.like("%${instance.toString().normalize()}%")
+        fieldPath.endsWith(".BY_JSON") -> jsonContains(field, "$instance")
         else -> null
+    }
+
+    private fun jsonContains(field: Field<Any>, value: String): Condition {
+        return DSL.condition("{0} @> {1}", field, DSL.`val`(value, field))
     }
 
     private fun orderByColumns(selectedFields: List<SelectedField>,

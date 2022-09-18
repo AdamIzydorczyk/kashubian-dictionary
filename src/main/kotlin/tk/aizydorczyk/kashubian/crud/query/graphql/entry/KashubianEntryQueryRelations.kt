@@ -168,6 +168,7 @@ object KashubianEntryQueryRelations {
                 "select.id" to (entryTable().ID joinedBy emptyList()),
                 "select.note" to (entryTable().NOTE joinedBy emptyList()),
                 "select.word" to (entryTable().WORD joinedBy emptyList()),
+                "select.variation" to (entryTable().VARIATION joinedBy emptyList()),
                 "select.normalizedWord" to (entryTable().NORMALIZED_WORD joinedBy emptyList()),
                 "select.priority" to (entryTable().PRIORITY joinedBy emptyList()),
                 "select.soundFile.id" to (soundFileTable().ID joinedBy emptyList()),
@@ -307,7 +308,7 @@ object KashubianEntryQueryRelations {
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
                                 phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID)))
         ).map { criteriaAndField ->
-            listOf(".EQ", ".LIKE_", ".LIKE", ".BY_NORMALIZED").map {
+            listOf(".EQ", ".LIKE_", ".LIKE", ".BY_NORMALIZED", ".BY_JSON").map {
                 criteriaAndField.fieldPath() + it to
                         (criteriaAndField.fieldWithJoins().field to criteriaAndField.fieldWithJoins().joins)
             }

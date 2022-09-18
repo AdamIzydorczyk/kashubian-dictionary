@@ -1,4 +1,4 @@
-package tk.aizydorczyk.kashubian.crud.model.graphql
+package tk.aizydorczyk.kashubian.crud.query.graphql.base
 
 import org.jooq.Condition
 import org.jooq.impl.TableImpl

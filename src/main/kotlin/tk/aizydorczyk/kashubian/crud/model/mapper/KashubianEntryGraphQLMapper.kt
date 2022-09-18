@@ -18,6 +18,7 @@ import tk.aizydorczyk.kashubian.crud.model.graphql.QuoteGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.SoundFileGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.SynonymGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.TranslationGraphQL
+import tk.aizydorczyk.kashubian.crud.query.graphql.base.GraphQLMapper
 
 class KashubianEntryGraphQLMapper : GraphQLMapper<KashubianEntryGraphQL> {
     override fun map(results: Result<Record>): List<KashubianEntryGraphQL> {
