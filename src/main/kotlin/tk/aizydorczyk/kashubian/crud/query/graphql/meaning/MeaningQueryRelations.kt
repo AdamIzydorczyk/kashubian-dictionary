@@ -1,6 +1,7 @@
 package tk.aizydorczyk.kashubian.crud.query.graphql.meaning
 
-import org.jooq.impl.DSL
+import org.jooq.impl.DSL.field
+import org.jooq.impl.DSL.select
 import tk.aizydorczyk.kashubian.crud.extension.fieldPath
 import tk.aizydorczyk.kashubian.crud.extension.fieldWithJoins
 import tk.aizydorczyk.kashubian.crud.extension.joinedBy
@@ -66,9 +67,9 @@ object MeaningQueryRelations {
             "MeaningsPaged.select/Meaning.definition" to
                     meaningDefinition(),
             "MeaningsPaged.select/Meaning.hyperonyms" to
-                    meaningHyperonyms(),
+                    meaningHyperonymsWithAlias(),
             "MeaningsPaged.select/Meaning.hyponyms" to
-                    meaningHyponyms(),
+                    meaningHyponymsWithAlias(),
             "MeaningsPaged.select/Meaning.translation/Translation.polish" to
                     translationPolish(),
             "MeaningsPaged.select/Meaning.translation/Translation.normalizedPolish" to
@@ -125,6 +126,8 @@ object MeaningQueryRelations {
                         emptyList()),
                 "select.origin" to (meaningTable().ORIGIN joinedBy emptyList()),
                 "select.definition" to (meaningTable().DEFINITION joinedBy emptyList()),
+                "select.hyperonyms" to (meaningHyperonyms() joinedBy emptyList()),
+                "select.hyponyms" to (meaningHyponyms() joinedBy emptyList()),
                 "select.synonyms.id" to (synonymTable().ID joinedBy
                         listOf(
                                 synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID))),
@@ -241,7 +244,7 @@ object MeaningQueryRelations {
                         listOf(
                                 phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID)))
         ).map { criteriaAndField ->
-            listOf(".EQ", ".LIKE_", ".LIKE", ".BY_NORMALIZED").map {
+            listOf(".EQ", ".LIKE_", ".LIKE", ".BY_NORMALIZED", ".BY_JSON").map {
                 criteriaAndField.fieldPath() + it to
                         (criteriaAndField.fieldWithJoins().field to criteriaAndField.fieldWithJoins().joins)
             }
@@ -323,11 +326,17 @@ object MeaningQueryRelations {
 
     private fun translationPolish() = translationTable().POLISH.`as`("translation_polish")
 
+    private fun meaningHyponymsWithAlias() =
+        field(select(Routines.findHyponyms(meaningTable().ID))).`as`("meaning_hyponyms")
+
+    private fun meaningHyperonymsWithAlias() =
+        field(select(Routines.findHyperonyms(meaningTable().ID))).`as`("meaning_hyperonyms")
+
     private fun meaningHyponyms() =
-        DSL.field(DSL.select(Routines.findHyponyms(meaningTable().ID))).`as`("meaning_hyponyms")
+        field(select(Routines.findHyponyms(meaningTable().ID)))
 
     private fun meaningHyperonyms() =
-        DSL.field(DSL.select(Routines.findHyperonyms(meaningTable().ID))).`as`("meaning_hyperonyms")
+        field(select(Routines.findHyperonyms(meaningTable().ID)))
 
     private fun antonymMeaningEntryTable() = Tables.KASHUBIAN_ENTRY.`as`("antonym_meaning_entry")
 

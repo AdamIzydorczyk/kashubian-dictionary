@@ -40,6 +40,8 @@ input MeaningsCriteriaExpression{
     id: NumericCriteria
     origin: StringCriteria
     definition: StringCriteria
+    hyperonyms: JsonCriteria
+    hyponyms: JsonCriteria
     synonyms: SynonymsCriteriaExpression
     proverbs: ProverbsCriteriaExpression
     translation: TranslationCriteriaExpression

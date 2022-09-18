@@ -33,6 +33,8 @@ data class MeaningsCriteriaExpression(
     val id: NumericCriteria?,
     val origin: StringCriteria?,
     val definition: StringCriteria?,
+    val hyperonyms: JsonCriteria?,
+    val hyponyms: JsonCriteria?,
     val synonyms: SynonymsCriteriaExpression?,
     val proverbs: ProverbsCriteriaExpression?,
     val translation: TranslationCriteriaExpression?,

@@ -114,9 +114,9 @@ object KashubianEntryQueryRelations {
             "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.definition" to
                     meaningDefinition(),
             "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.hyperonyms" to
-                    meaningHyperonyms(),
+                    meaningHyperonymsWithAlias(),
             "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.hyponyms" to
-                    meaningHyponyms(),
+                    meaningHyponymsWithAlias(),
             "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.polish" to
                     translationPolish(),
             "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.translation/Translation.normalizedPolish" to
@@ -197,6 +197,10 @@ object KashubianEntryQueryRelations {
                 "select.meanings.origin" to (meaningTable().ORIGIN joinedBy
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
                 "select.meanings.definition" to (meaningTable().DEFINITION joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
+                "select.meanings.hyperonyms" to (meaningHyperonyms() joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
+                "select.meanings.hyponyms" to (meaningHyponyms() joinedBy
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
                 "select.meanings.synonyms.id" to (synonymTable().ID joinedBy
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
@@ -404,11 +408,17 @@ object KashubianEntryQueryRelations {
 
     private fun translationPolish() = translationTable().POLISH.`as`("translation_polish")
 
-    private fun meaningHyponyms() =
+    private fun meaningHyponymsWithAlias() =
         field(select(Routines.findHyponyms(meaningTable().ID))).`as`("meaning_hyponyms")
 
-    private fun meaningHyperonyms() =
+    private fun meaningHyperonymsWithAlias() =
         field(select(Routines.findHyperonyms(meaningTable().ID))).`as`("meaning_hyperonyms")
+
+    private fun meaningHyponyms() =
+        field(select(Routines.findHyponyms(meaningTable().ID)))
+
+    private fun meaningHyperonyms() =
+        field(select(Routines.findHyperonyms(meaningTable().ID)))
 
     private fun soundFileFileName() = soundFileTable().FILE_NAME.`as`("sound_file_file_name")
 
