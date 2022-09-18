@@ -128,7 +128,7 @@ abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
                     wheres.forEach {
                         where(it)
                     }
-                    logger.info("Select query: $sql")
+                    logger.info("Count query: $sql")
                 }.fetchOne(0, Int::class.java) ?: 0
 
             false -> 0

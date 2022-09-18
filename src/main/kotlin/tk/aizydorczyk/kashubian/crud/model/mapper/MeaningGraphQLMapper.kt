@@ -30,6 +30,8 @@ class MeaningGraphQLMapper : GraphQLMapper<MeaningGraphQL> {
         val simplifiedMeanings = mutableMapOf<Long, MeaningSimplifiedGraphQL>()
 
         for (record in results) {
+            mapHyperonym(record, simplifiedMeanings, meanings)
+            mapHyperonymEntry(record, simplifiedEntries, simplifiedMeanings)
             mapMeanings(record, meanings)
             mapTranslations(record, translations, meanings)
             mapQuotes(record, quotes, meanings)
@@ -47,6 +49,43 @@ class MeaningGraphQLMapper : GraphQLMapper<MeaningGraphQL> {
         return meanings.values.toList()
     }
 
+    private fun mapHyperonym(record: Record,
+        simplifiedMeanings: MutableMap<Long, MeaningSimplifiedGraphQL>,
+        meanings: MutableMap<Long, MeaningGraphQL>) {
+        record.mapAndAssignById(
+                "meaning_hyperonym_id",
+                simplifiedMeanings,
+                { id ->
+                    MeaningSimplifiedGraphQL(
+                            id = id,
+                            definition = record.fetchValueOrNull("meaning_hyperonym_definition",
+                                    String::class.java))
+                },
+                "meaning_id",
+                meanings,
+                { meaning, hyperonym ->
+                    meaning.hyperonym = hyperonym
+                })
+    }
+
+    private fun mapHyperonymEntry(record: Record,
+        simplifyEntries: MutableMap<Long, KashubianEntrySimplifiedGraphQL>,
+        simplifyMeanings: MutableMap<Long, MeaningSimplifiedGraphQL>) {
+        record.mapAndAssignById(
+                "meaning_hyperonym_entry_id",
+                simplifyEntries,
+                { id ->
+                    KashubianEntrySimplifiedGraphQL(
+                            id = id,
+                            word = record.fetchValueOrNull("meaning_hyperonym_entry_word",
+                                    String::class.java))
+                },
+                "meaning_hyperonym_id",
+                simplifyMeanings,
+                { simplifyMeaning, simplifyEntry ->
+                    simplifyMeaning.kashubianEntry = simplifyEntry
+                })
+    }
 
     private fun mapExamples(record: Record,
         examples: MutableMap<Long, ExampleGraphQL>,

@@ -40,9 +40,12 @@ class KashubianEntryGraphQLMapper : GraphQLMapper<KashubianEntryGraphQL> {
             mapEntries(record, entries)
             mapOthers(record, others, entries)
             mapOtherEntries(record, simplifiedEntries, others)
+            mapBase(record, simplifiedEntries, entries)
             mapSoundFile(record, soundFiles, entries)
             mapMeanings(record, meanings, entries)
-            mapTranslations(record, translations, meanings)
+            mapTranslation(record, translations, meanings)
+            mapHyperonym(record, simplifiedMeanings, meanings)
+            mapHyperonymEntry(record, simplifiedEntries, simplifiedMeanings)
             mapQuotes(record, quotes, meanings)
             mapProverbs(record, proverbs, meanings)
             mapPhrasalVerbs(record, phrasalVerbs, meanings)
@@ -56,6 +59,64 @@ class KashubianEntryGraphQLMapper : GraphQLMapper<KashubianEntryGraphQL> {
         }
 
         return entries.values.toList()
+    }
+
+    private fun mapHyperonym(record: Record,
+        simplifiedMeanings: MutableMap<Long, MeaningSimplifiedGraphQL>,
+        meanings: MutableMap<Long, MeaningGraphQL>) {
+        record.mapAndAssignById(
+                "meaning_hyperonym_id",
+                simplifiedMeanings,
+                { id ->
+                    MeaningSimplifiedGraphQL(
+                            id = id,
+                            definition = record.fetchValueOrNull("meaning_hyperonym_definition",
+                                    String::class.java))
+                },
+                "meaning_id",
+                meanings,
+                { meaning, hyperonym ->
+                    meaning.hyperonym = hyperonym
+                })
+    }
+
+    private fun mapHyperonymEntry(record: Record,
+        simplifyEntries: MutableMap<Long, KashubianEntrySimplifiedGraphQL>,
+        simplifyMeanings: MutableMap<Long, MeaningSimplifiedGraphQL>) {
+        record.mapAndAssignById(
+                "meaning_hyperonym_entry_id",
+                simplifyEntries,
+                { id ->
+                    KashubianEntrySimplifiedGraphQL(
+                            id = id,
+                            word = record.fetchValueOrNull("meaning_hyperonym_entry_word",
+                                    String::class.java))
+                },
+                "meaning_hyperonym_id",
+                simplifyMeanings,
+                { simplifyMeaning, simplifyEntry ->
+                    simplifyMeaning.kashubianEntry = simplifyEntry
+                })
+    }
+
+    private fun mapBase(record: Record,
+        simplifiedEntries: MutableMap<Long, KashubianEntrySimplifiedGraphQL>,
+        entries: MutableMap<Long, KashubianEntryGraphQL>) {
+        record.mapAndAssignById(
+                "entry_base_id",
+                simplifiedEntries,
+                { id ->
+                    KashubianEntrySimplifiedGraphQL(
+                            id = id,
+                            word = record.fetchValueOrNull("entry_base_word",
+                                    String::class.java)
+                    )
+                },
+                "entry_id",
+                entries,
+                { entry, base ->
+                    entry.base = base
+                })
     }
 
     private fun mapSoundFile(record: Record,
@@ -163,7 +224,7 @@ class KashubianEntryGraphQLMapper : GraphQLMapper<KashubianEntryGraphQL> {
                 })
     }
 
-    private fun mapTranslations(record: Record,
+    private fun mapTranslation(record: Record,
         translations: MutableMap<Long, TranslationGraphQL>,
         meanings: MutableMap<Long, MeaningGraphQL>) {
         record.mapAndAssignById(

@@ -23,6 +23,7 @@ input KashubianEntryCriteriaExpression{
     word: StringCriteria
     normalizedWord: NormalizedCriteria
     variation: JsonCriteria
+    base: KashubianEntryCriteriaExpressionSimplified
     bases: JsonCriteria
     derivatives: JsonCriteria
     priority: BooleanCriteria
@@ -40,6 +41,7 @@ input MeaningsCriteriaExpression{
     id: NumericCriteria
     origin: StringCriteria
     definition: StringCriteria
+    hyperonym: JsonCriteria
     hyperonyms: JsonCriteria
     hyponyms: JsonCriteria
     synonyms: SynonymsCriteriaExpression
@@ -165,6 +167,7 @@ type KashubianEntry {
     partOfSpeech(orderBy: OrderBy): PartOfSpeechType
     partOfSpeechSubType(orderBy: OrderBy): PartOfSpeechSubType
     meaningsCount(orderBy: OrderBy): Int
+    base: KashubianEntrySimplified
     bases: JSON
     derivatives: JSON
     soundFile: SoundFile
@@ -193,6 +196,7 @@ type Meaning{
     id(orderBy: OrderBy): ID
     origin(orderBy: OrderBy): String
     definition(orderBy: OrderBy): String
+    hyperonym: MeaningSimplified
     hyperonyms: JSON
     hyponyms: JSON
     synonyms: [Synonym]

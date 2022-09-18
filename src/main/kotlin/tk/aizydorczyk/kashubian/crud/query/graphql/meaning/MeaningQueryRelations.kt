@@ -15,6 +15,14 @@ object MeaningQueryRelations {
                     Triple(translationTable(),
                             meaningTable().ID.eq(translationTable().MEANING_ID),
                             translationId()),
+            "MeaningsPaged.select/Meaning.hyperonym" to
+                    Triple(meaningHyperonymTable(),
+                            meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID),
+                            meaningHyperonymId()),
+            "MeaningsPaged.select/Meaning.hyperonym/MeaningSimplified.kashubianEntry" to
+                    Triple(meaningHyperonymEntryTable(),
+                            meaningHyperonymTable().KASHUBIAN_ENTRY_ID.eq(meaningHyperonymEntryTable().ID),
+                            meaningHyperonymEntryId()),
             "MeaningsPaged.select/Meaning.proverbs" to
                     Triple(proverbTable(),
                             meaningTable().ID.eq(proverbTable().MEANING_ID),
@@ -66,6 +74,10 @@ object MeaningQueryRelations {
                     meaningOrigin(),
             "MeaningsPaged.select/Meaning.definition" to
                     meaningDefinition(),
+            "MeaningsPaged.select/Meaning.hyperonym/MeaningSimplified.definition" to
+                    meaningHyperonymDefinition(),
+            "MeaningsPaged.select/Meaning.hyperonym/MeaningSimplified.kashubianEntry/KashubianEntrySimplified.word" to
+                    meaningHyperonymEntryWord(),
             "MeaningsPaged.select/Meaning.hyperonyms" to
                     meaningHyperonymsWithAlias(),
             "MeaningsPaged.select/Meaning.hyponyms" to
@@ -126,6 +138,18 @@ object MeaningQueryRelations {
                         emptyList()),
                 "select.origin" to (meaningTable().ORIGIN joinedBy emptyList()),
                 "select.definition" to (meaningTable().DEFINITION joinedBy emptyList()),
+                "select.hyperonym.id" to (meaningHyperonymTable().ID joinedBy
+                        listOf(meaningHyperonymTable() on meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID))),
+                "select.hyperonym.definition" to (meaningHyperonymTable().DEFINITION joinedBy
+                        listOf(meaningHyperonymTable() on meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID))),
+                "select.hyperonym.kashubianEntry.id" to (meaningHyperonymEntryTable().ID joinedBy
+                        listOf(meaningHyperonymTable() on meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID),
+                                meaningHyperonymEntryTable() on meaningHyperonymTable().KASHUBIAN_ENTRY_ID.eq(
+                                        meaningHyperonymEntryTable().ID))),
+                "select.hyperonym.kashubianEntry.word" to (meaningHyperonymEntryTable().WORD joinedBy
+                        listOf(meaningHyperonymTable() on meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID),
+                                meaningHyperonymEntryTable() on meaningHyperonymTable().KASHUBIAN_ENTRY_ID.eq(
+                                        meaningHyperonymEntryTable().ID))),
                 "select.hyperonyms" to (meaningHyperonyms() joinedBy emptyList()),
                 "select.hyponyms" to (meaningHyponyms() joinedBy emptyList()),
                 "select.synonyms.id" to (synonymTable().ID joinedBy
@@ -359,6 +383,20 @@ object MeaningQueryRelations {
     private fun proverbTable() = Tables.PROVERB.`as`("proverb")
 
     private fun translationTable() = Tables.TRANSLATION.`as`("translation")
+
+    private fun meaningHyperonymEntryId() = meaningHyperonymEntryTable().ID.`as`("meaning_hyperonym_entry_id")
+
+    private fun meaningHyperonymEntryTable() = Tables.KASHUBIAN_ENTRY.`as`("meaning_hyperonym_entry")
+
+    private fun meaningHyperonymId() = meaningHyperonymTable().ID.`as`("meaning_hyperonym_id")
+
+    private fun meaningHyperonymTable() = Tables.MEANING.`as`("meaning_hyperonym")
+
+    private fun entryBaseTable() = Tables.KASHUBIAN_ENTRY.`as`("entry_base")
+
+    private fun meaningHyperonymEntryWord() = meaningHyperonymEntryTable().WORD.`as`("meaning_hyperonym_entry_word")
+
+    private fun meaningHyperonymDefinition() = meaningHyperonymTable().DEFINITION.`as`("meaning_hyperonym_definition")
 
     fun meaningTable() = Tables.MEANING.`as`("meaning")
 

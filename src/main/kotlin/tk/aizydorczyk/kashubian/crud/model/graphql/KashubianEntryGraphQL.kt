@@ -11,6 +11,7 @@ data class KashubianEntryGraphQL(
     val priority: Boolean?,
     val partOfSpeech: String?,
     val partOfSpeechSubType: String?,
+    var base: KashubianEntrySimplifiedGraphQL? = null,
     val bases: JsonNode?,
     val variation: JsonNode?,
     val derivatives: JsonNode?,

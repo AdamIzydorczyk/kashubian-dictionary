@@ -10,6 +10,8 @@ import tk.aizydorczyk.kashubian.crud.extension.joinedBy
 import tk.aizydorczyk.kashubian.crud.extension.on
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Routines
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.KASHUBIAN_ENTRY
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.MEANING
 import tk.aizydorczyk.kashubian.crud.query.graphql.base.JoinTableWithCondition
 
 object KashubianEntryQueryRelations {
@@ -26,6 +28,10 @@ object KashubianEntryQueryRelations {
                     Triple(otherEntryTable(),
                             otherTable().OTHER_ID.`as`("other_id").eq(otherEntryTable().ID),
                             otherEntryId()),
+            "KashubianEntriesPaged.select/KashubianEntry.base" to
+                    Triple(entryBaseTable(),
+                            entryTable().BASE_ID.eq(entryBaseTable().ID),
+                            entryBaseId()),
             "KashubianEntriesPaged.select/KashubianEntry.meanings" to
                     Triple(meaningTable(),
                             entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
@@ -34,6 +40,14 @@ object KashubianEntryQueryRelations {
                     Triple(translationTable(),
                             meaningTable().ID.eq(translationTable().MEANING_ID),
                             translationId()),
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.hyperonym" to
+                    Triple(meaningHyperonymTable(),
+                            meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID),
+                            meaningHyperonymId()),
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.hyperonym/MeaningSimplified.kashubianEntry" to
+                    Triple(meaningHyperonymEntryTable(),
+                            meaningHyperonymTable().KASHUBIAN_ENTRY_ID.eq(meaningHyperonymEntryTable().ID),
+                            meaningHyperonymEntryId()),
             "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.proverbs" to
                     Triple(proverbTable(),
                             meaningTable().ID.eq(proverbTable().MEANING_ID),
@@ -97,6 +111,8 @@ object KashubianEntryQueryRelations {
                     entryPartOfSpeechSubType(),
             "KashubianEntriesPaged.select/KashubianEntry.meaningsCount" to
                     meaningsCount(),
+            "KashubianEntriesPaged.select/KashubianEntry.base/KashubianEntrySimplified.word" to
+                    entryBaseWord(),
             "KashubianEntriesPaged.select/KashubianEntry.bases" to
                     entryBasesWithAlias(),
             "KashubianEntriesPaged.select/KashubianEntry.derivatives" to
@@ -113,6 +129,10 @@ object KashubianEntryQueryRelations {
                     meaningOrigin(),
             "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.definition" to
                     meaningDefinition(),
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.hyperonym/MeaningSimplified.definition" to
+                    meaningHyperonymDefinition(),
+            "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.hyperonym/MeaningSimplified.kashubianEntry/KashubianEntrySimplified.word" to
+                    meaningHyperonymEntryWord(),
             "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.hyperonyms" to
                     meaningHyperonymsWithAlias(),
             "KashubianEntriesPaged.select/KashubianEntry.meanings/Meaning.hyponyms" to
@@ -180,6 +200,10 @@ object KashubianEntryQueryRelations {
                 "select.soundFile.id" to (soundFileTable().ID joinedBy emptyList()),
                 "select.soundFile.type" to (soundFileTable().TYPE joinedBy emptyList()),
                 "select.soundFile.fileName" to (soundFileTable().FILE_NAME joinedBy emptyList()),
+                "select.base.id" to (entryBaseTable().ID joinedBy listOf(entryBaseTable() on entryTable().BASE_ID.eq(
+                        entryBaseTable().ID))),
+                "select.base.word" to (entryBaseTable().WORD joinedBy listOf(entryBaseTable() on entryTable().BASE_ID.eq(
+                        entryBaseTable().ID))),
                 "select.others.id" to (
                         otherTable().ID joinedBy
                                 listOf(otherTable() on entryTable().ID.eq(otherTable().KASHUBIAN_ENTRY_ID))),
@@ -198,6 +222,22 @@ object KashubianEntryQueryRelations {
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
                 "select.meanings.definition" to (meaningTable().DEFINITION joinedBy
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
+                "select.meanings.hyperonym.id" to (meaningHyperonymTable().ID joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                meaningHyperonymTable() on meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID))),
+                "select.meanings.hyperonym.definition" to (meaningHyperonymTable().DEFINITION joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                meaningHyperonymTable() on meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID))),
+                "select.meanings.hyperonym.kashubianEntry.id" to (meaningHyperonymEntryTable().ID joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                meaningHyperonymTable() on meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID),
+                                meaningHyperonymEntryTable() on meaningHyperonymTable().KASHUBIAN_ENTRY_ID.eq(
+                                        meaningHyperonymEntryTable().ID))),
+                "select.meanings.hyperonym.kashubianEntry.word" to (meaningHyperonymEntryTable().WORD joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                meaningHyperonymTable() on meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID),
+                                meaningHyperonymEntryTable() on meaningHyperonymTable().KASHUBIAN_ENTRY_ID.eq(
+                                        meaningHyperonymEntryTable().ID))),
                 "select.meanings.hyperonyms" to (meaningHyperonyms() joinedBy
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
                 "select.meanings.hyponyms" to (meaningHyponyms() joinedBy
@@ -483,6 +523,24 @@ object KashubianEntryQueryRelations {
     private fun otherEntryTable() = Tables.KASHUBIAN_ENTRY.`as`("other_entry")
 
     private fun otherTable() = Tables.OTHER.`as`("other")
+
+    private fun meaningHyperonymEntryId() = meaningHyperonymEntryTable().ID.`as`("meaning_hyperonym_entry_id")
+
+    private fun meaningHyperonymEntryTable() = KASHUBIAN_ENTRY.`as`("meaning_hyperonym_entry")
+
+    private fun meaningHyperonymId() = meaningHyperonymTable().ID.`as`("meaning_hyperonym_id")
+
+    private fun meaningHyperonymTable() = MEANING.`as`("meaning_hyperonym")
+
+    private fun entryBaseId() = entryBaseTable().ID.`as`("entry_base_id")
+
+    private fun entryBaseTable() = KASHUBIAN_ENTRY.`as`("entry_base")
+
+    private fun meaningHyperonymEntryWord() = meaningHyperonymEntryTable().WORD.`as`("meaning_hyperonym_entry_word")
+
+    private fun meaningHyperonymDefinition() = meaningHyperonymTable().DEFINITION.`as`("meaning_hyperonym_definition")
+
+    private fun entryBaseWord() = entryBaseTable().WORD.`as`("entry_base_word")
 
     fun entryTable() = Tables.KASHUBIAN_ENTRY.`as`("entry")
 

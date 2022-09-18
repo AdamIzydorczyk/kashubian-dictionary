@@ -7,6 +7,7 @@ data class MeaningGraphQL(
     val id: Long?,
     val definition: String?,
     val origin: String?,
+    var hyperonym: MeaningSimplifiedGraphQL? = null,
     val hyperonyms: JsonNode?,
     val hyponyms: JsonNode?,
     var translation: TranslationGraphQL? = null,
