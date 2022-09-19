@@ -1,17 +1,14 @@
 package tk.aizydorczyk.kashubian.crud.domain
 
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import tk.aizydorczyk.kashubian.crud.extension.normalize
 import tk.aizydorczyk.kashubian.crud.model.entity.ChildEntity
 import tk.aizydorczyk.kashubian.crud.model.entity.KashubianEntry
-import tk.aizydorczyk.kashubian.crud.model.entity.Variation
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.DEFAULT_ENTITY_MANAGER
 import javax.persistence.EntityManager
 
 @Component
-class KashubianEntryCreator(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityManager: EntityManager) {
+class KashubianEntryCreator(val entityManager: EntityManager) {
     @Transactional
     fun create(entry: KashubianEntry): KashubianEntry {
         entry.normalizedWord = entry.word?.normalize()
@@ -37,11 +34,7 @@ class KashubianEntryCreator(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityManager
                 }
             }
         }
-        return entry.apply {
-            variation?.let {
-                entityManager.persist(Variation(id, it.variation, id))
-            }
-        }
+        return entry
     }
 
 }

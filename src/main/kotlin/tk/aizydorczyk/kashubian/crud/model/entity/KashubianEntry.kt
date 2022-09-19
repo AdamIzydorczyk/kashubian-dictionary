@@ -1,7 +1,11 @@
 package tk.aizydorczyk.kashubian.crud.model.entity
 
+import com.fasterxml.jackson.databind.node.ObjectNode
+import com.vladmihalcea.hibernate.type.json.JsonNodeBinaryType
 import org.hibernate.annotations.LazyCollection
 import org.hibernate.annotations.LazyCollectionOption
+import org.hibernate.annotations.Type
+import org.hibernate.annotations.TypeDef
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechType
 import javax.persistence.Column
@@ -18,6 +22,7 @@ import javax.persistence.Table
 
 @Entity
 @Table(name = "kashubian_entry")
+@TypeDef(name = "jsonb", typeClass = JsonNodeBinaryType::class)
 data class KashubianEntry(
     @Id
     @GeneratedValue(strategy = SEQUENCE, generator = "kashubian_entry_id_generator")
@@ -34,8 +39,9 @@ data class KashubianEntry(
     val partOfSpeech: PartOfSpeechType?,
     @Enumerated(EnumType.STRING)
     val partOfSpeechSubType: PartOfSpeechSubType?,
-    @Transient
-    var variation: Variation?,
+    @Type(type = "jsonb")
+    @Column(columnDefinition = "jsonb")
+    var variation: ObjectNode?,
     @Column(name = "base_id")
     var base: Long? = null,
     @OneToMany

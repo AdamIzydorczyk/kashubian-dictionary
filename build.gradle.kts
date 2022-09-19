@@ -1,10 +1,12 @@
+import nu.studer.gradle.jooq.JooqEdition.OSS
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import java.lang.System.getenv
 
 plugins {
+    id("io.spring.dependency-management") version "1.0.13.RELEASE"
     id("org.springframework.boot") version "2.7.2"
-    id("io.spring.dependency-management") version "1.0.12.RELEASE"
     id("org.flywaydb.flyway") version "8.5.13"
-
+    id("nu.studer.jooq") version "7.1.1"
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
     kotlin("plugin.jpa") version "1.6.21"
@@ -14,7 +16,7 @@ plugins {
 
 group = "tk.aizydorczyk.kashubian"
 version = "0.0.1-SNAPSHOT"
-java.sourceCompatibility = JavaVersion.VERSION_11
+java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
@@ -27,22 +29,17 @@ configurations {
 }
 
 dependencies {
-    implementation("org.flywaydb:flyway-core:8.5.13")
+    implementation("org.flywaydb:flyway-core:9.2.0")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
-
+    implementation("org.springframework.boot:spring-boot-starter-jooq")
     implementation("org.springframework.boot:spring-boot-starter-web") {
         exclude("org.springframework.boot", "spring-boot-starter-tomcat")
     }
+    implementation("org.springframework.boot:spring-boot-starter-graphql")
+    implementation("org.springframework.boot:spring-boot-starter-jooq:2.7.3")
     implementation("org.springframework.boot:spring-boot-starter-log4j2")
-    implementation("com.introproventures:graphql-jpa-query-boot-starter:0.4.19") {
-        exclude("com.graphql-java", "graphql-java")
-    }
-    implementation("com.introproventures:graphql-jpa-query-graphiql:0.4.19") {
-        exclude("com.graphql-java", "graphql-java")
-    }
-    implementation("com.graphql-java:graphql-java:13.0")
-    implementation("com.vladmihalcea:hibernate-types-4:2.17.3")
+    implementation("com.vladmihalcea:hibernate-types-4:2.18.0")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.mapstruct:mapstruct:1.5.2.Final")
     kapt("org.mapstruct:mapstruct-processor:1.5.2.Final")
@@ -50,18 +47,22 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("org.postgresql:postgresql:42.4.1")
+    implementation("org.postgresql:postgresql:42.5.0")
     implementation("io.springfox:springfox-boot-starter:3.0.0")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation("com.graphql-java:graphql-java-extended-scalars:18.1")
     implementation("org.jeasy:easy-random-core:5.0.0")
     implementation("com.github.javafaker:javafaker:1.0.2")
     implementation("org.yaml:snakeyaml:1.28")
+    compileOnly("org.jooq:jooq-codegen-maven:3.17.3")
+    jooqGenerator("jakarta.xml.bind:jakarta.xml.bind-api:4.0.0")
+    jooqGenerator("org.postgresql:postgresql:42.5.0")
 }
 
 tasks.withType<KotlinCompile> {
     kotlinOptions {
         freeCompilerArgs = listOf("-Xjsr305=strict")
-        jvmTarget = "11"
+        jvmTarget = "17"
     }
 }
 
@@ -73,7 +74,59 @@ tasks.withType<Test> {
     useJUnitPlatform()
 }
 
-tasks.getByName<Jar>("jar") {
-    enabled = false
+flyway {
+    locations = arrayOf("filesystem:./src/main/resources/db/migration")
+    driver = "org.postgresql.Driver"
+    url = getenv("DB_URL")
+    user = getenv("DB_USER")
+    password = getenv("DB_PASSWORD")
 }
-val compileKotlin: KotlinCompile by tasks
+
+
+jooq {
+    version.set("3.17.3")
+    edition.set(OSS)
+
+    configurations {
+        create("main") {
+            generateSchemaSourceOnCompilation.set(true)
+
+            jooqConfiguration.apply {
+                jdbc.apply {
+                    driver = "org.postgresql.Driver"
+                    url = getenv("DB_URL")
+                    user = getenv("DB_USER")
+                    password = getenv("DB_PASSWORD")
+                }
+                generator.apply {
+                    name = "org.jooq.codegen.DefaultGenerator"
+                    database.apply {
+                        name = "org.jooq.meta.postgres.PostgresDatabase"
+                        inputSchema = "public"
+                        excludes = "flyway_schema_history"
+                    }
+                    generate.apply {
+                        isDeprecated = false
+                        isRecords = true
+                        isImmutablePojos = true
+                        isFluentSetters = true
+                    }
+                    target.apply {
+                        packageName = "tk.aizydorczyk.kashubian.crud.model.entitysearch"
+                        directory = "build/generated/source/jooq/main"
+                    }
+                    strategy.name = "org.jooq.codegen.DefaultGeneratorStrategy"
+                }
+            }
+        }
+    }
+}
+
+tasks {
+    named("generateJooq") {
+        dependsOn(flywayMigrate)
+    }
+
+}
+
+

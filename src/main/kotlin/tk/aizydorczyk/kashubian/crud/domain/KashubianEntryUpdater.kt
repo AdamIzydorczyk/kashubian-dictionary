@@ -1,6 +1,5 @@
 package tk.aizydorczyk.kashubian.crud.domain
 
-import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import tk.aizydorczyk.kashubian.crud.extension.normalize
@@ -8,25 +7,15 @@ import tk.aizydorczyk.kashubian.crud.model.entity.ChildEntity
 import tk.aizydorczyk.kashubian.crud.model.entity.KashubianEntry
 import tk.aizydorczyk.kashubian.crud.model.entity.Meaning
 import tk.aizydorczyk.kashubian.crud.model.entity.Translation
-import tk.aizydorczyk.kashubian.crud.model.entity.Variation
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.DEFAULT_ENTITY_MANAGER
 import javax.persistence.EntityManager
 
 @Component
-class KashubianEntryUpdater(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityManager: EntityManager) {
+class KashubianEntryUpdater(val entityManager: EntityManager) {
     @Transactional
     fun update(entryId: Long, newEntry: KashubianEntry): KashubianEntry {
         newEntry.normalizedWord = newEntry.word?.normalize()
 
         val oldEntry = entityManager.find(KashubianEntry::class.java, entryId)
-
-        if (newEntry.variation == null) {
-            entityManager.find(Variation::class.java, entryId)?.let { entityManager.remove(it) }
-        } else {
-            newEntry.variation?.let {
-                entityManager.merge(Variation(entryId, it.variation, entryId))
-            }
-        }
 
         addOrMergeElements(entryId, oldEntry.others, newEntry.others)
         addOrMergeElements(entryId, oldEntry.meanings, newEntry.meanings, ::processMeanings)

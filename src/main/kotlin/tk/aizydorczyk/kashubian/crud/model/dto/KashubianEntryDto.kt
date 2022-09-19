@@ -1,5 +1,6 @@
 package tk.aizydorczyk.kashubian.crud.model.dto
 
+import com.fasterxml.jackson.databind.node.ObjectNode
 import io.swagger.annotations.ApiModelProperty
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechType
@@ -47,8 +48,9 @@ data class KashubianEntryDto(
     @field:NotNull(message = IS_NULL, groups = [OnCreate::class, OnUpdate::class])
     @ApiModelProperty(example = "MASCULINE")
     val partOfSpeechSubType: PartOfSpeechSubType?,
-    @field:Valid
-    val variation: VariationDto?,
+    @field:NotNull(message = IS_NULL, groups = [OnCreate::class, OnUpdate::class])
+    @ApiModelProperty(dataType = "tk.aizydorczyk.kashubian.crud.model.json.NounVariation")
+    val variation: ObjectNode?,
     @EntryExists(groups = [OnCreate::class, OnUpdate::class])
     @NotUpdatedEntry(groups = [OnUpdate::class])
     @NotInUpdatedEntryBases(groups = [OnUpdate::class])

@@ -7,6 +7,7 @@ create table public.kashubian_entry (
 	part_of_speech_sub_type varchar(21) not null,
 	word varchar(100) not null,
 	normalized_word varchar(100) not null,
+	variation jsonb,
 	base_id bigint,
 	constraint pk_kashubian_entry primary key (id),
 	constraint fk_kashubian_entry_base foreign key (base_id) references public.kashubian_entry(id) on delete restrict on update restrict
@@ -14,17 +15,8 @@ create table public.kashubian_entry (
 create unique index kashubian_entry_pk_unique_index on public.kashubian_entry (id);
 create unique index kashubian_entry_normalized_word_unique_index on public.kashubian_entry (normalized_word);
 create index kashubian_entry_base_id_index on public.kashubian_entry (base_id);
+create index kashubian_entry_word_index on public.kashubian_entry (word);
 create sequence kashubian_entry_id_sequence;
-
--- public.variation definition
-create table public.variation (
-	id bigint not null,
-	variation jsonb not null,
-	kashubian_entry_id bigint not null,
-	constraint pk_variation primary key (id),
-	constraint fk_variation_kashubian_entry foreign key (kashubian_entry_id) references public.kashubian_entry(id) on delete cascade on update restrict
-);
-create unique index variation_id_word_unique_index on public.variation (id);
 
 -- public.sound_file definition
 create table public.sound_file (

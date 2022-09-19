@@ -1,12 +1,13 @@
 package tk.aizydorczyk.kashubian.crud.domain
 
-import org.springframework.beans.factory.annotation.Qualifier
+import com.fasterxml.jackson.annotation.JsonProperty
+import com.fasterxml.jackson.core.type.TypeReference
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Propagation.SUPPORTS
 import org.springframework.transaction.annotation.Transactional
 import tk.aizydorczyk.kashubian.crud.model.entity.BaseEntity
 import tk.aizydorczyk.kashubian.crud.model.entity.SoundFile
-import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.DEFAULT_ENTITY_MANAGER
 import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.ENTRY_ID
 import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.MEANING_ID
 import java.math.BigInteger
@@ -15,7 +16,8 @@ import javax.persistence.ParameterMode
 
 @Repository
 @Transactional(propagation = SUPPORTS)
-class KashubianEntryRepository(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityManager: EntityManager) {
+class KashubianEntryRepository(val entityManager: EntityManager,
+    val objectMapper: ObjectMapper) {
 
     fun deleteEntryById(entryId: Long) {
         entityManager.createQuery("delete from KashubianEntry where id = :$ENTRY_ID")
@@ -42,10 +44,10 @@ class KashubianEntryRepository(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityMana
             .resultList
 
     fun findHyponyms(meaningId: Long): List<MeaningHierarchyElement> =
-        findMeaningHierarchyElementByProcedure(meaningId, "find_hyponym_ids")
+        findMeaningHierarchyElementByProcedure(meaningId, "find_hyponyms")
 
     fun findHyperonyms(meaningId: Long): List<MeaningHierarchyElement> =
-        findMeaningHierarchyElementByProcedure(meaningId, "find_hyperonyms_ids")
+        findMeaningHierarchyElementByProcedure(meaningId, "find_hyperonyms")
 
     fun findBases(entryId: Long): List<EntryHierarchyElement> =
         findEntryHierarchyElementByProcedure(entryId, "find_bases")
@@ -100,35 +102,20 @@ class KashubianEntryRepository(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityMana
 
     private fun findMeaningHierarchyElementByProcedure(meaningId: Long,
         procedureName: String): List<MeaningHierarchyElement> =
-        executeProcedure(meaningId, procedureName).map { it as Array<*> }
-            .map {
-                MeaningHierarchyElement(meaningId = (it[0] as BigInteger).toLong(),
-                        definition = it[1] as String,
-                        entryId = (it[2] as BigInteger).toLong(),
-                        word = it[3] as String)
-            }
+        executeProcedure(meaningId, procedureName).let {
+            objectMapper.readValue(it,
+                    object : TypeReference<List<MeaningHierarchyElement>>() {})
+        }
 
     private fun findEntryHierarchyElementByProcedure(entryId: Long,
         procedureName: String): List<EntryHierarchyElement> = executeProcedure(entryId, procedureName)
-        .map { it as Array<*> }
-        .map {
-            EntryHierarchyElement(entryId = (it[0] as BigInteger).toLong(),
-                    word = it[1] as String)
+        .let {
+            objectMapper.readValue(it,
+                    object : TypeReference<List<EntryHierarchyElement>>() {})
         }
 
-    private fun executeProcedure(id: Long, procedureName: String): MutableList<Any?> =
-        with(entityManager.createStoredProcedureQuery(procedureName)) {
-            registerStoredProcedureParameter(
-                    1,
-                    Void.TYPE,
-                    ParameterMode.REF_CURSOR
-            )
-            registerStoredProcedureParameter(2, Long::class.java, ParameterMode.IN)
-            setParameter(2, id)
-            execute()
-
-            return resultList
-        }
+    private fun executeProcedure(id: Long, procedureName: String): String =
+        entityManager.createNativeQuery("select CAST(j AS text) from $procedureName($id) as j").singleResult.toString()
 
     fun findRandomWordOfTheDay(seed: Double): List<WordOfTheDayProjection> =
         with(entityManager.createStoredProcedureQuery("find_word_of_the_day")) {
@@ -151,5 +138,9 @@ class KashubianEntryRepository(@Qualifier(DEFAULT_ENTITY_MANAGER) val entityMana
 }
 
 data class WordOfTheDayProjection(val entryId: Long, val word: String, val definition: String)
-data class MeaningHierarchyElement(val meaningId: Long, val definition: String, val entryId: Long, val word: String)
-data class EntryHierarchyElement(val entryId: Long, val word: String)
+data class MeaningHierarchyElement(@JsonProperty("meaning_id") val meaningId: Long,
+    val definition: String,
+    @JsonProperty("entry_id") val entryId: Long,
+    val word: String)
+
+data class EntryHierarchyElement(@JsonProperty("entry_id") val entryId: Long, val word: String)
