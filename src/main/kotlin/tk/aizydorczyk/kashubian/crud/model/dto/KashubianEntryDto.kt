@@ -32,8 +32,8 @@ import javax.validation.constraints.Size
 @PartOfSpeechAndSubTypeConsistent(groups = [OnCreate::class, OnUpdate::class])
 data class KashubianEntryDto(
     @field:NotNull(message = IS_NULL, groups = [OnCreate::class, OnUpdate::class])
-    @UniqueNormalizedWord(groups = [OnCreate::class])
-    @UnchangedNormalizedWordToNonUnique(groups = [OnUpdate::class])
+    @field:UniqueNormalizedWord(groups = [OnCreate::class])
+    @field:UnchangedNormalizedWordToNonUnique(groups = [OnUpdate::class])
     @field:NotBlank(message = IS_BLANK, groups = [OnCreate::class, OnUpdate::class])
     @field:Size(max = 100, message = LENGTH_100_EXCEED, groups = [OnCreate::class, OnUpdate::class])
     @field:Pattern(regexp = "[\\p{L} ]+",
@@ -51,15 +51,15 @@ data class KashubianEntryDto(
     @field:NotNull(message = IS_NULL, groups = [OnCreate::class, OnUpdate::class])
     @ApiModelProperty(dataType = "tk.aizydorczyk.kashubian.crud.model.json.NounVariation")
     val variation: ObjectNode?,
-    @EntryExists(groups = [OnCreate::class, OnUpdate::class])
-    @NotUpdatedEntry(groups = [OnUpdate::class])
-    @NotInUpdatedEntryBases(groups = [OnUpdate::class])
-    @NotInUpdatedEntryDerivatives(groups = [OnUpdate::class])
+    @field:EntryExists(groups = [OnCreate::class, OnUpdate::class])
+    @field:NotUpdatedEntry(groups = [OnUpdate::class])
+    @field:NotInUpdatedEntryBases(groups = [OnUpdate::class])
+    @field:NotInUpdatedEntryDerivatives(groups = [OnUpdate::class])
     var base: Long?,
     @field:Valid
     @field:NotEmpty(message = NOT_CONTAINS_AT_LEAST_ONE_MEANING, groups = [OnCreate::class, OnUpdate::class])
-    @HyperonimIdNotInUpdatedEntryMeaningsHyperonims(groups = [OnUpdate::class])
-    @HyperonimIdsCannotRepeatedInMeanings(groups = [OnUpdate::class])
+    @field:HyperonimIdNotInUpdatedEntryMeaningsHyperonims(groups = [OnUpdate::class])
+    @field:HyperonimIdsCannotRepeatedInMeanings(groups = [OnUpdate::class])
     val meanings: List<MeaningDto> = emptyList(),
     @field:Valid
     val others: List<OtherDto> = emptyList()

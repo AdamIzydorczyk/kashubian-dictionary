@@ -16,9 +16,9 @@ data class MeaningDto(
     @field:NotNull(message = IS_NULL, groups = [OnCreate::class, OnUpdate::class])
     val definition: String?,
     val origin: String?,
-    @MeaningExists(groups = [OnCreate::class, OnUpdate::class])
-    @NotMeaningOfUpdatedEntry(groups = [OnUpdate::class])
-    @NotInUpdatedEntryMeaningsHyponims(groups = [OnUpdate::class])
+    @field:MeaningExists(groups = [OnCreate::class, OnUpdate::class])
+    @field:NotMeaningOfUpdatedEntry(groups = [OnUpdate::class])
+    @field:NotInUpdatedEntryMeaningsHyponims(groups = [OnUpdate::class])
     var hyperonym: Long?,
     @field:Valid
     val proverbs: List<ProverbDto> = emptyList(),

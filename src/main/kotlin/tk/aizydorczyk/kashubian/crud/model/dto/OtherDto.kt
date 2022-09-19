@@ -8,8 +8,8 @@ import tk.aizydorczyk.kashubian.crud.validator.OnUpdate
 import javax.validation.constraints.NotNull
 
 data class OtherDto(
-    @EntryExists(groups = [OnCreate::class, OnUpdate::class])
-    @NotUpdatedEntry(groups = [OnUpdate::class])
+    @field:EntryExists(groups = [OnCreate::class, OnUpdate::class])
+    @field:NotUpdatedEntry(groups = [OnUpdate::class])
     @field:NotNull(message = IS_NULL, groups = [OnCreate::class, OnUpdate::class])
     val entryId: Long,
     val note: String?

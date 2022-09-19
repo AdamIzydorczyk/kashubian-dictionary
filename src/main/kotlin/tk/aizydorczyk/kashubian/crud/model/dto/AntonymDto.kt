@@ -8,8 +8,8 @@ import tk.aizydorczyk.kashubian.crud.validator.OnUpdate
 import javax.validation.constraints.NotNull
 
 data class AntonymDto(
-    @MeaningExists(groups = [OnCreate::class, OnUpdate::class])
-    @NotMeaningOfUpdatedEntry(groups = [OnUpdate::class])
+    @field:MeaningExists(groups = [OnCreate::class, OnUpdate::class])
+    @field:NotMeaningOfUpdatedEntry(groups = [OnUpdate::class])
     @field:NotNull(message = IS_NULL, groups = [OnCreate::class, OnUpdate::class])
     val meaningId: Long,
     val note: String?
