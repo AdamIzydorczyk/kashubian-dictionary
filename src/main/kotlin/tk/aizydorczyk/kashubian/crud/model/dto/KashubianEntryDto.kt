@@ -48,7 +48,6 @@ data class KashubianEntryDto(
     @field:NotNull(message = IS_NULL, groups = [OnCreate::class, OnUpdate::class])
     @ApiModelProperty(example = "MASCULINE")
     val partOfSpeechSubType: PartOfSpeechSubType?,
-    @field:NotNull(message = IS_NULL, groups = [OnCreate::class, OnUpdate::class])
     @ApiModelProperty(dataType = "tk.aizydorczyk.kashubian.crud.model.json.NounVariation")
     val variation: ObjectNode?,
     @field:EntryExists(groups = [OnCreate::class, OnUpdate::class])
