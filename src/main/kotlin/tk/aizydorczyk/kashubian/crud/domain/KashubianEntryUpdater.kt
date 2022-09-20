@@ -31,7 +31,7 @@ class KashubianEntryUpdater(val entityManager: EntityManager) {
             entityManager.find(Translation::class.java, newMeaning.id)?.let { entityManager.remove(it) }
         } else {
             newMeaning.translation?.let {
-                entityManager.merge(it.copyWitchNormalizedFieldsAndAssignedId(newMeaning.id))
+                newMeaning.translation = entityManager.merge(it.copyWitchNormalizedFieldsAndAssignedId(newMeaning.id))
             }
         }
 
