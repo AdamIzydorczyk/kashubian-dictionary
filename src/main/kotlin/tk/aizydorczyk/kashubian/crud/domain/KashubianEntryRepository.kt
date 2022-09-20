@@ -102,10 +102,10 @@ class KashubianEntryRepository(val entityManager: EntityManager,
 
     private fun findMeaningHierarchyElementByProcedure(meaningId: Long,
         procedureName: String): List<MeaningHierarchyElement> =
-        executeProcedure(meaningId, procedureName).let {
+        executeProcedure(meaningId, procedureName)?.let {
             objectMapper.readValue(it,
                     object : TypeReference<List<MeaningHierarchyElement>>() {})
-        }
+        } ?: emptyList()
 
     private fun findEntryHierarchyElementByProcedure(entryId: Long,
         procedureName: String): List<EntryHierarchyElement> = executeProcedure(entryId, procedureName)
