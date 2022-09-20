@@ -319,7 +319,7 @@ class KashubianEntryGraphQLMapper : GraphQLMapper<KashubianEntryGraphQL> {
         others: MutableMap<Long, OtherGraphQL>,
         entries: LinkedHashMap<Long, KashubianEntryGraphQL>) {
         record.mapAndAssignById(
-                "other_entry_id",
+                "other_id",
                 others,
                 { id ->
                     OtherGraphQL(
@@ -327,7 +327,7 @@ class KashubianEntryGraphQLMapper : GraphQLMapper<KashubianEntryGraphQL> {
                             note = record.fetchValueOrNull("other_note",
                                     String::class.java))
                 },
-                "other_id",
+                "entry_id",
                 entries,
                 { entry, other ->
                     entry.others.add(other)
