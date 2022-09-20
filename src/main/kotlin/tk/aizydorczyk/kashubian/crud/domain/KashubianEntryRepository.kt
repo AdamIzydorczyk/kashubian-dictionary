@@ -109,13 +109,13 @@ class KashubianEntryRepository(val entityManager: EntityManager,
 
     private fun findEntryHierarchyElementByProcedure(entryId: Long,
         procedureName: String): List<EntryHierarchyElement> = executeProcedure(entryId, procedureName)
-        .let {
+        ?.let {
             objectMapper.readValue(it,
                     object : TypeReference<List<EntryHierarchyElement>>() {})
-        }
+        } ?: emptyList()
 
-    private fun executeProcedure(id: Long, procedureName: String): String =
-        entityManager.createNativeQuery("select CAST(j AS text) from $procedureName($id) as j").singleResult.toString()
+    private fun executeProcedure(id: Long, procedureName: String): String? =
+        entityManager.createNativeQuery("select CAST(j AS text) from $procedureName($id) as j").singleResult as String?
 
     fun findRandomWordOfTheDay(seed: Double): List<WordOfTheDayProjection> =
         with(entityManager.createStoredProcedureQuery("find_word_of_the_day")) {
