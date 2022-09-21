@@ -17,7 +17,7 @@ import org.jooq.impl.UpdatableRecordImpl
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import tk.aizydorczyk.kashubian.crud.extension.normalize
-import tk.aizydorczyk.kashubian.crud.model.graphql.PageCriteria
+import tk.aizydorczyk.kashubian.crud.model.graphql.criteria.PageCriteria
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.createType

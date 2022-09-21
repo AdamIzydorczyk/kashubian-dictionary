@@ -4,8 +4,8 @@ import graphql.schema.SelectedField
 import org.jooq.DSLContext
 import org.jooq.Field
 import org.springframework.stereotype.Component
-import tk.aizydorczyk.kashubian.crud.model.graphql.MeaningsCriteriaExpression
-import tk.aizydorczyk.kashubian.crud.model.graphql.PageCriteria
+import tk.aizydorczyk.kashubian.crud.model.graphql.criteria.MeaningsCriteriaExpression
+import tk.aizydorczyk.kashubian.crud.model.graphql.criteria.PageCriteria
 import tk.aizydorczyk.kashubian.crud.model.graphql.model.MeaningGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.page.MeaningsPaged
 import tk.aizydorczyk.kashubian.crud.model.mapper.MeaningGraphQLMapper

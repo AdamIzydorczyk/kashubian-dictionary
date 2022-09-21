@@ -5,8 +5,8 @@ import org.jooq.DSLContext
 import org.jooq.Field
 import org.jooq.QueryPart
 import org.springframework.stereotype.Component
-import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryCriteriaExpression
-import tk.aizydorczyk.kashubian.crud.model.graphql.PageCriteria
+import tk.aizydorczyk.kashubian.crud.model.graphql.criteria.KashubianEntryCriteriaExpression
+import tk.aizydorczyk.kashubian.crud.model.graphql.criteria.PageCriteria
 import tk.aizydorczyk.kashubian.crud.model.graphql.model.KashubianEntryGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.page.KashubianEntriesPaged
 import tk.aizydorczyk.kashubian.crud.model.mapper.KashubianEntryGraphQLMapper

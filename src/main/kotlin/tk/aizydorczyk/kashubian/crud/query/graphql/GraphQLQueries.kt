@@ -4,9 +4,9 @@ import graphql.schema.DataFetchingEnvironment
 import org.springframework.graphql.data.method.annotation.Argument
 import org.springframework.graphql.data.method.annotation.QueryMapping
 import org.springframework.stereotype.Controller
-import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryCriteriaExpression
-import tk.aizydorczyk.kashubian.crud.model.graphql.MeaningsCriteriaExpression
-import tk.aizydorczyk.kashubian.crud.model.graphql.PageCriteria
+import tk.aizydorczyk.kashubian.crud.model.graphql.criteria.KashubianEntryCriteriaExpression
+import tk.aizydorczyk.kashubian.crud.model.graphql.criteria.MeaningsCriteriaExpression
+import tk.aizydorczyk.kashubian.crud.model.graphql.criteria.PageCriteria
 import tk.aizydorczyk.kashubian.crud.model.graphql.model.KashubianEntryGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.model.MeaningGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.page.KashubianEntriesPaged
