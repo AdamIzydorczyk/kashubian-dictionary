@@ -17,4 +17,19 @@ data class MeaningGraphQL(
     val phrasalVerbs: MutableSet<PhrasalVerbGraphQL> = mutableSetOf(),
     val antonyms: MutableSet<AntonymGraphQL> = mutableSetOf(),
     val synonyms: MutableSet<SynonymGraphQL> = mutableSetOf()
-) : GraphQLModel
+) : GraphQLModel {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as MeaningGraphQL
+
+        if (id != other.id) return false
+
+        return true
+    }
+
+    override fun hashCode(): Int {
+        return id?.hashCode() ?: 0
+    }
+}
