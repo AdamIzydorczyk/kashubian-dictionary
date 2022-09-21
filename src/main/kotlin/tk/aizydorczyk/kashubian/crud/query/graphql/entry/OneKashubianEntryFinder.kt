@@ -5,7 +5,7 @@ import org.jooq.DSLContext
 import org.jooq.Field
 import org.jooq.impl.TableImpl
 import org.springframework.stereotype.Component
-import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.model.KashubianEntryGraphQL
 import tk.aizydorczyk.kashubian.crud.model.mapper.KashubianEntryGraphQLMapper
 import tk.aizydorczyk.kashubian.crud.query.graphql.base.OneFinderBase
 import tk.aizydorczyk.kashubian.crud.query.graphql.entry.KashubianEntryQueryRelations.FIND_ONE_FIELD_TO_COLUMN_RELATIONS

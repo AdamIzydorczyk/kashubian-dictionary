@@ -5,10 +5,10 @@ import org.jooq.DSLContext
 import org.jooq.Field
 import org.jooq.QueryPart
 import org.springframework.stereotype.Component
-import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntriesPaged
 import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryCriteriaExpression
-import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.PageCriteria
+import tk.aizydorczyk.kashubian.crud.model.graphql.model.KashubianEntryGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.page.KashubianEntriesPaged
 import tk.aizydorczyk.kashubian.crud.model.mapper.KashubianEntryGraphQLMapper
 import tk.aizydorczyk.kashubian.crud.query.graphql.base.AllFinderBase
 import tk.aizydorczyk.kashubian.crud.query.graphql.base.JoinTableWithCondition

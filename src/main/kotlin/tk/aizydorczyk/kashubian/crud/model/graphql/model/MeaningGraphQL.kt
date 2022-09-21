@@ -1,4 +1,4 @@
-package tk.aizydorczyk.kashubian.crud.model.graphql
+package tk.aizydorczyk.kashubian.crud.model.graphql.model
 
 import com.fasterxml.jackson.databind.JsonNode
 import tk.aizydorczyk.kashubian.crud.query.graphql.base.GraphQLModel
@@ -20,12 +20,8 @@ data class MeaningGraphQL(
 ) : GraphQLModel {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as MeaningGraphQL
-
+        if (other !is MeaningGraphQL) return false
         if (id != other.id) return false
-
         return true
     }
 

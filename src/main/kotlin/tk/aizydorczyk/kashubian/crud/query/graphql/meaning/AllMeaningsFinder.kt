@@ -4,10 +4,10 @@ import graphql.schema.SelectedField
 import org.jooq.DSLContext
 import org.jooq.Field
 import org.springframework.stereotype.Component
-import tk.aizydorczyk.kashubian.crud.model.graphql.MeaningGraphQL
 import tk.aizydorczyk.kashubian.crud.model.graphql.MeaningsCriteriaExpression
-import tk.aizydorczyk.kashubian.crud.model.graphql.MeaningsPaged
 import tk.aizydorczyk.kashubian.crud.model.graphql.PageCriteria
+import tk.aizydorczyk.kashubian.crud.model.graphql.model.MeaningGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.page.MeaningsPaged
 import tk.aizydorczyk.kashubian.crud.model.mapper.MeaningGraphQLMapper
 import tk.aizydorczyk.kashubian.crud.query.graphql.base.AllFinderBase
 import tk.aizydorczyk.kashubian.crud.query.graphql.meaning.MeaningQueryRelations.CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN

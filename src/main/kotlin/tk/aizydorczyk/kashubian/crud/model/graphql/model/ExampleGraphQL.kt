@@ -1,18 +1,15 @@
-package tk.aizydorczyk.kashubian.crud.model.graphql
+package tk.aizydorczyk.kashubian.crud.model.graphql.model
 
-data class AntonymGraphQL(
+
+data class ExampleGraphQL(
     val id: Long?,
     val note: String?,
-    var antonym: MeaningSimplifiedGraphQL? = null
+    val example: String?,
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as AntonymGraphQL
-
+        if (other !is ExampleGraphQL) return false
         if (id != other.id) return false
-
         return true
     }
 

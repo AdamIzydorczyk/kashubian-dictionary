@@ -22,18 +22,10 @@ data class SoundFile(
     val kashubianEntry: Long
 ) {
 
-
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as SoundFile
-
+        if (other !is SoundFile) return false
         if (id != other.id) return false
-        if (fileName != other.fileName) return false
-        if (type != other.type) return false
-        if (!file.contentEquals(other.file)) return false
-
         return true
     }
 

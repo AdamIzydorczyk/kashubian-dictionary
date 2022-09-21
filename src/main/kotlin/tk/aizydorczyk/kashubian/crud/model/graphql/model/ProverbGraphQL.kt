@@ -1,19 +1,14 @@
-package tk.aizydorczyk.kashubian.crud.model.graphql
+package tk.aizydorczyk.kashubian.crud.model.graphql.model
 
-
-data class OtherGraphQL(
+data class ProverbGraphQL(
     val id: Long?,
     val note: String?,
-    var other: KashubianEntrySimplifiedGraphQL? = null
+    val proverb: String?
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
-        if (javaClass != other?.javaClass) return false
-
-        other as OtherGraphQL
-
+        if (other !is ProverbGraphQL) return false
         if (id != other.id) return false
-
         return true
     }
 
@@ -21,3 +16,4 @@ data class OtherGraphQL(
         return id?.hashCode() ?: 0
     }
 }
+

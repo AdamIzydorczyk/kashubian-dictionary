@@ -1,5 +1,6 @@
-package tk.aizydorczyk.kashubian.crud.model.graphql
+package tk.aizydorczyk.kashubian.crud.model.graphql.page
 
+import tk.aizydorczyk.kashubian.crud.model.graphql.model.KashubianEntryGraphQL
 import tk.aizydorczyk.kashubian.crud.query.graphql.base.GraphQLPagedModel
 
 data class KashubianEntriesPaged(val pages: Int,

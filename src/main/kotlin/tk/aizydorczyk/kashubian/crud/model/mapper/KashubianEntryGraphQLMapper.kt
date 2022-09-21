@@ -5,19 +5,19 @@ import com.fasterxml.jackson.databind.node.ArrayNode
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import org.jooq.Record
 import org.jooq.Result
-import tk.aizydorczyk.kashubian.crud.model.graphql.AntonymGraphQL
-import tk.aizydorczyk.kashubian.crud.model.graphql.ExampleGraphQL
-import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntryGraphQL
-import tk.aizydorczyk.kashubian.crud.model.graphql.KashubianEntrySimplifiedGraphQL
-import tk.aizydorczyk.kashubian.crud.model.graphql.MeaningGraphQL
-import tk.aizydorczyk.kashubian.crud.model.graphql.MeaningSimplifiedGraphQL
-import tk.aizydorczyk.kashubian.crud.model.graphql.OtherGraphQL
-import tk.aizydorczyk.kashubian.crud.model.graphql.PhrasalVerbGraphQL
-import tk.aizydorczyk.kashubian.crud.model.graphql.ProverbGraphQL
-import tk.aizydorczyk.kashubian.crud.model.graphql.QuoteGraphQL
-import tk.aizydorczyk.kashubian.crud.model.graphql.SoundFileGraphQL
-import tk.aizydorczyk.kashubian.crud.model.graphql.SynonymGraphQL
-import tk.aizydorczyk.kashubian.crud.model.graphql.TranslationGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.model.AntonymGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.model.ExampleGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.model.KashubianEntryGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.model.KashubianEntrySimplifiedGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.model.MeaningGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.model.MeaningSimplifiedGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.model.OtherGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.model.PhrasalVerbGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.model.ProverbGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.model.QuoteGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.model.SoundFileGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.model.SynonymGraphQL
+import tk.aizydorczyk.kashubian.crud.model.graphql.model.TranslationGraphQL
 import tk.aizydorczyk.kashubian.crud.query.graphql.base.GraphQLMapper
 
 class KashubianEntryGraphQLMapper : GraphQLMapper<KashubianEntryGraphQL> {
