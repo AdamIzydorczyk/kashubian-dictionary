@@ -9,9 +9,17 @@ import tk.aizydorczyk.kashubian.crud.extension.fieldWithJoins
 import tk.aizydorczyk.kashubian.crud.extension.joinedBy
 import tk.aizydorczyk.kashubian.crud.extension.on
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Routines
-import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.ANTONYM
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.EXAMPLE
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.KASHUBIAN_ENTRY
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.MEANING
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.OTHER
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.PHRASAL_VERB
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.PROVERB
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.QUOTE
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.SOUND_FILE
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.SYNONYM
+import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables.TRANSLATION
 import tk.aizydorczyk.kashubian.crud.query.graphql.base.JoinTableWithCondition
 
 object KashubianEntryQueryRelations {
@@ -394,7 +402,7 @@ object KashubianEntryQueryRelations {
 
     private fun otherId() = otherTable().ID.`as`("other_id")
 
-    fun entryId() = Tables.KASHUBIAN_ENTRY.`as`("entry").ID.`as`("entry_id")
+    fun entryId() = KASHUBIAN_ENTRY.`as`("entry").ID.`as`("entry_id")
 
     private fun antonymMeaningEntryWord() = antonymMeaningEntryTable().WORD.`as`("antonym_meaning_entry_word")
 
@@ -477,8 +485,8 @@ object KashubianEntryQueryRelations {
     private fun entryBasesWithAlias() = field(select(Routines.findBases(entryTable().ID))).`as`("entry_bases")
     private fun entryBases() = field(select(Routines.findBases(entryTable().ID)))
 
-    private fun meaningsCount() = field(selectCount().from(Tables.MEANING)
-        .where(Tables.MEANING.KASHUBIAN_ENTRY_ID.eq(entryTable().ID))).`as`("meanings_count")
+    private fun meaningsCount() = field(selectCount().from(MEANING)
+        .where(MEANING.KASHUBIAN_ENTRY_ID.eq(entryTable().ID))).`as`("meanings_count")
 
     private fun entryPartOfSpeechSubType() = entryTable().PART_OF_SPEECH_SUB_TYPE.`as`("entry_part_of_speech_sub_type")
 
@@ -494,35 +502,35 @@ object KashubianEntryQueryRelations {
 
     private fun entryWord() = entryTable().WORD.`as`("entry_word")
 
-    private fun antonymMeaningEntryTable() = Tables.KASHUBIAN_ENTRY.`as`("antonym_meaning_entry")
+    private fun antonymMeaningEntryTable() = KASHUBIAN_ENTRY.`as`("antonym_meaning_entry")
 
-    private fun synonymMeaningEntryTable() = Tables.KASHUBIAN_ENTRY.`as`("synonym_meaning_entry")
+    private fun synonymMeaningEntryTable() = KASHUBIAN_ENTRY.`as`("synonym_meaning_entry")
 
-    private fun antonymMeaningTable() = Tables.MEANING.`as`("antonym_meaning")
+    private fun antonymMeaningTable() = MEANING.`as`("antonym_meaning")
 
-    private fun synonymMeaningTable() = Tables.MEANING.`as`("synonym_meaning")
+    private fun synonymMeaningTable() = MEANING.`as`("synonym_meaning")
 
-    private fun antonymTable() = Tables.ANTONYM.`as`("antonym")
+    private fun antonymTable() = ANTONYM.`as`("antonym")
 
-    private fun synonymTable() = Tables.SYNONYM.`as`("synonym")
+    private fun synonymTable() = SYNONYM.`as`("synonym")
 
-    private fun phrasalVerbTable() = Tables.PHRASAL_VERB.`as`("phrasal_verb")
+    private fun phrasalVerbTable() = PHRASAL_VERB.`as`("phrasal_verb")
 
-    private fun exampleTable() = Tables.EXAMPLE.`as`("example")
+    private fun exampleTable() = EXAMPLE.`as`("example")
 
-    private fun quoteTable() = Tables.QUOTE.`as`("quote")
+    private fun quoteTable() = QUOTE.`as`("quote")
 
-    private fun proverbTable() = Tables.PROVERB.`as`("proverb")
+    private fun proverbTable() = PROVERB.`as`("proverb")
 
-    private fun translationTable() = Tables.TRANSLATION.`as`("translation")
+    private fun translationTable() = TRANSLATION.`as`("translation")
 
-    private fun meaningTable() = Tables.MEANING.`as`("meaning")
+    private fun meaningTable() = MEANING.`as`("meaning")
 
-    private fun soundFileTable() = Tables.SOUND_FILE.`as`("sound_file")
+    private fun soundFileTable() = SOUND_FILE.`as`("sound_file")
 
-    private fun otherEntryTable() = Tables.KASHUBIAN_ENTRY.`as`("other_entry")
+    private fun otherEntryTable() = KASHUBIAN_ENTRY.`as`("other_entry")
 
-    private fun otherTable() = Tables.OTHER.`as`("other")
+    private fun otherTable() = OTHER.`as`("other")
 
     private fun meaningHyperonymEntryId() = meaningHyperonymEntryTable().ID.`as`("meaning_hyperonym_entry_id")
 
@@ -542,6 +550,6 @@ object KashubianEntryQueryRelations {
 
     private fun entryBaseWord() = entryBaseTable().WORD.`as`("entry_base_word")
 
-    fun entryTable() = Tables.KASHUBIAN_ENTRY.`as`("entry")
+    fun entryTable() = KASHUBIAN_ENTRY.`as`("entry")
 
 }
