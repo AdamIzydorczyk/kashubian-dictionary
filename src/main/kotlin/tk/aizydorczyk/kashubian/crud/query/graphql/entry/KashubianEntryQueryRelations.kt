@@ -164,7 +164,7 @@ object KashubianEntryQueryRelations {
                             soundFileId()),
             "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$OTHERS_NODE$OTHER_TYPE_PREFIX$OTHER_NODE" to
                     Triple(otherEntryTable(),
-                            otherTable().OTHER_ID.`as`("other_id").eq(otherEntryTable().ID),
+                            otherTable().OTHER_ID.eq(otherEntryTable().ID),
                             otherEntryId()),
             "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$BASE_NODE" to
                     Triple(entryBaseTable(),
@@ -348,10 +348,10 @@ object KashubianEntryQueryRelations {
                                 listOf(otherTable() on entryTable().ID.eq(otherTable().KASHUBIAN_ENTRY_ID))),
                 "$SELECT_PREFIX$OTHERS_NODE$OTHER_NODE$ID_FIELD" to (otherEntryTable().ID joinedBy
                         listOf(otherTable() on entryTable().ID.eq(otherTable().KASHUBIAN_ENTRY_ID),
-                                otherEntryTable() on otherTable().OTHER_ID.`as`("other_id").eq(otherEntryTable().ID))),
+                                otherEntryTable() on otherTable().OTHER_ID.eq(otherEntryTable().ID))),
                 "$SELECT_PREFIX$OTHERS_NODE$OTHER_NODE$WORD_FIELD" to (otherEntryTable().WORD joinedBy
                         listOf(otherTable() on entryTable().ID.eq(otherTable().KASHUBIAN_ENTRY_ID),
-                                otherEntryTable() on otherTable().OTHER_ID.`as`("other_id").eq(otherEntryTable().ID))),
+                                otherEntryTable() on otherTable().OTHER_ID.eq(otherEntryTable().ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$ID_FIELD" to (meaningTable().ID joinedBy
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$ORIGIN_FIELD" to (meaningTable().ORIGIN joinedBy
