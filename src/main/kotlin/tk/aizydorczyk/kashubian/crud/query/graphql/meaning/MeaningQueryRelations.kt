@@ -1,272 +1,335 @@
 package tk.aizydorczyk.kashubian.crud.query.graphql.meaning
 
-import org.jooq.impl.DSL.field
-import org.jooq.impl.DSL.select
 import tk.aizydorczyk.kashubian.crud.extension.fieldPath
 import tk.aizydorczyk.kashubian.crud.extension.fieldWithJoins
 import tk.aizydorczyk.kashubian.crud.extension.joinedBy
 import tk.aizydorczyk.kashubian.crud.extension.on
-import tk.aizydorczyk.kashubian.crud.model.entitysearch.Routines
-import tk.aizydorczyk.kashubian.crud.model.entitysearch.Tables
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.antonymId
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.antonymMeaningDefinition
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.antonymMeaningEntryId
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.antonymMeaningEntryTable
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.antonymMeaningEntryWord
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.antonymMeaningId
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.antonymMeaningTable
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.antonymNote
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.antonymTable
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.exampleExample
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.exampleId
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.exampleNote
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.exampleTable
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningDefinition
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningHyperonymDefinition
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningHyperonymEntryId
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningHyperonymEntryTable
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningHyperonymEntryWord
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningHyperonymId
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningHyperonymTable
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningHyperonyms
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningHyperonymsWithAlias
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningHyponyms
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningHyponymsWithAlias
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningOrigin
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningTable
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.phrasalVerbId
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.phrasalVerbNote
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.phrasalVerbPhrasalVerb
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.phrasalVerbTable
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.proverbId
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.proverbNote
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.proverbProverb
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.proverbTable
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.quoteId
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.quoteNote
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.quoteQuote
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.quoteTable
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.synonymId
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.synonymMeaningDefinition
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.synonymMeaningEntryId
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.synonymMeaningEntryTable
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.synonymMeaningEntryWord
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.synonymMeaningId
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.synonymMeaningTable
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.synonymNote
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.synonymTable
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.translationEnglish
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.translationGerman
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.translationId
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.translationNormalizedEnglish
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.translationNormalizedGerman
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.translationNormalizedUkrainian
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.translationPolish
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.translationPolishNormalizedWord
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.translationTable
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.translationUkrainian
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.ANTONYMS_NODE
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.ANTONYM_NODE
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.ANTONYM_TYPE_PREFIX
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.DEFINITION_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.ENGLISH_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.EXAMPLES_NODE
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.EXAMPLE_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.EXAMPLE_TYPE_PREFIX
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.GERMAN_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.HYPERONYMS_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.HYPERONYM_NODE
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.HYPONYMS_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.ID_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.KASHUBIAN_ENTRY_NODE
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.MEANINGS_PAGED_TYPE_PREFIX
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.MEANING_SIMPLIFIED_TYPE_PREFIX
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.MEANING_TYPE_PREFIX
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.NORMALIZED_ENGLISH_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.NORMALIZED_GERMAN_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.NORMALIZED_POLISH_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.NORMALIZED_UKRAINIAN_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.NOTE_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.ORIGIN_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.PHRASAL_VERBS_NODE
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.PHRASAL_VERB_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.PHRASAL_VERB_TYPE_PREFIX
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.POLISH_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.PROVERBS_NODE
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.PROVERB_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.PROVERB_TYPE_PREFIX
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.QUOTES_NODE
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.QUOTE_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.QUOTE_TYPE_PREFIX
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.SELECT_PREFIX
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.SYNONYMS_NODE
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.SYNONYM_NODE
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.SYNONYM_TYPE_PREFIX
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.TRANSLATION_NODE
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.TRANSLATION_TYPE_PREFIX
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.UKRAINIAN_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.WORD_FIELD
+
 
 object MeaningQueryRelations {
     internal val FIND_ALL_FIELD_TO_JOIN_RELATIONS = mapOf(
-            "MeaningsPaged.select/Meaning.translation" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$TRANSLATION_NODE" to
                     Triple(translationTable(),
                             meaningTable().ID.eq(translationTable().MEANING_ID),
                             translationId()),
-            "MeaningsPaged.select/Meaning.hyperonym" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$HYPERONYM_NODE" to
                     Triple(meaningHyperonymTable(),
                             meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID),
                             meaningHyperonymId()),
-            "MeaningsPaged.select/Meaning.hyperonym/MeaningSimplified.kashubianEntry" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$HYPERONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE" to
                     Triple(meaningHyperonymEntryTable(),
                             meaningHyperonymTable().KASHUBIAN_ENTRY_ID.eq(meaningHyperonymEntryTable().ID),
                             meaningHyperonymEntryId()),
-            "MeaningsPaged.select/Meaning.proverbs" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$PROVERBS_NODE" to
                     Triple(proverbTable(),
                             meaningTable().ID.eq(proverbTable().MEANING_ID),
                             proverbId()),
-            "MeaningsPaged.select/Meaning.quotes" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$QUOTES_NODE" to
                     Triple(quoteTable(),
                             meaningTable().ID.eq(quoteTable().MEANING_ID),
                             quoteId()),
-            "MeaningsPaged.select/Meaning.examples" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$EXAMPLES_NODE" to
                     Triple(exampleTable(),
                             meaningTable().ID.eq(exampleTable().MEANING_ID),
                             exampleId()),
-            "MeaningsPaged.select/Meaning.phrasalVerbs" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$PHRASAL_VERBS_NODE" to
                     Triple(phrasalVerbTable(),
                             meaningTable().ID.eq(phrasalVerbTable().MEANING_ID),
                             phrasalVerbId()),
-            "MeaningsPaged.select/Meaning.synonyms" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$SYNONYMS_NODE" to
                     Triple(synonymTable(),
                             meaningTable().ID.eq(synonymTable().MEANING_ID),
                             synonymId()),
-            "MeaningsPaged.select/Meaning.antonyms" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$ANTONYMS_NODE" to
                     Triple(antonymTable(),
                             meaningTable().ID.eq(antonymTable().MEANING_ID),
                             antonymId()),
-            "MeaningsPaged.select/Meaning.synonyms/Synonym.synonym" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$SYNONYMS_NODE$SYNONYM_TYPE_PREFIX$SYNONYM_NODE" to
                     Triple(synonymMeaningTable(),
                             synonymTable().MEANING_ID.eq(synonymMeaningTable().ID),
                             synonymMeaningId()),
-            "MeaningsPaged.select/Meaning.antonyms/Antonym.antonym" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$ANTONYMS_NODE$ANTONYM_TYPE_PREFIX$ANTONYM_NODE" to
                     Triple(antonymMeaningTable(),
                             antonymTable().MEANING_ID.eq(antonymMeaningTable().ID),
                             antonymMeaningId()),
-            "MeaningsPaged.select/Meaning.synonyms/Synonym.synonym/MeaningSimplified.kashubianEntry" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$SYNONYMS_NODE$SYNONYM_TYPE_PREFIX$SYNONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE" to
                     Triple(synonymMeaningEntryTable(),
                             synonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(synonymMeaningEntryTable().ID),
                             synonymMeaningEntryId()),
-            "MeaningsPaged.select/Meaning.antonyms/Antonym.antonym/MeaningSimplified.kashubianEntry" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$ANTONYMS_NODE$ANTONYM_TYPE_PREFIX$ANTONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE" to
                     Triple(antonymMeaningEntryTable(),
                             antonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(antonymMeaningEntryTable().ID),
                             antonymMeaningEntryId())
     )
 
     internal val FIND_ONE_FIELD_TO_JOIN_RELATIONS = FIND_ALL_FIELD_TO_JOIN_RELATIONS.mapKeys {
-        it.key.removePrefix("MeaningsPaged.select/")
+        it.key.removePrefix("$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX/")
     }
 
     internal val FIND_ALL_FIELD_TO_COLUMN_RELATIONS = mapOf(
-            "MeaningsPaged.select/Meaning.origin" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$ORIGIN_FIELD" to
                     meaningOrigin(),
-            "MeaningsPaged.select/Meaning.definition" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$DEFINITION_FIELD" to
                     meaningDefinition(),
-            "MeaningsPaged.select/Meaning.hyperonym/MeaningSimplified.definition" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$HYPERONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$DEFINITION_FIELD" to
                     meaningHyperonymDefinition(),
-            "MeaningsPaged.select/Meaning.hyperonym/MeaningSimplified.kashubianEntry/KashubianEntrySimplified.word" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$HYPERONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$WORD_FIELD" to
                     meaningHyperonymEntryWord(),
-            "MeaningsPaged.select/Meaning.hyperonyms" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$HYPERONYMS_FIELD" to
                     meaningHyperonymsWithAlias(),
-            "MeaningsPaged.select/Meaning.hyponyms" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$HYPONYMS_FIELD" to
                     meaningHyponymsWithAlias(),
-            "MeaningsPaged.select/Meaning.translation/Translation.polish" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$TRANSLATION_NODE$TRANSLATION_TYPE_PREFIX$POLISH_FIELD" to
                     translationPolish(),
-            "MeaningsPaged.select/Meaning.translation/Translation.normalizedPolish" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$TRANSLATION_NODE$TRANSLATION_TYPE_PREFIX$NORMALIZED_POLISH_FIELD" to
                     translationPolishNormalizedWord(),
-            "MeaningsPaged.select/Meaning.translation/Translation.english" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$TRANSLATION_NODE$TRANSLATION_TYPE_PREFIX$ENGLISH_FIELD" to
                     translationEnglish(),
-            "MeaningsPaged.select/Meaning.translation/Translation.normalizedEnglish" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$TRANSLATION_NODE$TRANSLATION_TYPE_PREFIX$NORMALIZED_ENGLISH_FIELD" to
                     translationNormalizedEnglish(),
-            "MeaningsPaged.select/Meaning.translation/Translation.german" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$TRANSLATION_NODE$TRANSLATION_TYPE_PREFIX$GERMAN_FIELD" to
                     translationGerman(),
-            "MeaningsPaged.select/Meaning.translation/Translation.normalizedGerman" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$TRANSLATION_NODE$TRANSLATION_TYPE_PREFIX$NORMALIZED_GERMAN_FIELD" to
                     translationNormalizedGerman(),
-            "MeaningsPaged.select/Meaning.translation/Translation.ukrainian" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$TRANSLATION_NODE$TRANSLATION_TYPE_PREFIX$UKRAINIAN_FIELD" to
                     translationUkrainian(),
-            "MeaningsPaged.select/Meaning.translation/Translation.normalizedUkrainian" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$TRANSLATION_NODE$TRANSLATION_TYPE_PREFIX$NORMALIZED_UKRAINIAN_FIELD" to
                     translationNormalizedUkrainian(),
-            "MeaningsPaged.select/Meaning.proverbs/Proverb.note" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$PROVERBS_NODE$PROVERB_TYPE_PREFIX$NOTE_FIELD" to
                     proverbNote(),
-            "MeaningsPaged.select/Meaning.proverbs/Proverb.proverb" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$PROVERBS_NODE$PROVERB_TYPE_PREFIX$PROVERB_FIELD" to
                     proverbProverb(),
-            "MeaningsPaged.select/Meaning.quotes/Quote.note" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$QUOTES_NODE$QUOTE_TYPE_PREFIX$NOTE_FIELD" to
                     quoteNote(),
-            "MeaningsPaged.select/Meaning.quotes/Quote.quote" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$QUOTES_NODE$QUOTE_TYPE_PREFIX$QUOTE_FIELD" to
                     quoteQuote(),
-            "MeaningsPaged.select/Meaning.examples/Example.note" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$EXAMPLES_NODE$EXAMPLE_TYPE_PREFIX$NOTE_FIELD" to
                     exampleNote(),
-            "MeaningsPaged.select/Meaning.examples/Example.example" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$EXAMPLES_NODE$EXAMPLE_TYPE_PREFIX$EXAMPLE_FIELD" to
                     exampleExample(),
-            "MeaningsPaged.select/Meaning.phrasalVerbs/PhrasalVerb.note" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$PHRASAL_VERBS_NODE$PHRASAL_VERB_TYPE_PREFIX$NOTE_FIELD" to
                     phrasalVerbNote(),
-            "MeaningsPaged.select/Meaning.phrasalVerbs/PhrasalVerb.phrasalVerb" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$PHRASAL_VERBS_NODE$PHRASAL_VERB_TYPE_PREFIX$PHRASAL_VERB_FIELD" to
                     phrasalVerbPhrasalVerb(),
-            "MeaningsPaged.select/Meaning.synonyms/Synonym.note" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$SYNONYMS_NODE$SYNONYM_TYPE_PREFIX$NOTE_FIELD" to
                     synonymNote(),
-            "MeaningsPaged.select/Meaning.antonyms/Antonym.note" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$ANTONYMS_NODE$ANTONYM_TYPE_PREFIX$NOTE_FIELD" to
                     antonymNote(),
-            "MeaningsPaged.select/Meaning.synonyms/Synonym.synonym/MeaningSimplified.definition" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$SYNONYMS_NODE$SYNONYM_TYPE_PREFIX$SYNONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$DEFINITION_FIELD" to
                     synonymMeaningDefinition(),
-            "MeaningsPaged.select/Meaning.antonyms/Antonym.antonym/MeaningSimplified.definition" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$ANTONYMS_NODE$ANTONYM_TYPE_PREFIX$ANTONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$DEFINITION_FIELD" to
                     antonymMeaningDefinition(),
-            "MeaningsPaged.select/Meaning.synonyms/Synonym.synonym/MeaningSimplified.kashubianEntry/KashubianEntrySimplified.word" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$SYNONYMS_NODE$SYNONYM_TYPE_PREFIX$SYNONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$WORD_FIELD" to
                     synonymMeaningEntryWord(),
-            "MeaningsPaged.select/Meaning.antonyms/Antonym.antonym/MeaningSimplified.kashubianEntry/KashubianEntrySimplified.word" to
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$ANTONYMS_NODE$ANTONYM_TYPE_PREFIX$ANTONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$WORD_FIELD" to
                     antonymMeaningEntryWord()
     )
 
     internal val FIND_ONE_FIELD_TO_COLUMN_RELATIONS = FIND_ALL_FIELD_TO_COLUMN_RELATIONS.mapKeys {
-        it.key.removePrefix("MeaningsPaged.select/")
+        it.key.removePrefix("$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX/")
     }
 
     val CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN =
         listOf(
-                "select.id" to (meaningTable().ID joinedBy
+                "$SELECT_PREFIX$ID_FIELD" to (meaningTable().ID joinedBy
                         emptyList()),
-                "select.origin" to (meaningTable().ORIGIN joinedBy emptyList()),
-                "select.definition" to (meaningTable().DEFINITION joinedBy emptyList()),
-                "select.hyperonym.id" to (meaningHyperonymTable().ID joinedBy
+                "$SELECT_PREFIX$ORIGIN_FIELD" to (meaningTable().ORIGIN joinedBy emptyList()),
+                "$SELECT_PREFIX$DEFINITION_FIELD" to (meaningTable().DEFINITION joinedBy emptyList()),
+                "$SELECT_PREFIX$HYPERONYM_NODE$ID_FIELD" to (meaningHyperonymTable().ID joinedBy
                         listOf(meaningHyperonymTable() on meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID))),
-                "select.hyperonym.definition" to (meaningHyperonymTable().DEFINITION joinedBy
+                "$SELECT_PREFIX$HYPERONYM_NODE$DEFINITION_FIELD" to (meaningHyperonymTable().DEFINITION joinedBy
                         listOf(meaningHyperonymTable() on meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID))),
-                "select.hyperonym.kashubianEntry.id" to (meaningHyperonymEntryTable().ID joinedBy
+                "$SELECT_PREFIX$HYPERONYM_NODE$KASHUBIAN_ENTRY_NODE$ID_FIELD" to (meaningHyperonymEntryTable().ID joinedBy
                         listOf(meaningHyperonymTable() on meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID),
                                 meaningHyperonymEntryTable() on meaningHyperonymTable().KASHUBIAN_ENTRY_ID.eq(
                                         meaningHyperonymEntryTable().ID))),
-                "select.hyperonym.kashubianEntry.word" to (meaningHyperonymEntryTable().WORD joinedBy
+                "$SELECT_PREFIX$HYPERONYM_NODE$KASHUBIAN_ENTRY_NODE$WORD_FIELD" to (meaningHyperonymEntryTable().WORD joinedBy
                         listOf(meaningHyperonymTable() on meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID),
                                 meaningHyperonymEntryTable() on meaningHyperonymTable().KASHUBIAN_ENTRY_ID.eq(
                                         meaningHyperonymEntryTable().ID))),
-                "select.hyperonyms" to (meaningHyperonyms() joinedBy emptyList()),
-                "select.hyponyms" to (meaningHyponyms() joinedBy emptyList()),
-                "select.synonyms.id" to (synonymTable().ID joinedBy
-                        listOf(
-                                synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID))),
-                "select.synonyms.note" to (synonymTable().NOTE joinedBy
-                        listOf(
-                                synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID))),
-                "select.synonyms.synonym.id" to (synonymMeaningTable() joinedBy
-                        listOf(
-                                synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
+                "$SELECT_PREFIX$HYPERONYMS_FIELD" to (meaningHyperonyms() joinedBy emptyList()),
+                "$SELECT_PREFIX$HYPONYMS_FIELD" to (meaningHyponyms() joinedBy emptyList()),
+                "$SELECT_PREFIX$SYNONYMS_NODE$ID_FIELD" to (synonymTable().ID joinedBy
+                        listOf(synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID))),
+                "$SELECT_PREFIX$SYNONYMS_NODE$NOTE_FIELD" to (synonymTable().NOTE joinedBy
+                        listOf(synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID))),
+                "$SELECT_PREFIX$SYNONYMS_NODE$SYNONYM_NODE$ID_FIELD" to (synonymMeaningTable() joinedBy
+                        listOf(synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
                                 synonymMeaningTable() on synonymTable().MEANING_ID.eq(synonymMeaningTable().ID))),
-                "select.synonyms.synonym.definition" to (synonymMeaningTable().DEFINITION joinedBy
-                        listOf(
-                                synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
+                "$SELECT_PREFIX$SYNONYMS_NODE$SYNONYM_NODE$DEFINITION_FIELD" to (synonymMeaningTable().DEFINITION joinedBy
+                        listOf(synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
                                 synonymMeaningTable() on synonymTable().MEANING_ID.eq(synonymMeaningTable().ID))),
-                "select.synonyms.synonym.kashubianEntry.id" to (synonymMeaningEntryTable().ID joinedBy
-                        listOf(
-                                synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
+                "$SELECT_PREFIX$SYNONYMS_NODE$SYNONYM_NODE$KASHUBIAN_ENTRY_NODE$ID_FIELD" to (synonymMeaningEntryTable().ID joinedBy
+                        listOf(synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
                                 synonymMeaningTable() on synonymTable().MEANING_ID.eq(synonymMeaningTable().ID),
                                 synonymMeaningEntryTable() on synonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
                                         synonymMeaningEntryTable().ID))),
-                "select.synonyms.synonym.kashubianEntry.word" to (synonymMeaningEntryTable().WORD joinedBy
-                        listOf(
-                                synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
+                "$SELECT_PREFIX$SYNONYMS_NODE$SYNONYM_NODE$KASHUBIAN_ENTRY_NODE$WORD_FIELD" to (synonymMeaningEntryTable().WORD joinedBy
+                        listOf(synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
                                 synonymMeaningTable() on synonymTable().MEANING_ID.eq(synonymMeaningTable().ID),
                                 synonymMeaningEntryTable() on synonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
                                         synonymMeaningEntryTable().ID))),
-                "select.proverbs.id" to (proverbTable().ID joinedBy
-                        listOf(
-                                proverbTable() on meaningTable().ID.eq(proverbTable().MEANING_ID))),
-                "select.proverbs.note" to (proverbTable().NOTE joinedBy
-                        listOf(
-                                proverbTable() on meaningTable().ID.eq(proverbTable().MEANING_ID))),
-                "select.proverbs.proverb" to (proverbTable().PROVERB_ joinedBy
-                        listOf(
-                                proverbTable() on meaningTable().ID.eq(proverbTable().MEANING_ID))),
-                "select.translation.id" to (translationTable().ID joinedBy
-                        listOf(
-                                translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "select.translation.polish" to (translationTable().POLISH joinedBy
-                        listOf(
-                                translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "select.translation.normalizedPolish" to (translationTable().NORMALIZED_POLISH joinedBy
-                        listOf(
-                                translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "select.translation.english" to (translationTable().ENGLISH joinedBy
-                        listOf(
-                                translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "select.translation.normalizedEnglish" to (translationTable().NORMALIZED_ENGLISH joinedBy
-                        listOf(
-                                translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "select.translation.german" to (translationTable().GERMAN joinedBy
-                        listOf(
-                                translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "select.translation.normalizedGerman" to (translationTable().NORMALIZED_GERMAN joinedBy
-                        listOf(
-                                translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "select.translation.ukrainian" to (translationTable().UKRAINIAN joinedBy
-                        listOf(
-                                translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "select.translation.normalizedUkrainian" to (translationTable().NORMALIZED_UKRAINIAN joinedBy
-                        listOf(
-                                translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
-                "select.quotes.id" to (quoteTable().ID joinedBy
-                        listOf(
-                                quoteTable() on meaningTable().ID.eq(quoteTable().MEANING_ID))),
-                "select.quotes.note" to (quoteTable().NOTE joinedBy
-                        listOf(
-                                quoteTable() on meaningTable().ID.eq(quoteTable().MEANING_ID))),
-                "select.quotes.quote" to (quoteTable().QUOTE_ joinedBy
-                        listOf(
-                                quoteTable() on meaningTable().ID.eq(quoteTable().MEANING_ID))),
-                "select.antonyms.id" to (antonymTable().ID joinedBy
-                        listOf(
-                                antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID))),
-                "select.antonyms.note" to (antonymTable().NOTE joinedBy
-                        listOf(
-                                antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID))),
-                "select.antonyms.antonym.id" to (antonymMeaningTable().ID joinedBy
-                        listOf(
-                                antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
+                "$SELECT_PREFIX$PROVERBS_NODE$ID_FIELD" to (proverbTable().ID joinedBy
+                        listOf(proverbTable() on meaningTable().ID.eq(proverbTable().MEANING_ID))),
+                "$SELECT_PREFIX$PROVERBS_NODE$NOTE_FIELD" to (proverbTable().NOTE joinedBy
+                        listOf(proverbTable() on meaningTable().ID.eq(proverbTable().MEANING_ID))),
+                "$SELECT_PREFIX$PROVERBS_NODE$PROVERB_FIELD" to (proverbTable().PROVERB_ joinedBy
+                        listOf(proverbTable() on meaningTable().ID.eq(proverbTable().MEANING_ID))),
+                "$SELECT_PREFIX$TRANSLATION_NODE$ID_FIELD" to (translationTable().ID joinedBy
+                        listOf(translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
+                "$SELECT_PREFIX$TRANSLATION_NODE$POLISH_FIELD" to (translationTable().POLISH joinedBy
+                        listOf(translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
+                "$SELECT_PREFIX$TRANSLATION_NODE$NORMALIZED_POLISH_FIELD" to (translationTable().NORMALIZED_POLISH joinedBy
+                        listOf(translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
+                "$SELECT_PREFIX$TRANSLATION_NODE$ENGLISH_FIELD" to (translationTable().ENGLISH joinedBy
+                        listOf(translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
+                "$SELECT_PREFIX$TRANSLATION_NODE$NORMALIZED_ENGLISH_FIELD" to (translationTable().NORMALIZED_ENGLISH joinedBy
+                        listOf(translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
+                "$SELECT_PREFIX$TRANSLATION_NODE$GERMAN_FIELD" to (translationTable().GERMAN joinedBy
+                        listOf(translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
+                "$SELECT_PREFIX$TRANSLATION_NODE$NORMALIZED_GERMAN_FIELD" to (translationTable().NORMALIZED_GERMAN joinedBy
+                        listOf(translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
+                "$SELECT_PREFIX$TRANSLATION_NODE$UKRAINIAN_FIELD" to (translationTable().UKRAINIAN joinedBy
+                        listOf(translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
+                "$SELECT_PREFIX$TRANSLATION_NODE$NORMALIZED_UKRAINIAN_FIELD" to (translationTable().NORMALIZED_UKRAINIAN joinedBy
+                        listOf(translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
+                "$SELECT_PREFIX$QUOTES_NODE$ID_FIELD" to (quoteTable().ID joinedBy
+                        listOf(quoteTable() on meaningTable().ID.eq(quoteTable().MEANING_ID))),
+                "$SELECT_PREFIX$QUOTES_NODE$NOTE_FIELD" to (quoteTable().NOTE joinedBy
+                        listOf(quoteTable() on meaningTable().ID.eq(quoteTable().MEANING_ID))),
+                "$SELECT_PREFIX$QUOTES_NODE$QUOTE_FIELD" to (quoteTable().QUOTE_ joinedBy
+                        listOf(quoteTable() on meaningTable().ID.eq(quoteTable().MEANING_ID))),
+                "$SELECT_PREFIX$ANTONYMS_NODE$ID_FIELD" to (antonymTable().ID joinedBy
+                        listOf(antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID))),
+                "$SELECT_PREFIX$ANTONYMS_NODE$NOTE_FIELD" to (antonymTable().NOTE joinedBy
+                        listOf(antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID))),
+                "$SELECT_PREFIX$ANTONYMS_NODE$ANTONYM_NODE$ID_FIELD" to (antonymMeaningTable().ID joinedBy
+                        listOf(antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
                                 antonymMeaningTable() on antonymTable().MEANING_ID.eq(antonymMeaningTable().ID))),
-                "select.antonyms.antonym.definition" to (antonymMeaningTable().DEFINITION joinedBy
-                        listOf(
-                                antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
+                "$SELECT_PREFIX$ANTONYMS_NODE$ANTONYM_NODE$DEFINITION_FIELD" to (antonymMeaningTable().DEFINITION joinedBy
+                        listOf(antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
                                 antonymMeaningTable() on antonymTable().MEANING_ID.eq(antonymMeaningTable().ID))),
-                "select.antonyms.antonym.kashubianEntry.id" to (antonymMeaningEntryTable().ID joinedBy
-                        listOf(
-                                antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
+                "$SELECT_PREFIX$ANTONYMS_NODE$ANTONYM_NODE$KASHUBIAN_ENTRY_NODE$ID_FIELD" to (antonymMeaningEntryTable().ID joinedBy
+                        listOf(antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
                                 antonymMeaningTable() on antonymTable().MEANING_ID.eq(antonymMeaningTable().ID),
                                 antonymMeaningEntryTable() on antonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
                                         antonymMeaningEntryTable().ID))),
-                "select.antonyms.antonym.kashubianEntry.word" to (antonymMeaningEntryTable().WORD joinedBy
-                        listOf(
-                                antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
+                "$SELECT_PREFIX$ANTONYMS_NODE$ANTONYM_NODE$KASHUBIAN_ENTRY_NODE$WORD_FIELD" to (antonymMeaningEntryTable().WORD joinedBy
+                        listOf(antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
                                 antonymMeaningTable() on antonymTable().MEANING_ID.eq(antonymMeaningTable().ID),
                                 antonymMeaningEntryTable() on antonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
                                         antonymMeaningEntryTable().ID))),
-                "select.examples.id" to (exampleTable().ID joinedBy
-                        listOf(
-                                exampleTable() on meaningTable().ID.eq(exampleTable().MEANING_ID))),
-                "select.examples.note" to (exampleTable().NOTE joinedBy
-                        listOf(
-                                exampleTable() on meaningTable().ID.eq(exampleTable().MEANING_ID))),
-                "select.examples.example" to (exampleTable().EXAMPLE_ joinedBy
-                        listOf(
-                                exampleTable() on meaningTable().ID.eq(exampleTable().MEANING_ID))),
-                "select.phrasalVerbs.id" to (phrasalVerbTable().ID joinedBy
-                        listOf(
-                                phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID))),
-                "select.phrasalVerbs.note" to (phrasalVerbTable().NOTE joinedBy
-                        listOf(
-                                phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID))),
-                "select.phrasalVerbs.phrasalVerb" to (phrasalVerbTable().PHRASAL_VERB_ joinedBy
-                        listOf(
-                                phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID)))
+                "$SELECT_PREFIX$EXAMPLES_NODE$ID_FIELD" to (exampleTable().ID joinedBy
+                        listOf(exampleTable() on meaningTable().ID.eq(exampleTable().MEANING_ID))),
+                "$SELECT_PREFIX$EXAMPLES_NODE$NOTE_FIELD" to (exampleTable().NOTE joinedBy
+                        listOf(exampleTable() on meaningTable().ID.eq(exampleTable().MEANING_ID))),
+                "$SELECT_PREFIX$EXAMPLES_NODE$EXAMPLE_FIELD" to (exampleTable().EXAMPLE_ joinedBy
+                        listOf(exampleTable() on meaningTable().ID.eq(exampleTable().MEANING_ID))),
+                "$SELECT_PREFIX$PHRASAL_VERBS_NODE$ID_FIELD" to (phrasalVerbTable().ID joinedBy
+                        listOf(phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID))),
+                "$SELECT_PREFIX$PHRASAL_VERBS_NODE$NOTE_FIELD" to (phrasalVerbTable().NOTE joinedBy
+                        listOf(phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID))),
+                "$SELECT_PREFIX$PHRASAL_VERBS_NODE$PHRASAL_VERB_FIELD" to (phrasalVerbTable().PHRASAL_VERB_ joinedBy
+                        listOf(phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID)))
         ).map { criteriaAndField ->
             listOf(".EQ", ".LIKE_", ".LIKE", ".BY_NORMALIZED", ".BY_JSON").map {
                 criteriaAndField.fieldPath() + it to
@@ -274,130 +337,5 @@ object MeaningQueryRelations {
             }
         }.flatten().associate { it.first to it.second }
 
-    private fun antonymMeaningEntryId() = antonymMeaningEntryTable().ID.`as`("antonym_meaning_entry_id")
-
-    private fun synonymMeaningEntryId() = synonymMeaningEntryTable().ID.`as`("synonym_meaning_entry_id")
-
-    private fun antonymMeaningId() = antonymMeaningTable().ID.`as`("antonym_meaning_id")
-
-    private fun synonymMeaningId() = synonymMeaningTable().ID.`as`("synonym_meaning_id")
-
-    private fun antonymId() = antonymTable().ID.`as`("antonym_id")
-
-    private fun synonymId() = synonymTable().ID.`as`("synonym_id")
-
-    private fun phrasalVerbId() = phrasalVerbTable().ID.`as`("phrasal_verb_id")
-
-    private fun exampleId() = exampleTable().ID.`as`("example_id")
-
-    private fun quoteId() = quoteTable().ID.`as`("quote_id")
-
-    private fun proverbId() = proverbTable().ID.`as`("proverb_id")
-
-    private fun translationId() = translationTable().ID.`as`("translation_id")
-
-    fun meaningId() = Tables.MEANING.`as`("meaning").ID.`as`("meaning_id")
-
-    private fun antonymMeaningEntryWord() = antonymMeaningEntryTable().WORD.`as`("antonym_meaning_entry_word")
-
-    private fun synonymMeaningEntryWord() = synonymMeaningEntryTable().WORD.`as`("synonym_meaning_entry_word")
-
-    private fun antonymMeaningDefinition() = antonymMeaningTable().DEFINITION.`as`("antonym_meaning_definition")
-
-    private fun synonymMeaningDefinition() = synonymMeaningTable().DEFINITION.`as`("synonym_meaning_definition")
-
-    private fun antonymNote() = antonymTable().NOTE.`as`("antonym_note")
-
-    private fun synonymNote() = synonymTable().NOTE.`as`("synonym_note")
-
-    private fun phrasalVerbPhrasalVerb() = phrasalVerbTable().PHRASAL_VERB_.`as`("phrasal_verb_phrasal_verb")
-
-    private fun phrasalVerbNote() = phrasalVerbTable().NOTE.`as`("phrasal_verb_note")
-
-    private fun exampleExample() = exampleTable().EXAMPLE_.`as`("example_example")
-
-    private fun exampleNote() = exampleTable().NOTE.`as`("example_note")
-
-    private fun quoteQuote() = quoteTable().QUOTE_.`as`("quote_quote")
-
-    private fun quoteNote() = quoteTable().NOTE.`as`("quote_note")
-
-    private fun proverbProverb() = proverbTable().PROVERB_.`as`("proverb_proverb")
-
-    private fun proverbNote() = proverbTable().NOTE.`as`("proverb_note")
-
-    private fun translationNormalizedUkrainian() =
-        translationTable().NORMALIZED_UKRAINIAN.`as`("translation_normalized_ukrainian")
-
-    private fun translationUkrainian() = translationTable().UKRAINIAN.`as`("translation_ukrainian")
-
-    private fun translationNormalizedGerman() =
-        translationTable().NORMALIZED_GERMAN.`as`("translation_normalized_german")
-
-    private fun translationGerman() = translationTable().GERMAN.`as`("translation_german")
-
-    private fun translationNormalizedEnglish() =
-        translationTable().NORMALIZED_ENGLISH.`as`("translation_normalized_english")
-
-    private fun translationEnglish() = translationTable().ENGLISH.`as`("translation_english")
-
-    private fun translationPolishNormalizedWord() =
-        translationTable().NORMALIZED_POLISH.`as`("translation_normalized_polish")
-
-    private fun meaningDefinition() = meaningTable().DEFINITION.`as`("meaning_definition")
-
-    private fun meaningOrigin() = meaningTable().ORIGIN.`as`("meaning_origin")
-
-    private fun translationPolish() = translationTable().POLISH.`as`("translation_polish")
-
-    private fun meaningHyponymsWithAlias() =
-        field(select(Routines.findHyponyms(meaningTable().ID))).`as`("meaning_hyponyms")
-
-    private fun meaningHyperonymsWithAlias() =
-        field(select(Routines.findHyperonyms(meaningTable().ID))).`as`("meaning_hyperonyms")
-
-    private fun meaningHyponyms() =
-        field(select(Routines.findHyponyms(meaningTable().ID)))
-
-    private fun meaningHyperonyms() =
-        field(select(Routines.findHyperonyms(meaningTable().ID)))
-
-    private fun antonymMeaningEntryTable() = Tables.KASHUBIAN_ENTRY.`as`("antonym_meaning_entry")
-
-    private fun synonymMeaningEntryTable() = Tables.KASHUBIAN_ENTRY.`as`("synonym_meaning_entry")
-
-    private fun antonymMeaningTable() = Tables.MEANING.`as`("antonym_meaning")
-
-    private fun synonymMeaningTable() = Tables.MEANING.`as`("synonym_meaning")
-
-    private fun antonymTable() = Tables.ANTONYM.`as`("antonym")
-
-    private fun synonymTable() = Tables.SYNONYM.`as`("synonym")
-
-    private fun phrasalVerbTable() = Tables.PHRASAL_VERB.`as`("phrasal_verb")
-
-    private fun exampleTable() = Tables.EXAMPLE.`as`("example")
-
-    private fun quoteTable() = Tables.QUOTE.`as`("quote")
-
-    private fun proverbTable() = Tables.PROVERB.`as`("proverb")
-
-    private fun translationTable() = Tables.TRANSLATION.`as`("translation")
-
-    private fun meaningHyperonymEntryId() = meaningHyperonymEntryTable().ID.`as`("meaning_hyperonym_entry_id")
-
-    private fun meaningHyperonymEntryTable() = Tables.KASHUBIAN_ENTRY.`as`("meaning_hyperonym_entry")
-
-    private fun meaningHyperonymId() = meaningHyperonymTable().ID.`as`("meaning_hyperonym_id")
-
-    private fun meaningHyperonymTable() = Tables.MEANING.`as`("meaning_hyperonym")
-
-    private fun entryBaseTable() = Tables.KASHUBIAN_ENTRY.`as`("entry_base")
-
-    private fun meaningHyperonymEntryWord() = meaningHyperonymEntryTable().WORD.`as`("meaning_hyperonym_entry_word")
-
-    private fun meaningHyperonymDefinition() = meaningHyperonymTable().DEFINITION.`as`("meaning_hyperonym_definition")
-
-    fun meaningTable() = Tables.MEANING.`as`("meaning")
-
 }
+

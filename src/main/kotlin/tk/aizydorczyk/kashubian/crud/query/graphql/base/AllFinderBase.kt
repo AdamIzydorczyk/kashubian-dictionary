@@ -18,6 +18,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import tk.aizydorczyk.kashubian.crud.extension.normalize
 import tk.aizydorczyk.kashubian.crud.model.graphql.criteria.PageCriteria
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.SELECT_PREFIX
 import kotlin.reflect.KClass
 import kotlin.reflect.KProperty1
 import kotlin.reflect.full.createType
@@ -155,7 +156,7 @@ abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
             false -> 0
         }
 
-    private fun prepareWheresWithJoins(prefix: String = "select", where: CriteriaExpression?,
+    private fun prepareWheresWithJoins(prefix: String = SELECT_PREFIX, where: CriteriaExpression?,
         declaredMemberProperties: Collection<KProperty1<out CriteriaExpression, *>>,
         criteriaToColumnRelationsWithJoin: Map<String, Pair<QueryPart, List<JoinTableWithCondition>>>
     ): List<Pair<Condition?, List<JoinTableWithCondition>>> = declaredMemberProperties.flatMap {

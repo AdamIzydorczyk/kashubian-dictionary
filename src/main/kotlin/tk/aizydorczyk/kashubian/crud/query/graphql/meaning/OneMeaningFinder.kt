@@ -7,12 +7,11 @@ import org.springframework.stereotype.Component
 import tk.aizydorczyk.kashubian.crud.model.entitysearch.tables.Meaning
 import tk.aizydorczyk.kashubian.crud.model.graphql.model.MeaningGraphQL
 import tk.aizydorczyk.kashubian.crud.model.mapper.MeaningGraphQLMapper
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningId
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningTable
 import tk.aizydorczyk.kashubian.crud.query.graphql.base.OneFinderBase
 import tk.aizydorczyk.kashubian.crud.query.graphql.meaning.MeaningQueryRelations.FIND_ONE_FIELD_TO_COLUMN_RELATIONS
 import tk.aizydorczyk.kashubian.crud.query.graphql.meaning.MeaningQueryRelations.FIND_ONE_FIELD_TO_JOIN_RELATIONS
-import tk.aizydorczyk.kashubian.crud.query.graphql.meaning.MeaningQueryRelations.meaningId
-import tk.aizydorczyk.kashubian.crud.query.graphql.meaning.MeaningQueryRelations.meaningTable
-
 @Component
 class OneMeaningFinder(override val dsl: DSLContext)
     : OneFinderBase<MeaningGraphQL>(dsl, MeaningGraphQLMapper()) {
