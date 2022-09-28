@@ -1,0 +1,35 @@
+{
+  "word": "test_word",
+  "note": "test_note",
+  "partOfSpeech": "PRONOUN",
+  "partOfSpeechSubType": "NUMERAL_PRONOUN",
+  "variation": {
+    "nounVariation": {
+      "nominative": null,
+      "genitive": null,
+      "dative": null,
+      "accusative": null,
+      "instrumental": null,
+      "locative": null,
+      "vocative": null,
+      "nominativePlural": null,
+      "genitivePlural": null,
+      "dativePlural": null,
+      "accusativePlural": null,
+      "instrumentalPlural": null,
+      "locativePlural": null,
+      "vocativePlural": null
+    }
+  },
+  "meanings": [
+    {
+      "translation": {
+        "polish": "test_polish",
+        "english": null,
+        "german": null,
+        "ukrainian": null
+      },
+      "definition": "test_definition"
+    }
+  ]
+}

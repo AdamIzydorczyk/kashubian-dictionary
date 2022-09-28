@@ -1,0 +1,60 @@
+{
+  "word": "test_word",
+  "note": "test_note",
+  "partOfSpeech": "NOUN",
+  "partOfSpeechSubType": "NEUTER",
+  "variation": {
+    "adjectiveVariation": {
+      "nominativeMasculine": "tHlSbkbLFuJJzPxbyqSGSjObqa",
+      "nominativeFeminine": "ofRuIVGyaUbMNSkm",
+      "nominativeNeuter": "kxKbzpzqdzTRbctZdpWGpwcwEhIlJjg",
+      "genitiveMasculine": "GVCvMFJWiHcILAGAqv",
+      "genitiveFeminine": "hfHHLhov",
+      "genitiveNeuter": "glUjuJpsOdkFIXHNHYzJW",
+      "dativeMasculine": "pQprorHXzLYvYvcmQTXbxmNpjh",
+      "dativeFeminine": "yyafle",
+      "dativeNeuter": "aggvZnTTCoLUjUinwCXHfGzFFLfjfNK",
+      "accusativeMasculine": "KaeIhVQBfQdv",
+      "accusativeFeminine": "hHWvRpAOrDMpXpDckffDFeyk",
+      "accusativeNeuter": "FplfsXENgbwVRESozAwRwPikGhEADoD",
+      "instrumentalMasculine": "MSFCrpm",
+      "instrumentalFeminine": "RIWdpprEfsrQjBXUfjNX",
+      "instrumentalNeuter": "oFkihBKxfcLylFDrO",
+      "locativeMasculine": "kehwrPZrgMzsOlzQqp",
+      "locativeFeminine": "wGH",
+      "locativeNeuter": "PAQNFhcvbCkUOXBIXwSJAZOpCqqTaQk",
+      "vocativeMasculine": "ROfFgrtKDWOEHUPRoPAvOGMgTE",
+      "vocativeFeminine": "jAoe",
+      "vocativeNeuter": "sbTDifAamqQoyIAvQNrqLKeWafMr",
+      "nominativePluralMasculine": "gcthfVjOlkQhOZXQseGLWx",
+      "nominativeNonMasculine": "kSPcwZ",
+      "genitivePluralMasculine": "OTSrTACkVoCDQiqtfGwsydXZyk",
+      "genitiveNonMasculine": "LBNbWH",
+      "dativePluralMasculine": "xLqvxjUqTcCiaglpwnOHht",
+      "dativeNonMasculine": "toSrBBQhLiOYHlyCxnQD",
+      "accusativePluralMasculine": "PzMaRpWRpMlbuJVuFUaYT",
+      "accusativeNonMasculine": "IpmKDSjqssncmCBuSfvKQhF",
+      "instrumentalPluralMasculine": "FrMAIjVmqpCUaOMEPYkwy",
+      "instrumentalNonMasculine": "HgvvvFflrmhqzVyyOWaQ",
+      "locativePluralMasculine": "kGPEeBzd",
+      "locativeNonMasculine": "QfHENFSuRQCp",
+      "vocativePluralMasculine": "CEWpfKXWRVAhdovnnB",
+      "vocativeNonMasculine": "mqPJ"
+    },
+    "inAssemblies": "cXWPxqzKfOrLM",
+    "base": "ZCqhd",
+    "comparative": "cehsZYDhlwojquTLYIQPO",
+    "superlative": "JPyjzPExS"
+  },
+  "meanings": [
+    {
+      "translation": {
+        "polish": "test_polish",
+        "english": null,
+        "german": null,
+        "ukrainian": null
+      },
+      "definition": "test_definition"
+    }
+  ]
+}
