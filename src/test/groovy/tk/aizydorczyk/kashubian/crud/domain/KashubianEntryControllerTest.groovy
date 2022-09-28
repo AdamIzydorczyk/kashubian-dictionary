@@ -74,7 +74,7 @@ class KashubianEntryControllerTest extends Specification {
         then:
         result.andExpect(status().isBadRequest())
         and:
-        result.andExpect(jsonPath('$.fieldErrors[0].message').value(NORMALIZED_WORD_NOT_UNIQUE))
+        result.andExpect(jsonPath('$.fieldErrors[0].message').value(WORD_NOT_UNIQUE))
         result.andExpect(jsonPath('$.fieldErrors[0].fieldName').value("word"))
     }
 

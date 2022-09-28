@@ -19,7 +19,7 @@ import tk.aizydorczyk.kashubian.crud.validator.OnCreate
 import tk.aizydorczyk.kashubian.crud.validator.OnUpdate
 import tk.aizydorczyk.kashubian.crud.validator.PartOfSpeechAndSubTypeConsistent
 import tk.aizydorczyk.kashubian.crud.validator.UnchangedNormalizedWordToNonUnique
-import tk.aizydorczyk.kashubian.crud.validator.UniqueNormalizedWord
+import tk.aizydorczyk.kashubian.crud.validator.UniqueWord
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
 import javax.validation.constraints.NotEmpty
@@ -30,7 +30,7 @@ import javax.validation.constraints.Size
 @PartOfSpeechAndSubTypeConsistent(groups = [OnCreate::class, OnUpdate::class])
 data class KashubianEntryDto(
     @field:NotNull(message = IS_NULL, groups = [OnCreate::class, OnUpdate::class])
-    @field:UniqueNormalizedWord(groups = [OnCreate::class])
+    @field:UniqueWord(groups = [OnCreate::class])
     @field:UnchangedNormalizedWordToNonUnique(groups = [OnUpdate::class])
     @field:NotBlank(message = IS_BLANK, groups = [OnCreate::class, OnUpdate::class])
     @field:Size(max = 100, message = LENGTH_100_EXCEED, groups = [OnCreate::class, OnUpdate::class])

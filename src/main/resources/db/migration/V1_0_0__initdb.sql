@@ -13,9 +13,9 @@ create table public.kashubian_entry (
 	constraint fk_kashubian_entry_base foreign key (base_id) references public.kashubian_entry(id) on delete restrict on update restrict
 );
 create unique index kashubian_entry_pk_unique_index on public.kashubian_entry (id);
-create unique index kashubian_entry_normalized_word_unique_index on public.kashubian_entry (normalized_word);
+create index kashubian_entry_normalized_word_index on public.kashubian_entry (normalized_word);
 create index kashubian_entry_base_id_index on public.kashubian_entry (base_id);
-create index kashubian_entry_word_index on public.kashubian_entry (word);
+create unique index kashubian_entry_word_unique_index on public.kashubian_entry (word);
 create sequence kashubian_entry_id_sequence;
 
 -- public.sound_file definition

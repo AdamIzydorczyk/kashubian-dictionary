@@ -4,8 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.web.context.annotation.RequestScope
 import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryRepository
-import tk.aizydorczyk.kashubian.crud.extension.normalize
-import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.NORMALIZED_WORD_NOT_UNIQUE
+import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.WORD_NOT_UNIQUE
 import javax.validation.Constraint
 import javax.validation.ConstraintValidator
 import javax.validation.ConstraintValidatorContext
@@ -16,22 +15,22 @@ import kotlin.reflect.KClass
 
 
 @MustBeDocumented
-@Constraint(validatedBy = [UniqueNormalizedWordValidator::class])
+@Constraint(validatedBy = [UniqueWordValidator::class])
 @Target(allowedTargets = [FIELD])
 @Retention(RUNTIME)
-annotation class UniqueNormalizedWord(
-    val message: String = NORMALIZED_WORD_NOT_UNIQUE,
+annotation class UniqueWord(
+    val message: String = WORD_NOT_UNIQUE,
     val groups: Array<KClass<*>> = [],
     val payload: Array<KClass<out Payload>> = [])
 
 @Component
 @RequestScope
-class UniqueNormalizedWordValidator : ConstraintValidator<UniqueNormalizedWord, String?> {
+class UniqueWordValidator : ConstraintValidator<UniqueWord, String?> {
 
     @Autowired
     private lateinit var repository: KashubianEntryRepository
 
     override fun isValid(word: String?, context: ConstraintValidatorContext?): Boolean =
-        word?.let { repository.notExistsEntriesByNormalizedWord(it.normalize()) } ?: true
+        word?.let { repository.notExistsEntriesByWord(it) } ?: true
 
 }

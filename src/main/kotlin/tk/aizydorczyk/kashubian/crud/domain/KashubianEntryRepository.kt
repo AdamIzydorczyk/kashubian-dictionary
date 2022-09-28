@@ -77,8 +77,8 @@ class KashubianEntryRepository(val entityManager: EntityManager,
             .resultList
             .isEmpty()
 
-    fun notExistsEntriesByNormalizedWord(word: String): Boolean =
-        entityManager.createQuery("select 1 from KashubianEntry e where e.normalizedWord = :word")
+    fun notExistsEntriesByWord(word: String): Boolean =
+        entityManager.createQuery("select 1 from KashubianEntry e where e.word = :word")
             .setParameter("word", word)
             .setMaxResults(1)
             .resultList
