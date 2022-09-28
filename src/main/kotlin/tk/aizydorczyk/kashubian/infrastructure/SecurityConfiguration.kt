@@ -48,7 +48,7 @@ class SecurityConfiguration(private val corsFilter: CorsFilter) {
                         "/favicon.ico",
                         "/graphql",
                         "/custom-query/**",
-                        "/$KASHUBIAN_ENTRY_PATH/{$FILE_PATH}")
+                        "$KASHUBIAN_ENTRY_PATH/{$FILE_PATH}")
                 .permitAll()
                 .antMatchers(HttpMethod.POST, "/graphql")
                 .permitAll()

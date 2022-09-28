@@ -12,6 +12,7 @@ plugins {
     kotlin("plugin.jpa") version "1.6.21"
     kotlin("plugin.allopen") version "1.6.21"
     kotlin("kapt") version "1.6.21"
+    groovy
 }
 
 group = "tk.aizydorczyk.kashubian"
@@ -49,14 +50,21 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.postgresql:postgresql:42.5.0")
     implementation("io.springfox:springfox-boot-starter:3.0.0")
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
     implementation("com.graphql-java:graphql-java-extended-scalars:18.1")
     implementation("org.jeasy:easy-random-core:5.0.0")
     implementation("com.github.javafaker:javafaker:1.0.2")
     implementation("org.yaml:snakeyaml:1.28")
+    implementation("org.flywaydb:flyway-core:8.5.13")
     compileOnly("org.jooq:jooq-codegen-maven:3.17.3")
     jooqGenerator("jakarta.xml.bind:jakarta.xml.bind-api:4.0.0")
     jooqGenerator("org.postgresql:postgresql:42.5.0")
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("org.spockframework:spock-core:2.0-M2-groovy-3.0")
+    testImplementation("org.spockframework:spock-spring:2.0-M2-groovy-3.0")
+    testImplementation("org.codehaus.groovy:groovy-all:3.0.13")
+    testImplementation("org.testcontainers:testcontainers:1.17.3")
+    testImplementation("org.testcontainers:spock:1.17.3")
+    testImplementation("org.testcontainers:postgresql:1.17.3")
 }
 
 tasks.withType<KotlinCompile> {
@@ -128,5 +136,6 @@ tasks {
     }
 
 }
+
 
 
