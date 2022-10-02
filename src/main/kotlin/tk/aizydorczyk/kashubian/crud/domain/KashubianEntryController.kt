@@ -91,7 +91,7 @@ class KashubianEntryController(
 
     @DeleteMapping(FILE_PATH)
     @ResponseStatus(NO_CONTENT)
-    fun deleteFile(@EntryExists @PathVariable entryId: Long) {
+    fun deleteFile(@EntryExists @FileExists @PathVariable entryId: Long) {
         logger.info("File entry id: $entryId deleting")
         fileRemover.remove(entryId)
     }
