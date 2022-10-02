@@ -92,6 +92,13 @@ class KashubianEntryRepository(val entityManager: EntityManager,
             .resultList
             .isEmpty()
 
+    fun existsFileByEntryId(entryId: Long): Boolean =
+        entityManager.createQuery("select 1 from SoundFile f where f.kashubianEntry = :$ENTRY_ID")
+            .setParameter(ENTRY_ID, entryId)
+            .setMaxResults(1)
+            .resultList
+            .isNotEmpty()
+
     fun <EntityType : BaseEntity> findByTypeAndIds(type: Class<EntityType>, ids: List<Number>): List<EntityType> =
         entityManager.createQuery("select e from ${type.simpleName} e where e.id in (:ids)",
                 type).setParameter("ids", ids).resultList

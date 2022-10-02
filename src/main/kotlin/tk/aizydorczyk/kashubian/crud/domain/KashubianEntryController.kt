@@ -27,6 +27,7 @@ import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.F
 import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.KASHUBIAN_ENTRY_PATH
 import tk.aizydorczyk.kashubian.crud.validator.AudioType
 import tk.aizydorczyk.kashubian.crud.validator.EntryExists
+import tk.aizydorczyk.kashubian.crud.validator.FileExists
 import tk.aizydorczyk.kashubian.crud.validator.OnCreate
 import tk.aizydorczyk.kashubian.crud.validator.OnUpdate
 
@@ -63,7 +64,7 @@ class KashubianEntryController(
     }
 
     @GetMapping(FILE_PATH)
-    fun downloadSoundFile(@EntryExists @PathVariable entryId: Long): ResponseEntity<ByteArray> {
+    fun downloadSoundFile(@EntryExists @FileExists @PathVariable entryId: Long): ResponseEntity<ByteArray> {
         logger.info("File downloading by entry id: $entryId")
         return downloader.download(entryId).let {
             ResponseEntity.ok()
