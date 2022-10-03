@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 
 
 data class KashubianEntryGraphQL(
-    val id: Long?,
+    val id: Long,
     val word: String?,
     val normalizedWord: String?,
     val note: String?,
@@ -28,6 +28,6 @@ data class KashubianEntryGraphQL(
     }
 
     override fun hashCode(): Int {
-        return id?.hashCode() ?: 0
+        return id.hashCode()
     }
 }

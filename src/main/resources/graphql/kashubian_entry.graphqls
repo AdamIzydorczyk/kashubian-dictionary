@@ -158,7 +158,7 @@ type MeaningsPaged{
 }
 
 type KashubianEntry {
-    id(orderBy: OrderBy): ID
+    id(orderBy: OrderBy): Int
     word(orderBy: OrderBy): String
     normalizedWord(orderBy: OrderBy): String
     variation: JSON
@@ -176,24 +176,24 @@ type KashubianEntry {
 }
 
 type KashubianEntrySimplified {
-    id(orderBy: OrderBy): ID
+    id(orderBy: OrderBy): Int
     word(orderBy: OrderBy): String
 }
 
 type SoundFile{
-    id(orderBy: OrderBy): ID
+    id(orderBy: OrderBy): Int
     type(orderBy: OrderBy): String
     fileName(orderBy: OrderBy): String
 }
 
 type Other{
-    id(orderBy: OrderBy): ID
+    id(orderBy: OrderBy): Int
     other: KashubianEntrySimplified
     note(orderBy: OrderBy): String
 }
 
 type Meaning{
-    id(orderBy: OrderBy): ID
+    id(orderBy: OrderBy): Int
     origin(orderBy: OrderBy): String
     definition(orderBy: OrderBy): String
     hyperonym: MeaningSimplified
@@ -209,25 +209,25 @@ type Meaning{
 }
 
 type MeaningSimplified{
-    id(orderBy: OrderBy): ID
+    id(orderBy: OrderBy): Int
     definition(orderBy: OrderBy): String
     kashubianEntry: KashubianEntrySimplified
 }
 
 type Synonym {
-    id(orderBy: OrderBy): ID
+    id(orderBy: OrderBy): Int
     synonym: MeaningSimplified
     note(orderBy: OrderBy): String
 }
 
 type Proverb {
-    id(orderBy: OrderBy): ID
+    id(orderBy: OrderBy): Int
     note(orderBy: OrderBy): String
     proverb(orderBy: OrderBy): String
 }
 
 type Translation {
-    id(orderBy: OrderBy): ID
+    id(orderBy: OrderBy): Int
     polish(orderBy: OrderBy): String
     normalizedPolish(orderBy: OrderBy): String
     english(orderBy: OrderBy): String
@@ -239,25 +239,25 @@ type Translation {
 }
 
 type Quote {
-    id(orderBy: OrderBy): ID
+    id(orderBy: OrderBy): Int
     note(orderBy: OrderBy): String
     quote(orderBy: OrderBy): String
 }
 
 type Antonym {
-    id(orderBy: OrderBy): ID
+    id(orderBy: OrderBy): Int
     note(orderBy: OrderBy): String
     antonym: MeaningSimplified
 }
 
 type Example {
-    id(orderBy: OrderBy): ID
+    id(orderBy: OrderBy): Int
     note(orderBy: OrderBy): String
     example(orderBy: OrderBy): String
 }
 
 type PhrasalVerb {
-    id(orderBy: OrderBy): ID
+    id(orderBy: OrderBy): Int
     note(orderBy: OrderBy): String
     phrasalVerb(orderBy: OrderBy): String
 }

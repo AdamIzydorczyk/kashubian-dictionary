@@ -1,7 +1,7 @@
 package tk.aizydorczyk.kashubian.crud.model.graphql.model
 
 data class MeaningSimplifiedGraphQL(
-    val id: Long?,
+    val id: Long,
     val definition: String?,
     var kashubianEntry: KashubianEntrySimplifiedGraphQL? = null
 ) {
@@ -13,6 +13,6 @@ data class MeaningSimplifiedGraphQL(
     }
 
     override fun hashCode(): Int {
-        return id?.hashCode() ?: 0
+        return id.hashCode()
     }
 }

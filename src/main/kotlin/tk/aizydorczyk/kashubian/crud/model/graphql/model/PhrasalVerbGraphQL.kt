@@ -2,7 +2,7 @@ package tk.aizydorczyk.kashubian.crud.model.graphql.model
 
 
 data class PhrasalVerbGraphQL(
-    val id: Long?,
+    val id: Long,
     val note: String?,
     val phrasalVerb: String?
 ) {
@@ -14,6 +14,6 @@ data class PhrasalVerbGraphQL(
     }
 
     override fun hashCode(): Int {
-        return id?.hashCode() ?: 0
+        return id.hashCode()
     }
 }

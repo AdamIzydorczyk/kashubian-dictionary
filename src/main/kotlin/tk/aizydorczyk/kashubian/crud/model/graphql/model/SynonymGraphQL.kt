@@ -1,7 +1,7 @@
 package tk.aizydorczyk.kashubian.crud.model.graphql.model
 
 data class SynonymGraphQL(
-    val id: Long?,
+    val id: Long,
     val note: String?,
     var synonym: MeaningSimplifiedGraphQL? = null
 ) {
@@ -13,6 +13,6 @@ data class SynonymGraphQL(
     }
 
     override fun hashCode(): Int {
-        return id?.hashCode() ?: 0
+        return id.hashCode()
     }
 }

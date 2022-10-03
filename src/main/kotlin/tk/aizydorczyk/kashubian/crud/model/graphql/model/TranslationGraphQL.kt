@@ -2,7 +2,7 @@ package tk.aizydorczyk.kashubian.crud.model.graphql.model
 
 
 data class TranslationGraphQL(
-    val id: Long?,
+    val id: Long,
     val polish: String?,
     val normalizedPolish: String?,
     val english: String?,
@@ -20,6 +20,6 @@ data class TranslationGraphQL(
     }
 
     override fun hashCode(): Int {
-        return id?.hashCode() ?: 0
+        return id.hashCode()
     }
 }

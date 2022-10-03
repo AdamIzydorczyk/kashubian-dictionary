@@ -1,7 +1,7 @@
 package tk.aizydorczyk.kashubian.crud.model.graphql.model
 
 data class AntonymGraphQL(
-    val id: Long?,
+    val id: Long,
     val note: String?,
     var antonym: MeaningSimplifiedGraphQL? = null
 ) {
@@ -13,6 +13,6 @@ data class AntonymGraphQL(
     }
 
     override fun hashCode(): Int {
-        return id?.hashCode() ?: 0
+        return id.hashCode()
     }
 }

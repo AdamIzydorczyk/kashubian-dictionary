@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.JsonNode
 import tk.aizydorczyk.kashubian.crud.query.graphql.base.GraphQLModel
 
 data class MeaningGraphQL(
-    val id: Long?,
+    val id: Long,
     val definition: String?,
     val origin: String?,
     var hyperonym: MeaningSimplifiedGraphQL? = null,
@@ -26,6 +26,6 @@ data class MeaningGraphQL(
     }
 
     override fun hashCode(): Int {
-        return id?.hashCode() ?: 0
+        return id.hashCode()
     }
 }

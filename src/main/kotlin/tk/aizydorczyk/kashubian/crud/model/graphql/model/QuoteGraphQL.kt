@@ -2,7 +2,7 @@ package tk.aizydorczyk.kashubian.crud.model.graphql.model
 
 
 data class QuoteGraphQL(
-    val id: Long?,
+    val id: Long,
     val note: String?,
     val quote: String?
 ) {
@@ -14,6 +14,6 @@ data class QuoteGraphQL(
     }
 
     override fun hashCode(): Int {
-        return id?.hashCode() ?: 0
+        return id.hashCode()
     }
 }

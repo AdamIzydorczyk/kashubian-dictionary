@@ -2,7 +2,7 @@ package tk.aizydorczyk.kashubian.crud.model.graphql.model
 
 
 data class OtherGraphQL(
-    val id: Long?,
+    val id: Long,
     val note: String?,
     var other: KashubianEntrySimplifiedGraphQL? = null
 ) {
@@ -14,6 +14,6 @@ data class OtherGraphQL(
     }
 
     override fun hashCode(): Int {
-        return id?.hashCode() ?: 0
+        return id.hashCode()
     }
 }

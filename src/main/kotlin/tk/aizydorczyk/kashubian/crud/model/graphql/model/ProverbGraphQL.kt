@@ -1,7 +1,7 @@
 package tk.aizydorczyk.kashubian.crud.model.graphql.model
 
 data class ProverbGraphQL(
-    val id: Long?,
+    val id: Long,
     val note: String?,
     val proverb: String?
 ) {
@@ -13,7 +13,7 @@ data class ProverbGraphQL(
     }
 
     override fun hashCode(): Int {
-        return id?.hashCode() ?: 0
+        return id.hashCode()
     }
 }
 

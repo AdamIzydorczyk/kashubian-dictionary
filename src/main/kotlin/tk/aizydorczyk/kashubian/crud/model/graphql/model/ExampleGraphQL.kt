@@ -2,7 +2,7 @@ package tk.aizydorczyk.kashubian.crud.model.graphql.model
 
 
 data class ExampleGraphQL(
-    val id: Long?,
+    val id: Long,
     val note: String?,
     val example: String?,
 ) {
@@ -14,6 +14,6 @@ data class ExampleGraphQL(
     }
 
     override fun hashCode(): Int {
-        return id?.hashCode() ?: 0
+        return id.hashCode()
     }
 }

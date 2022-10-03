@@ -1,7 +1,7 @@
 package tk.aizydorczyk.kashubian.crud.model.graphql.model
 
 data class SoundFileGraphQL(
-    val id: Long?,
+    val id: Long,
     val type: String?,
     val fileName: String?,
 ) {
@@ -13,6 +13,6 @@ data class SoundFileGraphQL(
     }
 
     override fun hashCode(): Int {
-        return id?.hashCode() ?: 0
+        return id.hashCode()
     }
 }

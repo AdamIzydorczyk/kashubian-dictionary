@@ -2,7 +2,7 @@ package tk.aizydorczyk.kashubian.crud.model.graphql.model
 
 
 data class KashubianEntrySimplifiedGraphQL(
-    var id: Long?,
+    var id: Long,
     var word: String?
 ) {
     override fun equals(other: Any?): Boolean {
@@ -13,6 +13,6 @@ data class KashubianEntrySimplifiedGraphQL(
     }
 
     override fun hashCode(): Int {
-        return id?.hashCode() ?: 0
+        return id.hashCode()
     }
 }
