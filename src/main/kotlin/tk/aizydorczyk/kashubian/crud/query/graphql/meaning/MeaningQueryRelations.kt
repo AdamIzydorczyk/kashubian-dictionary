@@ -145,11 +145,11 @@ object MeaningQueryRelations {
                             antonymId()),
             "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$SYNONYMS_NODE$SYNONYM_TYPE_PREFIX$SYNONYM_NODE" to
                     Triple(synonymMeaningTable(),
-                            synonymTable().MEANING_ID.eq(synonymMeaningTable().ID),
+                            synonymTable().SYNONYM_ID.eq(synonymMeaningTable().ID),
                             synonymMeaningId()),
             "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$ANTONYMS_NODE$ANTONYM_TYPE_PREFIX$ANTONYM_NODE" to
                     Triple(antonymMeaningTable(),
-                            antonymTable().MEANING_ID.eq(antonymMeaningTable().ID),
+                            antonymTable().ANTONYM_ID.eq(antonymMeaningTable().ID),
                             antonymMeaningId()),
             "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$SYNONYMS_NODE$SYNONYM_TYPE_PREFIX$SYNONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE" to
                     Triple(synonymMeaningEntryTable(),
