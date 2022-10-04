@@ -21,6 +21,7 @@ import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Compani
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.entryBasesWithAlias
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.entryDerivatives
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.entryDerivativesWithAlias
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.entryId
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.entryNormalizedWord
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.entryNote
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.entryPartOfSpeech
@@ -231,6 +232,8 @@ object KashubianEntryQueryRelations {
         it.key.removePrefix("$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX/")
     }
     internal val FIND_ALL_FIELD_TO_COLUMN_RELATIONS = mapOf(
+            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$ID_FIELD" to
+                    entryId(),
             "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$WORD_FIELD" to
                     entryWord(),
             "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$NORMALIZED_WORD_FIELD" to

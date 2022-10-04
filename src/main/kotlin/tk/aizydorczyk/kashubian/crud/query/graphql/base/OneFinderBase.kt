@@ -15,7 +15,7 @@ abstract class OneFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
     private val logger: Logger = LoggerFactory.getLogger(javaClass)
 
     protected fun findOne(selectedFields: List<SelectedField>, id: Long): GraphQLModel? {
-        val selectedColumns: MutableList<SelectFieldOrAsterisk?> =
+        val selectedColumns: MutableSet<SelectFieldOrAsterisk?> =
             selectColumns(selectedFields, fieldToColumnRelations())
         selectedColumns.add(idFieldWithAlias())
 

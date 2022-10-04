@@ -10,10 +10,10 @@ import kotlin.reflect.KProperty1
 
 abstract class FinderBase {
     protected fun selectColumns(selectedFields: List<SelectedField>,
-        fieldToColumnRelations: Map<String, Field<*>>): MutableList<SelectFieldOrAsterisk?> =
+        fieldToColumnRelations: Map<String, Field<*>>): MutableSet<SelectFieldOrAsterisk?> =
         selectedFields
             .mapNotNull { fieldToColumnRelations[it.fullyQualifiedName] }
-            .toMutableList()
+            .toMutableSet()
 
     fun Triple<TableImpl<out UpdatableRecordImpl<*>>, Condition, Field<Long>>.joinTable() = this.first
     fun Triple<TableImpl<out UpdatableRecordImpl<*>>, Condition, Field<Long>>.joinCondition() = this.second

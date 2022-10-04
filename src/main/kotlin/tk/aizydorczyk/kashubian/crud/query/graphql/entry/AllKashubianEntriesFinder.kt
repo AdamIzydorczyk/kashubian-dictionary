@@ -14,6 +14,9 @@ import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Compani
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.entryTable
 import tk.aizydorczyk.kashubian.crud.query.graphql.base.AllFinderBase
 import tk.aizydorczyk.kashubian.crud.query.graphql.base.JoinTableWithCondition
+import tk.aizydorczyk.kashubian.crud.query.graphql.entry.KashubianEntryQueryRelations.CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN
+import tk.aizydorczyk.kashubian.crud.query.graphql.entry.KashubianEntryQueryRelations.FIND_ALL_FIELD_TO_COLUMN_RELATIONS
+import tk.aizydorczyk.kashubian.crud.query.graphql.entry.KashubianEntryQueryRelations.FIND_ALL_FIELD_TO_JOIN_RELATIONS
 
 @Component
 class AllKashubianEntriesFinder(override val dsl: DSLContext) :
@@ -26,17 +29,17 @@ class AllKashubianEntriesFinder(override val dsl: DSLContext) :
 
     override fun idFieldWithAlias() = entryId()
 
-    override fun fieldToJoinRelations() = KashubianEntryQueryRelations.FIND_ALL_FIELD_TO_JOIN_RELATIONS
+    override fun fieldToJoinRelations() = FIND_ALL_FIELD_TO_JOIN_RELATIONS
 
     override fun idField(): Field<Long> =
         table().ID
 
     override fun table() = entryTable()
 
-    override fun fieldToColumnRelations() = KashubianEntryQueryRelations.FIND_ALL_FIELD_TO_COLUMN_RELATIONS
+    override fun fieldToColumnRelations() = FIND_ALL_FIELD_TO_COLUMN_RELATIONS
 
     override fun relationsWithJoin(): Map<String, Pair<QueryPart, List<JoinTableWithCondition>>> =
-        KashubianEntryQueryRelations.CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN
+        CRITERIA_TO_COLUMN_RELATIONS_WITH_JOIN
 
     override fun pageTypeName() = KashubianEntriesPaged::class.simpleName!!
 }

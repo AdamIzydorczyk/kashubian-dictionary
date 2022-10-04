@@ -45,7 +45,7 @@ abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
             .flatten()
             .distinct()
 
-        val selectedColumns: MutableList<SelectFieldOrAsterisk?> = selectColumns(selectedFields,
+        val selectedColumns: MutableSet<SelectFieldOrAsterisk?> = selectColumns(selectedFields,
                 fieldToColumnRelations())
         selectedColumns.add(idFieldWithAlias())
 
@@ -79,7 +79,7 @@ abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
     }
 
     private fun selectElements(selectedFields: MutableList<SelectedField>,
-        selectedColumns: MutableList<SelectFieldOrAsterisk?>,
+        selectedColumns: MutableSet<SelectFieldOrAsterisk?>,
         selectedJoins: List<Triple<TableImpl<out UpdatableRecordImpl<*>>, Condition, Field<Long>>>,
         whereJoins: List<JoinTableWithCondition>,
         wheres: List<Condition?>,
