@@ -12,6 +12,7 @@ import org.jooq.SelectSeekStepN
 import org.jooq.SortField
 import org.jooq.impl.DSL
 import org.jooq.impl.DSL.condition
+import org.jooq.impl.DSL.field
 import org.jooq.impl.TableImpl
 import org.jooq.impl.UpdatableRecordImpl
 import org.slf4j.Logger
@@ -95,19 +96,21 @@ abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
                     }
                 }
                 .where(idField().`in`(
-                        DSL.select(idField())
-                            .from(table())
-                            .apply {
-                                whereJoins.forEach {
-                                    leftJoin(it.joinTable).on(it.joinCondition)
+                        DSL.select(field(idFieldWithAlias().name, Long::class.java))
+                            .from(DSL.select(selectedColumns)
+                                .from(table())
+                                .apply {
+                                    whereJoins.forEach {
+                                        leftJoin(it.joinTable).on(it.joinCondition)
+                                    }
+                                    wheres.forEach {
+                                        where(it)
+                                    }
                                 }
-                                wheres.forEach {
-                                    where(it)
-                                }
-                            }
-                            .offset(pageStart)
-                            .limit(limit)))
-                .orderBy(ordersBy)
+                                .orderBy(ordersBy)
+                                .offset(pageStart)
+                                .limit(limit).asTable(table()))
+                )).orderBy(ordersBy)
                 .apply { logger.info("Select query: $sql") }
 
             false -> null
