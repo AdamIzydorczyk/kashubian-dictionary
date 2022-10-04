@@ -1,8 +1,10 @@
 package tk.aizydorczyk.kashubian.infrastructure
 
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.HttpMethod
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
 import org.springframework.security.config.annotation.web.builders.HttpSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.http.SessionCreationPolicy
@@ -25,7 +27,11 @@ import javax.servlet.http.HttpServletResponse
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfiguration(private val corsFilter: CorsFilter) {
+
+    @Value("\${auth.credentials}")
+    private lateinit var authCredentials: Array<String>
 
     @Bean
     fun filterChain(httpSecurity: HttpSecurity): SecurityFilterChain {
@@ -77,11 +83,14 @@ class SecurityConfiguration(private val corsFilter: CorsFilter) {
     }
 
     @Bean
-    fun userDetailsService(): UserDetailsService = User.builder()
-        .username("admin")
-        .password("{noop}admin")
-        .roles("ADMIN")
-        .build().let { InMemoryUserDetailsManager(it) }
+    fun userDetailsService(): UserDetailsService = authCredentials.map {
+        val split = it.split(";", limit = 3)
+        User.builder()
+            .username(split[0])
+            .password("{noop}${split[1]}")
+            .roles(split[2])
+            .build()
+    }.let { InMemoryUserDetailsManager(it) }
 }
 
 @Component

@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders.CONTENT_DISPOSITION
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.http.ResponseEntity
+import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -84,6 +85,7 @@ class KashubianEntryController(
 
     @DeleteMapping(ENTRY_ID_PATH)
     @ResponseStatus(NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
     fun delete(@EntryExists @PathVariable entryId: Long) {
         logger.info("Entry id: $entryId deleting")
         remover.remove(entryId)
@@ -91,6 +93,7 @@ class KashubianEntryController(
 
     @DeleteMapping(FILE_PATH)
     @ResponseStatus(NO_CONTENT)
+    @PreAuthorize("hasRole('ADMIN')")
     fun deleteFile(@EntryExists @FileExists @PathVariable entryId: Long) {
         logger.info("File entry id: $entryId deleting")
         fileRemover.remove(entryId)
