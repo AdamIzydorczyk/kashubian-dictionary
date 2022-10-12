@@ -10,9 +10,11 @@ import org.jooq.Record
 import org.jooq.SelectFieldOrAsterisk
 import org.jooq.SelectSeekStepN
 import org.jooq.SortField
-import org.jooq.impl.DSL
 import org.jooq.impl.DSL.condition
+import org.jooq.impl.DSL.count
 import org.jooq.impl.DSL.field
+import org.jooq.impl.DSL.select
+import org.jooq.impl.DSL.`val`
 import org.jooq.impl.TableImpl
 import org.jooq.impl.UpdatableRecordImpl
 import org.slf4j.Logger
@@ -96,8 +98,8 @@ abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
                     }
                 }
                 .where(idField().`in`(
-                        DSL.select(field(idFieldWithAlias().name, Long::class.java))
-                            .from(DSL.select(selectedColumns)
+                        select(field(idFieldWithAlias().name, Long::class.java))
+                            .from(select(selectedColumns)
                                 .from(table())
                                 .apply {
                                     whereJoins.forEach {
@@ -122,7 +124,7 @@ abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
         whereJoins: List<JoinTableWithCondition>,
         wheres: List<Condition?>) =
         when (isContainsPaginationFields(selectedFields)) {
-            true -> dsl.select(DSL.count())
+            true -> dsl.select(count())
                 .from(table())
                 .apply {
                     whereJoins.forEach {
@@ -143,7 +145,7 @@ abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
         whereJoins: List<JoinTableWithCondition>,
         wheres: List<Condition?>) =
         when (isContainsPaginationFields(selectedFields)) {
-            true -> dsl.select(DSL.count())
+            true -> dsl.select(count())
                 .from(table())
                 .apply {
                     whereJoins.forEach {
@@ -191,7 +193,7 @@ abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
     }
 
     private fun jsonContains(field: Field<Any>, value: String): Condition {
-        return condition("{0} @> {1}", field, DSL.`val`(value, field))
+        return condition("{0} @> {1}", field, `val`(value, field))
     }
 
     private fun orderByColumns(selectedFields: List<SelectedField>,
