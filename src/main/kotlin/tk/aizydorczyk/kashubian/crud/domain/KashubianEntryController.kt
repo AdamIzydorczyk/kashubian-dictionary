@@ -1,6 +1,6 @@
 package tk.aizydorczyk.kashubian.crud.domain
 
-import io.swagger.annotations.Api
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.http.HttpHeaders.CONTENT_DISPOSITION
@@ -36,7 +36,7 @@ import tk.aizydorczyk.kashubian.crud.validator.OnUpdate
 @RestController
 @RequestMapping(KASHUBIAN_ENTRY_PATH)
 @Validated
-@Api("Kashubian Entry", tags = ["KashubianEntry"])
+@Tag(name = "Kashubian Entry")
 class KashubianEntryController(
     val kashubianMapper: KashubianEntryMapper,
     val creator: KashubianEntryCreator,

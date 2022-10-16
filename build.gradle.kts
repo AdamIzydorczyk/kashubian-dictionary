@@ -4,7 +4,7 @@ import java.lang.System.getenv
 
 plugins {
     id("io.spring.dependency-management") version "1.0.13.RELEASE"
-    id("org.springframework.boot") version "2.7.2"
+    id("org.springframework.boot") version "2.7.4"
     id("org.flywaydb.flyway") version "8.5.13"
     id("nu.studer.jooq") version "7.1.1"
     kotlin("jvm") version "1.6.21"
@@ -38,18 +38,22 @@ dependencies {
         exclude("org.springframework.boot", "spring-boot-starter-tomcat")
     }
     implementation("org.springframework.boot:spring-boot-starter-graphql")
-    implementation("org.springframework.boot:spring-boot-starter-jooq:2.7.3")
+    implementation("org.springframework.boot:spring-boot-starter-jooq")
     implementation("org.springframework.boot:spring-boot-starter-log4j2")
+    implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("com.vladmihalcea:hibernate-types-4:2.18.0")
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.mapstruct:mapstruct:1.5.2.Final")
     kapt("org.mapstruct:mapstruct-processor:1.5.2.Final")
     implementation("org.springframework.boot:spring-boot-starter-jetty")
+    implementation("de.codecentric:spring-boot-admin-starter-client:2.7.4")
+    implementation("de.codecentric:spring-boot-admin-server-ui:2.7.4")
+    implementation("de.codecentric:spring-boot-admin-starter-server:2.7.4")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.postgresql:postgresql:42.5.0")
-    implementation("io.springfox:springfox-boot-starter:3.0.0")
+    implementation("org.springdoc:springdoc-openapi-ui:1.6.11")
     implementation("com.graphql-java:graphql-java-extended-scalars:18.1")
     implementation("org.jeasy:easy-random-core:5.0.0")
     implementation("com.github.javafaker:javafaker:1.0.2")
@@ -80,6 +84,10 @@ tasks.bootRun {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+}
+
+kapt {
+    correctErrorTypes = true
 }
 
 flyway {

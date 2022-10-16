@@ -1,7 +1,7 @@
 package tk.aizydorczyk.kashubian.crud.model.dto
 
 import com.fasterxml.jackson.databind.node.ObjectNode
-import io.swagger.annotations.ApiModelProperty
+import io.swagger.v3.oas.annotations.media.Schema
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechType
 import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.IS_BLANK
@@ -38,12 +38,11 @@ data class KashubianEntryDto(
     val note: String?,
     val priority: Boolean,
     @field:NotNull(message = IS_NULL, groups = [OnCreate::class, OnUpdate::class])
-    @ApiModelProperty(example = "NOUN")
+    @Schema(example = "NOUN")
     val partOfSpeech: PartOfSpeechType?,
     @field:NotNull(message = IS_NULL, groups = [OnCreate::class, OnUpdate::class])
-    @ApiModelProperty(example = "MASCULINE")
+    @Schema(example = "MASCULINE")
     val partOfSpeechSubType: PartOfSpeechSubType?,
-    @ApiModelProperty(dataType = "tk.aizydorczyk.kashubian.crud.model.json.NounVariation")
     val variation: ObjectNode?,
     @field:EntryExists(groups = [OnCreate::class, OnUpdate::class])
     @field:NotUpdatedEntry(groups = [OnUpdate::class])

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.deser.std.StdScalarDeserializer
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.kotlinModule
+import de.codecentric.boot.admin.server.utils.jackson.AdminServerModule
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Primary
@@ -19,7 +20,9 @@ class JacksonConfiguration {
     @Bean
     @Primary
     fun objectMapper(): ObjectMapper = with(ObjectMapper()) {
-        registerModules(kotlinModule(), JavaTimeModule(), StringTrimModule())
+        val metadataKeyPatterns =
+            arrayOf(".*password$", ".*secret$", ".*key$", ".*token$", ".*credentials.*", ".*vcap_services$")
+        registerModules(kotlinModule(), JavaTimeModule(), StringTrimModule(), AdminServerModule(metadataKeyPatterns))
         configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, true)
     }
 

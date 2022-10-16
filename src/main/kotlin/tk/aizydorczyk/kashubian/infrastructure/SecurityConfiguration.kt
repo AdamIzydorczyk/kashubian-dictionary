@@ -47,9 +47,11 @@ class SecurityConfiguration(private val corsFilter: CorsFilter) {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET, "/",
+                        "/actuator/health",
+                        "/swagger-ui.html",
                         "/swagger-ui/**",
                         "/swagger-resources/**",
-                        "/v2/**",
+                        "/v3/**",
                         "/graphiql/**",
                         "/favicon.ico",
                         "/graphql",

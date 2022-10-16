@@ -9,6 +9,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
+import org.springframework.web.multipart.MaxUploadSizeExceededException
 import tk.aizydorczyk.kashubian.crud.model.dto.ValidationErrorDto
 import javax.naming.SizeLimitExceededException
 import javax.validation.ConstraintViolationException
@@ -57,6 +58,17 @@ class ControllerExceptionHandler {
         logger.info("Validation failed with errors: $errorDto")
         return errorDto
     }
+
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ExceptionHandler(MaxUploadSizeExceededException::class)
+    fun handleMaxUploadSizeExceededException(
+        ex: MaxUploadSizeExceededException): ValidationErrorDto {
+        val errorDto = ValidationErrorDto(paramErrors = listOf(mapOf("message" to "512_KB_LIMIT_EXCEEDED",
+                "paramName" to "soundFile")))
+        logger.info("Validation failed with errors: $errorDto")
+        return errorDto
+    }
+
 
 }
 

@@ -533,7 +533,7 @@ object KashubianEntryQueryRelations {
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
                                 phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID)))
         ).map { criteriaAndField ->
-            listOf(".EQ", ".LIKE_", ".LIKE", ".BY_NORMALIZED", ".BY_JSON").map {
+            listOf(".EQ", "._LIKE", ".LIKE", ".BY_NORMALIZED", ".BY_JSON").map {
                 criteriaAndField.fieldPath() + it to
                         (criteriaAndField.fieldWithJoins().field to criteriaAndField.fieldWithJoins().joins)
             }
