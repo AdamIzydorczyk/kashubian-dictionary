@@ -24,6 +24,7 @@ public class TestConfig {
                     "spring.datasource.username=" + postgreSQLContainer.getUsername(),
                     "spring.datasource.password=" + postgreSQLContainer.getPassword(),
                     "spring.flyway.enabled=true",
+                    "spring.jpa.show-sql=false",
                     "spring.flyway.baseline-on-migrate=true",
                     "initializer.size=0"
             ).applyTo(configurableApplicationContext.getEnvironment());

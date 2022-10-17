@@ -1,4 +1,11 @@
 import nu.studer.gradle.jooq.JooqEdition.OSS
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat
+import org.gradle.api.tasks.testing.logging.TestLogEvent.FAILED
+import org.gradle.api.tasks.testing.logging.TestLogEvent.PASSED
+import org.gradle.api.tasks.testing.logging.TestLogEvent.SKIPPED
+import org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_ERROR
+import org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_OUT
+import org.gradle.api.tasks.testing.logging.TestLogEvent.STARTED
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.lang.System.getenv
 
@@ -82,8 +89,76 @@ tasks.bootRun {
     jvmArgs = listOf("-Xms1g", "-Xmx2g")
 }
 
+tasks.bootJar {
+    archiveFileName.set("${archiveBaseName.get()}.${archiveExtension.get()}")
+}
+
 tasks.withType<Test> {
     useJUnitPlatform()
+    testLogging {
+        events(STARTED,
+                FAILED,
+                PASSED,
+                SKIPPED,
+                STANDARD_ERROR,
+                STANDARD_OUT)
+        exceptionFormat = TestExceptionFormat.FULL
+        showExceptions = true
+        showCauses = true
+        showStackTraces = true
+        debug {
+            events(STARTED,
+                    FAILED,
+                    PASSED,
+                    SKIPPED,
+                    STANDARD_ERROR,
+                    STANDARD_OUT)
+            exceptionFormat = TestExceptionFormat.FULL
+        }
+        info.events = debug.events
+        info.exceptionFormat = debug.exceptionFormat
+
+        val failedTests = mutableListOf<TestDescriptor>()
+        val skippedTests = mutableListOf<TestDescriptor>()
+        addTestListener(object : TestListener {
+            override fun beforeSuite(suite: TestDescriptor) {}
+            override fun beforeTest(testDescriptor: TestDescriptor) {}
+            override fun afterTest(testDescriptor: TestDescriptor, result: TestResult) {
+                when (result.resultType) {
+                    TestResult.ResultType.FAILURE -> failedTests.add(testDescriptor)
+                    TestResult.ResultType.SKIPPED -> skippedTests.add(testDescriptor)
+                }
+            }
+
+            override fun afterSuite(suite: TestDescriptor, result: TestResult) {
+                if (suite.parent == null) { // root suite
+                    logger.lifecycle("----")
+                    logger.lifecycle("Test result: ${result.resultType}")
+                    logger.lifecycle("Test summary: ${result.testCount} tests, " +
+                            "${result.successfulTestCount} succeeded, " +
+                            "${result.failedTestCount} failed, " +
+                            "${result.skippedTestCount} skipped")
+                    if (failedTests.isNotEmpty()) {
+                        logger.lifecycle("\tFailed Tests:")
+                        failedTests.forEach {
+                            parent?.let { parent ->
+                                logger.lifecycle("\t\t${parent.name} - ${it.name}")
+                            } ?: logger.lifecycle("\t\t${it.name}")
+                        }
+                    }
+
+                    if (skippedTests.isNotEmpty()) {
+                        logger.lifecycle("\tSkipped Tests:")
+                        skippedTests.forEach {
+                            parent?.let { parent ->
+                                logger.lifecycle("\t\t${parent.name} - ${it.name}")
+                            } ?: logger.lifecycle("\t\t${it.name}")
+                        }
+                    }
+                }
+            }
+        })
+    }
 }
 
 kapt {
@@ -144,6 +219,4 @@ tasks {
     }
 
 }
-
-
 

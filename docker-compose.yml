@@ -1,7 +1,7 @@
 version: '3.4'
 services:
   kas_postgres:
-    container_name: kas-postgres
+    container_name: kas-db
     image: postgres:14.5
     restart: always
     environment:
@@ -10,4 +10,3 @@ services:
       - POSTGRES_DB=kas
     ports:
       - '5555:5432'
-      
