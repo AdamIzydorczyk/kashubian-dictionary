@@ -75,7 +75,7 @@ class KashubianEntryControllerTest extends Specification {
         result.andExpect(status().isBadRequest())
         and:
         result.andExpect(jsonPath('$.fieldErrors[0].message').value(WORD_NOT_UNIQUE))
-        result.andExpect(jsonPath('$.fieldErrors[0].fieldName').value("word"))
+        result.andExpect(jsonPath('$.fieldErrors[0].name').value("word"))
     }
 
     @SqlGroup([
@@ -96,7 +96,7 @@ class KashubianEntryControllerTest extends Specification {
         result.andExpect(status().isBadRequest())
         and:
         result.andExpect(jsonPath('$.objectErrors[0].message').value(PART_OF_SPEECH_AND_SUBTYPE_INCONSISTENT))
-        result.andExpect(jsonPath('$.objectErrors[0].objectName').value("kashubianEntryDto"))
+        result.andExpect(jsonPath('$.objectErrors[0].name').value("kashubianEntryDto"))
     }
 
     @SqlGroup([
@@ -117,7 +117,7 @@ class KashubianEntryControllerTest extends Specification {
         result.andExpect(status().isBadRequest())
         and:
         result.andExpect(jsonPath('$.objectErrors[0].message').value(INCORRECT_NOUN_VARIATION_JSON_FORMAT))
-        result.andExpect(jsonPath('$.objectErrors[0].objectName').value("kashubianEntryDto"))
+        result.andExpect(jsonPath('$.objectErrors[0].name').value("kashubianEntryDto"))
     }
 
     @SqlGroup([
@@ -138,7 +138,7 @@ class KashubianEntryControllerTest extends Specification {
         result.andExpect(status().isBadRequest())
         and:
         result.andExpect(jsonPath('$.objectErrors[0].message').value(INCORRECT_VERB_VARIATION_JSON_FORMAT))
-        result.andExpect(jsonPath('$.objectErrors[0].objectName').value("kashubianEntryDto"))
+        result.andExpect(jsonPath('$.objectErrors[0].name').value("kashubianEntryDto"))
     }
 
     @SqlGroup([
@@ -159,7 +159,7 @@ class KashubianEntryControllerTest extends Specification {
         result.andExpect(status().isBadRequest())
         and:
         result.andExpect(jsonPath('$.objectErrors[0].message').value(INCORRECT_ADJECTIVE_VARIATION_JSON_FORMAT))
-        result.andExpect(jsonPath('$.objectErrors[0].objectName').value("kashubianEntryDto"))
+        result.andExpect(jsonPath('$.objectErrors[0].name').value("kashubianEntryDto"))
     }
 
     @SqlGroup([
@@ -180,7 +180,7 @@ class KashubianEntryControllerTest extends Specification {
         result.andExpect(status().isBadRequest())
         and:
         result.andExpect(jsonPath('$.objectErrors[0].message').value(INCORRECT_NUMERAL_VARIATION_JSON_FORMAT))
-        result.andExpect(jsonPath('$.objectErrors[0].objectName').value("kashubianEntryDto"))
+        result.andExpect(jsonPath('$.objectErrors[0].name').value("kashubianEntryDto"))
     }
 
     @SqlGroup([
@@ -201,7 +201,7 @@ class KashubianEntryControllerTest extends Specification {
         result.andExpect(status().isBadRequest())
         and:
         result.andExpect(jsonPath('$.objectErrors[0].message').value(INCORRECT_NOUN_PRONOUN_VARIATION_JSON_FORMAT))
-        result.andExpect(jsonPath('$.objectErrors[0].objectName').value("kashubianEntryDto"))
+        result.andExpect(jsonPath('$.objectErrors[0].name').value("kashubianEntryDto"))
     }
 
     @SqlGroup([
@@ -222,7 +222,7 @@ class KashubianEntryControllerTest extends Specification {
         result.andExpect(status().isBadRequest())
         and:
         result.andExpect(jsonPath('$.objectErrors[0].message').value(INCORRECT_ADJECTIVE_PRONOUN_VARIATION_JSON_FORMAT))
-        result.andExpect(jsonPath('$.objectErrors[0].objectName').value("kashubianEntryDto"))
+        result.andExpect(jsonPath('$.objectErrors[0].name').value("kashubianEntryDto"))
     }
 
     @SqlGroup([
@@ -243,7 +243,7 @@ class KashubianEntryControllerTest extends Specification {
         result.andExpect(status().isBadRequest())
         and:
         result.andExpect(jsonPath('$.objectErrors[0].message').value(INCORRECT_ADVERB_VARIATION_JSON_FORMAT))
-        result.andExpect(jsonPath('$.objectErrors[0].objectName').value("kashubianEntryDto"))
+        result.andExpect(jsonPath('$.objectErrors[0].name').value("kashubianEntryDto"))
     }
 
     @SqlGroup([
@@ -264,7 +264,7 @@ class KashubianEntryControllerTest extends Specification {
         result.andExpect(status().isBadRequest())
         and:
         result.andExpect(jsonPath('$.objectErrors[0].message').value(VARIATION_IS_NOT_NULL))
-        result.andExpect(jsonPath('$.objectErrors[0].objectName').value("kashubianEntryDto"))
+        result.andExpect(jsonPath('$.objectErrors[0].name').value("kashubianEntryDto"))
     }
 
     String asJsonString(String fileName) {
