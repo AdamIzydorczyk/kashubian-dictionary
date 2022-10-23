@@ -22,6 +22,9 @@ abstract class OneFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
         val selectedJoins = selectedFields
             .mapNotNull { fieldToJoinRelations()[it.fullyQualifiedName] }
 
+        val ordersBy = orderByColumns(selectedFields,
+                fieldToColumnRelations())
+
         selectedJoins.forEach {
             selectedColumns.add(it.idColumn())
         }
@@ -34,6 +37,7 @@ abstract class OneFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
                 }
             }
             .where(idField().eq(id))
+            .orderBy(ordersBy)
             .apply { logger.info("Select query: $sql") }
             .let { mapper.map(it.fetch()).firstOrNull() }
     }

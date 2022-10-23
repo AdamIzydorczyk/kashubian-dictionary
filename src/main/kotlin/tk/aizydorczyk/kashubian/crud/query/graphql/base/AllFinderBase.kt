@@ -196,15 +196,6 @@ abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
         return condition("{0} @> {1}", field, `val`(value, field))
     }
 
-    private fun orderByColumns(selectedFields: List<SelectedField>,
-        fieldToColumnRelations: Map<String, Field<*>>): List<SortField<*>> =
-        selectedFields.filter { it.arguments.isNotEmpty() }.mapNotNull {
-            when (it.arguments["orderBy"]) {
-                "ASC" -> fieldToColumnRelations[it.fullyQualifiedName]?.asc()
-                else -> fieldToColumnRelations[it.fullyQualifiedName]?.desc()
-            }
-        }
-
     private fun isContainsPaginationFields(fields: List<SelectedField>) =
         fields.any {
             it.fullyQualifiedName == "${pageTypeName()}.pages"
