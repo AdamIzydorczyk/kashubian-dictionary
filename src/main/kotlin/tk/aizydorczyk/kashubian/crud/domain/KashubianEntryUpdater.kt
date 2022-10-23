@@ -67,11 +67,12 @@ class KashubianEntryUpdater(val entityManager: EntityManager) {
         old.zip(new.subList(0, old.size)).onEach {
             it.second.id = it.first.id
             it.second.setParentId(parentId)
+            customFieldsFunction.invoke(it.first, it.second)
             entityManager.merge(it.second)
-        }.forEach { customFieldsFunction.invoke(it.first, it.second) }
-        new.subList(old.size, new.size).onEach {
-            it.setParentId(parentId)
-        }.forEach(entityManager::persist)
+            new.subList(old.size, new.size).onEach { entity ->
+                entity.setParentId(parentId)
+            }.forEach(entityManager::persist)
+        }
     }
 
     private fun <EntityType : ChildEntity> mergeAll(old: MutableList<EntityType>,
@@ -81,8 +82,9 @@ class KashubianEntryUpdater(val entityManager: EntityManager) {
         old.zip(new).onEach {
             it.second.id = it.first.id
             it.second.setParentId(parentId)
+            customFieldsFunction.invoke(it.first, it.second)
             entityManager.merge(it.second)
-        }.forEach { customFieldsFunction.invoke(it.first, it.second) }
+        }
     }
 
     private fun <EntityType : ChildEntity> mergeWithOldAndRemoveRedundant(old: MutableList<EntityType>,
@@ -92,10 +94,11 @@ class KashubianEntryUpdater(val entityManager: EntityManager) {
         old.subList(0, new.size).zip(new).onEach {
             it.second.id = it.first.id
             it.second.setParentId(parentId)
+            customFieldsFunction.invoke(it.first, it.second)
             entityManager.merge(it.second)
-        }.forEach { customFieldsFunction.invoke(it.first, it.second) }
-        old.subList(new.size, old.size).onEach(entityManager::remove)
-            .let(old::removeAll)
+            old.subList(new.size, old.size).onEach(entityManager::remove)
+                .let(old::removeAll)
+        }
     }
 
 }

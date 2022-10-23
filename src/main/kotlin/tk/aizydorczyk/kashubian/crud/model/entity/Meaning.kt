@@ -1,5 +1,7 @@
 package tk.aizydorczyk.kashubian.crud.model.entity
 
+import org.hibernate.annotations.LazyCollection
+import org.hibernate.annotations.LazyCollectionOption
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.GeneratedValue
@@ -25,21 +27,27 @@ data class Meaning(
     var hyperonym: Long? = null,
     @OneToMany
     @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
+    @LazyCollection(value = LazyCollectionOption.FALSE)
     val proverbs: MutableList<Proverb> = mutableListOf(),
     @OneToMany
     @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
+    @LazyCollection(value = LazyCollectionOption.FALSE)
     val phrasalVerbs: MutableList<PhrasalVerb> = mutableListOf(),
     @OneToMany
     @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
+    @LazyCollection(value = LazyCollectionOption.FALSE)
     val quotes: MutableList<Quote> = mutableListOf(),
     @OneToMany
     @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
+    @LazyCollection(value = LazyCollectionOption.FALSE)
     val examples: MutableList<Example> = mutableListOf(),
     @OneToMany
     @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
+    @LazyCollection(value = LazyCollectionOption.FALSE)
     val synonyms: MutableList<Synonym> = mutableListOf(),
     @OneToMany
     @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
+    @LazyCollection(value = LazyCollectionOption.FALSE)
     val antonyms: MutableList<Antonym> = mutableListOf(),
     @Column(name = "kashubian_entry_id")
     var kashubianEntry: Long
