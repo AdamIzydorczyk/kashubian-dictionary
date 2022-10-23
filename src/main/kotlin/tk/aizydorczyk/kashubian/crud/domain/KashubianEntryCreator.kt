@@ -23,7 +23,7 @@ class KashubianEntryCreator(val entityManager: EntityManager) {
                 entityManager.persist(this)
 
                 proverbs.assignParentToAllAndPersist(this.id, entityManager)
-                phrasalVerbs.assignParentToAllAndPersist(this.id, entityManager)
+                idioms.assignParentToAllAndPersist(this.id, entityManager)
                 quotes.assignParentToAllAndPersist(this.id, entityManager)
                 examples.assignParentToAllAndPersist(this.id, entityManager)
                 antonyms.assignParentToAllAndPersist(this.id, entityManager)

@@ -9,15 +9,15 @@ import javax.persistence.SequenceGenerator
 import javax.persistence.Table
 
 @Entity
-@Table(name = "phrasal_verb")
-data class PhrasalVerb(
+@Table(name = "idiom")
+data class Idiom(
     @Id
-    @GeneratedValue(strategy = SEQUENCE, generator = "phrasal_verb_id_generator")
-    @SequenceGenerator(name = "phrasal_verb_id_generator",
-            sequenceName = "phrasal_verb_id_sequence",
+    @GeneratedValue(strategy = SEQUENCE, generator = "idiom_id_generator")
+    @SequenceGenerator(name = "idiom_id_generator",
+            sequenceName = "idiom_id_sequence",
             allocationSize = 1)
     override var id: Long,
-    val phrasalVerb: String,
+    val idiom: String,
     val note: String,
     @Column(name = "meaning_id")
     var meaning: Long) : ChildEntity {

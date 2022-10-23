@@ -10,6 +10,6 @@ import javax.validation.constraints.Size
 data class PhrasalVerbDto(
     @field:NotNull(message = IS_NULL, groups = [OnCreate::class, OnUpdate::class])
     @field:Size(max = 150, message = LENGTH_150_EXCEED, groups = [OnCreate::class, OnUpdate::class])
-    val phrasalVerb: String,
+    val idiom: String,
     val note: String
 )

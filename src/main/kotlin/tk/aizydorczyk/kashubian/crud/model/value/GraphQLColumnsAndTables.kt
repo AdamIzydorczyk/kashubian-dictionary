@@ -14,7 +14,7 @@ class GraphQLColumnsAndTables {
         fun synonymMeaningId() = synonymMeaningTable().ID.`as`("synonym_meaning_id")
         fun antonymId() = antonymTable().ID.`as`("antonym_id")
         fun synonymId() = synonymTable().ID.`as`("synonym_id")
-        fun phrasalVerbId() = phrasalVerbTable().ID.`as`("phrasal_verb_id")
+        fun idiomId() = idiomTable().ID.`as`("idiom_id")
         fun exampleId() = exampleTable().ID.`as`("example_id")
         fun quoteId() = quoteTable().ID.`as`("quote_id")
         fun proverbId() = proverbTable().ID.`as`("proverb_id")
@@ -30,8 +30,8 @@ class GraphQLColumnsAndTables {
         fun synonymMeaningDefinition() = synonymMeaningTable().DEFINITION.`as`("synonym_meaning_definition")
         fun antonymNote() = antonymTable().NOTE.`as`("antonym_note")
         fun synonymNote() = synonymTable().NOTE.`as`("synonym_note")
-        fun phrasalVerbPhrasalVerb() = phrasalVerbTable().PHRASAL_VERB_.`as`("phrasal_verb_phrasal_verb")
-        fun phrasalVerbNote() = phrasalVerbTable().NOTE.`as`("phrasal_verb_note")
+        fun idiomPhrasalVerb() = idiomTable().IDIOM_.`as`("idiom_idiom")
+        fun idiomNote() = idiomTable().NOTE.`as`("idiom_note")
         fun exampleExample() = exampleTable().EXAMPLE_.`as`("example_example")
         fun exampleNote() = exampleTable().NOTE.`as`("example_note")
         fun quoteQuote() = quoteTable().QUOTE_.`as`("quote_quote")
@@ -40,6 +40,7 @@ class GraphQLColumnsAndTables {
         fun proverbNote() = proverbTable().NOTE.`as`("proverb_note")
         fun translationNormalizedUkrainian() =
             translationTable().NORMALIZED_UKRAINIAN.`as`("translation_normalized_ukrainian")
+
         fun translationUkrainian() = translationTable().UKRAINIAN.`as`("translation_ukrainian")
         fun translationNormalizedGerman() =
             translationTable().NORMALIZED_GERMAN.`as`("translation_normalized_german")
@@ -90,7 +91,7 @@ class GraphQLColumnsAndTables {
         fun synonymMeaningTable() = Tables.MEANING.`as`("synonym_meaning")
         fun antonymTable() = Tables.ANTONYM.`as`("antonym")
         fun synonymTable() = Tables.SYNONYM.`as`("synonym")
-        fun phrasalVerbTable() = Tables.PHRASAL_VERB.`as`("phrasal_verb")
+        fun idiomTable() = Tables.IDIOM.`as`("idiom")
         fun exampleTable() = Tables.EXAMPLE.`as`("example")
         fun quoteTable() = Tables.QUOTE.`as`("quote")
         fun proverbTable() = Tables.PROVERB.`as`("proverb")

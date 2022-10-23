@@ -6,8 +6,8 @@ INSERT INTO public.meaning (id,definition,origin,hyperonym_id,kashubian_entry_id
 (nextval('meaning_id_sequence'),'Norwegia1','Aut est omnis non quia modi ut natus.1',NULL,1);
 INSERT INTO public."translation" (id,english,normalized_english,german,normalized_german,polish,normalized_polish,ukrainian,normalized_ukrainian,meaning_id) VALUES
 (nextval('translation_id_sequence'),'Leśnica1','lesnica','Pan1','pan','Greta1','greta','Nowe Miasteczko1','nowemiasteczko',1);
-INSERT INTO public.phrasal_verb (id,note,phrasal_verb,meaning_id) VALUES
-(nextval('phrasal_verb_id_sequence'),'Człopa1','Pani1',1);
+INSERT INTO public.idiom (id,note,idiom,meaning_id) VALUES
+(nextval('idiom_id_sequence'),'Człopa1','Pani1',1);
 INSERT INTO public.proverb (id,note,proverb,meaning_id) VALUES
 (nextval('proverb_id_sequence'),'Kamerun1','Podkarpackie1',1);
 INSERT INTO public."quote" (id,note,"quote",meaning_id) VALUES

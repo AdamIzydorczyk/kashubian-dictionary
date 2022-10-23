@@ -29,7 +29,7 @@ class KashubianEntryGraphQLMapper : GraphQLMapper<KashubianEntryGraphQL> {
         val translations = mutableMapOf<Long, TranslationGraphQL>()
         val quotes = mutableMapOf<Long, QuoteGraphQL>()
         val proverbs = mutableMapOf<Long, ProverbGraphQL>()
-        val phrasalVerbs = mutableMapOf<Long, PhrasalVerbGraphQL>()
+        val idioms = mutableMapOf<Long, PhrasalVerbGraphQL>()
         val examples = mutableMapOf<Long, ExampleGraphQL>()
         val synonyms = mutableMapOf<Long, SynonymGraphQL>()
         val antonyms = mutableMapOf<Long, AntonymGraphQL>()
@@ -48,7 +48,7 @@ class KashubianEntryGraphQLMapper : GraphQLMapper<KashubianEntryGraphQL> {
             mapHyperonymEntry(record, simplifiedEntries, simplifiedMeanings)
             mapQuotes(record, quotes, meanings)
             mapProverbs(record, proverbs, meanings)
-            mapPhrasalVerbs(record, phrasalVerbs, meanings)
+            mapIdioms(record, idioms, meanings)
             mapExamples(record, examples, meanings)
             mapSynonyms(record, synonyms, meanings)
             mapAntonyms(record, antonyms, meanings)
@@ -161,24 +161,24 @@ class KashubianEntryGraphQLMapper : GraphQLMapper<KashubianEntryGraphQL> {
                 })
     }
 
-    private fun mapPhrasalVerbs(record: Record,
-        phrasalVerbs: MutableMap<Long, PhrasalVerbGraphQL>,
+    private fun mapIdioms(record: Record,
+        idioms: MutableMap<Long, PhrasalVerbGraphQL>,
         meanings: MutableMap<Long, MeaningGraphQL>) {
         record.mapAndAssignById(
-                "phrasal_verb_id",
-                phrasalVerbs,
+                "idiom_id",
+                idioms,
                 { id ->
                     PhrasalVerbGraphQL(
                             id = id,
-                            note = record.fetchValueOrNull("phrasal_verb_note",
+                            note = record.fetchValueOrNull("idiom_note",
                                     String::class.java),
-                            phrasalVerb = record.fetchValueOrNull("phrasal_verb_phrasal_verb",
+                            idiom = record.fetchValueOrNull("idiom_idiom",
                                     String::class.java))
                 },
                 "meaning_id",
                 meanings,
-                { meaning, phrasalVerb ->
-                    meaning.phrasalVerbs.add(phrasalVerb)
+                { meaning, idiom ->
+                    meaning.idioms.add(idiom)
                 })
     }
 

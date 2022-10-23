@@ -14,4 +14,4 @@ data class MeaningsCriteriaExpression(
     val quotes: QuotesCriteriaExpression?,
     val antonyms: AntonymsCriteriaExpression?,
     val examples: ExamplesCriteriaExpression?,
-    val phrasalVerbs: PhrasalVerbsCriteriaExpression?) : CriteriaExpression
+    val idioms: IdiomsCriteriaExpression?) : CriteriaExpression

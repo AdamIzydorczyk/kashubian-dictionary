@@ -34,6 +34,10 @@ import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Compani
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.exampleId
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.exampleNote
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.exampleTable
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.idiomId
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.idiomNote
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.idiomPhrasalVerb
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.idiomTable
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningDefinition
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningHyperonymDefinition
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningHyperonymEntryId
@@ -55,10 +59,6 @@ import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Compani
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.otherId
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.otherNote
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.otherTable
-import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.phrasalVerbId
-import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.phrasalVerbNote
-import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.phrasalVerbPhrasalVerb
-import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.phrasalVerbTable
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.proverbId
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.proverbNote
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.proverbProverb
@@ -106,6 +106,9 @@ import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.GERMAN_
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.HYPERONYMS_FIELD
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.HYPERONYM_NODE
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.HYPONYMS_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.IDIOMS_NODE
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.IDIOM_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.IDIOM_TYPE_PREFIX
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.ID_FIELD
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.KASHUBIAN_ENTRY_NODE
@@ -127,9 +130,6 @@ import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.OTHER_N
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.OTHER_TYPE_PREFIX
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.PART_OF_SPEECH_FIELD
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.PART_OF_SPEECH_SUB_TYPE_FIELD
-import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.PHRASAL_VERBS_NODE
-import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.PHRASAL_VERB_FIELD
-import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.PHRASAL_VERB_TYPE_PREFIX
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.POLISH_FIELD
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.PRIORITY_FIELD
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.PROVERBS_NODE
@@ -199,10 +199,10 @@ object KashubianEntryQueryRelations {
                     Triple(exampleTable(),
                             meaningTable().ID.eq(exampleTable().MEANING_ID),
                             exampleId()),
-            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$PHRASAL_VERBS_NODE" to
-                    Triple(phrasalVerbTable(),
-                            meaningTable().ID.eq(phrasalVerbTable().MEANING_ID),
-                            phrasalVerbId()),
+            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$IDIOMS_NODE" to
+                    Triple(idiomTable(),
+                            meaningTable().ID.eq(idiomTable().MEANING_ID),
+                            idiomId()),
             "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$SYNONYMS_NODE" to
                     Triple(synonymTable(),
                             meaningTable().ID.eq(synonymTable().MEANING_ID),
@@ -326,12 +326,12 @@ object KashubianEntryQueryRelations {
                     exampleNote(),
             "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$EXAMPLES_NODE$EXAMPLE_TYPE_PREFIX$EXAMPLE_FIELD" to
                     exampleExample(),
-            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$PHRASAL_VERBS_NODE$PHRASAL_VERB_TYPE_PREFIX$ID_FIELD" to
-                    phrasalVerbId(),
-            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$PHRASAL_VERBS_NODE$PHRASAL_VERB_TYPE_PREFIX$NOTE_FIELD" to
-                    phrasalVerbNote(),
-            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$PHRASAL_VERBS_NODE$PHRASAL_VERB_TYPE_PREFIX$PHRASAL_VERB_FIELD" to
-                    phrasalVerbPhrasalVerb(),
+            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$IDIOMS_NODE$IDIOM_TYPE_PREFIX$ID_FIELD" to
+                    idiomId(),
+            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$IDIOMS_NODE$IDIOM_TYPE_PREFIX$NOTE_FIELD" to
+                    idiomNote(),
+            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$IDIOMS_NODE$IDIOM_TYPE_PREFIX$IDIOM_FIELD" to
+                    idiomPhrasalVerb(),
             "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$SYNONYMS_NODE$SYNONYM_TYPE_PREFIX$ID_FIELD" to
                     synonymId(),
             "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$SYNONYMS_NODE$SYNONYM_TYPE_PREFIX$NOTE_FIELD" to
@@ -523,15 +523,15 @@ object KashubianEntryQueryRelations {
                 "$SELECT_PREFIX$MEANINGS_NODE$EXAMPLES_NODE$EXAMPLE_FIELD" to (exampleTable().EXAMPLE_ joinedBy
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
                                 exampleTable() on meaningTable().ID.eq(exampleTable().MEANING_ID))),
-                "$SELECT_PREFIX$MEANINGS_NODE$PHRASAL_VERBS_NODE$ID_FIELD" to (phrasalVerbTable().ID joinedBy
+                "$SELECT_PREFIX$MEANINGS_NODE$IDIOMS_NODE$ID_FIELD" to (idiomTable().ID joinedBy
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID))),
-                "$SELECT_PREFIX$MEANINGS_NODE$PHRASAL_VERBS_NODE$NOTE_FIELD" to (phrasalVerbTable().NOTE joinedBy
+                                idiomTable() on meaningTable().ID.eq(idiomTable().MEANING_ID))),
+                "$SELECT_PREFIX$MEANINGS_NODE$IDIOMS_NODE$NOTE_FIELD" to (idiomTable().NOTE joinedBy
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID))),
-                "$SELECT_PREFIX$MEANINGS_NODE$PHRASAL_VERBS_NODE$PHRASAL_VERB_FIELD" to (phrasalVerbTable().PHRASAL_VERB_ joinedBy
+                                idiomTable() on meaningTable().ID.eq(idiomTable().MEANING_ID))),
+                "$SELECT_PREFIX$MEANINGS_NODE$IDIOMS_NODE$IDIOM_FIELD" to (idiomTable().IDIOM_ joinedBy
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID)))
+                                idiomTable() on meaningTable().ID.eq(idiomTable().MEANING_ID)))
         ).map { criteriaAndField ->
             listOf(".EQ", "._LIKE", ".LIKE", ".BY_NORMALIZED", ".BY_JSON").map {
                 criteriaAndField.fieldPath() + it to

@@ -50,7 +50,7 @@ input MeaningsCriteriaExpression{
     quotes: QuotesCriteriaExpression
     antonyms: AntonymsCriteriaExpression
     examples: ExamplesCriteriaExpression
-    phrasalVerbs: PhrasalVerbsCriteriaExpression
+    idioms: IdiomsCriteriaExpression
 }
 
 input MeaningsCriteriaExpressionSimplified{
@@ -77,10 +77,10 @@ input SynonymsCriteriaExpression{
     synonym: MeaningsCriteriaExpressionSimplified
 }
 
-input PhrasalVerbsCriteriaExpression{
+input IdiomsCriteriaExpression{
     id: NumericCriteria
     note: StringCriteria
-    phrasalVerb: StringCriteria
+    idiom: StringCriteria
 }
 
 input ExamplesCriteriaExpression{
@@ -205,7 +205,7 @@ type Meaning{
     quotes: [Quote]
     antonyms: [Antonym]
     examples: [Example]
-    phrasalVerbs: [PhrasalVerb]
+    idioms: [Idiom]
 }
 
 type MeaningSimplified{
@@ -256,10 +256,10 @@ type Example {
     example(orderBy: OrderBy): String
 }
 
-type PhrasalVerb {
+type Idiom {
     id(orderBy: OrderBy): Int
     note(orderBy: OrderBy): String
-    phrasalVerb(orderBy: OrderBy): String
+    idiom(orderBy: OrderBy): String
 }
 
 enum OrderBy {

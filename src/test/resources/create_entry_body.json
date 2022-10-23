@@ -37,9 +37,9 @@
           "note": "foo"
         }
       ],
-      "phrasalVerbs": [
+      "idioms": [
         {
-          "phrasalVerb": "lorem ipsum",
+          "idiom": "lorem ipsum",
           "note": "foo"
         }
       ],
@@ -65,9 +65,9 @@
           "note": "foo"
         }
       ],
-      "phrasalVerbs": [
+      "idioms": [
         {
-          "phrasalVerb": "lorem ipsum",
+          "idiom": "lorem ipsum",
           "note": "foo"
         }
       ],
@@ -99,9 +99,9 @@
           "note": "foo"
         }
       ],
-      "phrasalVerbs": [
+      "idioms": [
         {
-          "phrasalVerb": "lorem ipsum",
+          "idiom": "lorem ipsum",
           "note": "foo"
         }
       ],

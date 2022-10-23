@@ -23,7 +23,7 @@ data class MeaningDto(
     @field:Valid
     val proverbs: List<ProverbDto> = emptyList(),
     @field:Valid
-    val phrasalVerbs: List<PhrasalVerbDto> = emptyList(),
+    val idioms: List<PhrasalVerbDto> = emptyList(),
     @field:Valid
     val quotes: List<QuoteDto> = emptyList(),
     @field:Valid

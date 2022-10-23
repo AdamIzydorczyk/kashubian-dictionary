@@ -43,7 +43,7 @@ class KashubianEntryUpdater(val entityManager: EntityManager) {
         addOrMergeElements(oldMeaning.id, oldMeaning.synonyms, newMeaning.synonyms)
         addOrMergeElements(oldMeaning.id, oldMeaning.examples, newMeaning.examples)
         addOrMergeElements(oldMeaning.id, oldMeaning.proverbs, newMeaning.proverbs)
-        addOrMergeElements(oldMeaning.id, oldMeaning.phrasalVerbs, newMeaning.phrasalVerbs)
+        addOrMergeElements(oldMeaning.id, oldMeaning.idioms, newMeaning.idioms)
     }
 
     fun <EntityType : ChildEntity> addOrMergeElements(parentId: Long,

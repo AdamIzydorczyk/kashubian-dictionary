@@ -17,6 +17,10 @@ import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Compani
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.exampleId
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.exampleNote
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.exampleTable
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.idiomId
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.idiomNote
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.idiomPhrasalVerb
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.idiomTable
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningDefinition
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningHyperonymDefinition
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningHyperonymEntryId
@@ -31,10 +35,6 @@ import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Compani
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningId
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningOrigin
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningTable
-import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.phrasalVerbId
-import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.phrasalVerbNote
-import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.phrasalVerbPhrasalVerb
-import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.phrasalVerbTable
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.proverbId
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.proverbNote
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.proverbProverb
@@ -74,6 +74,9 @@ import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.GERMAN_
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.HYPERONYMS_FIELD
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.HYPERONYM_NODE
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.HYPONYMS_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.IDIOMS_NODE
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.IDIOM_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.IDIOM_TYPE_PREFIX
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.ID_FIELD
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.KASHUBIAN_ENTRY_NODE
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX
@@ -86,9 +89,6 @@ import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.NORMALI
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.NORMALIZED_UKRAINIAN_FIELD
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.NOTE_FIELD
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.ORIGIN_FIELD
-import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.PHRASAL_VERBS_NODE
-import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.PHRASAL_VERB_FIELD
-import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.PHRASAL_VERB_TYPE_PREFIX
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.POLISH_FIELD
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.PROVERBS_NODE
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.PROVERB_FIELD
@@ -132,10 +132,10 @@ object MeaningQueryRelations {
                     Triple(exampleTable(),
                             meaningTable().ID.eq(exampleTable().MEANING_ID),
                             exampleId()),
-            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$PHRASAL_VERBS_NODE" to
-                    Triple(phrasalVerbTable(),
-                            meaningTable().ID.eq(phrasalVerbTable().MEANING_ID),
-                            phrasalVerbId()),
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$IDIOMS_NODE" to
+                    Triple(idiomTable(),
+                            meaningTable().ID.eq(idiomTable().MEANING_ID),
+                            idiomId()),
             "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$SYNONYMS_NODE" to
                     Triple(synonymTable(),
                             meaningTable().ID.eq(synonymTable().MEANING_ID),
@@ -221,12 +221,12 @@ object MeaningQueryRelations {
                     exampleNote(),
             "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$EXAMPLES_NODE$EXAMPLE_TYPE_PREFIX$EXAMPLE_FIELD" to
                     exampleExample(),
-            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$PHRASAL_VERBS_NODE$PHRASAL_VERB_TYPE_PREFIX$ID_FIELD" to
-                    phrasalVerbId(),
-            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$PHRASAL_VERBS_NODE$PHRASAL_VERB_TYPE_PREFIX$NOTE_FIELD" to
-                    phrasalVerbNote(),
-            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$PHRASAL_VERBS_NODE$PHRASAL_VERB_TYPE_PREFIX$PHRASAL_VERB_FIELD" to
-                    phrasalVerbPhrasalVerb(),
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$IDIOMS_NODE$IDIOM_TYPE_PREFIX$ID_FIELD" to
+                    idiomId(),
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$IDIOMS_NODE$IDIOM_TYPE_PREFIX$NOTE_FIELD" to
+                    idiomNote(),
+            "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$IDIOMS_NODE$IDIOM_TYPE_PREFIX$IDIOM_FIELD" to
+                    idiomPhrasalVerb(),
             "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$SYNONYMS_NODE$SYNONYM_TYPE_PREFIX$ID_FIELD" to
                     synonymId(),
             "$MEANINGS_PAGED_TYPE_PREFIX$SELECT_PREFIX$MEANING_TYPE_PREFIX$SYNONYMS_NODE$SYNONYM_TYPE_PREFIX$NOTE_FIELD" to
@@ -353,12 +353,12 @@ object MeaningQueryRelations {
                         listOf(exampleTable() on meaningTable().ID.eq(exampleTable().MEANING_ID))),
                 "$SELECT_PREFIX$EXAMPLES_NODE$EXAMPLE_FIELD" to (exampleTable().EXAMPLE_ joinedBy
                         listOf(exampleTable() on meaningTable().ID.eq(exampleTable().MEANING_ID))),
-                "$SELECT_PREFIX$PHRASAL_VERBS_NODE$ID_FIELD" to (phrasalVerbTable().ID joinedBy
-                        listOf(phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID))),
-                "$SELECT_PREFIX$PHRASAL_VERBS_NODE$NOTE_FIELD" to (phrasalVerbTable().NOTE joinedBy
-                        listOf(phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID))),
-                "$SELECT_PREFIX$PHRASAL_VERBS_NODE$PHRASAL_VERB_FIELD" to (phrasalVerbTable().PHRASAL_VERB_ joinedBy
-                        listOf(phrasalVerbTable() on meaningTable().ID.eq(phrasalVerbTable().MEANING_ID)))
+                "$SELECT_PREFIX$IDIOMS_NODE$ID_FIELD" to (idiomTable().ID joinedBy
+                        listOf(idiomTable() on meaningTable().ID.eq(idiomTable().MEANING_ID))),
+                "$SELECT_PREFIX$IDIOMS_NODE$NOTE_FIELD" to (idiomTable().NOTE joinedBy
+                        listOf(idiomTable() on meaningTable().ID.eq(idiomTable().MEANING_ID))),
+                "$SELECT_PREFIX$IDIOMS_NODE$IDIOM_FIELD" to (idiomTable().IDIOM_ joinedBy
+                        listOf(idiomTable() on meaningTable().ID.eq(idiomTable().MEANING_ID)))
         ).map { criteriaAndField ->
             listOf(".EQ", ".LIKE_", ".LIKE", ".BY_NORMALIZED", ".BY_JSON").map {
                 criteriaAndField.fieldPath() + it to

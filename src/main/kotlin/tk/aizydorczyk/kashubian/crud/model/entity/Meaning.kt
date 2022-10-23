@@ -32,7 +32,7 @@ data class Meaning(
     @OneToMany
     @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
     @LazyCollection(value = LazyCollectionOption.FALSE)
-    val phrasalVerbs: MutableList<PhrasalVerb> = mutableListOf(),
+    val idioms: MutableList<Idiom> = mutableListOf(),
     @OneToMany
     @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
     @LazyCollection(value = LazyCollectionOption.FALSE)
