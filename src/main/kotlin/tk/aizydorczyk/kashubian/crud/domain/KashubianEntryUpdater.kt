@@ -69,10 +69,10 @@ class KashubianEntryUpdater(val entityManager: EntityManager) {
             it.second.setParentId(parentId)
             customFieldsFunction.invoke(it.first, it.second)
             entityManager.merge(it.second)
-            new.subList(old.size, new.size).onEach { entity ->
-                entity.setParentId(parentId)
-            }.forEach(entityManager::persist)
         }
+        new.subList(old.size, new.size).onEach { entity ->
+            entity.setParentId(parentId)
+        }.forEach(entityManager::persist)
     }
 
     private fun <EntityType : ChildEntity> mergeAll(old: MutableList<EntityType>,
@@ -96,9 +96,9 @@ class KashubianEntryUpdater(val entityManager: EntityManager) {
             it.second.setParentId(parentId)
             customFieldsFunction.invoke(it.first, it.second)
             entityManager.merge(it.second)
-            old.subList(new.size, old.size).onEach(entityManager::remove)
-                .let(old::removeAll)
         }
+        old.subList(new.size, old.size).onEach(entityManager::remove)
+            .let(old::removeAll)
     }
 
 }
