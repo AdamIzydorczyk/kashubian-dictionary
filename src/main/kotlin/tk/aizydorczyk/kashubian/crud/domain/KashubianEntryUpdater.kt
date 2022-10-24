@@ -64,15 +64,18 @@ class KashubianEntryUpdater(val entityManager: EntityManager) {
         new: MutableList<EntityType>,
         parentId: Long,
         customFieldsFunction: (EntityType, EntityType) -> Unit) {
-        old.zip(new.subList(0, old.size)).onEach {
-            it.second.id = it.first.id
-            it.second.setParentId(parentId)
-            customFieldsFunction.invoke(it.first, it.second)
-            entityManager.merge(it.second)
+        old.zip(new.subList(0, old.size)).onEach { oldAndNew ->
+            oldAndNew.second.id = oldAndNew.first.id
+            oldAndNew.second.setParentId(parentId)
+            customFieldsFunction.invoke(oldAndNew.first, oldAndNew.second)
+            entityManager.merge(oldAndNew.second)
         }
         new.subList(old.size, new.size).onEach { entity ->
             entity.setParentId(parentId)
-        }.forEach(entityManager::persist)
+        }.onEach(entityManager::persist)
+            .forEach { entity ->
+                customFieldsFunction.invoke(entity, entity)
+            }
     }
 
     private fun <EntityType : ChildEntity> mergeAll(old: MutableList<EntityType>,
@@ -91,13 +94,14 @@ class KashubianEntryUpdater(val entityManager: EntityManager) {
         new: MutableList<EntityType>,
         parentId: Long,
         customFieldsFunction: (EntityType, EntityType) -> Unit) {
-        old.subList(0, new.size).zip(new).onEach {
-            it.second.id = it.first.id
-            it.second.setParentId(parentId)
-            customFieldsFunction.invoke(it.first, it.second)
-            entityManager.merge(it.second)
+        old.subList(0, new.size).zip(new).onEach { oldAndNew ->
+            oldAndNew.second.id = oldAndNew.first.id
+            oldAndNew.second.setParentId(parentId)
+            customFieldsFunction.invoke(oldAndNew.first, oldAndNew.second)
+            entityManager.merge(oldAndNew.second)
         }
-        old.subList(new.size, old.size).onEach(entityManager::remove)
+        old.subList(new.size, old.size)
+            .onEach(entityManager::remove)
             .let(old::removeAll)
     }
 
