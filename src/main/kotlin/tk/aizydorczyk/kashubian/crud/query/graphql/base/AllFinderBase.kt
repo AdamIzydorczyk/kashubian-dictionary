@@ -160,7 +160,7 @@ abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
 
             false -> 0
         }
-
+    @Suppress("UNCHECKED_CAST")
     private fun prepareWheresWithJoins(prefix: String = SELECT_PREFIX, where: CriteriaExpression?,
         declaredMemberProperties: Collection<KProperty1<out CriteriaExpression, *>>,
         criteriaToColumnRelationsWithJoin: Map<String, Pair<QueryPart, List<JoinTableWithCondition>>>

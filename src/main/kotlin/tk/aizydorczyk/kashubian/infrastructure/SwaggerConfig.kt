@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.ViewControllerRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
 
 @Configuration
-class SwaggerConfiguration : WebMvcConfigurer {
+class SwaggerConfig : WebMvcConfigurer {
 
     @Bean
     fun customOpenAPI(): OpenAPI = OpenAPI()

@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-class SecurityConfiguration(private val corsFilter: CorsFilter) {
+class SecurityConfig(private val corsFilter: CorsFilter) {
 
     @Value("\${auth.credentials}")
     private lateinit var authCredentials: Array<String>

@@ -6,5 +6,5 @@ import org.springframework.context.annotation.Configuration
 
 @Configuration
 @EntityScan("tk.aizydorczyk.kashubian.crud.model.entity")
-class JpaConfiguration
+class JpaConfig
 

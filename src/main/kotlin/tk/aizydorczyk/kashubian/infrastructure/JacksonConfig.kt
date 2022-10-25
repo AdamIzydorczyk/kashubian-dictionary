@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Primary
 
 
 @Configuration
-class JacksonConfiguration {
+class JacksonConfig {
 
     @Bean
     @Primary

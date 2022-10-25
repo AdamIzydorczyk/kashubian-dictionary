@@ -6,18 +6,21 @@ import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryRepository
 import tk.aizydorczyk.kashubian.crud.domain.WordOfTheDayProjection
-import java.time.Clock.systemUTC
+import java.time.Clock
 import java.time.LocalDate.now
 import java.util.concurrent.atomic.AtomicReference
 
 @Component
-class WordOfTheDayFinder(val kashubianEntryRepository: KashubianEntryRepository) {
+class WordOfTheDayFinder(
+    val kashubianEntryRepository: KashubianEntryRepository,
+    val clock: Clock) {
+
     val logger: Logger = LoggerFactory.getLogger(javaClass)
     val cache = AtomicReference(CachedWordOfTheDay(0L, WordOfTheDay(-1L, "", emptyList())))
 
     @Transactional(readOnly = true)
     fun find(): WordOfTheDay {
-        val currentDay = now(systemUTC())
+        val currentDay = now(clock)
         val seed = currentDay.toEpochDay()
 
         if (cache.seed() == seed) {
