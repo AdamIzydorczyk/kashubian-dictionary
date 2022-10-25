@@ -52,7 +52,7 @@ data class KashubianEntryDto(
     @field:Valid
     @field:NotEmpty(message = NOT_CONTAINS_AT_LEAST_ONE_MEANING, groups = [OnCreate::class, OnUpdate::class])
     @field:HyperonimIdNotInUpdatedEntryMeaningsHyperonims(groups = [OnUpdate::class])
-    @field:HyperonimIdsCannotRepeatedInMeanings(groups = [OnUpdate::class])
+    @field:HyperonimIdsCannotRepeatedInMeanings(groups = [OnCreate::class, OnUpdate::class])
     val meanings: List<MeaningDto> = emptyList(),
     @field:Valid
     val others: List<OtherDto> = emptyList()

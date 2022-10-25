@@ -1,6 +1,5 @@
 {
   "word": "test_word",
-  "note": "test_note",
   "partOfSpeech": "NOUN",
   "partOfSpeechSubType": "NEUTER",
   "variation": {
@@ -49,10 +48,7 @@
   "meanings": [
     {
       "translation": {
-        "polish": "test_polish",
-        "english": null,
-        "german": null,
-        "ukrainian": null
+        "polish": "test_polish"
       },
       "definition": "test_definition"
     }

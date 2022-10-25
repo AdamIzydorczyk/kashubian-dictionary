@@ -1,0 +1,21 @@
+{
+  "word": "test_duplicated_hyperonym",
+  "partOfSpeech": "ADVERB",
+  "partOfSpeechSubType": "ADVERB",
+  "meanings": [
+    {
+      "translation": {
+        "polish": "test_polish_1"
+      },
+      "definition": "test 1",
+      "hyperonym": 1
+    },
+    {
+      "translation": {
+        "polish": "test_polish_2"
+      },
+      "definition": "test 2",
+      "hyperonym": 1
+    }
+  ]
+}

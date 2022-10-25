@@ -1,0 +1,14 @@
+{
+  "word": "test_word",
+  "partOfSpeech": "ADVERB",
+  "partOfSpeechSubType": "ADVERB",
+  "base": 2,
+  "meanings": [
+    {
+      "translation": {
+        "polish": "test_polish"
+      },
+      "definition": "test"
+    }
+  ]
+}

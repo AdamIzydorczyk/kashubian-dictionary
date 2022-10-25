@@ -1,0 +1,20 @@
+{
+  "word": "test_word",
+  "note": "test_note",
+  "partOfSpeech": "NOUN",
+  "partOfSpeechSubType": "FEMININE",
+  "variation": {
+    "nounVariation": {
+      "nominative": null
+    }
+  },
+  "meanings": [
+    {
+      "translation": {
+        "polish": "test_polish"
+      },
+      "definition": "Kolczasty krzew, na którym rosną niewielkie, kuliste owoce.",
+      "hyperonym": 5
+    }
+  ]
+}

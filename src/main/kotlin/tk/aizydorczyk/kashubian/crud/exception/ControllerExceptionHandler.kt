@@ -30,7 +30,10 @@ class ControllerExceptionHandler {
         val fieldErrors = groupedErrors["ViolationFieldError"].orEmpty()
             .map { it as FieldError }
             .map { mapOf("message" to it.defaultMessage.toString(), "name" to it.field) }
-        val errorDto = ValidationErrorDto(objectErrors = objectErrors, fieldErrors = fieldErrors)
+        val errorDto = ValidationErrorDto(
+                objectErrors = objectErrors.toSortedSet(compareBy { it.hashCode() }),
+                fieldErrors = fieldErrors.toSortedSet(compareBy { it.hashCode() })
+        )
         logger.info("Validation failed with errors: $errorDto")
         return errorDto
     }
@@ -43,7 +46,8 @@ class ControllerExceptionHandler {
             mapOf("message" to it.message.toString(),
                     "name" to it.propertyPath.toString().split(".", limit = 2).last())
         }
-        val errorDto = ValidationErrorDto(paramErrors = paramErrors)
+        val errorDto = ValidationErrorDto(
+                paramErrors = paramErrors.toSortedSet(compareBy { it.hashCode() }))
         logger.info("Validation failed with errors: $errorDto")
         return errorDto
     }
@@ -52,8 +56,10 @@ class ControllerExceptionHandler {
     @ExceptionHandler(SizeLimitExceededException::class)
     fun handleSizeLimitExceededException(
         ex: SizeLimitExceededException): ValidationErrorDto {
-        val errorDto = ValidationErrorDto(paramErrors = listOf(mapOf("message" to "512_KB_LIMIT_EXCEEDED",
-                "name" to "soundFile")))
+        val errorDto = ValidationErrorDto(
+                paramErrors = setOf(mapOf(
+                        "message" to "512_KB_LIMIT_EXCEEDED",
+                        "name" to "soundFile")))
         logger.info("Validation failed with errors: $errorDto")
         return errorDto
     }
@@ -62,8 +68,9 @@ class ControllerExceptionHandler {
     @ExceptionHandler(MaxUploadSizeExceededException::class)
     fun handleMaxUploadSizeExceededException(
         ex: MaxUploadSizeExceededException): ValidationErrorDto {
-        val errorDto = ValidationErrorDto(paramErrors = listOf(mapOf("message" to "512_KB_LIMIT_EXCEEDED",
-                "name" to "soundFile")))
+        val errorDto = ValidationErrorDto(
+                paramErrors = setOf(mapOf("message" to "512_KB_LIMIT_EXCEEDED",
+                        "name" to "soundFile")))
         logger.info("Validation failed with errors: $errorDto")
         return errorDto
     }

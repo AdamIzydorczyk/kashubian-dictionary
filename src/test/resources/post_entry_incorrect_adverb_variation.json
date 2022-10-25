@@ -1,0 +1,19 @@
+{
+  "word": "test_word",
+  "note": "test_note",
+  "partOfSpeech": "ADVERB",
+  "partOfSpeechSubType": "ADVERB",
+  "variation": {
+    "nounVariation": {
+      "nominative": null
+    }
+  },
+  "meanings": [
+    {
+      "translation": {
+        "polish": "test_polish"
+      },
+      "definition": "test_definition"
+    }
+  ]
+}

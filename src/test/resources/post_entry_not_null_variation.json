@@ -1,0 +1,18 @@
+{
+  "word": "test_word",
+  "partOfSpeech": "PRONOUN",
+  "partOfSpeechSubType": "NUMERAL_PRONOUN",
+  "variation": {
+    "nounVariation": {
+      "nominative": null
+    }
+  },
+  "meanings": [
+    {
+      "translation": {
+        "polish": "test_polish"
+      },
+      "definition": "test_definition"
+    }
+  ]
+}

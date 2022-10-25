@@ -1,0 +1,22 @@
+{
+  "word": "test_word",
+  "note": "test_note",
+  "partOfSpeech": "PRONOUN",
+  "partOfSpeechSubType": "ADJECTIVE_PRONOUN",
+  "variation": {
+    "nounVariation": {
+      "nominative": null
+    }
+  },
+  "meanings": [
+    {
+      "translation": {
+        "polish": "test_polish",
+        "english": null,
+        "german": null,
+        "ukrainian": null
+      },
+      "definition": "test_definition"
+    }
+  ]
+}
