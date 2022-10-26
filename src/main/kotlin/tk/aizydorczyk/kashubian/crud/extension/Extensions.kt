@@ -10,6 +10,7 @@ import tk.aizydorczyk.kashubian.crud.query.graphql.base.JoinTableWithCondition
 fun String.normalize(): String = this.let(StringUtils::stripAccents)
     .replace("\\s".toRegex(), "")
     .replace("[^\\p{L} ]".toRegex(), "")
+    .replace("ß", "b")
     .lowercase()
 
 fun Pair<String, FieldWithJoins>.fieldPath() = this.first

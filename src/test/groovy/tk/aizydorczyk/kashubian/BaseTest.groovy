@@ -23,6 +23,14 @@ class BaseTest extends Specification {
         return toString(resource.getURL(), UTF_8)
     }
 
+    protected String asJsonQueryString(String fileName) {
+        def findQuery = asJsonString(fileName)
+                .replaceAll("\\n", "")
+                .trim()
+                .replaceAll(" +", " ")
+        return "{ \"query\": \"$findQuery\" }"
+    }
+
     protected MockHttpServletRequestBuilder prepareRequest(MockHttpServletRequestBuilder requestBuilder,
                                                            String requestBody) {
         return requestBuilder.content(requestBody)

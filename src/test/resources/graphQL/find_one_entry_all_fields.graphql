@@ -1,0 +1,99 @@
+{
+    findKashubianEntry(id: 1) {
+        id
+        word
+        normalizedWord
+        variation
+        priority
+        note
+        partOfSpeech
+        partOfSpeechSubType
+        meaningsCount
+        base {
+            id
+            word
+        }
+        bases
+        derivatives
+        soundFile {
+            id
+            type
+            fileName
+        }
+        others {
+            other {
+                id
+                word
+            }
+            note
+        }
+        meanings {
+            id(orderBy: ASC)
+            origin
+            definition
+            hyperonym {
+                id
+                definition
+                kashubianEntry {
+                    id
+                    word
+                }
+            }
+            hyperonyms
+            hyperonyms
+            synonyms {
+                note
+                synonym {
+                    id
+                    definition
+                    kashubianEntry {
+                        id
+                        word
+                    }
+                }
+            }
+            proverbs {
+                id
+                note
+                proverb
+            }
+            translation {
+                polish
+                normalizedPolish
+                english
+                normalizedEnglish
+                german
+                normalizedGerman
+                ukrainian
+                normalizedUkrainian
+            }
+            quotes {
+                id
+                note
+                quote
+            }
+            antonyms {
+                id
+                note
+                antonym {
+                    id
+                    definition
+                    kashubianEntry {
+                        id
+                        word
+                    }
+                }
+            }
+            examples {
+                id
+                note
+                example
+            }
+            idioms {
+                id
+                note
+                idiom
+            }
+        }
+    }
+}
