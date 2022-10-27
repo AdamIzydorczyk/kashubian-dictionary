@@ -1,0 +1,129 @@
+{
+  "word": " ąčéëłńó ?ôœǫřšž! ",
+  "note": "test",
+  "priority": true,
+  "partOfSpeech": "NOUN",
+  "partOfSpeechSubType": "NEUTER",
+  "base": 1,
+  "variation": {
+    "nounVariation": {
+      "nominative": "nominative",
+      "nominativePlural": "nominativePlural",
+      "genitive": "genitive",
+      "genitivePlural": "genitivePlural",
+      "dative": "dative",
+      "dativePlural": "dativePlural",
+      "accusative": "accusative",
+      "accusativePlural": "accusativePlural",
+      "instrumental": "instrumental",
+      "instrumentalPlural": "instrumentalPlural",
+      "locative": "locative",
+      "locativePlural": "locativePlural",
+      "vocative": "vocative",
+      "vocativePlural": "vocativePlural"
+    }
+  },
+  "others": [
+    {
+      "entryId": 1,
+      "note": "other_note_1"
+    }
+  ],
+  "meanings": [
+    {
+      "translation": {
+        "polish": "ąćęłńóśźż",
+        "english": "en_1",
+        "german": " äöüß ",
+        "ukrainian": "БбГгҐґДд"
+      },
+      "definition": "definition_1",
+      "origin": "origin_1",
+      "hyperonym": 1,
+      "proverbs": [
+        {
+          "proverb": "proverb_1",
+          "note": "proverb_note_1"
+        }
+      ],
+      "idioms": [
+        {
+          "idiom": "idiom_1",
+          "note": "idiom_note_1"
+        }
+      ],
+      "quotes": [
+        {
+          "quote": "quote_1",
+          "note": "quote_note_1"
+        }
+      ],
+      "examples": [
+        {
+          "example": "example_1",
+          "note": "example_note_1"
+        }
+      ],
+      "synonyms": [
+        {
+          "meaningId": 1,
+          "note": "synonym_note_1"
+        }
+      ],
+      "antonyms": [
+        {
+          "meaningId": 1,
+          "note": "antonym_note_1"
+        }
+      ]
+    },
+    {
+      "translation": {
+        "polish": "ąćęłńóśźż",
+        "english": "en_1",
+        "german": "äöüß",
+        "ukrainian": "БбГгҐґДд"
+      },
+      "definition": "definition_2",
+      "origin": "origin_2",
+      "hyperonym": 2,
+      "proverbs": [
+        {
+          "proverb": "proverb_2",
+          "note": "proverb_note_2"
+        }
+      ],
+      "idioms": [
+        {
+          "idiom": "idiom_2",
+          "note": "idiom_note_2"
+        }
+      ],
+      "quotes": [
+        {
+          "quote": "quote_2",
+          "note": "quote_note_2"
+        }
+      ],
+      "examples": [
+        {
+          "example": "example_2",
+          "note": "example_note_2"
+        }
+      ],
+      "synonyms": [
+        {
+          "meaningId": 2,
+          "note": "synonym_note_2"
+        }
+      ],
+      "antonyms": [
+        {
+          "meaningId": 2,
+          "note": "antonym_note_2"
+        }
+      ]
+    }
+  ]
+}
+
