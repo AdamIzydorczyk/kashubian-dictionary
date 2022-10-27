@@ -9,11 +9,14 @@ import tk.aizydorczyk.kashubian.crud.domain.WordOfTheDayProjection
 import java.time.Clock
 import java.time.LocalDate.now
 import java.util.concurrent.atomic.AtomicReference
+import java.util.function.Supplier
 
 @Component
 class WordOfTheDayFinder(
-    val kashubianEntryRepository: KashubianEntryRepository,
-    val clock: Clock) {
+    private val kashubianEntryRepository: KashubianEntryRepository,
+    clockProvider: Supplier<Clock>) {
+
+    val clock = clockProvider.get()
 
     val logger: Logger = LoggerFactory.getLogger(javaClass)
     val cache = AtomicReference(CachedWordOfTheDay(0L, WordOfTheDay(-1L, "", emptyList())))

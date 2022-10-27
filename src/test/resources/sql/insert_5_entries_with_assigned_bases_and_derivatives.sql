@@ -1,5 +1,5 @@
 INSERT INTO public.kashubian_entry (id,priority,part_of_speech,part_of_speech_sub_type,word,normalized_word,base_id) VALUES
-(nextval('kashubian_entry_id_sequence'),true,'PRONOUN','NUMERAL_PRONOUN','test_word_1','test_word_1',NULL);
+(nextval('kashubian_entry_id_sequence'),false,'PRONOUN','NUMERAL_PRONOUN','test_word_1','test_word_1',NULL);
 INSERT INTO public.meaning (id,definition,hyperonym_id,kashubian_entry_id) VALUES
 (nextval('meaning_id_sequence'),'def1',NULL,1);
 INSERT INTO public."translation" (id,polish,normalized_polish,meaning_id) VALUES
