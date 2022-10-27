@@ -26,6 +26,7 @@ public class TestConfig {
                     "spring.flyway.enabled=true",
                     "spring.jpa.show-sql=false",
                     "spring.flyway.baseline-on-migrate=true",
+                    "spring.main.banner-mode=off",
                     "initializer.size=0"
             ).applyTo(configurableApplicationContext.getEnvironment());
         }
