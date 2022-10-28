@@ -31,6 +31,7 @@ import tk.aizydorczyk.kashubian.crud.validator.EntryExists
 import tk.aizydorczyk.kashubian.crud.validator.FileExists
 import tk.aizydorczyk.kashubian.crud.validator.OnCreate
 import tk.aizydorczyk.kashubian.crud.validator.OnUpdate
+import tk.aizydorczyk.kashubian.infrastructure.AuditingInformation
 
 
 @RestController
@@ -50,18 +51,20 @@ class KashubianEntryController(
 
     @PostMapping
     @ResponseStatus(CREATED)
-    fun create(@Validated(OnCreate::class) @RequestBody entry: KashubianEntryDto): ResponseDto {
+    fun create(@Validated(OnCreate::class) @RequestBody entry: KashubianEntryDto,
+        auditingInformation: AuditingInformation): ResponseDto {
         logger.info("Entry creating with payload: $entry")
-        return creator.create(kashubianMapper.toEntity(entry))
+        return creator.create(kashubianMapper.toEntity(entry), auditingInformation)
             .run { ResponseDto(this.id, this.meanings.map { it.id }) }
     }
 
     @PostMapping(FILE_PATH)
     @ResponseStatus(CREATED)
     fun uploadSoundFile(@EntryExists @PathVariable entryId: Long,
-        @AudioType @RequestPart(required = true) soundFile: MultipartFile) {
+        @AudioType @RequestPart(required = true) soundFile: MultipartFile,
+        auditingInformation: AuditingInformation) {
         logger.info("File uploading with name: ${soundFile.name}")
-        uploader.upload(entryId, soundFile)
+        uploader.upload(entryId, soundFile, auditingInformation)
     }
 
     @GetMapping(FILE_PATH)
@@ -75,18 +78,19 @@ class KashubianEntryController(
     }
 
     @PutMapping(ENTRY_ID_PATH)
-    fun update(
-        @EntryExists @PathVariable entryId: Long,
-        @Validated(OnUpdate::class) @RequestBody entry: KashubianEntryDto): ResponseDto {
+    fun update(@EntryExists @PathVariable entryId: Long,
+        @Validated(OnUpdate::class) @RequestBody entry: KashubianEntryDto,
+        auditingInformation: AuditingInformation): ResponseDto {
         logger.info("Entry id: $entryId updating with payload: $entry")
-        return updater.update(entryId, kashubianMapper.toEntity(entry))
+        return updater.update(entryId, kashubianMapper.toEntity(entry), auditingInformation)
             .run { ResponseDto(this.id, this.meanings.map { it.id }) }
     }
 
     @DeleteMapping(ENTRY_ID_PATH)
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN')")
-    fun delete(@EntryExists @PathVariable entryId: Long) {
+    fun delete(@EntryExists @PathVariable entryId: Long,
+        auditingInformation: AuditingInformation) {
         logger.info("Entry id: $entryId deleting")
         remover.remove(entryId)
     }
@@ -94,7 +98,8 @@ class KashubianEntryController(
     @DeleteMapping(FILE_PATH)
     @ResponseStatus(NO_CONTENT)
     @PreAuthorize("hasRole('ADMIN')")
-    fun deleteFile(@EntryExists @FileExists @PathVariable entryId: Long) {
+    fun deleteFile(@EntryExists @FileExists @PathVariable entryId: Long,
+        auditingInformation: AuditingInformation) {
         logger.info("File entry id: $entryId deleting")
         fileRemover.remove(entryId)
     }

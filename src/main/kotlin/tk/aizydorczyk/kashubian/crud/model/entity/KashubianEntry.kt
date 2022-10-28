@@ -8,6 +8,7 @@ import org.hibernate.annotations.Type
 import org.hibernate.annotations.TypeDef
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechType
+import java.time.LocalDateTime
 import javax.persistence.Column
 import javax.persistence.Entity
 import javax.persistence.EnumType
@@ -30,6 +31,10 @@ data class KashubianEntry(
             sequenceName = "kashubian_entry_id_sequence",
             allocationSize = 1)
     override var id: Long,
+    var createdAt: LocalDateTime?,
+    var modifiedAt: LocalDateTime?,
+    var createdBy: String?,
+    var modifiedBy: String?,
     val word: String?,
     @Column(unique = true)
     var normalizedWord: String?,

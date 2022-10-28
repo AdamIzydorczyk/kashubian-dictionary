@@ -25,9 +25,11 @@ import tk.aizydorczyk.kashubian.crud.model.entity.Meaning
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechType
 import tk.aizydorczyk.kashubian.crud.query.rest.ExampleVariationsGenerator
+import tk.aizydorczyk.kashubian.infrastructure.AuditingInformation
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.InputStream
+import java.time.LocalDateTime.now
 import java.util.Locale
 import java.util.concurrent.atomic.AtomicLong
 import kotlin.math.min
@@ -64,8 +66,12 @@ class RandomDataInitializer(
         val generator = EasyRandom(parameters)
         generator.objects(KashubianEntryDto::class.java, properties.size)
             .forEach {
-                kashubianEntryController.create(it)
-                    .let { response -> kashubianEntryController.uploadSoundFile(response.entryId, FakeMultipartFile()) }
+                kashubianEntryController.create(it, AuditingInformation("generated", now()))
+                    .let { response ->
+                        kashubianEntryController.uploadSoundFile(response.entryId,
+                                FakeMultipartFile(), AuditingInformation("generated",
+                                now()))
+                    }
                 logger.info("Generated entry $generatorCounter from ${properties.size}")
                 generatorCounter.incrementAndGet()
             }

@@ -7,22 +7,26 @@ import tk.aizydorczyk.kashubian.crud.model.entity.ChildEntity
 import tk.aizydorczyk.kashubian.crud.model.entity.KashubianEntry
 import tk.aizydorczyk.kashubian.crud.model.entity.Meaning
 import tk.aizydorczyk.kashubian.crud.model.entity.Translation
+import tk.aizydorczyk.kashubian.infrastructure.AuditingInformation
 import javax.persistence.EntityManager
 
 @Component
 class KashubianEntryUpdater(val entityManager: EntityManager) {
     @Transactional
-    fun update(entryId: Long, newEntry: KashubianEntry): KashubianEntry {
-        newEntry.normalizedWord = newEntry.word?.normalize()
+    fun update(entryId: Long, updatedEntry: KashubianEntry,
+        auditingInformation: AuditingInformation): KashubianEntry {
+        updatedEntry.normalizedWord = updatedEntry.word?.normalize()
+        updatedEntry.modifiedAt = auditingInformation.executionTime
+        updatedEntry.modifiedBy = auditingInformation.userName
 
         val oldEntry = entityManager.find(KashubianEntry::class.java, entryId)
 
-        addOrMergeElements(entryId, oldEntry.others, newEntry.others)
-        addOrMergeElements(entryId, oldEntry.meanings, newEntry.meanings, ::processMeanings)
+        addOrMergeElements(entryId, oldEntry.others, updatedEntry.others)
+        addOrMergeElements(entryId, oldEntry.meanings, updatedEntry.meanings, ::processMeanings)
 
-        newEntry.id = entryId
-        entityManager.merge(newEntry)
-        return newEntry
+        updatedEntry.id = entryId
+        entityManager.merge(updatedEntry)
+        return updatedEntry
     }
 
     private fun processMeanings(oldMeaning: Meaning,
