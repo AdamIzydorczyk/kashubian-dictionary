@@ -29,7 +29,7 @@ import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.NEUTER
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.NON_MASCULINE
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.NOUN_PRONOUN
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.NUMERAL_PRONOUN
-import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.PARTICIPLE
+import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.PARTICLE
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.PLURAL_MASCULINE
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.PREPOSITION
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.UNINFLECTIV_ADJECTIVE
@@ -102,7 +102,7 @@ class ExampleVariationsGenerator(val objectMapper: ObjectMapper) {
                 Triple(null, PREPOSITION, PartOfSpeechType.PREPOSITION),
                 Triple(null, CONJUNCTION, PartOfSpeechType.CONJUNCTION),
                 Triple(null, INTERJECTION, PartOfSpeechType.INTERJECTION),
-                Triple(null, PARTICIPLE, PartOfSpeechType.PARTICIPLE),
+                Triple(null, PARTICLE, PartOfSpeechType.PARTICLE),
         ).toTypedArray()
 
         exampleBySubtype = variations

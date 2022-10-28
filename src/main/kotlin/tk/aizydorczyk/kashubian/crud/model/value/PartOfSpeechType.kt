@@ -40,7 +40,7 @@ enum class PartOfSpeechType(val subTypes: List<PartOfSpeechSubType>) {
     PREPOSITION(listOf(PartOfSpeechSubType.PREPOSITION)),
     CONJUNCTION(listOf(PartOfSpeechSubType.CONJUNCTION)),
     INTERJECTION(listOf(PartOfSpeechSubType.INTERJECTION)),
-    PARTICIPLE(listOf(PartOfSpeechSubType.PARTICIPLE))
+    PARTICLE(listOf(PartOfSpeechSubType.PARTICLE))
 }
 
 enum class PartOfSpeechSubType {
@@ -65,5 +65,5 @@ enum class PartOfSpeechSubType {
     PREPOSITION,
     CONJUNCTION,
     INTERJECTION,
-    PARTICIPLE
+    PARTICLE
 }

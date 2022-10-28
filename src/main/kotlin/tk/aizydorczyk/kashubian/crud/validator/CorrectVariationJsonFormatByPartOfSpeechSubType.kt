@@ -31,7 +31,7 @@ import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.NEUTER
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.NON_MASCULINE
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.NOUN_PRONOUN
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.NUMERAL_PRONOUN
-import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.PARTICIPLE
+import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.PARTICLE
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.PLURAL_MASCULINE
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.PREPOSITION
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType.UNINFLECTIV_ADJECTIVE
@@ -130,7 +130,7 @@ class CorrectVariationJsonFormatByPartOfSpeechSubTypeValidator :
                 PREPOSITION,
                 CONJUNCTION,
                 INTERJECTION,
-                PARTICIPLE -> dto.variation?.let {
+                PARTICLE -> dto.variation?.let {
                     context.buildConstraintViolationWithTemplate(VARIATION_IS_NOT_NULL)
                         .addConstraintViolation()
                     false

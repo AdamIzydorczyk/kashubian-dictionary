@@ -277,7 +277,7 @@ enum PartOfSpeechType {
     PREPOSITION
     CONJUNCTION
     INTERJECTION
-    PARTICIPLE
+    PARTICLE
 }
 
 enum PartOfSpeechSubType {
@@ -302,5 +302,5 @@ enum PartOfSpeechSubType {
     PREPOSITION
     CONJUNCTION
     INTERJECTION
-    PARTICIPLE
+    PARTICLE
 }
