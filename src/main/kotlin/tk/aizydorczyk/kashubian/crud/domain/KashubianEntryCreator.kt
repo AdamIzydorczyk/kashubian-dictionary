@@ -1,16 +1,13 @@
 package tk.aizydorczyk.kashubian.crud.domain
 
-import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 import tk.aizydorczyk.kashubian.crud.extension.normalize
 import tk.aizydorczyk.kashubian.crud.model.entity.ChildEntity
 import tk.aizydorczyk.kashubian.crud.model.entity.KashubianEntry
 import tk.aizydorczyk.kashubian.infrastructure.AuditingInformation
 import javax.persistence.EntityManager
 
-@Component
 class KashubianEntryCreator(val entityManager: EntityManager) {
-    @Transactional
+
     fun create(entry: KashubianEntry,
         auditingInformation: AuditingInformation): KashubianEntry {
         entry.createdAt = auditingInformation.executionTime

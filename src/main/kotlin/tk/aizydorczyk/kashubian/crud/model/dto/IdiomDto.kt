@@ -7,7 +7,7 @@ import tk.aizydorczyk.kashubian.crud.validator.OnUpdate
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
-data class PhrasalVerbDto(
+data class IdiomDto(
     @field:NotNull(message = IS_NULL, groups = [OnCreate::class, OnUpdate::class])
     @field:Size(max = 150, message = LENGTH_150_EXCEED, groups = [OnCreate::class, OnUpdate::class])
     val idiom: String,

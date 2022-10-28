@@ -1,4 +1,4 @@
-package tk.aizydorczyk.kashubian.infrastructure
+package tk.aizydorczyk.kashubian.infrastructure.configuration
 
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext

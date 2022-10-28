@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository
 import org.springframework.transaction.annotation.Propagation.SUPPORTS
 import org.springframework.transaction.annotation.Transactional
 import tk.aizydorczyk.kashubian.crud.model.entity.BaseEntity
+import tk.aizydorczyk.kashubian.crud.model.entity.Event
 import tk.aizydorczyk.kashubian.crud.model.entity.SoundFile
 import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.ENTRY_ID
 import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.MEANING_ID
@@ -107,6 +108,15 @@ class KashubianEntryRepository(val entityManager: EntityManager,
             Long::class.javaObjectType)
         .singleResult
 
+    fun countEvents(): Long = entityManager.createQuery("select count(e) from Event e",
+            Long::class.javaObjectType)
+        .singleResult
+
+    fun findAllEvents(): List<Event> =
+        entityManager.createQuery("select e from Event e order by e.id",
+                Event::class.java)
+            .resultList
+
     private fun findMeaningHierarchyElementByProcedure(meaningId: Long,
         procedureName: String): List<MeaningHierarchyElement> =
         executeProcedure(meaningId, procedureName)?.let {
@@ -142,6 +152,8 @@ class KashubianEntryRepository(val entityManager: EntityManager,
                             definition = it[2] as String)
                 }
         }
+
+
 }
 
 data class WordOfTheDayProjection(val entryId: Long, val word: String, val definition: String)

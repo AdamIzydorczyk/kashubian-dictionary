@@ -1,4 +1,4 @@
-package tk.aizydorczyk.kashubian.infrastructure
+package tk.aizydorczyk.kashubian.infrastructure.configuration
 
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -13,6 +13,7 @@ import org.springframework.web.servlet.AsyncHandlerInterceptor
 import org.springframework.web.servlet.HandlerInterceptor
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer
+import tk.aizydorczyk.kashubian.infrastructure.AuditingInformation
 import java.lang.System.currentTimeMillis
 import java.time.Clock
 import java.time.LocalDateTime.now

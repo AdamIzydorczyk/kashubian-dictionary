@@ -12,8 +12,8 @@ import org.springframework.test.context.jdbc.SqlGroup
 import org.springframework.test.context.junit4.SpringRunner
 import spock.lang.Specification
 import tk.aizydorczyk.kashubian.TestConfig
-import tk.aizydorczyk.kashubian.TransactionSupport
 import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryRepository
+import tk.aizydorczyk.kashubian.infrastructure.TransactionSupport
 
 
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD

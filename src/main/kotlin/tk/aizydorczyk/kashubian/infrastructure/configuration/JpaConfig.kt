@@ -1,4 +1,4 @@
-package tk.aizydorczyk.kashubian.infrastructure
+package tk.aizydorczyk.kashubian.infrastructure.configuration
 
 import org.springframework.boot.autoconfigure.domain.EntityScan
 import org.springframework.context.annotation.Configuration

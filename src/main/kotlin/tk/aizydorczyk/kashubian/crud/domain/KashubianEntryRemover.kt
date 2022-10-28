@@ -1,13 +1,8 @@
 package tk.aizydorczyk.kashubian.crud.domain
 
-import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 
-@Component
-class KashubianEntryRemover(val repository: KashubianEntryRepository) {
-
-    @Transactional
+class KashubianEntryRemover(private val deleteEntryByIdFunction: (Long) -> Unit) {
     fun remove(entryId: Long) {
-        repository.deleteEntryById(entryId)
+        deleteEntryByIdFunction.invoke(entryId)
     }
 }

@@ -1,7 +1,5 @@
 package tk.aizydorczyk.kashubian.crud.domain
 
-import org.springframework.stereotype.Component
-import org.springframework.transaction.annotation.Transactional
 import tk.aizydorczyk.kashubian.crud.extension.normalize
 import tk.aizydorczyk.kashubian.crud.model.entity.ChildEntity
 import tk.aizydorczyk.kashubian.crud.model.entity.KashubianEntry
@@ -10,16 +8,17 @@ import tk.aizydorczyk.kashubian.crud.model.entity.Translation
 import tk.aizydorczyk.kashubian.infrastructure.AuditingInformation
 import javax.persistence.EntityManager
 
-@Component
-class KashubianEntryUpdater(val entityManager: EntityManager) {
-    @Transactional
+class KashubianEntryUpdater(private val entityManager: EntityManager) {
     fun update(entryId: Long, updatedEntry: KashubianEntry,
         auditingInformation: AuditingInformation): KashubianEntry {
         updatedEntry.normalizedWord = updatedEntry.word?.normalize()
+
         updatedEntry.modifiedAt = auditingInformation.executionTime
         updatedEntry.modifiedBy = auditingInformation.userName
 
         val oldEntry = entityManager.find(KashubianEntry::class.java, entryId)
+        updatedEntry.createdBy = oldEntry.createdBy
+        updatedEntry.createdAt = oldEntry.createdAt
 
         addOrMergeElements(entryId, oldEntry.others, updatedEntry.others)
         addOrMergeElements(entryId, oldEntry.meanings, updatedEntry.meanings, ::processMeanings)

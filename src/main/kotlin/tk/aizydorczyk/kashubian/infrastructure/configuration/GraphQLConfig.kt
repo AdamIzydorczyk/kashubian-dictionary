@@ -1,4 +1,4 @@
-package tk.aizydorczyk.kashubian.infrastructure
+package tk.aizydorczyk.kashubian.infrastructure.configuration
 
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.ObjectMapper

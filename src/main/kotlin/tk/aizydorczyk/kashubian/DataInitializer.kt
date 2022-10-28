@@ -1,5 +1,6 @@
 package tk.aizydorczyk.kashubian
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.github.javafaker.Faker
 import org.jeasy.random.EasyRandom
@@ -16,6 +17,11 @@ import org.springframework.stereotype.Component
 import org.springframework.web.multipart.MultipartFile
 import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryController
 import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryRepository
+import tk.aizydorczyk.kashubian.crud.event.CreateEntryEvent
+import tk.aizydorczyk.kashubian.crud.event.DeleteEntryEvent
+import tk.aizydorczyk.kashubian.crud.event.DeleteSoundFileEvent
+import tk.aizydorczyk.kashubian.crud.event.UpdateEntryEvent
+import tk.aizydorczyk.kashubian.crud.event.UploadSoundFileEvent
 import tk.aizydorczyk.kashubian.crud.model.dto.AntonymDto
 import tk.aizydorczyk.kashubian.crud.model.dto.KashubianEntryDto
 import tk.aizydorczyk.kashubian.crud.model.dto.OtherDto
@@ -30,6 +36,7 @@ import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.InputStream
 import java.time.LocalDateTime.now
+import java.util.Base64.getDecoder
 import java.util.Locale
 import java.util.concurrent.atomic.AtomicLong
 import kotlin.math.min
@@ -40,23 +47,35 @@ typealias JavaRandom = java.util.Random
 
 @Component
 @EnableConfigurationProperties(RandomDataInitializerProperties::class)
-class RandomDataInitializer(
-    val kashubianEntryController: KashubianEntryController,
-    val exampleVariationsGenerator: ExampleVariationsGenerator,
-    val repository: KashubianEntryRepository,
-    private val properties: RandomDataInitializerProperties) : ApplicationRunner {
+class DataInitializer(
+    private val kashubianEntryController: KashubianEntryController,
+    private val exampleVariationsGenerator: ExampleVariationsGenerator,
+    private val repository: KashubianEntryRepository,
+    private val properties: RandomDataInitializerProperties,
+    private val objectMapper: ObjectMapper
+) : ApplicationRunner {
 
     val logger: Logger = LoggerFactory.getLogger(javaClass.simpleName)
 
     private final val random = JavaRandom()
     private final val faker = Faker(Locale(properties.language), random)
 
-    override fun run(args: ApplicationArguments?) {
-        if (repository.countAllEntries() > 0
-        ) {
+    override fun run(args: ApplicationArguments) {
+        if (repository.countEvents() > 0 && repository.countAllEntries() <= 0) {
+            logger.info("Data recreation from events started")
+            recreateDataFromEvents()
+        }
+
+
+        if (repository.countAllEntries() > 0) {
+            logger.info("Entries already exists in database")
             return
         }
 
+        generateData()
+    }
+
+    private fun generateData() {
         val generatorCounter = AtomicLong(1L)
         val parameters =
             prepareGeneratorParameters(generatorCounter::get) {
@@ -76,6 +95,45 @@ class RandomDataInitializer(
                 generatorCounter.incrementAndGet()
             }
         logger.info("Entries generation finished")
+    }
+
+    private fun recreateDataFromEvents() {
+        repository.findAllEvents().forEach {
+            if (it.eventType == "CREATE_ENTRY") {
+                val event = objectMapper.treeToValue(it.event,
+                        CreateEntryEvent::class.java)
+                kashubianEntryController.create(event.entryDto,
+                        event.auditingInformation)
+            }
+            if (it.eventType == "UPDATE_ENTRY") {
+                val event = objectMapper.treeToValue(it.event,
+                        UpdateEntryEvent::class.java)
+                kashubianEntryController.update(event.entryId,
+                        event.entryDto,
+                        event.auditingInformation)
+            }
+            if (it.eventType == "DELETE_ENTRY") {
+                val event = objectMapper.treeToValue(it.event,
+                        DeleteEntryEvent::class.java)
+                kashubianEntryController.delete(event.entryId,
+                        event.auditingInformation)
+            }
+            if (it.eventType == "DELETE_SOUND_FILE") {
+                val event = objectMapper.treeToValue(it.event,
+                        DeleteSoundFileEvent::class.java)
+                kashubianEntryController.deleteFile(event.entryId,
+                        event.auditingInformation)
+            }
+            if (it.eventType == "UPLOAD_SOUND_FILE") {
+                val event = objectMapper.treeToValue(it.event,
+                        UploadSoundFileEvent::class.java)
+                kashubianEntryController.uploadSoundFile(event.entryId,
+                        FakeMultipartFile(event.originalFilename,
+                                event.contentType,
+                                getDecoder().decode(event.encodedFile)),
+                        event.auditingInformation)
+            }
+        }
     }
 
     private fun prepareGeneratorParameters(
@@ -156,21 +214,23 @@ data class RandomDataInitializerProperties(
     val language: String
 )
 
-class FakeMultipartFile : MultipartFile {
+data class FakeMultipartFile(
+    private val name: String = "test.mp3",
+    private val contentType: String = "audio/mp3",
+    private val bytes: ByteArray = ByteArray(1)) : MultipartFile {
     override fun getInputStream(): InputStream = ByteArrayInputStream.nullInputStream()
 
-    override fun getName(): String = "test"
+    override fun getName(): String = name
 
-    override fun getOriginalFilename(): String = "test.mp3"
+    override fun getOriginalFilename(): String = name
 
-    override fun getContentType(): String = "audio/mp3"
+    override fun getContentType(): String = contentType
 
     override fun isEmpty(): Boolean = false
 
     override fun getSize(): Long = 1L
 
-    override fun getBytes(): ByteArray = ByteArray(1)
+    override fun getBytes(): ByteArray = bytes
 
     override fun transferTo(dest: File) {}
-
 }
