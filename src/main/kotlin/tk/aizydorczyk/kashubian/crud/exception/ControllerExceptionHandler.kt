@@ -16,7 +16,7 @@ import javax.validation.ConstraintViolationException
 
 @RestControllerAdvice
 class ControllerExceptionHandler {
-    val logger: Logger = LoggerFactory.getLogger(javaClass)
+    val logger: Logger = LoggerFactory.getLogger(javaClass.simpleName)
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException::class)

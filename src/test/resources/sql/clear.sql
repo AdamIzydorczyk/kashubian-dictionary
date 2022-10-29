@@ -1,4 +1,5 @@
 TRUNCATE kashubian_entry CASCADE;
+TRUNCATE event CASCADE;
 
 SELECT SETVAL(c.oid, 1, false)
 from pg_class c JOIN pg_namespace n

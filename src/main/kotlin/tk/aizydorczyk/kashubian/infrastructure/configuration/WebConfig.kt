@@ -36,7 +36,7 @@ class WebConfig(val clockProvider: Supplier<Clock>) : WebMvcConfigurer {
     }
 
     fun asyncHandlerInterceptor(): HandlerInterceptor = object : AsyncHandlerInterceptor {
-        val logger: Logger = LoggerFactory.getLogger(javaClass)
+        val logger: Logger = LoggerFactory.getLogger(javaClass.simpleName)
 
         override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
             val currentUser = SecurityContextHolder.getContext().authentication.principal

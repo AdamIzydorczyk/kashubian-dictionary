@@ -31,7 +31,7 @@ import kotlin.reflect.jvm.jvmErasure
 abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open val mapper: GraphQLMapper<GraphQLModel>) :
     FinderBase() {
 
-    private val logger: Logger = LoggerFactory.getLogger(javaClass)
+    private val logger: Logger = LoggerFactory.getLogger(javaClass.simpleName)
 
     protected fun findAll(criteriaExpressionClass: KClass<out CriteriaExpression>,
         where: CriteriaExpression?,

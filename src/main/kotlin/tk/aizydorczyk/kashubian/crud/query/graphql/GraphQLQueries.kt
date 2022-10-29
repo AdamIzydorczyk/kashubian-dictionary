@@ -25,7 +25,7 @@ class GraphQLQueries(
     val oneMeaningFinder: OneMeaningFinder,
     val allMeaningsFinder: AllMeaningsFinder) {
 
-    val logger: Logger = LoggerFactory.getLogger(javaClass)
+    val logger: Logger = LoggerFactory.getLogger(javaClass.simpleName)
 
     @QueryMapping
     fun findKashubianEntry(@Argument("id") id: Long,

@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory
 
 abstract class OneFinderBase<out GraphQLModel>(open val dsl: DSLContext, open val mapper: GraphQLMapper<GraphQLModel>) :
     FinderBase() {
-    private val logger: Logger = LoggerFactory.getLogger(javaClass)
+    private val logger: Logger = LoggerFactory.getLogger(javaClass.simpleName)
 
     protected fun findOne(selectedFields: List<SelectedField>, id: Long): GraphQLModel? {
         val selectedColumns: MutableSet<SelectFieldOrAsterisk?> =

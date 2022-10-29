@@ -57,7 +57,7 @@ class KashubianEntryController(
     val eventPublisher: ApplicationEventPublisher,
     val transactionSupport: TransactionSupport) {
 
-    val logger: Logger = LoggerFactory.getLogger(javaClass)
+    val logger: Logger = LoggerFactory.getLogger(javaClass.simpleName)
 
     @PostMapping
     @ResponseStatus(CREATED)

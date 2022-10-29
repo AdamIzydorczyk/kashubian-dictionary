@@ -18,7 +18,7 @@ class WordOfTheDayFinder(
 
     val clock = clockProvider.get()
 
-    val logger: Logger = LoggerFactory.getLogger(javaClass)
+    val logger: Logger = LoggerFactory.getLogger(javaClass.simpleName)
     val cache = AtomicReference(CachedWordOfTheDay(0L, WordOfTheDay(-1L, "", emptyList())))
 
     @Transactional(readOnly = true)
