@@ -44,9 +44,30 @@ class MeaningGraphQLMapper : GraphQLMapper<MeaningGraphQL> {
             mapAntonymMeanings(record, simplifiedMeanings, antonyms)
             mapSynonymMeaningEntries(record, simplifiedEntries, simplifiedMeanings)
             mapAntonymMeaningEntries(record, simplifiedEntries, simplifiedMeanings)
+            mapKashubianEntries(record, simplifiedEntries, meanings)
         }
 
         return meanings.values.toList()
+    }
+
+    private fun mapKashubianEntries(
+        record: Record,
+        simplifyEntries: MutableMap<Long, KashubianEntrySimplifiedGraphQL>,
+        meanings: LinkedHashMap<Long, MeaningGraphQL>) {
+        record.mapAndAssignById(
+                "meaning_entry_id",
+                simplifyEntries,
+                { id ->
+                    KashubianEntrySimplifiedGraphQL(
+                            id = id,
+                            word = record.fetchValueOrNull("meaning_entry_word",
+                                    String::class.java))
+                },
+                "meaning_id",
+                meanings,
+                { meaning, simplifyEntry ->
+                    meaning.kashubianEntry = simplifyEntry
+                })
     }
 
     private fun mapHyperonym(record: Record,

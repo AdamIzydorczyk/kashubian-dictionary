@@ -14,4 +14,5 @@ data class MeaningsCriteriaExpression(
     val quotes: QuotesCriteriaExpression?,
     val antonyms: AntonymsCriteriaExpression?,
     val examples: ExamplesCriteriaExpression?,
-    val idioms: IdiomsCriteriaExpression?) : CriteriaExpression
+    val idioms: IdiomsCriteriaExpression?,
+    val kashubianEntry: KashubianEntryCriteriaExpressionSimplified?) : CriteriaExpression

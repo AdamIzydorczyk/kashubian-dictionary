@@ -39,6 +39,9 @@ import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Compani
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.idiomPhrasalVerb
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.idiomTable
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningDefinition
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningEntryId
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningEntryTable
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningEntryWord
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningHyperonymDefinition
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningHyperonymEntryId
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLColumnsAndTables.Companion.meaningHyperonymEntryTable
@@ -226,7 +229,11 @@ object KashubianEntryQueryRelations {
             "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$ANTONYMS_NODE$ANTONYM_TYPE_PREFIX$ANTONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE" to
                     Triple(antonymMeaningEntryTable(),
                             antonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(antonymMeaningEntryTable().ID),
-                            antonymMeaningEntryId())
+                            antonymMeaningEntryId()),
+            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE" to
+                    Triple(meaningEntryTable(),
+                            meaningTable().KASHUBIAN_ENTRY_ID.eq(meaningEntryTable().ID),
+                            meaningEntryId())
     )
     internal val FIND_ONE_FIELD_TO_JOIN_RELATIONS = FIND_ALL_FIELD_TO_JOIN_RELATIONS.mapKeys {
         it.key.removePrefix("$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX/")
@@ -355,7 +362,9 @@ object KashubianEntryQueryRelations {
             "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$ANTONYMS_NODE$ANTONYM_TYPE_PREFIX$ANTONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$ID_FIELD" to
                     antonymMeaningEntryId(),
             "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$ANTONYMS_NODE$ANTONYM_TYPE_PREFIX$ANTONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$WORD_FIELD" to
-                    antonymMeaningEntryWord()
+                    antonymMeaningEntryWord(),
+            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$WORD_FIELD" to
+                    meaningEntryWord()
     )
 
     internal val FIND_ONE_FIELD_TO_COLUMN_RELATIONS = FIND_ALL_FIELD_TO_COLUMN_RELATIONS.mapKeys {
@@ -531,7 +540,13 @@ object KashubianEntryQueryRelations {
                                 idiomTable() on meaningTable().ID.eq(idiomTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$IDIOMS_NODE$IDIOM_FIELD" to (idiomTable().IDIOM_ joinedBy
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                idiomTable() on meaningTable().ID.eq(idiomTable().MEANING_ID)))
+                                idiomTable() on meaningTable().ID.eq(idiomTable().MEANING_ID))),
+                "$SELECT_PREFIX$MEANINGS_NODE$KASHUBIAN_ENTRY_NODE$ID_FIELD" to (meaningEntryTable().ID joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                meaningEntryTable() on meaningTable().KASHUBIAN_ENTRY_ID.eq(meaningEntryTable().ID))),
+                "$SELECT_PREFIX$MEANINGS_NODE$KASHUBIAN_ENTRY_NODE$WORD_FIELD" to (meaningEntryTable().WORD joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                meaningEntryTable() on meaningTable().KASHUBIAN_ENTRY_ID.eq(meaningEntryTable().ID)))
         ).map { criteriaAndField ->
             listOf(".EQ", "._LIKE", ".LIKE", ".BY_NORMALIZED", ".BY_JSON").map {
                 criteriaAndField.fieldPath() + it to

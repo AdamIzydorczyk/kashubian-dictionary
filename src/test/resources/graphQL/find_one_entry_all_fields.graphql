@@ -94,6 +94,10 @@
                 note
                 idiom
             }
+            kashubianEntry {
+                id
+                word
+            }
         }
     }
 }

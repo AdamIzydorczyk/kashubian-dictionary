@@ -56,6 +56,7 @@ class KashubianEntryGraphQLMapper : GraphQLMapper<KashubianEntryGraphQL> {
             mapAntonymMeanings(record, simplifiedMeanings, antonyms)
             mapSynonymMeaningEntries(record, simplifiedEntries, simplifiedMeanings)
             mapAntonymMeaningEntries(record, simplifiedEntries, simplifiedMeanings)
+            mapKashubianEntries(record, simplifiedEntries, meanings)
         }
 
         return entries.values.toList()
@@ -476,6 +477,26 @@ class KashubianEntryGraphQLMapper : GraphQLMapper<KashubianEntryGraphQL> {
                 simplifyMeanings,
                 { simplifyMeaning, simplifyEntry ->
                     simplifyMeaning.kashubianEntry = simplifyEntry
+                })
+    }
+
+    private fun mapKashubianEntries(
+        record: Record,
+        simplifyEntries: MutableMap<Long, KashubianEntrySimplifiedGraphQL>,
+        meanings: MutableMap<Long, MeaningGraphQL>) {
+        record.mapAndAssignById(
+                "meaning_entry_id",
+                simplifyEntries,
+                { id ->
+                    KashubianEntrySimplifiedGraphQL(
+                            id = id,
+                            word = record.fetchValueOrNull("meaning_entry_word",
+                                    String::class.java))
+                },
+                "meaning_id",
+                meanings,
+                { meaning, simplifyEntry ->
+                    meaning.kashubianEntry = simplifyEntry
                 })
     }
 

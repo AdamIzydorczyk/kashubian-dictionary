@@ -51,6 +51,7 @@ input MeaningsCriteriaExpression{
     antonyms: AntonymsCriteriaExpression
     examples: ExamplesCriteriaExpression
     idioms: IdiomsCriteriaExpression
+    kashubianEntry: KashubianEntryCriteriaExpressionSimplified
 }
 
 input MeaningsCriteriaExpressionSimplified{
@@ -206,6 +207,7 @@ type Meaning{
     antonyms: [Antonym]
     examples: [Example]
     idioms: [Idiom]
+    kashubianEntry: KashubianEntrySimplified
 }
 
 type MeaningSimplified{

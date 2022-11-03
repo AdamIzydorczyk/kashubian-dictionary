@@ -16,7 +16,8 @@ data class MeaningGraphQL(
     val examples: MutableSet<ExampleGraphQL> = mutableSetOf(),
     val idioms: MutableSet<PhrasalVerbGraphQL> = mutableSetOf(),
     val antonyms: MutableSet<AntonymGraphQL> = mutableSetOf(),
-    val synonyms: MutableSet<SynonymGraphQL> = mutableSetOf()
+    val synonyms: MutableSet<SynonymGraphQL> = mutableSetOf(),
+    var kashubianEntry: KashubianEntrySimplifiedGraphQL? = null
 ) : GraphQLModel {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

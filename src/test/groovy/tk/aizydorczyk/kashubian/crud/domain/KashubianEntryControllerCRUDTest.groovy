@@ -136,6 +136,8 @@ class KashubianEntryControllerCRUDTest extends BaseTest {
         findResult.andExpect(jsonPath('$.data.findKashubianEntry.meanings[1].antonyms').isEmpty())
         findResult.andExpect(jsonPath('$.data.findKashubianEntry.meanings[1].synonyms').isArray())
         findResult.andExpect(jsonPath('$.data.findKashubianEntry.meanings[1].synonyms').isEmpty())
+        findResult.andExpect(jsonPath('$.data.findKashubianEntry.meanings[1].kashubianEntry.id').value(1))
+        findResult.andExpect(jsonPath('$.data.findKashubianEntry.meanings[1].kashubianEntry.word').value("ąčéëłńó ?ôœǫřšž!"))
     }
 
     @SqlGroup([
@@ -284,6 +286,8 @@ class KashubianEntryControllerCRUDTest extends BaseTest {
         findResult.andExpect(jsonPath('$.data.findAllKashubianEntries.select[1].meanings[1].synonyms[0].synonym.definition').value("meaning_test_2"))
         findResult.andExpect(jsonPath('$.data.findAllKashubianEntries.select[1].meanings[1].synonyms[0].synonym.kashubianEntry.id').value(1))
         findResult.andExpect(jsonPath('$.data.findAllKashubianEntries.select[1].meanings[1].synonyms[0].synonym.kashubianEntry.word').value("test"))
+        findResult.andExpect(jsonPath('$.data.findAllKashubianEntries.select[1].meanings[1].kashubianEntry.id').value(2))
+        findResult.andExpect(jsonPath('$.data.findAllKashubianEntries.select[1].meanings[1].kashubianEntry.word').value("ąčéëłńó ?ôœǫřšž!"))
     }
 
 }

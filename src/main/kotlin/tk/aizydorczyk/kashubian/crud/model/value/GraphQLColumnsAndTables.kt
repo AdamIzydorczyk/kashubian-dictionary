@@ -10,6 +10,7 @@ class GraphQLColumnsAndTables {
     companion object {
         fun antonymMeaningEntryId() = antonymMeaningEntryTable().ID.`as`("antonym_meaning_entry_id")
         fun synonymMeaningEntryId() = synonymMeaningEntryTable().ID.`as`("synonym_meaning_entry_id")
+        fun meaningEntryId() = meaningEntryTable().ID.`as`("meaning_entry_id")
         fun antonymMeaningId() = antonymMeaningTable().ID.`as`("antonym_meaning_id")
         fun synonymMeaningId() = synonymMeaningTable().ID.`as`("synonym_meaning_id")
         fun antonymId() = antonymTable().ID.`as`("antonym_id")
@@ -26,6 +27,7 @@ class GraphQLColumnsAndTables {
         fun entryId() = Tables.KASHUBIAN_ENTRY.`as`("entry").ID.`as`("entry_id")
         fun antonymMeaningEntryWord() = antonymMeaningEntryTable().WORD.`as`("antonym_meaning_entry_word")
         fun synonymMeaningEntryWord() = synonymMeaningEntryTable().WORD.`as`("synonym_meaning_entry_word")
+        fun meaningEntryWord() = meaningEntryTable().WORD.`as`("meaning_entry_word")
         fun antonymMeaningDefinition() = antonymMeaningTable().DEFINITION.`as`("antonym_meaning_definition")
         fun synonymMeaningDefinition() = synonymMeaningTable().DEFINITION.`as`("synonym_meaning_definition")
         fun antonymNote() = antonymTable().NOTE.`as`("antonym_note")
@@ -87,6 +89,7 @@ class GraphQLColumnsAndTables {
         fun entryWord() = entryTable().WORD.`as`("entry_word")
         fun antonymMeaningEntryTable() = Tables.KASHUBIAN_ENTRY.`as`("antonym_meaning_entry")
         fun synonymMeaningEntryTable() = Tables.KASHUBIAN_ENTRY.`as`("synonym_meaning_entry")
+        fun meaningEntryTable() = Tables.KASHUBIAN_ENTRY.`as`("meaning_entry")
         fun antonymMeaningTable() = Tables.MEANING.`as`("antonym_meaning")
         fun synonymMeaningTable() = Tables.MEANING.`as`("synonym_meaning")
         fun antonymTable() = Tables.ANTONYM.`as`("antonym")
