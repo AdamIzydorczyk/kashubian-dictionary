@@ -46,6 +46,8 @@ class SecurityConfig(private val corsFilter: CorsFilter) {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/email",)
+                .permitAll()
                 .antMatchers(HttpMethod.GET, "/",
                         "/actuator/health",
                         "/swagger-ui.html",
