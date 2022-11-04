@@ -400,6 +400,9 @@ object KashubianEntryQueryRelations {
                 "$SELECT_PREFIX$OTHERS_NODE$OTHER_NODE$WORD_FIELD" to (otherEntryTable().WORD joinedBy
                         listOf(otherTable() on entryTable().ID.eq(otherTable().KASHUBIAN_ENTRY_ID),
                                 otherEntryTable() on otherTable().OTHER_ID.eq(otherEntryTable().ID))),
+                "$SELECT_PREFIX$OTHERS_NODE$OTHER_NODE$NORMALIZED_WORD_FIELD" to (otherEntryTable().NORMALIZED_WORD joinedBy
+                        listOf(otherTable() on entryTable().ID.eq(otherTable().KASHUBIAN_ENTRY_ID),
+                                otherEntryTable() on otherTable().OTHER_ID.eq(otherEntryTable().ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$ID_FIELD" to (meaningTable().ID joinedBy
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$ORIGIN_FIELD" to (meaningTable().ORIGIN joinedBy
@@ -418,6 +421,11 @@ object KashubianEntryQueryRelations {
                                 meaningHyperonymEntryTable() on meaningHyperonymTable().KASHUBIAN_ENTRY_ID.eq(
                                         meaningHyperonymEntryTable().ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$HYPERONYM_NODE$KASHUBIAN_ENTRY_NODE$WORD_FIELD" to (meaningHyperonymEntryTable().WORD joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                meaningHyperonymTable() on meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID),
+                                meaningHyperonymEntryTable() on meaningHyperonymTable().KASHUBIAN_ENTRY_ID.eq(
+                                        meaningHyperonymEntryTable().ID))),
+                "$SELECT_PREFIX$MEANINGS_NODE$HYPERONYM_NODE$KASHUBIAN_ENTRY_NODE$NORMALIZED_WORD_FIELD" to (meaningHyperonymEntryTable().NORMALIZED_WORD joinedBy
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
                                 meaningHyperonymTable() on meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID),
                                 meaningHyperonymEntryTable() on meaningHyperonymTable().KASHUBIAN_ENTRY_ID.eq(
@@ -447,6 +455,12 @@ object KashubianEntryQueryRelations {
                                 synonymMeaningEntryTable() on synonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
                                         synonymMeaningEntryTable().ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$SYNONYMS_NODE$SYNONYM_NODE$KASHUBIAN_ENTRY_NODE$WORD_FIELD" to (synonymMeaningEntryTable().WORD joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
+                                synonymMeaningTable() on synonymTable().MEANING_ID.eq(synonymMeaningTable().ID),
+                                synonymMeaningEntryTable() on synonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
+                                        synonymMeaningEntryTable().ID))),
+                "$SELECT_PREFIX$MEANINGS_NODE$SYNONYMS_NODE$SYNONYM_NODE$KASHUBIAN_ENTRY_NODE$NORMALIZED_WORD_FIELD" to (synonymMeaningEntryTable().NORMALIZED_WORD joinedBy
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
                                 synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
                                 synonymMeaningTable() on synonymTable().MEANING_ID.eq(synonymMeaningTable().ID),
@@ -523,6 +537,12 @@ object KashubianEntryQueryRelations {
                                 antonymMeaningTable() on antonymTable().MEANING_ID.eq(antonymMeaningTable().ID),
                                 antonymMeaningEntryTable() on antonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
                                         antonymMeaningEntryTable().ID))),
+                "$SELECT_PREFIX$MEANINGS_NODE$ANTONYMS_NODE$ANTONYM_NODE$KASHUBIAN_ENTRY_NODE$NORMALIZED_WORD_FIELD" to (antonymMeaningEntryTable().NORMALIZED_WORD joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
+                                antonymMeaningTable() on antonymTable().MEANING_ID.eq(antonymMeaningTable().ID),
+                                antonymMeaningEntryTable() on antonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
+                                        antonymMeaningEntryTable().ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$EXAMPLES_NODE$ID_FIELD" to (exampleTable().ID joinedBy
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
                                 exampleTable() on meaningTable().ID.eq(exampleTable().MEANING_ID))),
@@ -545,6 +565,9 @@ object KashubianEntryQueryRelations {
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
                                 meaningEntryTable() on meaningTable().KASHUBIAN_ENTRY_ID.eq(meaningEntryTable().ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$KASHUBIAN_ENTRY_NODE$WORD_FIELD" to (meaningEntryTable().WORD joinedBy
+                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                meaningEntryTable() on meaningTable().KASHUBIAN_ENTRY_ID.eq(meaningEntryTable().ID))),
+                "$SELECT_PREFIX$MEANINGS_NODE$KASHUBIAN_ENTRY_NODE$NORMALIZED_WORD_FIELD" to (meaningEntryTable().NORMALIZED_WORD joinedBy
                         listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
                                 meaningEntryTable() on meaningTable().KASHUBIAN_ENTRY_ID.eq(meaningEntryTable().ID)))
         ).map { criteriaAndField ->

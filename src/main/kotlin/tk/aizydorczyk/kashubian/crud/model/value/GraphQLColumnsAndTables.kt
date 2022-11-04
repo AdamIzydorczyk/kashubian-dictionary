@@ -26,8 +26,15 @@ class GraphQLColumnsAndTables {
         fun otherId() = otherTable().ID.`as`("other_id")
         fun entryId() = Tables.KASHUBIAN_ENTRY.`as`("entry").ID.`as`("entry_id")
         fun antonymMeaningEntryWord() = antonymMeaningEntryTable().WORD.`as`("antonym_meaning_entry_word")
+        fun antonymMeaningEntryNormalizedWord() =
+            antonymMeaningEntryTable().WORD.`as`("antonym_meaning_entry_normalized_word")
+
         fun synonymMeaningEntryWord() = synonymMeaningEntryTable().WORD.`as`("synonym_meaning_entry_word")
+        fun synonymMeaningEntryNormalizedWord() =
+            synonymMeaningEntryTable().WORD.`as`("synonym_meaning_entry_normalized_word")
+
         fun meaningEntryWord() = meaningEntryTable().WORD.`as`("meaning_entry_word")
+        fun meaningEntryNormalizedWord() = meaningEntryTable().WORD.`as`("meaning_entry_normalized_word")
         fun antonymMeaningDefinition() = antonymMeaningTable().DEFINITION.`as`("antonym_meaning_definition")
         fun synonymMeaningDefinition() = synonymMeaningTable().DEFINITION.`as`("synonym_meaning_definition")
         fun antonymNote() = antonymTable().NOTE.`as`("antonym_note")
@@ -68,6 +75,7 @@ class GraphQLColumnsAndTables {
         fun soundFileFileName() = soundFileTable().FILE_NAME.`as`("sound_file_file_name")
         fun soundFileType() = soundFileTable().TYPE.`as`("sound_file_type")
         fun otherEntryWord() = otherEntryTable().WORD.`as`("other_entry_word")
+        fun otherEntryNormalizedWord() = otherEntryTable().WORD.`as`("other_entry_normalized_word")
         fun otherNote() = otherTable().NOTE.`as`("other_note")
         fun entryDerivativesWithAlias() =
             field(select(Routines.findDerivatives(entryTable().ID))).`as`("entry_derivatives")
@@ -112,6 +120,7 @@ class GraphQLColumnsAndTables {
         fun meaningHyperonymEntryWord() = meaningHyperonymEntryTable().WORD.`as`("meaning_hyperonym_entry_word")
         fun meaningHyperonymDefinition() = meaningHyperonymTable().DEFINITION.`as`("meaning_hyperonym_definition")
         fun entryBaseWord() = entryBaseTable().WORD.`as`("entry_base_word")
+        fun entryBaseNormalizedWord() = entryBaseTable().WORD.`as`("entry_base_normalized_word")
         fun entryTable() = Tables.KASHUBIAN_ENTRY.`as`("entry")
     }
 }

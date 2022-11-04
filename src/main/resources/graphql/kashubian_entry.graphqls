@@ -35,6 +35,7 @@ input KashubianEntryCriteriaExpression{
 input KashubianEntryCriteriaExpressionSimplified{
     id: NumericCriteria
     word: StringCriteria
+    normalizedWord: NormalizedCriteria
 }
 
 input MeaningsCriteriaExpression{
