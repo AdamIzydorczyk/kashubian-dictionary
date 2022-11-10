@@ -41,15 +41,15 @@ class WordOfTheDayFinderTest extends Specification {
         def wordOfTheDay = transactionSupport.executeInTransaction(() -> wordOfTheDayFinder.find())
 
         then:
-        wordOfTheDay.entryId == 2
-        wordOfTheDay.word == "test_word_2"
+        wordOfTheDay.entryId == 4
+        wordOfTheDay.word == "test_word_4"
     }
 
     @SqlGroup([
             @Sql(scripts = "/sql/insert_5_entries_with_assigned_bases_and_derivatives.sql"),
             @Sql(scripts = "/sql/clear.sql", executionPhase = AFTER_TEST_METHOD)
     ])
-    def "should find word of day for 2012-12-13"() {
+    def "should find word of day for 2012-12-13 before noon"() {
         given:
         def wordOfTheDayFinder = new WordOfTheDayFinder(repository, () -> Clock.fixed(Instant.parse("2012-12-13T00:00:00.00Z"), ZoneId.of("UTC")))
 
@@ -57,7 +57,23 @@ class WordOfTheDayFinderTest extends Specification {
         def wordOfTheDay = transactionSupport.executeInTransaction(() -> wordOfTheDayFinder.find())
 
         then:
-        wordOfTheDay.entryId == 4
-        wordOfTheDay.word == "test_word_4"
+        wordOfTheDay.entryId == 3
+        wordOfTheDay.word == "test_word_3"
+    }
+
+    @SqlGroup([
+            @Sql(scripts = "/sql/insert_5_entries_with_assigned_bases_and_derivatives.sql"),
+            @Sql(scripts = "/sql/clear.sql", executionPhase = AFTER_TEST_METHOD)
+    ])
+    def "should find word of day for 2012-12-13 after noon"() {
+        given:
+        def wordOfTheDayFinder = new WordOfTheDayFinder(repository, () -> Clock.fixed(Instant.parse("2012-12-13T12:00:00.00Z"), ZoneId.of("UTC")))
+
+        when:
+        def wordOfTheDay = transactionSupport.executeInTransaction(() -> wordOfTheDayFinder.find())
+
+        then:
+        wordOfTheDay.entryId == 2
+        wordOfTheDay.word == "test_word_2"
     }
 }

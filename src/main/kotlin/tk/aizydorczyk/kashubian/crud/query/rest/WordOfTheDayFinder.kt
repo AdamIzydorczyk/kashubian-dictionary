@@ -7,7 +7,8 @@ import org.springframework.transaction.annotation.Transactional
 import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryRepository
 import tk.aizydorczyk.kashubian.crud.domain.WordOfTheDayProjection
 import java.time.Clock
-import java.time.LocalDate.now
+import java.time.LocalDateTime
+import java.time.LocalDateTime.now
 import java.util.concurrent.atomic.AtomicReference
 import java.util.function.Supplier
 
@@ -24,17 +25,25 @@ class WordOfTheDayFinder(
     @Transactional(readOnly = true)
     fun find(): WordOfTheDay {
         val currentDay = now(clock)
-        val seed = currentDay.toEpochDay()
+
+        val seed = prepareSeed(currentDay)
 
         if (cache.seed() == seed) {
             return cache.wordOfTheDay()
         }
 
-        val wordOfTheDay = kashubianEntryRepository.findRandomWordOfTheDay("0.$seed".toDouble()).let(::groupDefinitions)
+        val wordOfTheDay = kashubianEntryRepository.findRandomWordOfTheDay("0.$seed".toDouble())
+            .let(::groupDefinitions)
 
         cache.getAndSet(CachedWordOfTheDay(seed = seed, wordOfTheDay = wordOfTheDay))
         logger.info("Word of day for $currentDay selected and cached")
         return wordOfTheDay
+    }
+
+    private fun prepareSeed(currentDay: LocalDateTime): Long = if (currentDay.hour < 12) {
+        currentDay.toLocalDate().toEpochDay() * 2
+    } else {
+        currentDay.toLocalDate().toEpochDay() * 3
     }
 
     private fun groupDefinitions(wordOfTheDayProjections: List<WordOfTheDayProjection>) =
