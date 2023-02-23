@@ -187,7 +187,7 @@ abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
         fieldPath.endsWith(".EQ") -> field.eq(instance)
         fieldPath.endsWith("._LIKE") -> field.likeIgnoreCase("%$instance%")
         fieldPath.endsWith(".LIKE") -> field.like("%$instance%")
-        fieldPath.endsWith(".BY_NORMALIZED") -> field.like("%${instance.toString().normalize()}%")
+        fieldPath.endsWith(".BY_NORMALIZED") -> field.like("${instance.toString().normalize()}%")
         fieldPath.endsWith(".BY_JSON") -> jsonContains(field, "$instance")
         else -> null
     }
