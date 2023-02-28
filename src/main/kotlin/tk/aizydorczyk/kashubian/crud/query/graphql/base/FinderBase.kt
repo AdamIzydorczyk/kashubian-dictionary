@@ -5,9 +5,13 @@ import org.jooq.Condition
 import org.jooq.Field
 import org.jooq.SelectFieldOrAsterisk
 import org.jooq.SortField
+
+import org.jooq.impl.DSL
 import org.jooq.impl.TableImpl
 import org.jooq.impl.UpdatableRecordImpl
 import kotlin.reflect.KProperty1
+import kotlin.reflect.full.declaredMemberFunctions
+import kotlin.reflect.jvm.isAccessible
 
 abstract class FinderBase {
     protected fun selectColumns(selectedFields: List<SelectedField>,
@@ -20,10 +24,21 @@ abstract class FinderBase {
         fieldToColumnRelations: Map<String, Field<*>>): List<SortField<*>> =
         selectedFields.filter { it.arguments.isNotEmpty() }.mapNotNull {
             when (it.arguments["orderBy"]) {
+                "LENGTH_ASC" -> fieldToColumnRelations[it.fullyQualifiedName]
+                        ?.let { field -> lengthAsc(field) }
                 "ASC" -> fieldToColumnRelations[it.fullyQualifiedName]?.asc()
                 else -> fieldToColumnRelations[it.fullyQualifiedName]?.desc()
             }
         }
+
+    private fun lengthAsc(field: Field<*>): SortField<Int> {
+        val unwrapped = field::class
+                .declaredMemberFunctions
+                .firstOrNull { it.name == "getAliasedField" }
+                ?.apply { isAccessible = true }
+                ?.call(field) as Field<String>
+        return DSL.length(unwrapped).asc()
+    }
 
     fun Triple<TableImpl<out UpdatableRecordImpl<*>>, Condition, Field<Long>>.joinTable() = this.first
     fun Triple<TableImpl<out UpdatableRecordImpl<*>>, Condition, Field<Long>>.joinCondition() = this.second
