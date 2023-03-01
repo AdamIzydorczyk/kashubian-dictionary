@@ -21,13 +21,8 @@
 
     </Appenders>
     <Loggers>
-
-        <Logger name="tk.aizydorczyk" additivity="false">
-            <AppenderRef ref="FileLog"/>
-            <AppenderRef ref="Console"/>
-        </Logger>
-
         <Root level="info">
+            <AppenderRef ref="FileLog"/>
             <AppenderRef ref="Console"/>
         </Root>
     </Loggers>
