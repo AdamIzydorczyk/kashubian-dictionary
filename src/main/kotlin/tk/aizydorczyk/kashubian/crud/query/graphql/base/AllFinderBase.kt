@@ -10,11 +10,7 @@ import org.jooq.Record
 import org.jooq.SelectFieldOrAsterisk
 import org.jooq.SelectSeekStepN
 import org.jooq.SortField
-import org.jooq.impl.DSL.condition
-import org.jooq.impl.DSL.count
-import org.jooq.impl.DSL.field
-import org.jooq.impl.DSL.select
-import org.jooq.impl.DSL.`val`
+import org.jooq.impl.DSL.*
 import org.jooq.impl.TableImpl
 import org.jooq.impl.UpdatableRecordImpl
 import org.slf4j.Logger
@@ -29,14 +25,14 @@ import kotlin.reflect.full.declaredMemberProperties
 import kotlin.reflect.jvm.jvmErasure
 
 abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open val mapper: GraphQLMapper<GraphQLModel>) :
-    FinderBase() {
+        FinderBase() {
 
     private val logger: Logger = LoggerFactory.getLogger(javaClass.simpleName)
 
     protected fun findAll(criteriaExpressionClass: KClass<out CriteriaExpression>,
-        where: CriteriaExpression?,
-        selectedFields: MutableList<SelectedField>,
-        page: PageCriteria?): GraphQLPagedModel<GraphQLModel> {
+                          where: CriteriaExpression?,
+                          selectedFields: MutableList<SelectedField>,
+                          page: PageCriteria?): GraphQLPagedModel<GraphQLModel> {
         val wheresWithJoins = prepareWheresWithJoins(
                 where = where,
                 declaredMemberProperties = criteriaExpressionClass.declaredMemberProperties,
@@ -45,18 +41,22 @@ abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
 
         val wheres = wheresWithJoins.map { it.condition() }
         val whereJoins = wheresWithJoins.map { it.joins() }
-            .flatten()
-            .distinct()
+                .flatten()
+                .distinct()
 
         val selectedColumns: MutableSet<SelectFieldOrAsterisk?> = selectColumns(selectedFields,
                 fieldToColumnRelations())
         selectedColumns.add(idFieldWithAlias())
 
         val selectedJoins = selectedFields
-            .mapNotNull { fieldToJoinRelations()[it.fullyQualifiedName] }
+                .mapNotNull { fieldToJoinRelations()[it.fullyQualifiedName] }
 
         selectedJoins.forEach {
             selectedColumns.add(it.idColumn())
+        }
+
+        selectedFields.filter { it.arguments["orderBy"] == "LENGTH_ASC" }.forEach {
+            selectedColumns.add(textLengthField(fieldToColumnRelations()[it.fullyQualifiedName]))
         }
 
         val ordersBy = orderByColumns(selectedFields,
@@ -77,113 +77,114 @@ abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
                 pageStart,
                 limit,
                 ordersBy)
-            ?.let { GraphQLPagedModel(pageCount, elementsCount, mapper.map(it.fetch())) }
-            ?: GraphQLPagedModel(pageCount, elementsCount, emptyList())
+                ?.let { GraphQLPagedModel(pageCount, elementsCount, mapper.map(it.fetch())) }
+                ?: GraphQLPagedModel(pageCount, elementsCount, emptyList())
     }
 
     private fun selectElements(selectedFields: MutableList<SelectedField>,
-        selectedColumns: MutableSet<SelectFieldOrAsterisk?>,
-        selectedJoins: List<Triple<TableImpl<out UpdatableRecordImpl<*>>, Condition, Field<Long>>>,
-        whereJoins: List<JoinTableWithCondition>,
-        wheres: List<Condition?>,
-        pageStart: Int,
-        limit: Int,
-        ordersBy: List<SortField<*>>): SelectSeekStepN<Record>? {
+                               selectedColumns: MutableSet<SelectFieldOrAsterisk?>,
+                               selectedJoins: List<Triple<TableImpl<out UpdatableRecordImpl<*>>, Condition, Field<Long>>>,
+                               whereJoins: List<JoinTableWithCondition>,
+                               wheres: List<Condition?>,
+                               pageStart: Int,
+                               limit: Int,
+                               ordersBy: List<SortField<*>>): SelectSeekStepN<Record>? {
         return when (isContainsSelectField(selectedFields)) {
             true -> dsl.select(selectedColumns)
-                .from(table())
-                .apply {
-                    selectedJoins.forEach {
-                        leftJoin(it.joinTable()).on(it.joinCondition())
+                    .from(table())
+                    .apply {
+                        selectedJoins.forEach {
+                            leftJoin(it.joinTable()).on(it.joinCondition())
+                        }
                     }
-                }
-                .where(idField().`in`(
-                        select(field(idFieldWithAlias().name, Long::class.java))
-                            .from(select(selectedColumns)
-                                .from(table())
-                                .apply {
-                                    whereJoins.forEach {
-                                        leftJoin(it.joinTable).on(it.joinCondition)
-                                    }
-                                    wheres.forEach {
-                                        where(it)
-                                    }
-                                }
-                                .orderBy(ordersBy)
-                                .offset(pageStart)
-                                .limit(limit).asTable(table()))
-                )).orderBy(ordersBy)
-                .apply { logger.info("Select query: $sql") }
+                    .where(idField().`in`(
+                            select(field(idFieldWithAlias().name, Long::class.java))
+                                    .from(selectDistinct(selectedColumns)
+                                            .from(table())
+                                            .apply {
+                                                whereJoins.forEach {
+                                                    leftJoin(it.joinTable).on(it.joinCondition)
+                                                }
+                                                wheres.forEach {
+                                                    where(it)
+                                                }
+                                            }
+                                            .orderBy(ordersBy)
+                                            .offset(pageStart)
+                                            .limit(limit).asTable(table()))
+                    )).orderBy(ordersBy)
+                    .apply { logger.info("Select query: $sql") }
 
             false -> null
         }
     }
 
     private fun countEntriesIfPaginationFieldsExists(
-        selectedFields: MutableList<SelectedField>,
-        whereJoins: List<JoinTableWithCondition>,
-        wheres: List<Condition?>) =
-        when (isContainsPaginationFields(selectedFields)) {
-            true -> dsl.select(count())
-                .from(table())
-                .apply {
-                    whereJoins.forEach {
-                        leftJoin(it.joinTable).on(it.joinCondition)
-                    }
+            selectedFields: MutableList<SelectedField>,
+            whereJoins: List<JoinTableWithCondition>,
+            wheres: List<Condition?>) =
+            when (isContainsPaginationFields(selectedFields)) {
+                true -> dsl.select(count())
+                        .from(table())
+                        .apply {
+                            whereJoins.forEach {
+                                leftJoin(it.joinTable).on(it.joinCondition)
+                            }
 
-                    wheres.forEach {
-                        where(it)
-                    }
-                    logger.info("Count query: $sql")
-                }.fetchOne(0, Int::class.java) ?: 0
+                            wheres.forEach {
+                                where(it)
+                            }
+                            logger.info("Count query: $sql")
+                        }.fetchOne(0, Int::class.java) ?: 0
 
-            false -> 0
-        }
+                false -> 0
+            }
 
     private fun selectEntriesIfSelectFieldExists(
-        selectedFields: MutableList<SelectedField>,
-        whereJoins: List<JoinTableWithCondition>,
-        wheres: List<Condition?>) =
-        when (isContainsPaginationFields(selectedFields)) {
-            true -> dsl.select(count())
-                .from(table())
-                .apply {
-                    whereJoins.forEach {
-                        leftJoin(it.joinTable).on(it.joinCondition)
-                    }
+            selectedFields: MutableList<SelectedField>,
+            whereJoins: List<JoinTableWithCondition>,
+            wheres: List<Condition?>) =
+            when (isContainsPaginationFields(selectedFields)) {
+                true -> dsl.select(count())
+                        .from(table())
+                        .apply {
+                            whereJoins.forEach {
+                                leftJoin(it.joinTable).on(it.joinCondition)
+                            }
 
-                    wheres.forEach {
-                        where(it)
-                    }
-                    logger.info("Select query: $sql")
-                }.fetchOne(0, Int::class.java) ?: 0
+                            wheres.forEach {
+                                where(it)
+                            }
+                            logger.info("Select query: $sql")
+                        }.fetchOne(0, Int::class.java) ?: 0
 
-            false -> 0
-        }
+                false -> 0
+            }
+
     @Suppress("UNCHECKED_CAST")
     private fun prepareWheresWithJoins(prefix: String = SELECT_PREFIX, where: CriteriaExpression?,
-        declaredMemberProperties: Collection<KProperty1<out CriteriaExpression, *>>,
-        criteriaToColumnRelationsWithJoin: Map<String, Pair<QueryPart, List<JoinTableWithCondition>>>
+                                       declaredMemberProperties: Collection<KProperty1<out CriteriaExpression, *>>,
+                                       criteriaToColumnRelationsWithJoin: Map<String, Pair<QueryPart, List<JoinTableWithCondition>>>
     ): List<Pair<Condition?, List<JoinTableWithCondition>>> = declaredMemberProperties.flatMap {
         flatMapObjectFields(it, where, prefix)
     }.filter { it.instance != null }
-        .map { Pair(it.field.call(it.instance), it.fieldPath) }
-        .filter { it.first != null }
-        .map { instanceWithField ->
-            val instance = instanceWithField.first!!
-            val fieldPath = instanceWithField.second
-            val field =
-                criteriaToColumnRelationsWithJoin[fieldPath]!!.first as Field<Any>
-            val condition = prepareCondition(fieldPath, field, instance)
+            .map { Pair(it.field.call(it.instance), it.fieldPath) }
+            .filter { it.first != null }
+            .map { instanceWithField ->
+                val instance = instanceWithField.first!!
+                val fieldPath = instanceWithField.second
+                val field =
+                        criteriaToColumnRelationsWithJoin[fieldPath]!!.first as Field<Any>
+                val condition = prepareCondition(fieldPath, field, instance)
 
-            val joins = criteriaToColumnRelationsWithJoin[fieldPath]!!.second
+                val joins = criteriaToColumnRelationsWithJoin[fieldPath]!!.second
 
-            Pair(condition, joins)
-        }
+                Pair(condition, joins)
+            }
 
     private fun prepareCondition(fieldPath: String,
-        field: Field<Any>,
-        instance: Any) = when {
+                                 field: Field<Any>,
+                                 instance: Any) = when {
         fieldPath.endsWith(".EQ") -> field.eq(instance)
         fieldPath.endsWith("._LIKE") -> field.likeIgnoreCase("%$instance%")
         fieldPath.endsWith(".LIKE") -> field.like("%$instance%")
@@ -197,33 +198,33 @@ abstract class AllFinderBase<out GraphQLModel>(open val dsl: DSLContext, open va
     }
 
     private fun isContainsPaginationFields(fields: List<SelectedField>) =
-        fields.any {
-            it.fullyQualifiedName == "${pageTypeName()}.pages"
-                    || it.fullyQualifiedName == "${pageTypeName()}.total"
-        }
+            fields.any {
+                it.fullyQualifiedName == "${pageTypeName()}.pages"
+                        || it.fullyQualifiedName == "${pageTypeName()}.total"
+            }
 
     private fun isContainsSelectField(fields: List<SelectedField>) =
-        fields.any {
-            it.fullyQualifiedName == "${pageTypeName()}.select"
-        }
+            fields.any {
+                it.fullyQualifiedName == "${pageTypeName()}.select"
+            }
 
     private val listOfTypesToFetch =
-        listOf(String::class.createType(nullable = true),
-                Boolean::class.createType(nullable = true),
-                Long::class.createType(nullable = true),
-                JsonNode::class.createType(nullable = true))
+            listOf(String::class.createType(nullable = true),
+                    Boolean::class.createType(nullable = true),
+                    Long::class.createType(nullable = true),
+                    JsonNode::class.createType(nullable = true))
 
     private fun flatMapObjectFields(field: KProperty1<*, *>,
-        instance: Any?,
-        fieldPath: String): List<FieldWithInstance> =
-        if (field.returnType in listOfTypesToFetch) {
-            listOf(FieldWithInstance(field, instance, "$fieldPath.${field.name}"))
-        } else {
-            field.returnType.jvmErasure.declaredMemberProperties.flatMap {
-                instance?.let { inst -> flatMapObjectFields(it, field.call(inst), "$fieldPath.${field.name}") }
-                    ?: emptyList()
+                                    instance: Any?,
+                                    fieldPath: String): List<FieldWithInstance> =
+            if (field.returnType in listOfTypesToFetch) {
+                listOf(FieldWithInstance(field, instance, "$fieldPath.${field.name}"))
+            } else {
+                field.returnType.jvmErasure.declaredMemberProperties.flatMap {
+                    instance?.let { inst -> flatMapObjectFields(it, field.call(inst), "$fieldPath.${field.name}") }
+                            ?: emptyList()
+                }
             }
-        }
 
     protected abstract fun idFieldWithAlias(): Field<Long>
 

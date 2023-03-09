@@ -21,23 +21,24 @@ abstract class FinderBase {
             .toMutableSet()
 
     protected fun orderByColumns(selectedFields: List<SelectedField>,
-        fieldToColumnRelations: Map<String, Field<*>>): List<SortField<*>> =
-        selectedFields.filter { it.arguments.isNotEmpty() }.mapNotNull {
-            when (it.arguments["orderBy"]) {
-                "LENGTH_ASC" -> fieldToColumnRelations[it.fullyQualifiedName]
-                        ?.let { field -> lengthAsc(field) }
-                "ASC" -> fieldToColumnRelations[it.fullyQualifiedName]?.asc()
-                else -> fieldToColumnRelations[it.fullyQualifiedName]?.desc()
-            }
-        }
+                                 fieldToColumnRelations: Map<String, Field<*>>): List<SortField<*>> =
+            selectedFields.filter { it.arguments.isNotEmpty() }.mapNotNull {
+                when (it.arguments["orderBy"]) {
+                    "LENGTH_ASC" -> fieldToColumnRelations[it.fullyQualifiedName]
+                            ?.let { field -> textLengthField(field) }?.asc()
 
-    private fun lengthAsc(field: Field<*>): SortField<Int> {
-        val unwrapped = field::class
+                    "ASC" -> fieldToColumnRelations[it.fullyQualifiedName]?.asc()
+                    else -> fieldToColumnRelations[it.fullyQualifiedName]?.desc()
+                }
+            }
+
+    protected fun textLengthField(field: Field<*>?): Field<Int> {
+        val unwrapped = field!!::class
                 .declaredMemberFunctions
                 .firstOrNull { it.name == "getAliasedField" }
                 ?.apply { isAccessible = true }
                 ?.call(field) as Field<String>
-        return DSL.length(unwrapped).asc()
+        return DSL.length(unwrapped)
     }
 
     fun Triple<TableImpl<out UpdatableRecordImpl<*>>, Condition, Field<Long>>.joinTable() = this.first

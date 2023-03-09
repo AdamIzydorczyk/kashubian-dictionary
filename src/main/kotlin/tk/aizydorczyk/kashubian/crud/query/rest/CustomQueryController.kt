@@ -14,12 +14,12 @@ import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType
 @Validated
 @Tag(name = "Custom Query")
 class CustomQueryController(
-    val variationBySubtypeFinder: VariationBySubtypeFinder,
-    val wordOfTheDayFinder: WordOfTheDayFinder) {
+        val variationBySubtypeFinder: VariationBySubtypeFinder,
+        val wordOfTheDayFinder: WordOfTheDayFinder) {
 
     @GetMapping("variation-example/{partOfSpeechSubType}")
     fun getVariationExampleBySubType(@PathVariable partOfSpeechSubType: PartOfSpeechSubType): ObjectNode? =
-        variationBySubtypeFinder.find(partOfSpeechSubType)
+            variationBySubtypeFinder.find(partOfSpeechSubType)
 
     @GetMapping("word-of-the-day")
     fun findWordOfTheDay() = wordOfTheDayFinder.find()
