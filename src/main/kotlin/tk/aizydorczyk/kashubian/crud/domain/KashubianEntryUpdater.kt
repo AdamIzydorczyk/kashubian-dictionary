@@ -53,6 +53,7 @@ class KashubianEntryUpdater(private val entityManager: EntityManager) {
         old: MutableList<EntityType>,
         new: MutableList<EntityType>,
         customFieldsFunction: (EntityType, EntityType) -> Unit = { _: EntityType, _: EntityType -> }) {
+        old.sortBy { it.id }
         if (old.size > new.size) {
             mergeWithOldAndRemoveRedundant(old, new, parentId, customFieldsFunction)
         } else if (old.size == new.size) {
