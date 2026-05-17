@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue
 import javax.persistence.GenerationType.SEQUENCE
 import javax.persistence.Id
 import javax.persistence.JoinColumn
+import javax.persistence.ManyToMany
 import javax.persistence.OneToMany
 import javax.persistence.SequenceGenerator
 import javax.persistence.Table
@@ -49,10 +50,7 @@ data class Meaning(
     @JoinColumn(name = "meaning_id", insertable = false, updatable = false, nullable = false)
     @LazyCollection(value = LazyCollectionOption.FALSE)
     val antonyms: MutableList<Antonym> = mutableListOf(),
-    @Column(name = "kashubian_entry_id")
-    var kashubianEntry: Long
-) : ChildEntity {
-    override fun setParentId(parentId: Long) {
-        kashubianEntry = parentId
-    }
-}
+    @ManyToMany(mappedBy = "meanings")
+    @LazyCollection(value = LazyCollectionOption.FALSE)
+    val kashubianEntries: MutableList<KashubianEntry> = mutableListOf()
+) : BaseEntity

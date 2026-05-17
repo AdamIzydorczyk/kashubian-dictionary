@@ -7,7 +7,6 @@ import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechType
 import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.IS_BLANK
 import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.IS_NULL
 import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.LENGTH_100_EXCEED
-import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.NOT_CONTAINS_AT_LEAST_ONE_MEANING
 import tk.aizydorczyk.kashubian.crud.validator.CorrectVariationJsonFormatByPartOfSpeechSubType
 import tk.aizydorczyk.kashubian.crud.validator.EntryExists
 import tk.aizydorczyk.kashubian.crud.validator.HyperonimIdNotInUpdatedEntryMeaningsHyperonims
@@ -22,7 +21,6 @@ import tk.aizydorczyk.kashubian.crud.validator.UnchangedWordToNonUnique
 import tk.aizydorczyk.kashubian.crud.validator.UniqueWord
 import javax.validation.Valid
 import javax.validation.constraints.NotBlank
-import javax.validation.constraints.NotEmpty
 import javax.validation.constraints.NotNull
 import javax.validation.constraints.Size
 
@@ -50,7 +48,6 @@ data class KashubianEntryDto(
     @field:NotInUpdatedEntryDerivatives(groups = [OnUpdate::class])
     var base: Long?,
     @field:Valid
-    @field:NotEmpty(message = NOT_CONTAINS_AT_LEAST_ONE_MEANING, groups = [OnCreate::class, OnUpdate::class])
     @field:HyperonimIdNotInUpdatedEntryMeaningsHyperonims(groups = [OnUpdate::class])
     @field:HyperonimIdsCannotRepeatedInMeanings(groups = [OnCreate::class, OnUpdate::class])
     val meanings: List<MeaningDto> = emptyList(),

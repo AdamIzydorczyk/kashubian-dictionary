@@ -15,4 +15,4 @@ data class MeaningsCriteriaExpression(
     val antonyms: AntonymsCriteriaExpression?,
     val examples: ExamplesCriteriaExpression?,
     val idioms: IdiomsCriteriaExpression?,
-    val kashubianEntry: KashubianEntryCriteriaExpressionSimplified?) : CriteriaExpression
+    val kashubianEntries: KashubianEntryCriteriaExpressionSimplified?) : CriteriaExpression

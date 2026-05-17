@@ -29,4 +29,16 @@ class KashubianEntryConfiguration {
     @Bean
     fun kashubianEntrySoundFileUploader(entityManager: EntityManager): KashubianEntrySoundFileUploader =
         KashubianEntrySoundFileUploader(entityManager::merge)
+
+    @Bean
+    fun otherCreator(entityManager: EntityManager): OtherCreator =
+        OtherCreator(entityManager)
+
+    @Bean
+    fun otherUpdater(entityManager: EntityManager): OtherUpdater =
+        OtherUpdater(entityManager)
+
+    @Bean
+    fun otherRemover(repository: KashubianEntryRepository): OtherRemover =
+        OtherRemover(repository::deleteOtherById)
 }

@@ -52,13 +52,13 @@ input MeaningsCriteriaExpression{
     antonyms: AntonymsCriteriaExpression
     examples: ExamplesCriteriaExpression
     idioms: IdiomsCriteriaExpression
-    kashubianEntry: KashubianEntryCriteriaExpressionSimplified
+    kashubianEntries: KashubianEntryCriteriaExpressionSimplified
 }
 
 input MeaningsCriteriaExpressionSimplified{
     id: NumericCriteria
     definition: StringCriteria
-    kashubianEntry: KashubianEntryCriteriaExpressionSimplified
+    kashubianEntries: KashubianEntryCriteriaExpressionSimplified
 }
 
 input TranslationCriteriaExpression{
@@ -208,13 +208,13 @@ type Meaning{
     antonyms: [Antonym]
     examples: [Example]
     idioms: [Idiom]
-    kashubianEntry: KashubianEntrySimplified
+    kashubianEntries: [KashubianEntrySimplified]
 }
 
 type MeaningSimplified{
     id(orderBy: OrderBy): Int
     definition(orderBy: OrderBy): String
-    kashubianEntry: KashubianEntrySimplified
+    kashubianEntries: [KashubianEntrySimplified]
 }
 
 type Synonym {

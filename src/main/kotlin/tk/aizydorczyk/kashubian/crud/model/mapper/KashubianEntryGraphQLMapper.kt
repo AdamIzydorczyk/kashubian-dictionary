@@ -96,7 +96,7 @@ class KashubianEntryGraphQLMapper : GraphQLMapper<KashubianEntryGraphQL> {
                 "meaning_hyperonym_id",
                 simplifyMeanings,
                 { simplifyMeaning, simplifyEntry ->
-                    simplifyMeaning.kashubianEntry = simplifyEntry
+                    simplifyMeaning.kashubianEntries.add(simplifyEntry)
                 })
     }
 
@@ -457,7 +457,7 @@ class KashubianEntryGraphQLMapper : GraphQLMapper<KashubianEntryGraphQL> {
                 "synonym_meaning_id",
                 simplifyMeanings,
                 { simplifyMeaning, simplifyEntry ->
-                    simplifyMeaning.kashubianEntry = simplifyEntry
+                    simplifyMeaning.kashubianEntries.add(simplifyEntry)
                 })
     }
 
@@ -476,7 +476,7 @@ class KashubianEntryGraphQLMapper : GraphQLMapper<KashubianEntryGraphQL> {
                 "antonym_meaning_id",
                 simplifyMeanings,
                 { simplifyMeaning, simplifyEntry ->
-                    simplifyMeaning.kashubianEntry = simplifyEntry
+                    simplifyMeaning.kashubianEntries.add(simplifyEntry)
                 })
     }
 
@@ -496,7 +496,7 @@ class KashubianEntryGraphQLMapper : GraphQLMapper<KashubianEntryGraphQL> {
                 "meaning_id",
                 meanings,
                 { meaning, simplifyEntry ->
-                    meaning.kashubianEntry = simplifyEntry
+                    meaning.kashubianEntries.add(simplifyEntry)
                 })
     }
 

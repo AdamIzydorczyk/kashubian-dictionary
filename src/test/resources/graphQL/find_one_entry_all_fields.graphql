@@ -34,7 +34,7 @@
             hyperonym {
                 id
                 definition
-                kashubianEntry {
+                kashubianEntries {
                     id
                     word
                 }
@@ -46,7 +46,7 @@
                 synonym {
                     id
                     definition
-                    kashubianEntry {
+                    kashubianEntries {
                         id
                         word
                     }
@@ -78,7 +78,7 @@
                 antonym {
                     id
                     definition
-                    kashubianEntry {
+                    kashubianEntries {
                         id
                         word
                     }
@@ -94,7 +94,7 @@
                 note
                 idiom
             }
-            kashubianEntry {
+            kashubianEntries {
                 id
                 word
             }

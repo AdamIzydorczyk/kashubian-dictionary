@@ -27,7 +27,7 @@ data class Translation(
         meaning = parentId
     }
 
-    fun copyWitchNormalizedFieldsAndAssignedId(meaningId: Long) = Translation(
+    fun copyWithNormalizedFieldsAndAssignedId(meaningId: Long) = Translation(
             id = meaningId,
             polish = this.polish,
             normalizedPolish = this.polish?.normalize(),

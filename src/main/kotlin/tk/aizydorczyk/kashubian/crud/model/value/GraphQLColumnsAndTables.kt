@@ -1,5 +1,6 @@
 package tk.aizydorczyk.kashubian.crud.model.value
 
+import org.jooq.impl.DSL
 import org.jooq.impl.DSL.field
 import org.jooq.impl.DSL.select
 import org.jooq.impl.DSL.selectCount
@@ -85,8 +86,10 @@ class GraphQLColumnsAndTables {
 
         fun entryBasesWithAlias() = field(select(Routines.findBases(entryTable().ID))).`as`("entry_bases")
         fun entryBases() = field(select(Routines.findBases(entryTable().ID)))
-        fun meaningsCount() = field(selectCount().from(Tables.MEANING)
-            .where(Tables.MEANING.KASHUBIAN_ENTRY_ID.eq(entryTable().ID))).`as`("meanings_count")
+        fun meaningsCount() = field(
+            selectCount().from(DSL.table("meaning_kashubian_entry"))
+                .where(DSL.field("kashubian_entry_id").eq(entryTable().ID)))
+            .`as`("meanings_count")
 
         fun entryPartOfSpeechSubType() = entryTable().PART_OF_SPEECH_SUB_TYPE.`as`("entry_part_of_speech_sub_type")
         fun entryPartOfSpeech() = entryTable().PART_OF_SPEECH.`as`("entry_part_of_speech")

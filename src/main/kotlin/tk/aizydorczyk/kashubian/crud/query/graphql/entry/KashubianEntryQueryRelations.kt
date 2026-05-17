@@ -1,6 +1,7 @@
 package tk.aizydorczyk.kashubian.crud.query.graphql.entry
 
 import org.jooq.QueryPart
+import org.jooq.impl.DSL
 import tk.aizydorczyk.kashubian.crud.extension.fieldPath
 import tk.aizydorczyk.kashubian.crud.extension.fieldWithJoins
 import tk.aizydorczyk.kashubian.crud.extension.joinedBy
@@ -113,8 +114,8 @@ import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.IDIOMS_
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.IDIOM_FIELD
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.IDIOM_TYPE_PREFIX
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.ID_FIELD
+import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.KASHUBIAN_ENTRIES_NODE
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX
-import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.KASHUBIAN_ENTRY_NODE
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.KASHUBIAN_ENTRY_TYPE_PREFIX
 import tk.aizydorczyk.kashubian.crud.model.value.GraphQLFields.Companion.MEANINGS_COUNT_FIELD
@@ -176,7 +177,7 @@ object KashubianEntryQueryRelations {
                             entryBaseId()),
             "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE" to
                     Triple(meaningTable(),
-                            entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                            meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                             meaningId()),
             "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$TRANSLATION_NODE" to
                     Triple(translationTable(),
@@ -186,9 +187,9 @@ object KashubianEntryQueryRelations {
                     Triple(meaningHyperonymTable(),
                             meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID),
                             meaningHyperonymId()),
-            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$HYPERONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE" to
+            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$HYPERONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRIES_NODE" to
                     Triple(meaningHyperonymEntryTable(),
-                            meaningHyperonymTable().KASHUBIAN_ENTRY_ID.eq(meaningHyperonymEntryTable().ID),
+                            meaningHyperonymEntryTable().ID.`in`(DSL.select(DSL.field("kashubian_entry_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("meaning_id", Long::class.javaObjectType).eq(meaningHyperonymTable().ID))),
                             meaningHyperonymEntryId()),
             "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$PROVERBS_NODE" to
                     Triple(proverbTable(),
@@ -222,17 +223,17 @@ object KashubianEntryQueryRelations {
                     Triple(antonymMeaningTable(),
                             antonymTable().ANTONYM_ID.eq(antonymMeaningTable().ID),
                             antonymMeaningId()),
-            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$SYNONYMS_NODE$SYNONYM_TYPE_PREFIX$SYNONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE" to
+            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$SYNONYMS_NODE$SYNONYM_TYPE_PREFIX$SYNONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRIES_NODE" to
                     Triple(synonymMeaningEntryTable(),
-                            synonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(synonymMeaningEntryTable().ID),
+                            synonymMeaningEntryTable().ID.`in`(DSL.select(DSL.field("kashubian_entry_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("meaning_id", Long::class.javaObjectType).eq(synonymMeaningTable().ID))),
                             synonymMeaningEntryId()),
-            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$ANTONYMS_NODE$ANTONYM_TYPE_PREFIX$ANTONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE" to
+            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$ANTONYMS_NODE$ANTONYM_TYPE_PREFIX$ANTONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRIES_NODE" to
                     Triple(antonymMeaningEntryTable(),
-                            antonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(antonymMeaningEntryTable().ID),
+                            antonymMeaningEntryTable().ID.`in`(DSL.select(DSL.field("kashubian_entry_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("meaning_id", Long::class.javaObjectType).eq(antonymMeaningTable().ID))),
                             antonymMeaningEntryId()),
-            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE" to
+            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$KASHUBIAN_ENTRIES_NODE" to
                     Triple(meaningEntryTable(),
-                            meaningTable().KASHUBIAN_ENTRY_ID.eq(meaningEntryTable().ID),
+                            meaningEntryTable().ID.`in`(DSL.select(DSL.field("kashubian_entry_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("meaning_id", Long::class.javaObjectType).eq(meaningTable().ID))),
                             meaningEntryId())
     )
     internal val FIND_ONE_FIELD_TO_JOIN_RELATIONS = FIND_ALL_FIELD_TO_JOIN_RELATIONS.mapKeys {
@@ -289,9 +290,9 @@ object KashubianEntryQueryRelations {
                     meaningHyperonymId(),
             "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$HYPERONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$DEFINITION_FIELD" to
                     meaningHyperonymDefinition(),
-            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$HYPERONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$ID_FIELD" to
+            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$HYPERONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRIES_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$ID_FIELD" to
                     meaningHyperonymEntryId(),
-            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$HYPERONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$WORD_FIELD" to
+            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$HYPERONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRIES_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$WORD_FIELD" to
                     meaningHyperonymEntryWord(),
             "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$HYPERONYMS_FIELD" to
                     meaningHyperonymsWithAlias(),
@@ -355,15 +356,17 @@ object KashubianEntryQueryRelations {
                     antonymMeaningId(),
             "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$ANTONYMS_NODE$ANTONYM_TYPE_PREFIX$ANTONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$DEFINITION_FIELD" to
                     antonymMeaningDefinition(),
-            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$SYNONYMS_NODE$SYNONYM_TYPE_PREFIX$SYNONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$ID_FIELD" to
+            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$SYNONYMS_NODE$SYNONYM_TYPE_PREFIX$SYNONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRIES_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$ID_FIELD" to
                     synonymMeaningEntryId(),
-            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$SYNONYMS_NODE$SYNONYM_TYPE_PREFIX$SYNONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$WORD_FIELD" to
+            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$SYNONYMS_NODE$SYNONYM_TYPE_PREFIX$SYNONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRIES_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$WORD_FIELD" to
                     synonymMeaningEntryWord(),
-            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$ANTONYMS_NODE$ANTONYM_TYPE_PREFIX$ANTONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$ID_FIELD" to
+            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$ANTONYMS_NODE$ANTONYM_TYPE_PREFIX$ANTONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRIES_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$ID_FIELD" to
                     antonymMeaningEntryId(),
-            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$ANTONYMS_NODE$ANTONYM_TYPE_PREFIX$ANTONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$WORD_FIELD" to
+            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$ANTONYMS_NODE$ANTONYM_TYPE_PREFIX$ANTONYM_NODE$MEANING_SIMPLIFIED_TYPE_PREFIX$KASHUBIAN_ENTRIES_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$WORD_FIELD" to
                     antonymMeaningEntryWord(),
-            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$KASHUBIAN_ENTRY_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$WORD_FIELD" to
+            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$KASHUBIAN_ENTRIES_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$ID_FIELD" to
+                    meaningEntryId(),
+            "$KASHUBIAN_ENTRIES_PAGED_TYPE_PREFIX$SELECT_PREFIX$KASHUBIAN_ENTRY_TYPE_PREFIX$MEANINGS_NODE$MEANING_TYPE_PREFIX$KASHUBIAN_ENTRIES_NODE$KASHUBIAN_ENTRY_SIMPLIFIED_TYPE_PREFIX$WORD_FIELD" to
                     meaningEntryWord()
     )
 
@@ -404,172 +407,163 @@ object KashubianEntryQueryRelations {
                         listOf(otherTable() on entryTable().ID.eq(otherTable().KASHUBIAN_ENTRY_ID),
                                 otherEntryTable() on otherTable().OTHER_ID.eq(otherEntryTable().ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$ID_FIELD" to (meaningTable().ID joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))))),
                 "$SELECT_PREFIX$MEANINGS_NODE$ORIGIN_FIELD" to (meaningTable().ORIGIN joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))))),
                 "$SELECT_PREFIX$MEANINGS_NODE$DEFINITION_FIELD" to (meaningTable().DEFINITION joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))))),
                 "$SELECT_PREFIX$MEANINGS_NODE$HYPERONYM_NODE$ID_FIELD" to (meaningHyperonymTable().ID joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 meaningHyperonymTable() on meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$HYPERONYM_NODE$DEFINITION_FIELD" to (meaningHyperonymTable().DEFINITION joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 meaningHyperonymTable() on meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID))),
-                "$SELECT_PREFIX$MEANINGS_NODE$HYPERONYM_NODE$KASHUBIAN_ENTRY_NODE$ID_FIELD" to (meaningHyperonymEntryTable().ID joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                "$SELECT_PREFIX$MEANINGS_NODE$HYPERONYM_NODE$KASHUBIAN_ENTRIES_NODE$ID_FIELD" to (meaningHyperonymEntryTable().ID joinedBy
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 meaningHyperonymTable() on meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID),
-                                meaningHyperonymEntryTable() on meaningHyperonymTable().KASHUBIAN_ENTRY_ID.eq(
-                                        meaningHyperonymEntryTable().ID))),
-                "$SELECT_PREFIX$MEANINGS_NODE$HYPERONYM_NODE$KASHUBIAN_ENTRY_NODE$WORD_FIELD" to (meaningHyperonymEntryTable().WORD joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                meaningHyperonymEntryTable() on meaningHyperonymEntryTable().ID.`in`(DSL.select(DSL.field("kashubian_entry_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("meaning_id", Long::class.javaObjectType).eq(meaningHyperonymTable().ID))))),
+                "$SELECT_PREFIX$MEANINGS_NODE$HYPERONYM_NODE$KASHUBIAN_ENTRIES_NODE$WORD_FIELD" to (meaningHyperonymEntryTable().WORD joinedBy
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 meaningHyperonymTable() on meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID),
-                                meaningHyperonymEntryTable() on meaningHyperonymTable().KASHUBIAN_ENTRY_ID.eq(
-                                        meaningHyperonymEntryTable().ID))),
-                "$SELECT_PREFIX$MEANINGS_NODE$HYPERONYM_NODE$KASHUBIAN_ENTRY_NODE$NORMALIZED_WORD_FIELD" to (meaningHyperonymEntryTable().NORMALIZED_WORD joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                meaningHyperonymEntryTable() on meaningHyperonymEntryTable().ID.`in`(DSL.select(DSL.field("kashubian_entry_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("meaning_id", Long::class.javaObjectType).eq(meaningHyperonymTable().ID))))),
+                "$SELECT_PREFIX$MEANINGS_NODE$HYPERONYM_NODE$KASHUBIAN_ENTRIES_NODE$NORMALIZED_WORD_FIELD" to (meaningHyperonymEntryTable().NORMALIZED_WORD joinedBy
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 meaningHyperonymTable() on meaningTable().HYPERONYM_ID.eq(meaningHyperonymTable().ID),
-                                meaningHyperonymEntryTable() on meaningHyperonymTable().KASHUBIAN_ENTRY_ID.eq(
-                                        meaningHyperonymEntryTable().ID))),
+                                meaningHyperonymEntryTable() on meaningHyperonymEntryTable().ID.`in`(DSL.select(DSL.field("kashubian_entry_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("meaning_id", Long::class.javaObjectType).eq(meaningHyperonymTable().ID))))),
                 "$SELECT_PREFIX$MEANINGS_NODE$HYPERONYMS_FIELD" to (meaningHyperonyms() joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))))),
                 "$SELECT_PREFIX$MEANINGS_NODE$HYPONYMS_FIELD" to (meaningHyponyms() joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID))),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))))),
                 "$SELECT_PREFIX$MEANINGS_NODE$SYNONYMS_NODE$ID_FIELD" to (synonymTable().ID joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$SYNONYMS_NODE$NOTE_FIELD" to (synonymTable().NOTE joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$SYNONYMS_NODE$SYNONYM_NODE$ID_FIELD" to (synonymMeaningTable() joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
                                 synonymMeaningTable() on synonymTable().MEANING_ID.eq(synonymMeaningTable().ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$SYNONYMS_NODE$SYNONYM_NODE$DEFINITION_FIELD" to (synonymMeaningTable().DEFINITION joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
                                 synonymMeaningTable() on synonymTable().MEANING_ID.eq(synonymMeaningTable().ID))),
-                "$SELECT_PREFIX$MEANINGS_NODE$SYNONYMS_NODE$SYNONYM_NODE$KASHUBIAN_ENTRY_NODE$ID_FIELD" to (synonymMeaningEntryTable().ID joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                "$SELECT_PREFIX$MEANINGS_NODE$SYNONYMS_NODE$SYNONYM_NODE$KASHUBIAN_ENTRIES_NODE$ID_FIELD" to (synonymMeaningEntryTable().ID joinedBy
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
                                 synonymMeaningTable() on synonymTable().MEANING_ID.eq(synonymMeaningTable().ID),
-                                synonymMeaningEntryTable() on synonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
-                                        synonymMeaningEntryTable().ID))),
-                "$SELECT_PREFIX$MEANINGS_NODE$SYNONYMS_NODE$SYNONYM_NODE$KASHUBIAN_ENTRY_NODE$WORD_FIELD" to (synonymMeaningEntryTable().WORD joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                synonymMeaningEntryTable() on synonymMeaningEntryTable().ID.`in`(DSL.select(DSL.field("kashubian_entry_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("meaning_id", Long::class.javaObjectType).eq(synonymMeaningTable().ID))))),
+                "$SELECT_PREFIX$MEANINGS_NODE$SYNONYMS_NODE$SYNONYM_NODE$KASHUBIAN_ENTRIES_NODE$WORD_FIELD" to (synonymMeaningEntryTable().WORD joinedBy
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
                                 synonymMeaningTable() on synonymTable().MEANING_ID.eq(synonymMeaningTable().ID),
-                                synonymMeaningEntryTable() on synonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
-                                        synonymMeaningEntryTable().ID))),
-                "$SELECT_PREFIX$MEANINGS_NODE$SYNONYMS_NODE$SYNONYM_NODE$KASHUBIAN_ENTRY_NODE$NORMALIZED_WORD_FIELD" to (synonymMeaningEntryTable().NORMALIZED_WORD joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                synonymMeaningEntryTable() on synonymMeaningEntryTable().ID.`in`(DSL.select(DSL.field("kashubian_entry_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("meaning_id", Long::class.javaObjectType).eq(synonymMeaningTable().ID))))),
+                "$SELECT_PREFIX$MEANINGS_NODE$SYNONYMS_NODE$SYNONYM_NODE$KASHUBIAN_ENTRIES_NODE$NORMALIZED_WORD_FIELD" to (synonymMeaningEntryTable().NORMALIZED_WORD joinedBy
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 synonymTable() on meaningTable().ID.eq(synonymTable().MEANING_ID),
                                 synonymMeaningTable() on synonymTable().MEANING_ID.eq(synonymMeaningTable().ID),
-                                synonymMeaningEntryTable() on synonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
-                                        synonymMeaningEntryTable().ID))),
+                                synonymMeaningEntryTable() on synonymMeaningEntryTable().ID.`in`(DSL.select(DSL.field("kashubian_entry_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("meaning_id", Long::class.javaObjectType).eq(synonymMeaningTable().ID))))),
                 "$SELECT_PREFIX$MEANINGS_NODE$PROVERBS_NODE$ID_FIELD" to (proverbTable().ID joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 proverbTable() on meaningTable().ID.eq(proverbTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$PROVERBS_NODE$NOTE_FIELD" to (proverbTable().NOTE joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 proverbTable() on meaningTable().ID.eq(proverbTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$PROVERBS_NODE$PROVERB_FIELD" to (proverbTable().PROVERB_ joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 proverbTable() on meaningTable().ID.eq(proverbTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$TRANSLATION_NODE$ID_FIELD" to (translationTable().ID joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$TRANSLATION_NODE$POLISH_FIELD" to (translationTable().POLISH joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$TRANSLATION_NODE$NORMALIZED_POLISH_FIELD" to (translationTable().NORMALIZED_POLISH joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$TRANSLATION_NODE$ENGLISH_FIELD" to (translationTable().ENGLISH joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$TRANSLATION_NODE$NORMALIZED_ENGLISH_FIELD" to (translationTable().NORMALIZED_ENGLISH joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$TRANSLATION_NODE$GERMAN_FIELD" to (translationTable().GERMAN joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$TRANSLATION_NODE$NORMALIZED_GERMAN_FIELD" to (translationTable().NORMALIZED_GERMAN joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$TRANSLATION_NODE$UKRAINIAN_FIELD" to (translationTable().UKRAINIAN joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$TRANSLATION_NODE$NORMALIZED_UKRAINIAN_FIELD" to (translationTable().NORMALIZED_UKRAINIAN joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 translationTable() on meaningTable().ID.eq(translationTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$QUOTES_NODE$ID_FIELD" to (quoteTable().ID joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 quoteTable() on meaningTable().ID.eq(quoteTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$QUOTES_NODE$NOTE_FIELD" to (quoteTable().NOTE joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 quoteTable() on meaningTable().ID.eq(quoteTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$QUOTES_NODE$QUOTE_FIELD" to (quoteTable().QUOTE_ joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 quoteTable() on meaningTable().ID.eq(quoteTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$ANTONYMS_NODE$ID_FIELD" to (antonymTable().ID joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$ANTONYMS_NODE$NOTE_FIELD" to (antonymTable().NOTE joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$ANTONYMS_NODE$ANTONYM_NODE$ID_FIELD" to (antonymMeaningTable().ID joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
                                 antonymMeaningTable() on antonymTable().MEANING_ID.eq(antonymMeaningTable().ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$ANTONYMS_NODE$ANTONYM_NODE$DEFINITION_FIELD" to (antonymMeaningTable().DEFINITION joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
                                 antonymMeaningTable() on antonymTable().MEANING_ID.eq(antonymMeaningTable().ID))),
-                "$SELECT_PREFIX$MEANINGS_NODE$ANTONYMS_NODE$ANTONYM_NODE$KASHUBIAN_ENTRY_NODE$ID_FIELD" to (antonymMeaningEntryTable().ID joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                "$SELECT_PREFIX$MEANINGS_NODE$ANTONYMS_NODE$ANTONYM_NODE$KASHUBIAN_ENTRIES_NODE$ID_FIELD" to (antonymMeaningEntryTable().ID joinedBy
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
                                 antonymMeaningTable() on antonymTable().MEANING_ID.eq(antonymMeaningTable().ID),
-                                antonymMeaningEntryTable() on antonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
-                                        antonymMeaningEntryTable().ID))),
-                "$SELECT_PREFIX$MEANINGS_NODE$ANTONYMS_NODE$ANTONYM_NODE$KASHUBIAN_ENTRY_NODE$WORD_FIELD" to (antonymMeaningEntryTable().WORD joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                antonymMeaningEntryTable() on antonymMeaningEntryTable().ID.`in`(DSL.select(DSL.field("kashubian_entry_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("meaning_id", Long::class.javaObjectType).eq(antonymMeaningTable().ID))))),
+                "$SELECT_PREFIX$MEANINGS_NODE$ANTONYMS_NODE$ANTONYM_NODE$KASHUBIAN_ENTRIES_NODE$WORD_FIELD" to (antonymMeaningEntryTable().WORD joinedBy
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
                                 antonymMeaningTable() on antonymTable().MEANING_ID.eq(antonymMeaningTable().ID),
-                                antonymMeaningEntryTable() on antonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
-                                        antonymMeaningEntryTable().ID))),
-                "$SELECT_PREFIX$MEANINGS_NODE$ANTONYMS_NODE$ANTONYM_NODE$KASHUBIAN_ENTRY_NODE$NORMALIZED_WORD_FIELD" to (antonymMeaningEntryTable().NORMALIZED_WORD joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                                antonymMeaningEntryTable() on antonymMeaningEntryTable().ID.`in`(DSL.select(DSL.field("kashubian_entry_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("meaning_id", Long::class.javaObjectType).eq(antonymMeaningTable().ID))))),
+                "$SELECT_PREFIX$MEANINGS_NODE$ANTONYMS_NODE$ANTONYM_NODE$KASHUBIAN_ENTRIES_NODE$NORMALIZED_WORD_FIELD" to (antonymMeaningEntryTable().NORMALIZED_WORD joinedBy
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 antonymTable() on meaningTable().ID.eq(antonymTable().MEANING_ID),
                                 antonymMeaningTable() on antonymTable().MEANING_ID.eq(antonymMeaningTable().ID),
-                                antonymMeaningEntryTable() on antonymMeaningTable().KASHUBIAN_ENTRY_ID.eq(
-                                        antonymMeaningEntryTable().ID))),
+                                antonymMeaningEntryTable() on antonymMeaningEntryTable().ID.`in`(DSL.select(DSL.field("kashubian_entry_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("meaning_id", Long::class.javaObjectType).eq(antonymMeaningTable().ID))))),
                 "$SELECT_PREFIX$MEANINGS_NODE$EXAMPLES_NODE$ID_FIELD" to (exampleTable().ID joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 exampleTable() on meaningTable().ID.eq(exampleTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$EXAMPLES_NODE$NOTE_FIELD" to (exampleTable().NOTE joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 exampleTable() on meaningTable().ID.eq(exampleTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$EXAMPLES_NODE$EXAMPLE_FIELD" to (exampleTable().EXAMPLE_ joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 exampleTable() on meaningTable().ID.eq(exampleTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$IDIOMS_NODE$ID_FIELD" to (idiomTable().ID joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 idiomTable() on meaningTable().ID.eq(idiomTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$IDIOMS_NODE$NOTE_FIELD" to (idiomTable().NOTE joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 idiomTable() on meaningTable().ID.eq(idiomTable().MEANING_ID))),
                 "$SELECT_PREFIX$MEANINGS_NODE$IDIOMS_NODE$IDIOM_FIELD" to (idiomTable().IDIOM_ joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
                                 idiomTable() on meaningTable().ID.eq(idiomTable().MEANING_ID))),
-                "$SELECT_PREFIX$MEANINGS_NODE$KASHUBIAN_ENTRY_NODE$ID_FIELD" to (meaningEntryTable().ID joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                meaningEntryTable() on meaningTable().KASHUBIAN_ENTRY_ID.eq(meaningEntryTable().ID))),
-                "$SELECT_PREFIX$MEANINGS_NODE$KASHUBIAN_ENTRY_NODE$WORD_FIELD" to (meaningEntryTable().WORD joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                meaningEntryTable() on meaningTable().KASHUBIAN_ENTRY_ID.eq(meaningEntryTable().ID))),
-                "$SELECT_PREFIX$MEANINGS_NODE$KASHUBIAN_ENTRY_NODE$NORMALIZED_WORD_FIELD" to (meaningEntryTable().NORMALIZED_WORD joinedBy
-                        listOf(meaningTable() on entryTable().ID.eq(meaningTable().KASHUBIAN_ENTRY_ID),
-                                meaningEntryTable() on meaningTable().KASHUBIAN_ENTRY_ID.eq(meaningEntryTable().ID)))
+                "$SELECT_PREFIX$MEANINGS_NODE$KASHUBIAN_ENTRIES_NODE$ID_FIELD" to (meaningEntryTable().ID joinedBy
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
+                                meaningEntryTable() on meaningEntryTable().ID.`in`(DSL.select(DSL.field("kashubian_entry_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("meaning_id", Long::class.javaObjectType).eq(meaningTable().ID))))),
+                "$SELECT_PREFIX$MEANINGS_NODE$KASHUBIAN_ENTRIES_NODE$WORD_FIELD" to (meaningEntryTable().WORD joinedBy
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
+                                meaningEntryTable() on meaningEntryTable().ID.`in`(DSL.select(DSL.field("kashubian_entry_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("meaning_id", Long::class.javaObjectType).eq(meaningTable().ID))))),
+                "$SELECT_PREFIX$MEANINGS_NODE$KASHUBIAN_ENTRIES_NODE$NORMALIZED_WORD_FIELD" to (meaningEntryTable().NORMALIZED_WORD joinedBy
+                        listOf(meaningTable() on meaningTable().ID.`in`(DSL.select(DSL.field("meaning_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("kashubian_entry_id", Long::class.javaObjectType).eq(entryTable().ID))),
+                                meaningEntryTable() on meaningEntryTable().ID.`in`(DSL.select(DSL.field("kashubian_entry_id", Long::class.javaObjectType)).from("meaning_kashubian_entry").where(DSL.field("meaning_id", Long::class.javaObjectType).eq(meaningTable().ID)))))
         ).map { criteriaAndField ->
             listOf(".EQ", "._LIKE", ".LIKE", ".BY_NORMALIZED", ".BY_JSON").map {
                 criteriaAndField.fieldPath() + it to

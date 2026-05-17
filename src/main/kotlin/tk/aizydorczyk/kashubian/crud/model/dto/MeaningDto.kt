@@ -10,6 +10,7 @@ import javax.validation.Valid
 import javax.validation.constraints.NotNull
 
 data class MeaningDto(
+    val id: Long? = null,
     @field:Valid
     @field:NotNull(message = IS_NULL, groups = [OnCreate::class, OnUpdate::class])
     val translation: TranslationDto?,
@@ -31,5 +32,6 @@ data class MeaningDto(
     @field:Valid
     val synonyms: List<SynonymDto> = emptyList(),
     @field:Valid
-    val antonyms: List<AntonymDto> = emptyList()
+    val antonyms: List<AntonymDto> = emptyList(),
+    val kashubianEntryIds: List<Long> = emptyList()
 )

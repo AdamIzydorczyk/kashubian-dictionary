@@ -14,9 +14,6 @@ import org.springframework.security.provisioning.InMemoryUserDetailsManager
 import org.springframework.security.web.SecurityFilterChain
 import org.springframework.security.web.access.channel.ChannelProcessingFilter
 import org.springframework.stereotype.Component
-import org.springframework.web.cors.CorsConfiguration
-import org.springframework.web.cors.CorsConfigurationSource
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 import org.springframework.web.filter.OncePerRequestFilter
 import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.FILE_PATH
 import tk.aizydorczyk.kashubian.crud.model.value.AnnotationConstants.Companion.KASHUBIAN_ENTRY_PATH
@@ -40,7 +37,6 @@ class SecurityConfig(private val corsFilter: CorsFilter) {
                 .antMatcher("/**")
                 .csrf().disable()
                 .cors()
-                .configurationSource(corsConfig())
                 .disable()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -71,19 +67,6 @@ class SecurityConfig(private val corsFilter: CorsFilter) {
                 .disable()
                 .httpBasic()
         }.build()
-    }
-
-    private fun corsConfig(): CorsConfigurationSource {
-        return UrlBasedCorsConfigurationSource().apply {
-            registerCorsConfiguration("/**",
-                    CorsConfiguration().apply {
-                        allowedOrigins = listOf("*")
-                        allowedMethods = listOf("*")
-                        allowedHeaders = listOf("*")
-                        allowCredentials = true
-                    }
-            )
-        }
     }
 
     @Bean

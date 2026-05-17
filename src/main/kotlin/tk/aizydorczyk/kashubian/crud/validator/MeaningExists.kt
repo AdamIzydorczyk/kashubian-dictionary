@@ -3,7 +3,7 @@ package tk.aizydorczyk.kashubian.crud.validator
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Component
 import org.springframework.web.context.annotation.RequestScope
-import tk.aizydorczyk.kashubian.crud.domain.KashubianEntryRepository
+import tk.aizydorczyk.kashubian.crud.domain.MeaningRepository
 import tk.aizydorczyk.kashubian.crud.model.value.ValidationMessages.Companion.MEANING_NOT_EXISTS
 import javax.validation.Constraint
 import javax.validation.ConstraintValidator
@@ -29,7 +29,7 @@ annotation class MeaningExists(
 class MeaningExistsValidator : ConstraintValidator<MeaningExists, Long?> {
 
     @Autowired
-    private lateinit var repository: KashubianEntryRepository
+    private lateinit var repository: MeaningRepository
 
     override fun isValid(meaningId: Long?, context: ConstraintValidatorContext?): Boolean =
         meaningId?.let(repository::existsMeaningById) ?: true

@@ -3,7 +3,7 @@ package tk.aizydorczyk.kashubian.crud.model.graphql.model
 data class MeaningSimplifiedGraphQL(
     val id: Long,
     val definition: String?,
-    var kashubianEntry: KashubianEntrySimplifiedGraphQL? = null
+    val kashubianEntries: MutableSet<KashubianEntrySimplifiedGraphQL> = mutableSetOf()
 ) {
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

@@ -29,6 +29,7 @@ class GraphQLFields {
         const val TRANSLATION_NODE = ".translation"
         const val HYPERONYM_NODE = ".hyperonym"
         const val KASHUBIAN_ENTRY_NODE = ".kashubianEntry"
+        const val KASHUBIAN_ENTRIES_NODE = ".kashubianEntries"
         const val PROVERBS_NODE = ".proverbs"
         const val QUOTES_NODE = ".quotes"
         const val EXAMPLES_NODE = ".examples"

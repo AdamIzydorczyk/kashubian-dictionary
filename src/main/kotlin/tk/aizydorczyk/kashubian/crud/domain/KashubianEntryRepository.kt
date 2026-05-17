@@ -30,7 +30,9 @@ class KashubianEntryRepository(val entityManager: EntityManager,
             entityManager.createQuery("select f from SoundFile f where f.kashubianEntry = :$ENTRY_ID",
                     SoundFile::class.java)
                     .setParameter(ENTRY_ID, entryId)
-                    .singleResult
+                    .resultList
+                    .firstOrNull()
+                    ?: throw javax.persistence.EntityNotFoundException("No sound file found for entry $entryId")
 
     fun removeSoundFileByEntryId(entryId: Long) {
         entityManager.createQuery("delete from SoundFile where kashubianEntry = :$ENTRY_ID")
@@ -39,7 +41,7 @@ class KashubianEntryRepository(val entityManager: EntityManager,
     }
 
     fun findMeaningIdsByEntryId(entryId: Long): List<Long> =
-            entityManager.createQuery("select m.id from Meaning m where m.kashubianEntry = :$ENTRY_ID",
+            entityManager.createQuery("select m.id from Meaning m join m.kashubianEntries e where e.id = :$ENTRY_ID",
                     Long::class.javaObjectType)
                     .setParameter(ENTRY_ID, entryId)
                     .resultList
@@ -63,13 +65,6 @@ class KashubianEntryRepository(val entityManager: EntityManager,
                     .resultList
                     .isNotEmpty()
 
-    fun existsMeaningById(meaningId: Long): Boolean =
-            entityManager.createQuery("select 1 from Meaning m where m.id = :$MEANING_ID")
-                    .setParameter(MEANING_ID, meaningId)
-                    .setMaxResults(1)
-                    .resultList
-                    .isNotEmpty()
-
     fun notExistsEntriesByWordExcludeEntryId(entryId: Long, word: String): Boolean =
             entityManager.createQuery("select 1 from KashubianEntry e where e.word = :word and e.id != :$ENTRY_ID")
                     .setParameter("word", word)
@@ -86,7 +81,7 @@ class KashubianEntryRepository(val entityManager: EntityManager,
                     .isEmpty()
 
     fun notExistsMeaningByEntryIdAndMeaningId(entryId: Long, meaningId: Long): Boolean =
-            entityManager.createQuery("select 1 from Meaning m where m.id = :$MEANING_ID and m.kashubianEntry = :$ENTRY_ID")
+            entityManager.createQuery("select 1 from Meaning m join m.kashubianEntries e where m.id = :$MEANING_ID and e.id = :$ENTRY_ID")
                     .setParameter(MEANING_ID, meaningId)
                     .setParameter(ENTRY_ID, entryId)
                     .setMaxResults(1)
@@ -99,6 +94,15 @@ class KashubianEntryRepository(val entityManager: EntityManager,
                     .setMaxResults(1)
                     .resultList
                     .isNotEmpty()
+
+    fun existsOtherById(id: Long): Boolean =
+            entityManager.createQuery("select 1 from Other o where o.id = :id")
+                    .setParameter("id", id).setMaxResults(1).resultList.isNotEmpty()
+
+    fun deleteOtherById(id: Long) {
+        entityManager.createQuery("delete from Other where id = :id")
+                .setParameter("id", id).executeUpdate()
+    }
 
     fun <EntityType : BaseEntity> findByTypeAndIds(type: Class<EntityType>, ids: List<Number>): List<EntityType> =
             entityManager.createQuery("select e from ${type.simpleName} e where e.id in (:ids)",

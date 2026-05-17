@@ -5,8 +5,8 @@ services:
     image: postgres:14.5
     restart: always
     environment:
-      - POSTGRES_USER=kas
-      - POSTGRES_PASSWORD=kas
-      - POSTGRES_DB=kas
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_NAME}
     ports:
-      - '5555:5432'
+      - '${DB_PORT}:5432'

@@ -47,17 +47,17 @@ import java.util.Base64.getEncoder
 @Validated
 @Tag(name = "Kashubian Entry")
 class KashubianEntryController(
-    val kashubianMapper: KashubianEntryMapper,
-    val creator: KashubianEntryCreator,
-    val updater: KashubianEntryUpdater,
-    val remover: KashubianEntryRemover,
-    val uploader: KashubianEntrySoundFileUploader,
-    val downloader: KashubianEntrySoundFileDownloader,
-    val fileRemover: KashubianEntrySoundFileRemover,
-    val eventPublisher: ApplicationEventPublisher,
-    val transactionSupport: TransactionSupport) {
+    private val kashubianMapper: KashubianEntryMapper,
+    private val creator: KashubianEntryCreator,
+    private val updater: KashubianEntryUpdater,
+    private val remover: KashubianEntryRemover,
+    private val uploader: KashubianEntrySoundFileUploader,
+    private val downloader: KashubianEntrySoundFileDownloader,
+    private val fileRemover: KashubianEntrySoundFileRemover,
+    private val eventPublisher: ApplicationEventPublisher,
+    private val transactionSupport: TransactionSupport) {
 
-    val logger: Logger = LoggerFactory.getLogger(javaClass.simpleName)
+    private val logger: Logger = LoggerFactory.getLogger(javaClass.simpleName)
 
     @PostMapping
     @ResponseStatus(CREATED)

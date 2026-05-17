@@ -8,11 +8,31 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent.STANDARD_OUT
 import org.gradle.api.tasks.testing.logging.TestLogEvent.STARTED
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.lang.System.getenv
+import java.io.File
+import java.util.Properties
+
+fun loadDotEnv() {
+    val envFile = File(projectDir, ".env")
+    if (envFile.exists()) {
+        val properties = Properties()
+        envFile.inputStream().use { properties.load(it) }
+        properties.forEach { key, value ->
+            if (System.getenv(key.toString()) == null) {
+                System.setProperty(key.toString(), value.toString())
+            }
+        }
+    }
+}
+loadDotEnv()
+
+fun getEnvOrProp(key: String): String {
+    return System.getenv(key) ?: System.getProperty(key) ?: ""
+}
 
 plugins {
     id("io.spring.dependency-management") version "1.0.13.RELEASE"
     id("org.springframework.boot") version "2.7.4"
-    id("org.flywaydb.flyway") version "8.5.13"
+    id("org.flywaydb.flyway") version "9.2.0"
     id("nu.studer.jooq") version "7.1.1"
     kotlin("jvm") version "1.6.21"
     kotlin("plugin.spring") version "1.6.21"
@@ -45,7 +65,6 @@ dependencies {
         exclude("org.springframework.boot", "spring-boot-starter-tomcat")
     }
     implementation("org.springframework.boot:spring-boot-starter-graphql")
-    implementation("org.springframework.boot:spring-boot-starter-jooq")
     implementation("org.springframework.boot:spring-boot-starter-log4j2")
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("com.vladmihalcea:hibernate-types-4:2.18.0")
@@ -66,7 +85,6 @@ dependencies {
     implementation("org.jeasy:easy-random-core:5.0.0")
     implementation("com.github.javafaker:javafaker:1.0.2")
     implementation("org.yaml:snakeyaml:1.28")
-    implementation("org.flywaydb:flyway-core:8.5.13")
     compileOnly("org.jooq:jooq-codegen-maven:3.17.3")
     jooqGenerator("jakarta.xml.bind:jakarta.xml.bind-api:4.0.0")
     jooqGenerator("org.postgresql:postgresql:42.5.0")
@@ -98,22 +116,22 @@ tasks.withType<Test> {
     useJUnitPlatform()
     testLogging {
         events(STARTED,
-                FAILED,
-                PASSED,
-                SKIPPED,
-                STANDARD_ERROR,
-                STANDARD_OUT)
+            FAILED,
+            PASSED,
+            SKIPPED,
+            STANDARD_ERROR,
+            STANDARD_OUT)
         exceptionFormat = TestExceptionFormat.FULL
         showExceptions = true
         showCauses = true
         showStackTraces = true
         debug {
             events(STARTED,
-                    FAILED,
-                    PASSED,
-                    SKIPPED,
-                    STANDARD_ERROR,
-                    STANDARD_OUT)
+                FAILED,
+                PASSED,
+                SKIPPED,
+                STANDARD_ERROR,
+                STANDARD_OUT)
             exceptionFormat = TestExceptionFormat.FULL
         }
         info.events = debug.events
@@ -169,11 +187,10 @@ kapt {
 flyway {
     locations = arrayOf("filesystem:./src/main/resources/db/migration")
     driver = "org.postgresql.Driver"
-    url = getenv("DB_URL")
-    user = getenv("DB_USER")
-    password = getenv("DB_PASSWORD")
+    url = getEnvOrProp("DB_URL")
+    user = getEnvOrProp("DB_USER")
+    password = getEnvOrProp("DB_PASSWORD")
 }
-
 
 jooq {
     version.set("3.17.3")
@@ -186,9 +203,9 @@ jooq {
             jooqConfiguration.apply {
                 jdbc.apply {
                     driver = "org.postgresql.Driver"
-                    url = getenv("DB_URL")
-                    user = getenv("DB_USER")
-                    password = getenv("DB_PASSWORD")
+                    url = getEnvOrProp("DB_URL")
+                    user = getEnvOrProp("DB_USER")
+                    password = getEnvOrProp("DB_PASSWORD")
                 }
                 generator.apply {
                     name = "org.jooq.codegen.DefaultGenerator"
@@ -218,6 +235,4 @@ tasks {
     named("generateJooq") {
         dependsOn(flywayMigrate)
     }
-
 }
-
