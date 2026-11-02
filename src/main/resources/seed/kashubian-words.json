@@ -1,162 +1,1578 @@
 {
-  "source": "Core Kashubian vocabulary in modern standard orthography. Headwords: Kashubian Swadesh list (Wiktionary, Module:Swadesh/data/csb) and Polish-Kashubian dictionaries. Proverbs/quotes: printed Kashubian sources (Kaszubopedia 'Przysłowia'; E. Rogowska, Acta Cassubiana IV, 2002; H. Derdowski; A. Majkowski). Used only to seed the development database.",
+  "source": "Core Kashubian vocabulary in modern standard orthography. Headwords: Kashubian Swadesh list (Wiktionary, Module:Swadesh/data/csb) and Polish-Kashubian dictionaries. Proverbs/quotes: printed Kashubian sources (Kaszubopedia 'Przysłowia'; E. Rogowska, Acta Cassubiana IV, 2002; H. Derdowski; A. Majkowski). Used only to seed the development database. Example sentences, idioms, relations and etymologies supplemented from pl.wiktionary.org (CC BY-SA 3.0), Kaszëbskô Wikipedijia-era extracts.",
   "words": [
-    { "word": "białka", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "woman", "polish": "kobieta", "english": "woman" },
-    { "word": "chłop", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "man", "polish": "mężczyzna", "english": "man" },
-    { "word": "człowiek", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "human being", "polish": "człowiek", "english": "human being",
-      "proverbs": [ { "proverb": "Nie sądzë, a cebie nie bãdą sądzëlë", "note": "przysłów biblijny; za: Kaszubopedia" } ] },
-    { "word": "dzeckò", "partOfSpeech": "NOUN", "partOfSpeechSubType": "NEUTER", "definition": "child", "polish": "dziecko", "english": "child",
+    {
+      "word": "białka",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "woman",
+      "polish": "kobieta",
+      "english": "woman",
+      "origin": "praindoeur *bʰelH-",
+      "idioms": [
+        {
+          "idiom": "mòja białka",
+          "note": "moja żona (pl.wikt)"
+        }
+      ],
+      "examples": [
+        {
+          "example": "Białka Lota – to je pòstacjô z Knédżi Zôczątków (Zo 19).",
+          "note": "Kaszëbskô Wikipedijia: Białka Lota (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "chłop",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "man",
+      "polish": "mężczyzna",
+      "english": "man",
+      "antonymOf": "białka",
+      "origin": "prasł *xolp-"
+    },
+    {
+      "word": "człowiek",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "human being",
+      "polish": "człowiek",
+      "english": "human being",
+      "proverbs": [
+        {
+          "proverb": "Nie sądzë, a cebie nie bãdą sądzëlë",
+          "note": "przysłów biblijny; za: Kaszubopedia"
+        }
+      ]
+    },
+    {
+      "word": "dzeckò",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "NEUTER",
+      "definition": "child",
+      "polish": "dziecko",
+      "english": "child",
       "hypernymOf": "człowiek",
-      "examples": [ { "example": "Dzeckò sedzy przë stole.", "note": "dziecko siedzi przy stole" } ] },
-    { "word": "matka", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "mother", "polish": "matka", "english": "mother",
-      "examples": [ { "example": "Mòja matka robi chleb.", "note": "moja matka robi chleb" } ] },
-    { "word": "òjc", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "father", "polish": "ojciec", "english": "father" },
-    { "word": "zwierzã", "partOfSpeech": "NOUN", "partOfSpeechSubType": "NEUTER", "definition": "animal", "polish": "zwierzę", "english": "animal" },
-    { "word": "rëba", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "fish", "polish": "ryba", "english": "fish",
+      "examples": [
+        {
+          "example": "Dzeckò sedzy przë stole.",
+          "note": "dziecko siedzi przy stole"
+        },
+        {
+          "example": "Trzeba ò tim pamiãtac jak sã ùczi dzeckò.",
+          "note": "Kaszëbskô Wikipedijia: Drëdżi jãzëk (csbwiki)"
+        },
+        {
+          "example": "Czim wicy Twoje dzeckò czuje jak sã pò kaszëbskù gôdô, tim lepi.",
+          "note": "Kaszëbskô Wikipedijia: Drëdżi jãzëk (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "matka",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "mother",
+      "polish": "matka",
+      "english": "mother",
+      "examples": [
+        {
+          "example": "Mòja matka robi chleb.",
+          "note": "moja matka robi chleb"
+        },
+        {
+          "example": "Dzys lëdze mówią na tã chójkã Tuszkòwskô Matka.",
+          "note": "Kaszëbskô Wikipedijia: Tuszkòwë (csbwiki)"
+        },
+        {
+          "example": "Agnieszkã wësëszi ju matka na słuńcu pielëszkã.",
+          "note": "Kaszëbskô Wikipedijia: 21 stëcznika (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "òjc",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "father",
+      "polish": "ojciec",
+      "english": "father",
+      "origin": "od , od",
+      "examples": [
+        {
+          "example": "Òjc – to w òglowym znaczenim je chłop, jeden ze starszich gwësnégò dzecka abò dzecy (òjc rodzëznë).",
+          "note": "Kaszëbskô Wikipedijia: Òjc (csbwiki)"
+        },
+        {
+          "example": "Starszi – to w òglowym znaczenim, są òsobë, òd chtërëch dzeckò pòchòdzy prosto – òjc i matka gwësnégò dzecka abò dzecy.",
+          "note": "Kaszëbskô Wikipedijia: Starszi (rodzëzna) (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "zwierzã",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "NEUTER",
+      "definition": "animal",
+      "polish": "zwierzę",
+      "english": "animal",
+      "examples": [
+        {
+          "example": "Je to zwierzã baro pòżëteczny.",
+          "note": "Kaszëbskô Wikipedijia: Jéż (csbwiki)"
+        },
+        {
+          "example": "Jéż (Erinaceus europaeus) Jéż to zwierzã-cëcôl, chtërégò òkriwają kòlce.",
+          "note": "Kaszëbskô Wikipedijia: Jéż (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "rëba",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "fish",
+      "polish": "ryba",
+      "english": "fish",
       "hypernymOf": "zwierzã",
-      "proverbs": [ { "proverb": "Chto rëbë łąpie, rëbów nie jé", "note": "za: E. Rogowska, Acta Cassubiana IV, 2002" } ],
-      "examples": [ { "example": "W mòrzu je wiele rëb.", "note": "w morzu jest wiele ryb" } ] },
-    { "word": "ptôch", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "bird", "polish": "ptak", "english": "bird",
-      "hypernymOf": "zwierzã" },
-    { "word": "pies", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "dog", "polish": "pies", "english": "dog",
+      "proverbs": [
+        {
+          "proverb": "Chto rëbë łąpie, rëbów nie jé",
+          "note": "za: E. Rogowska, Acta Cassubiana IV, 2002"
+        }
+      ],
+      "examples": [
+        {
+          "example": "W mòrzu je wiele rëb.",
+          "note": "w morzu jest wiele ryb"
+        },
+        {
+          "example": "Sandra (Sander lucioperca) rëba z rodzëznë òkónkòwatëch.",
+          "note": "Kaszëbskô Wikipedijia: Sandra (csbwiki)"
+        },
+        {
+          "example": "Lasfór (Salmo trutta) – rëba, chtërna nierzchnie sã w rzékach, a tak żëje colemało w słony wòdze.",
+          "note": "Kaszëbskô Wikipedijia: Lasfór (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "ptôch",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "bird",
+      "polish": "ptak",
+      "english": "bird",
       "hypernymOf": "zwierzã",
-      "examples": [ { "example": "Pies sedzy przed dodóm.", "note": "pies siedzi przed domem" } ] },
-    { "word": "wąż", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "snake", "polish": "wąż", "english": "snake",
-      "hypernymOf": "zwierzã" },
-    { "word": "robôk", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "worm", "polish": "robak", "english": "worm",
-      "hypernymOf": "zwierzã" },
-    { "word": "drzewò", "partOfSpeech": "NOUN", "partOfSpeechSubType": "NEUTER", "definition": "tree", "polish": "drzewo", "english": "tree" },
-    { "word": "las", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "forest", "polish": "las", "english": "forest",
-      "relatedTo": [ { "word": "drzewò", "note": "w lesie rosną drzewa" } ] },
-    { "word": "brzôd", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "fruit", "polish": "owoc", "english": "fruit" },
-    { "word": "semiã", "partOfSpeech": "NOUN", "partOfSpeechSubType": "NEUTER", "definition": "seed", "polish": "ziarno", "english": "seed",
+      "origin": "prasł *pъtakъ",
+      "idioms": [
+        {
+          "idiom": "spiéwac jak ptôch",
+          "note": "śpiewać jak ptak (pl.wikt)"
+        }
+      ]
+    },
+    {
+      "word": "pies",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "dog",
+      "polish": "pies",
+      "english": "dog",
+      "hypernymOf": "zwierzã",
+      "examples": [
+        {
+          "example": "Pies sedzy przed dodóm.",
+          "note": "pies siedzi przed domem"
+        },
+        {
+          "example": "To je baro rozumni i letczi do tresérowaniô pies.",
+          "note": "Kaszëbskô Wikipedijia: Cocker spaniel (csbwiki)"
+        },
+        {
+          "example": "Spaniel to je niewiôldżi pies ò wëważóni sylwetce.",
+          "note": "Kaszëbskô Wikipedijia: Cocker spaniel (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "wąż",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "snake",
+      "polish": "wąż",
+      "english": "snake",
+      "hypernymOf": "zwierzã",
+      "examples": [
+        {
+          "example": "Wąż òbiecôł Jewie, że czej zjédzą z z tegò drzewa, to mdą jak Bòg.",
+          "note": "Kaszëbskô Wikipedijia: Adam i Jewa (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "robôk",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "worm",
+      "polish": "robak",
+      "english": "worm",
+      "hypernymOf": "zwierzã",
+      "origin": "prasłowiański *xrob-",
+      "examples": [
+        {
+          "example": "Na Gromiczną robôk przewrôcô sã w zemi na drëgą stronã.",
+          "note": "Kaszëbskô Wikipedijia: 2 gromicznika (csbwiki)"
+        },
+        {
+          "example": "Òna w sercu, w zbòżu, w spiéwie, òna w schwôce lëdzczich rąk, z ni nôlëchszi robôk bierze, w ni nôlepszi nieba krąg.",
+          "note": "Kaszëbskô Wikipedijia: Eùropejskô Ùniô (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "drzewò",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "NEUTER",
+      "definition": "tree",
+      "polish": "drzewo",
+      "english": "tree"
+    },
+    {
+      "word": "las",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "forest",
+      "polish": "las",
+      "english": "forest",
+      "relatedTo": [
+        {
+          "word": "drzewò",
+          "note": "w lesie rosną drzewa"
+        }
+      ],
+      "origin": "prasł *lěsъ",
+      "idioms": [
+        {
+          "idiom": "bùczënowi las",
+          "note": "las bukowy • miészóny las → las mieszany • nieprzedërchóny las → las dziewiczy (pl.wikt)"
+        }
+      ],
+      "examples": [
+        {
+          "example": "Terôczasny Kòbëlôsz abò Kòbëlôszny Las i Pòtãgòwò są fòlwarkama pòwstałima na przeł.",
+          "note": "Kaszëbskô Wikipedijia: Kòbëlôsz-Pòtãgòwò (csbwiki)"
+        },
+        {
+          "example": "Las – zajimô wiôldżi sztëk zemi, na chtërny roscą drzéwiãtã, krze roscënë i żëją tam zwierzãta.",
+          "note": "Kaszëbskô Wikipedijia: Las (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "brzôd",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "fruit",
+      "polish": "owoc",
+      "english": "fruit",
+      "examples": [
+        {
+          "example": "Brzôd Czôrny, jadalny, baro smaczny.",
+          "note": "Kaszëbskô Wikipedijia: Jeżëna fałdowanô (csbwiki)"
+        },
+        {
+          "example": "Ù dzëkò rosnącëch malën brzôd je baro czãsto robaczëwé.",
+          "note": "Kaszëbskô Wikipedijia: Malëna (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "semiã",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "NEUTER",
+      "definition": "seed",
+      "polish": "ziarno",
+      "english": "seed",
       "origin": "praindoeur. *s(e)men– 'nasiono'",
-      "proverbs": [ { "proverb": "Chto seje niezgòdã, zbiérô bùrzã", "note": "przysłów; za: Kaszubopedia" } ] },
-    { "word": "lëst", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "leaf", "polish": "liść", "english": "leaf" },
-    { "word": "kòrzéń", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "root", "polish": "korzeń", "english": "root" },
-    { "word": "kóra", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "bark of a tree", "polish": "kora", "english": "bark of a tree" },
-    { "word": "kwiat", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "flower", "polish": "kwiat", "english": "flower" },
-    { "word": "trôwa", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "grass", "polish": "trawa", "english": "grass" },
-    { "word": "lina", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "rope", "polish": "lina", "english": "rope" },
-    { "word": "skóra", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "skin", "polish": "skóra", "english": "skin" },
-    { "word": "miãso", "partOfSpeech": "NOUN", "partOfSpeechSubType": "NEUTER", "definition": "meat", "polish": "mięso", "english": "meat" },
-    { "word": "krew", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "blood", "polish": "krew", "english": "blood",
-      "origin": "praindoeur. *ker– 'krew'" },
-    { "word": "kòsc", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "bone", "polish": "kość", "english": "bone" },
-    { "word": "jajo", "partOfSpeech": "NOUN", "partOfSpeechSubType": "NEUTER", "definition": "egg", "polish": "jajo", "english": "egg" },
-    { "word": "róg", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "horn", "polish": "róg", "english": "horn" },
-    { "word": "ògón", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "tail", "polish": "ogon", "english": "tail" },
-    { "word": "pióro", "partOfSpeech": "NOUN", "partOfSpeechSubType": "NEUTER", "definition": "feather", "polish": "pióro", "english": "feather" },
-    { "word": "głowa", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "head", "polish": "głowa", "english": "head",
-      "idioms": [ { "idiom": "mic cos w głowã", "note": "mieć coś w głowie = knuć, planować" } ],
-      "examples": [ { "example": "Bòli mie głowa.", "note": "boli mnie głowa" } ] },
-    { "word": "ùchò", "partOfSpeech": "NOUN", "partOfSpeechSubType": "NEUTER", "definition": "ear", "polish": "ucho", "english": "ear" },
-    { "word": "òkò", "partOfSpeech": "NOUN", "partOfSpeechSubType": "NEUTER", "definition": "eye", "polish": "oko", "english": "eye",
-      "idioms": [ { "idiom": "czëtac kòmù z òków", "note": "czytać komuś z oczu" } ],
-      "proverbs": [ { "proverb": "Cëzé wadë widzymë, a swòjich ni mòżemë ùdwignąc", "note": "przysłów biblijny; za: Kaszubopedia" } ] },
-    { "word": "nos", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "nose", "polish": "nos", "english": "nose",
-      "idioms": [ { "idiom": "mic nos w górã", "note": "mieć nos w górze = być próżnym" } ] },
-    { "word": "gãba", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "mouth", "polish": "gęba", "english": "mouth" },
-    { "word": "zãb", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "tooth", "polish": "ząb", "english": "tooth" },
-    { "word": "jãzëk", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "tongue; language", "polish": "język", "english": "tongue; language",
-      "idioms": [ { "idiom": "trzëmac jãzëk za zãbama", "note": "trzymać język za zębami = nie plotkować" } ],
-      "quotes": [ { "quote": "Nigdë do zgùbë nie przińdą Kaszëbë", "note": "Hieronim Derdowski, XIX w." } ] },
-    { "word": "noga", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "leg", "polish": "noga", "english": "leg" },
-    { "word": "rãka", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "hand", "polish": "ręka", "english": "hand",
-      "idioms": [ { "idiom": "dac kòmù rãkã", "note": "podać komuś rękę = pomóc" } ] },
-    { "word": "brzëch", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "belly", "polish": "brzuch", "english": "belly" },
-    { "word": "serce", "partOfSpeech": "NOUN", "partOfSpeechSubType": "NEUTER", "definition": "heart", "polish": "serce", "english": "heart" },
-    { "word": "wòda", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "water", "polish": "woda", "english": "water",
+      "proverbs": [
+        {
+          "proverb": "Chto seje niezgòdã, zbiérô bùrzã",
+          "note": "przysłów; za: Kaszubopedia"
+        }
+      ],
+      "idioms": [
+        {
+          "idiom": "semiã lniané",
+          "note": "siemię lniane • semiã gòrczëcowé → siemię gorczycowe (pl.wikt)"
+        }
+      ],
+      "examples": [
+        {
+          "example": "na Kaszëbach, a ji jeden brzôd mô jedno semiã.",
+          "note": "Kaszëbskô Wikipedijia: Jednoseminnô mąkùszka (csbwiki)"
+        },
+        {
+          "example": "Pòtemù z sercowinë (zôwiãżégò) je semiã, a z zôwiãżënë brzôd.",
+          "note": "Kaszëbskô Wikipedijia: Kwiat (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "lëst",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "leaf",
+      "polish": "liść",
+      "english": "leaf",
+      "origin": "prasł *list-",
+      "examples": [
+        {
+          "example": "Ten Lëst pòwiôdô téż ò pòwòłanim do Kòscoła pòganów.",
+          "note": "Kaszëbskô Wikipedijia: Lëst do Galatczików (csbwiki)"
+        },
+        {
+          "example": "Swiãti Paweł dłëgszi czas béł Kòrince, ale ten lëst trafił do Rzimianów.",
+          "note": "Kaszëbskô Wikipedijia: Lëst do Rzimianów (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "kòrzéń",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "root",
+      "polish": "korzeń",
+      "english": "root",
+      "origin": "prasł *koren-",
+      "examples": [
+        {
+          "example": "Dôwni czãsto plotło sã krãżną techniką, co òznôczô, że zwiniãti w spiralã nieszczépióny kòrzéń przeplôtało sã szczépiónym kòrzeniã.",
+          "note": "Kaszëbskô Wikipedijia: Ùplotë (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "kóra",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "bark of a tree",
+      "polish": "kora",
+      "english": "bark of a tree",
+      "origin": "prasł *kora",
+      "examples": [
+        {
+          "example": "Kóra zbiérónô je 2-3 razë w rokù òb czas deszczowégò cządu.",
+          "note": "Kaszëbskô Wikipedijia: Cynamón (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "kwiat",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "flower",
+      "polish": "kwiat",
+      "english": "flower",
+      "origin": "praindoeur *k̑u̯ei̯t-",
+      "examples": [
+        {
+          "example": "Kwiat – òrgan naseniowëch roscenòw, w chtërnym wësztôłcają sã specjalny elementë do rozmłodzaniô.",
+          "note": "Kaszëbskô Wikipedijia: Kwiat (csbwiki)"
+        },
+        {
+          "example": "Słodkògòrzczi lilek abò klôsztorny kwiat (Solanum dulcamara L.) – jednorocznô roscëna z rodzëznë lilkòwatëch (Solanaceae L.).",
+          "note": "Kaszëbskô Wikipedijia: Słodkògòrzczi lilek (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "trôwa",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "grass",
+      "polish": "trawa",
+      "english": "grass",
+      "origin": "praindoeur *treu̯H-"
+    },
+    {
+      "word": "lina",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "rope",
+      "polish": "lina",
+      "english": "rope"
+    },
+    {
+      "word": "skóra",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "skin",
+      "polish": "skóra",
+      "english": "skin",
+      "origin": "praindoeur *(s)ker-"
+    },
+    {
+      "word": "miãso",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "NEUTER",
+      "definition": "meat",
+      "polish": "mięso",
+      "english": "meat",
+      "origin": "praindoeur *mē(m)s-",
+      "examples": [
+        {
+          "example": "Miãso je mést fòrmòwóné w ruloniczi i prażoné (grillowóné) abò brunioné.",
+          "note": "Kaszëbskô Wikipedijia: Ćevapi (csbwiki)"
+        },
+        {
+          "example": "Jan Piepka W zôpùstë mùszi bëc miãso, bò chto w zôpùstë mie jé miãsa, tegò mëdżi òb lato zjedzą.",
+          "note": "Kaszëbskô Wikipedijia: 8 gromicznika (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "krew",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "blood",
+      "polish": "krew",
+      "english": "blood",
+      "origin": "praindoeur. *ker– 'krew'",
+      "examples": [
+        {
+          "example": "Òne piją krew, mògą przenôszac chòrobë, a żëją m.jin.",
+          "note": "Kaszëbskô Wikipedijia: Klészcz (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "kòsc",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "bone",
+      "polish": "kość",
+      "english": "bone"
+    },
+    {
+      "word": "jajo",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "NEUTER",
+      "definition": "egg",
+      "polish": "jajo",
+      "english": "egg"
+    },
+    {
+      "word": "róg",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "horn",
+      "polish": "róg",
+      "english": "horn",
+      "origin": "(1.1)",
+      "examples": [
+        {
+          "example": "Jak jeden z nich sedzôł na jednym brzegù jezora, a jiny na drëdżim, to òni sobie mòglë letkò pòdac róg z tobaką.",
+          "note": "Kaszëbskô Wikipedijia: Stolem (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "ògón",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "tail",
+      "polish": "ogon",
+      "english": "tail",
+      "origin": "praindoeur *gʷʰen-",
+      "examples": [
+        {
+          "example": "Diôbli ògón abò jurk abò brëm (Sarothamnus scoparius syn.",
+          "note": "Kaszëbskô Wikipedijia: Diôbli ògón (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "pióro",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "NEUTER",
+      "definition": "feather",
+      "polish": "pióro",
+      "english": "feather"
+    },
+    {
+      "word": "głowa",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "head",
+      "polish": "głowa",
+      "english": "head",
+      "idioms": [
+        {
+          "idiom": "mic cos w głowã",
+          "note": "mieć coś w głowie = knuć, planować"
+        },
+        {
+          "idiom": "miec głowã jak bania",
+          "note": "mieć głowę jak dynia (pl.wikt)"
+        }
+      ],
+      "examples": [
+        {
+          "example": "Bòli mie głowa.",
+          "note": "boli mnie głowa"
+        },
+        {
+          "example": "Not béło gò ùnieszkòdlëwic – ùcąc głowa i ja dac w nodzi, włożëc dëtka pòd jãzék, dac do trëme séc, żëbë ùmarłi miôł długò co robic.",
+          "note": "Kaszëbskô Wikipedijia: Ópi (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "ùchò",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "NEUTER",
+      "definition": "ear",
+      "polish": "ucho",
+      "english": "ear",
+      "origin": "praindoeur *h₂eu̯s-",
+      "examples": [
+        {
+          "example": "Kaszëbi mògą na niã gadac òrãżé, a jak kùdżelkã z ji lësta włożi snôdkò w ùchò to òno mô òprzestac bòlec.",
+          "note": "Kaszëbskô Wikipedijia: Pôchnącô pelargoniô (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "òkò",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "NEUTER",
+      "definition": "eye",
+      "polish": "oko",
+      "english": "eye",
+      "idioms": [
+        {
+          "idiom": "czëtac kòmù z òków",
+          "note": "czytać komuś z oczu"
+        }
+      ],
+      "proverbs": [
+        {
+          "proverb": "Cëzé wadë widzymë, a swòjich ni mòżemë ùdwignąc",
+          "note": "przysłów biblijny; za: Kaszubopedia"
+        }
+      ]
+    },
+    {
+      "word": "nos",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "nose",
+      "polish": "nos",
+      "english": "nose",
+      "idioms": [
+        {
+          "idiom": "mic nos w górã",
+          "note": "mieć nos w górze = być próżnym"
+        }
+      ],
+      "origin": "praindoeur *(H)nā̆s-"
+    },
+    {
+      "word": "gãba",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "mouth",
+      "polish": "gęba",
+      "english": "mouth"
+    },
+    {
+      "word": "zãb",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "tooth",
+      "polish": "ząb",
+      "english": "tooth"
+    },
+    {
+      "word": "jãzëk",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "tongue; language",
+      "polish": "język",
+      "english": "tongue; language",
+      "idioms": [
+        {
+          "idiom": "trzëmac jãzëk za zãbama",
+          "note": "trzymać język za zębami = nie plotkować"
+        }
+      ],
+      "quotes": [
+        {
+          "quote": "Nigdë do zgùbë nie przińdą Kaszëbë",
+          "note": "Hieronim Derdowski, XIX w."
+        }
+      ],
+      "examples": [
+        {
+          "example": "Angelsczi jãzëk pò II swiat.",
+          "note": "Kaszëbskô Wikipedijia: Angelsczi jãzëk (csbwiki)"
+        },
+        {
+          "example": "angelsczi jãzëk, téż anielsczi (an.",
+          "note": "Kaszëbskô Wikipedijia: Angelsczi jãzëk (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "noga",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "leg",
+      "polish": "noga",
+      "english": "leg",
+      "origin": "od <",
+      "examples": [
+        {
+          "example": "Kapela „A Matizer Noga” abò „A Matizernoga” – kapela.",
+          "note": "Kaszëbskô Wikipedijia: Kapela „A Matizer Noga” (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "rãka",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "hand",
+      "polish": "ręka",
+      "english": "hand",
+      "idioms": [
+        {
+          "idiom": "dac kòmù rãkã",
+          "note": "podać komuś rękę = pomóc"
+        }
+      ],
+      "origin": "prabałtosłowiański *renk-"
+    },
+    {
+      "word": "brzëch",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "belly",
+      "polish": "brzuch",
+      "english": "belly",
+      "origin": "prasł *bŕuxъ"
+    },
+    {
+      "word": "serce",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "NEUTER",
+      "definition": "heart",
+      "polish": "serce",
+      "english": "heart",
+      "examples": [
+        {
+          "example": "Paweł Czaplewsczi Kaszëba mô cwiardą mòwã, ale mitczé serce.",
+          "note": "Kaszëbskô Wikipedijia: 12 stëcznika (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "wòda",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "water",
+      "polish": "woda",
+      "english": "water",
       "origin": "praindoeur. *ued– 'woda'",
-      "examples": [ { "example": "Dzeckò pije wòdã.", "note": "dziecko pije wodę" } ] },
-    { "word": "deszcz", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "rain", "polish": "deszcz", "english": "rain",
-      "relatedTo": [ { "word": "wòda", "note": "deszcz to woda z nieba" } ] },
-    { "word": "rzéka", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "river", "polish": "rzeka", "english": "river",
-      "relatedTo": [ { "word": "wòda", "note": "rzeka niesie wodę" } ] },
-    { "word": "jezero", "partOfSpeech": "NOUN", "partOfSpeechSubType": "NEUTER", "definition": "lake", "polish": "jezioro", "english": "lake",
-      "relatedTo": [ { "word": "rëba", "note": "w jeziorze żyją ryby" } ] },
-    { "word": "mòrze", "partOfSpeech": "NOUN", "partOfSpeechSubType": "NEUTER", "definition": "sea", "polish": "morze", "english": "sea",
-      "relatedTo": [ { "word": "rëba", "note": "w morzu żyją ryby" } ],
-      "proverbs": [ { "proverb": "Na mòrzu nie je czas gadac, le robic", "note": "za: E. Rogowska, Acta Cassubiana IV, 2002 (uwspółcześniona pisownia)" } ] },
-    { "word": "sól", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "salt", "polish": "sól", "english": "salt" },
-    { "word": "kam", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "stone", "polish": "kamień", "english": "stone",
-      "proverbs": [ { "proverb": "Chto na cebie kamieniã, të na niegò chlebã", "note": "przysłów; za: Kaszubopedia" } ] },
-    { "word": "piôsk", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "sand", "polish": "piasek", "english": "sand",
-      "relatedTo": [ { "word": "kam", "note": "piasek to drobne kamienie" } ] },
-    { "word": "zemia", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "earth, land", "polish": "ziemia", "english": "earth, land",
+      "examples": [
+        {
+          "example": "Dzeckò pije wòdã.",
+          "note": "dziecko pije wodę"
+        },
+        {
+          "example": "Wda (Czôrnô Wòda) – to je rzéka dłużawë 198 km.",
+          "note": "Kaszëbskô Wikipedijia: Wda (csbwiki)"
+        }
+      ],
+      "idioms": [
+        {
+          "idiom": "jic pòd wòdã",
+          "note": "pl.wikt"
+        }
+      ]
+    },
+    {
+      "word": "deszcz",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "rain",
+      "polish": "deszcz",
+      "english": "rain",
+      "relatedTo": [
+        {
+          "word": "wòda",
+          "note": "deszcz to woda z nieba"
+        }
+      ],
+      "examples": [
+        {
+          "example": "Zwiksza òna je pòtemù jak deszcz chilôł.",
+          "note": "Kaszëbskô Wikipedijia: Plëta (csbwiki)"
+        },
+        {
+          "example": "Deszcz Jezoro Zbiérk òdjimków na Wikimedia Commons 🚧To je blós ùzémk artikla.",
+          "note": "Kaszëbskô Wikipedijia: Plëta (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "rzéka",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "river",
+      "polish": "rzeka",
+      "english": "river",
+      "relatedTo": [
+        {
+          "word": "wòda",
+          "note": "rzeka niesie wodę"
+        }
+      ],
+      "origin": "praindoeur *h₃rei̯H-",
+      "examples": [
+        {
+          "example": "Łeba – rzéka dłużawë 117 km.",
+          "note": "Kaszëbskô Wikipedijia: Łeba (rzéka) (csbwiki)"
+        },
+        {
+          "example": "Kaszëbsczé słowò rzéka mô swoje òdpòwiedniczi w jinszich słowiańsczich jãzëkach (rus.",
+          "note": "Kaszëbskô Wikipedijia: Rzéka (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "jezero",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "NEUTER",
+      "definition": "lake",
+      "polish": "jezioro",
+      "english": "lake",
+      "relatedTo": [
+        {
+          "word": "rëba",
+          "note": "w jeziorze żyją ryby"
+        }
+      ]
+    },
+    {
+      "word": "mòrze",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "NEUTER",
+      "definition": "sea",
+      "polish": "morze",
+      "english": "sea",
+      "relatedTo": [
+        {
+          "word": "rëba",
+          "note": "w morzu żyją ryby"
+        }
+      ],
+      "proverbs": [
+        {
+          "proverb": "Na mòrzu nie je czas gadac, le robic",
+          "note": "za: E. Rogowska, Acta Cassubiana IV, 2002 (uwspółcześniona pisownia)"
+        }
+      ]
+    },
+    {
+      "word": "sól",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "salt",
+      "polish": "sól",
+      "english": "salt",
+      "origin": "praindoeur *sal-"
+    },
+    {
+      "word": "kam",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "stone",
+      "polish": "kamień",
+      "english": "stone",
+      "proverbs": [
+        {
+          "proverb": "Chto na cebie kamieniã, të na niegò chlebã",
+          "note": "przysłów; za: Kaszubopedia"
+        }
+      ],
+      "origin": "praindoeur *h₂ek̑-",
+      "examples": [
+        {
+          "example": "Lód Firn Diôbli kam Zbiérk òdjimków na Wikimedia Commons 🚧To je blós ùzémk artikla.",
+          "note": "Kaszëbskô Wikipedijia: Lodofôłt (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "piôsk",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "sand",
+      "polish": "piasek",
+      "english": "sand",
+      "relatedTo": [
+        {
+          "word": "kam",
+          "note": "piasek to drobne kamienie"
+        }
+      ]
+    },
+    {
+      "word": "zemia",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "earth, land",
+      "polish": "ziemia",
+      "english": "earth, land",
       "origin": "praindoeur. *dʰǵʰm̥mū 'ziemia'",
-      "quotes": [ { "quote": "Nigdë ùmrą Kaszëbë", "note": "początek wiersza 'Zemia Kaszëbskô' Antoniego Majkowskiego (kaszubski hymn)" } ] },
-    { "word": "chmùra", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "cloud", "polish": "chmura", "english": "cloud" },
-    { "word": "niebò", "partOfSpeech": "NOUN", "partOfSpeechSubType": "NEUTER", "definition": "sky", "polish": "niebo", "english": "sky" },
-    { "word": "wiater", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "wind", "polish": "wiatr", "english": "wind",
-      "relatedTo": [ { "word": "chmùra", "note": "wiatr goni chmury" } ] },
-    { "word": "sniég", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "snow", "polish": "śnieg", "english": "snow" },
-    { "word": "lód", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "ice", "polish": "lód", "english": "ice" },
-    { "word": "òdżin", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "fire", "polish": "ogień", "english": "fire" },
-    { "word": "droga", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "road", "polish": "droga", "english": "road" },
-    { "word": "góra", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "mountain", "polish": "góra", "english": "mountain" },
-    { "word": "noc", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "night", "polish": "noc", "english": "night" },
-    { "word": "dzéń", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "day", "polish": "dzień", "english": "day",
+      "quotes": [
+        {
+          "quote": "Nigdë ùmrą Kaszëbë",
+          "note": "początek wiersza 'Zemia Kaszëbskô' Antoniego Majkowskiego (kaszubski hymn)"
+        }
+      ],
+      "examples": [
+        {
+          "example": "Wiele razy „Rodnô Zemia” zajimała pierszi môl westrzód wszëtczich programów TVG.",
+          "note": "Kaszëbskô Wikipedijia: Rodnô Zemia (telewizyjny program) (csbwiki)"
+        },
+        {
+          "example": "Prëczkòwsczi „Kaszëbi, chtërny przódë nie bëlë nôłożen bëc na antenie TV, „Rodną Zemiã” ùwôżelë jakno swój program.",
+          "note": "Kaszëbskô Wikipedijia: Rodnô Zemia (telewizyjny program) (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "chmùra",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "cloud",
+      "polish": "chmura",
+      "english": "cloud",
+      "examples": [
+        {
+          "example": "Cirrus (Ci – pierzastô chmùra) je chmùrą wësoką.",
+          "note": "Kaszëbskô Wikipedijia: Cirrus (csbwiki)"
+        },
+        {
+          "example": "Cumulus (Cu - kłãbiastô chmùra) je biôłą chmùrą niską z wëdatnyma znankama pionowi bùdowë.",
+          "note": "Kaszëbskô Wikipedijia: Cumulus (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "niebò",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "NEUTER",
+      "definition": "sky",
+      "polish": "niebo",
+      "english": "sky",
+      "origin": "praindoeur *nebʰ-",
+      "examples": [
+        {
+          "example": "Czãsto òbcëgô cawne niebò a czasã wëstãpòwô z ópôdënkã mżëcczi czë sniégù.",
+          "note": "Kaszëbskô Wikipedijia: Altostratus (csbwiki)"
+        },
+        {
+          "example": "Nimbostratus (Ns – warstwòwô-deszczowô chmùra) je chmùrą niską z cemnoszarich warstwów, chtërna zwiksza czësto zacygô niebò.",
+          "note": "Kaszëbskô Wikipedijia: Nimbostratus (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "wiater",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "wind",
+      "polish": "wiatr",
+      "english": "wind",
+      "relatedTo": [
+        {
+          "word": "chmùra",
+          "note": "wiatr goni chmury"
+        }
+      ],
+      "examples": [
+        {
+          "example": "Bernata Chrzanowsczégò „Pòrësził wiater òd mòrza” (pòl.",
+          "note": "Kaszëbskô Wikipedijia: Medal m. Bernata Chrzanowsczégò „Pòrësził wiater òd mòrza” (csbwiki)"
+        },
+        {
+          "example": "Medal miona Bernata Chrzanowsczégò „Pòrësził wiater òd mòrza” (pòl.",
+          "note": "Kaszëbskô Wikipedijia: Medal m. Bernata Chrzanowsczégò „Pòrësził wiater òd mòrza” (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "sniég",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "snow",
+      "polish": "śnieg",
+      "english": "snow",
+      "origin": "praindoeur *snei̯gʷʰ-"
+    },
+    {
+      "word": "lód",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "ice",
+      "polish": "lód",
+      "english": "ice",
+      "examples": [
+        {
+          "example": "Firn – to je lód – jegò przechódnô fòrma midzë sniegã a firnowim lodã.",
+          "note": "Kaszëbskô Wikipedijia: Firn (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "òdżin",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "fire",
+      "polish": "ogień",
+      "english": "fire",
+      "origin": "od , od"
+    },
+    {
+      "word": "droga",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "road",
+      "polish": "droga",
+      "english": "road"
+    },
+    {
+      "word": "góra",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "mountain",
+      "polish": "góra",
+      "english": "mountain"
+    },
+    {
+      "word": "noc",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "night",
+      "polish": "noc",
+      "english": "night",
+      "origin": "praindoeur *negʷ-"
+    },
+    {
+      "word": "dzéń",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "day",
+      "polish": "dzień",
+      "english": "day",
       "origin": "praindoeur. *dyeu– 'dzień, jasne niebo'",
-      "antonymOf": "noc" },
-    { "word": "rok", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "year", "polish": "rok", "english": "year" },
-    { "word": "zëma", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "winter", "polish": "zima", "english": "winter" },
-    { "word": "lato", "partOfSpeech": "NOUN", "partOfSpeechSubType": "NEUTER", "definition": "summer", "polish": "lato", "english": "summer",
-      "antonymOf": "zëma" },
-    { "word": "miono", "partOfSpeech": "NOUN", "partOfSpeechSubType": "NEUTER", "definition": "name", "polish": "imię", "english": "name" },
-    { "word": "miesąc", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "moon, month", "polish": "księżyc; miesiąc", "english": "moon, month",
+      "antonymOf": "noc",
+      "examples": [
+        {
+          "example": "Strzoda – dzéń tidzénia midzë wtórkã a czwiôrtkã.",
+          "note": "Kaszëbskô Wikipedijia: Strzoda (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "rok",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "year",
+      "polish": "rok",
+      "english": "year",
+      "idioms": [
+        {
+          "idiom": "cządë rokù",
+          "note": "pory roku (pl.wikt)"
+        }
+      ]
+    },
+    {
+      "word": "zëma",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "winter",
+      "polish": "zima",
+      "english": "winter",
+      "examples": [
+        {
+          "example": "Na swiãtégò Grzegòrza zëma jidze do mòrza.",
+          "note": "Kaszëbskô Wikipedijia: 12 strëmiannika (csbwiki)"
+        },
+        {
+          "example": "Pò swiãtim Grzegòrzu zëma ju ni mô tegò gòrzu.",
+          "note": "Kaszëbskô Wikipedijia: 12 strëmiannika (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "lato",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "NEUTER",
+      "definition": "summer",
+      "polish": "lato",
+      "english": "summer",
+      "antonymOf": "zëma",
+      "examples": [
+        {
+          "example": "Lato to je snôżi i robòcy cząd rokù.",
+          "note": "Kaszëbskô Wikipedijia: Lato (csbwiki)"
+        },
+        {
+          "example": "Lato – je jednym z przédnich sztërzech cządów rokù.",
+          "note": "Kaszëbskô Wikipedijia: Lato (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "miono",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "NEUTER",
+      "definition": "name",
+      "polish": "imię",
+      "english": "name"
+    },
+    {
+      "word": "miesąc",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "moon, month",
+      "polish": "księżyc; miesiąc",
+      "english": "moon, month",
       "note": "naturalny satelita Ziemi",
-      "relatedTo": [ { "word": "noc", "note": "księżyc świeci w nocy" } ] },
-    { "word": "gwiôzda", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "star", "polish": "gwiazda", "english": "star",
-      "relatedTo": [ { "word": "noc", "note": "gwiazdy świecą w nocy" } ] },
-    { "word": "słuńce", "partOfSpeech": "NOUN", "partOfSpeechSubType": "NEUTER", "definition": "sun", "polish": "słońce", "english": "sun",
+      "relatedTo": [
+        {
+          "word": "noc",
+          "note": "księżyc świeci w nocy"
+        }
+      ],
+      "origin": "praindoeur *meh₁-",
+      "examples": [
+        {
+          "example": "Zélnik – ósmi miesąc roku w gregorijansczim kalãdôrzu.",
+          "note": "Kaszëbskô Wikipedijia: Zélnik (csbwiki)"
+        },
+        {
+          "example": "Czerwińc – szósti miesąc roku w gregorijansczim kalãdôrzu.",
+          "note": "Kaszëbskô Wikipedijia: Czerwińc (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "gwiôzda",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "star",
+      "polish": "gwiazda",
+      "english": "star",
+      "relatedTo": [
+        {
+          "word": "noc",
+          "note": "gwiazdy świecą w nocy"
+        }
+      ],
+      "examples": [
+        {
+          "example": "Neùtronowô gwiôzda – pòwstaje w wënikù wëbùchù gwiôzdë tzw.",
+          "note": "Kaszëbskô Wikipedijia: Neùtronowô gwiôzda (csbwiki)"
+        },
+        {
+          "example": "Szacëje sã, że co tësãcznô gwiôzda w naszi Galaktice to neùtronowô gwiôzda.",
+          "note": "Kaszëbskô Wikipedijia: Neùtronowô gwiôzda (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "słuńce",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "NEUTER",
+      "definition": "sun",
+      "polish": "słońce",
+      "english": "sun",
       "note": "gwiazda centralna układu planetarnego",
-      "relatedTo": [ { "word": "dzéń", "note": "słońce daje dzień" } ] },
-    { "word": "gadac", "partOfSpeech": "VERB", "partOfSpeechSubType": "CONJUGATION_I", "definition": "to talk", "polish": "gadać", "english": "to talk",
-      "examples": [ { "example": "Lëdze gadają pò kaszëbskù.", "note": "ludzie gadają po kaszubsku" } ] },
-    { "word": "spiéwac", "partOfSpeech": "VERB", "partOfSpeechSubType": "CONJUGATION_I", "definition": "to sing", "polish": "śpiewać", "english": "to sing",
-      "examples": [ { "example": "Òna spiéwô pò kaszëbskù.", "note": "ona śpiewa po kaszubsku" } ] },
-    { "word": "grac", "partOfSpeech": "VERB", "partOfSpeechSubType": "CONJUGATION_I", "definition": "to play", "polish": "grać", "english": "to play" },
-    { "word": "kòpac", "partOfSpeech": "VERB", "partOfSpeechSubType": "CONJUGATION_I", "definition": "to dig", "polish": "kopać", "english": "to dig" },
-    { "word": "płëwac", "partOfSpeech": "VERB", "partOfSpeechSubType": "CONJUGATION_I", "definition": "to swim", "polish": "pływać", "english": "to swim",
-      "examples": [ { "example": "Òn chce pływac w jezerze.", "note": "on chce pływać w jeziorze" } ] },
-    { "word": "latac", "partOfSpeech": "VERB", "partOfSpeechSubType": "CONJUGATION_I", "definition": "to fly", "polish": "latać", "english": "to fly" },
-    { "word": "jachtowac", "partOfSpeech": "VERB", "partOfSpeechSubType": "CONJUGATION_I", "definition": "to hunt", "polish": "polować", "english": "to hunt" },
-    { "word": "dëchac", "partOfSpeech": "VERB", "partOfSpeechSubType": "CONJUGATION_I", "definition": "to breathe", "polish": "oddychać", "english": "to breathe" },
-    { "word": "ùmierac", "partOfSpeech": "VERB", "partOfSpeechSubType": "CONJUGATION_I", "definition": "to die", "polish": "umierać", "english": "to die" },
-    { "word": "wiôldżi", "partOfSpeech": "ADJECTIVE", "partOfSpeechSubType": "INFLECTIV_ADJECTIVE", "definition": "big", "polish": "duży", "english": "big" },
-    { "word": "môłi", "partOfSpeech": "ADJECTIVE", "partOfSpeechSubType": "INFLECTIV_ADJECTIVE", "definition": "small", "polish": "mały", "english": "small",
-      "antonymOf": "wiôldżi" },
-    { "word": "dłudżi", "partOfSpeech": "ADJECTIVE", "partOfSpeechSubType": "INFLECTIV_ADJECTIVE", "definition": "long", "polish": "długi", "english": "long",
-      "examples": [ { "example": "Zëma je dłëgô.", "note": "zima jest długa" } ] },
-    { "word": "krótczi", "partOfSpeech": "ADJECTIVE", "partOfSpeechSubType": "INFLECTIV_ADJECTIVE", "definition": "short", "polish": "krótki", "english": "short",
-      "antonymOf": "dłudżi" },
-    { "word": "cepłi", "partOfSpeech": "ADJECTIVE", "partOfSpeechSubType": "INFLECTIV_ADJECTIVE", "definition": "warm", "polish": "ciepły", "english": "warm" },
-    { "word": "zëmny", "partOfSpeech": "ADJECTIVE", "partOfSpeechSubType": "INFLECTIV_ADJECTIVE", "definition": "cold", "polish": "zimny", "english": "cold",
+      "relatedTo": [
+        {
+          "word": "dzéń",
+          "note": "słońce daje dzień"
+        }
+      ],
+      "origin": "praindoeur *seh₂-u̯l̥-",
+      "examples": [
+        {
+          "example": "Czej w Nowi Rok słuńce swiécy, pùsté bãdą stodołë ë sécë.",
+          "note": "Kaszëbskô Wikipedijia: 1 stëcznika (csbwiki)"
+        },
+        {
+          "example": "Słuńce skłôdô sã z gòrący plazmë, jaką ùtrzëmiwô grawitacjô i jaką sztôłtëje magneticzné òkrãżé.",
+          "note": "Kaszëbskô Wikipedijia: Słuńce (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "gadac",
+      "partOfSpeech": "VERB",
+      "partOfSpeechSubType": "CONJUGATION_I",
+      "definition": "to talk",
+      "polish": "gadać",
+      "english": "to talk",
+      "examples": [
+        {
+          "example": "Lëdze gadają pò kaszëbskù.",
+          "note": "ludzie gadają po kaszubsku"
+        },
+        {
+          "example": "òn mòże gadac i pisac pò kaszëbskù.",
+          "note": "Kaszëbskô Wikipedijia: Wójt (csbwiki)"
+        },
+        {
+          "example": "Z pòczątkù je wôżnô cobë wiele gadac.",
+          "note": "Kaszëbskô Wikipedijia: Drëdżi jãzëk (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "spiéwac",
+      "partOfSpeech": "VERB",
+      "partOfSpeechSubType": "CONJUGATION_I",
+      "definition": "to sing",
+      "polish": "śpiewać",
+      "english": "to sing",
+      "examples": [
+        {
+          "example": "Òna spiéwô pò kaszëbskù.",
+          "note": "ona śpiewa po kaszubsku"
+        }
+      ]
+    },
+    {
+      "word": "grac",
+      "partOfSpeech": "VERB",
+      "partOfSpeechSubType": "CONJUGATION_I",
+      "definition": "to play",
+      "polish": "grać",
+      "english": "to play",
+      "origin": "prasł *jĭgr-"
+    },
+    {
+      "word": "kòpac",
+      "partOfSpeech": "VERB",
+      "partOfSpeechSubType": "CONJUGATION_I",
+      "definition": "to dig",
+      "polish": "kopać",
+      "english": "to dig"
+    },
+    {
+      "word": "płëwac",
+      "partOfSpeech": "VERB",
+      "partOfSpeechSubType": "CONJUGATION_I",
+      "definition": "to swim",
+      "polish": "pływać",
+      "english": "to swim",
+      "examples": [
+        {
+          "example": "Òn chce pływac w jezerze.",
+          "note": "on chce pływać w jeziorze"
+        }
+      ]
+    },
+    {
+      "word": "latac",
+      "partOfSpeech": "VERB",
+      "partOfSpeechSubType": "CONJUGATION_I",
+      "definition": "to fly",
+      "polish": "latać",
+      "english": "to fly",
+      "examples": [
+        {
+          "example": "Pszczołë mògą latac òd wczasnégò zymkù tam, gdze są kwiatë z chtërnëch mògą wząc kwiatowi piszk i nektar (kwiatny sok).",
+          "note": "Kaszëbskô Wikipedijia: Miodnô pszczoła (csbwiki)"
+        },
+        {
+          "example": "Wëstãpiają blós òd zymkù do lata.",
+          "note": "Kaszëbskô Wikipedijia: Miodnô pszczoła (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "jachtowac",
+      "partOfSpeech": "VERB",
+      "partOfSpeechSubType": "CONJUGATION_I",
+      "definition": "to hunt",
+      "polish": "polować",
+      "english": "to hunt",
+      "examples": [
+        {
+          "example": "Òne są tu òbjimniãti dzélową òchrónią, ale òd 1 rujana do 15 gromicznika mòże na nie jachtowac.",
+          "note": "Kaszëbskô Wikipedijia: Eùropejsczi bòber (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "dëchac",
+      "partOfSpeech": "VERB",
+      "partOfSpeechSubType": "CONJUGATION_I",
+      "definition": "to breathe",
+      "polish": "oddychać",
+      "english": "to breathe"
+    },
+    {
+      "word": "ùmierac",
+      "partOfSpeech": "VERB",
+      "partOfSpeechSubType": "CONJUGATION_I",
+      "definition": "to die",
+      "polish": "umierać",
+      "english": "to die"
+    },
+    {
+      "word": "wiôldżi",
+      "partOfSpeech": "ADJECTIVE",
+      "partOfSpeechSubType": "INFLECTIV_ADJECTIVE",
+      "definition": "big",
+      "polish": "duży",
+      "english": "big",
+      "origin": "praindoeur *u̯elH-",
+      "idioms": [
+        {
+          "idiom": "Wiôlgô Britanijô",
+          "note": "pl.wikt"
+        }
+      ],
+      "examples": [
+        {
+          "example": "Wiôldżi smólsz (Limax maximus) – smôrzcz z rodzëznë smólszowatëch.",
+          "note": "Kaszëbskô Wikipedijia: Wiôldżi smólsz (csbwiki)"
+        },
+        {
+          "example": "Wiôldżi bagniôrz abò kùlin (Numenius arquata) – to je ôrt wiôldżégò ptôcha z rodzëznë bekasowatëch (Scolopacidae).",
+          "note": "Kaszëbskô Wikipedijia: Wiôldżi bagniôrz (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "môłi",
+      "partOfSpeech": "ADJECTIVE",
+      "partOfSpeechSubType": "INFLECTIV_ADJECTIVE",
+      "definition": "small",
+      "polish": "mały",
+      "english": "small",
+      "antonymOf": "wiôldżi",
+      "examples": [
+        {
+          "example": "Môłi ksążã, jaczégò pòdjimnął sã Zbigórz Jankòwsczi.",
+          "note": "Kaszëbskô Wikipedijia: Le Petit Prince (csbwiki)"
+        },
+        {
+          "example": "Môłi (Kaszëbsczi) Trzëgard abò Môłi (Kaszëbsczi) Trójgard (pòl.",
+          "note": "Kaszëbskô Wikipedijia: Môłi Trzëgard (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "dłudżi",
+      "partOfSpeech": "ADJECTIVE",
+      "partOfSpeechSubType": "INFLECTIV_ADJECTIVE",
+      "definition": "long",
+      "polish": "długi",
+      "english": "long",
+      "examples": [
+        {
+          "example": "Zëma je dłëgô.",
+          "note": "zima jest długa"
+        }
+      ]
+    },
+    {
+      "word": "krótczi",
+      "partOfSpeech": "ADJECTIVE",
+      "partOfSpeechSubType": "INFLECTIV_ADJECTIVE",
+      "definition": "short",
+      "polish": "krótki",
+      "english": "short",
+      "antonymOf": "dłudżi",
+      "examples": [
+        {
+          "example": "Jich dzóbk je môłi i krótczi.",
+          "note": "Kaszëbskô Wikipedijia: Sykórkòwaté (csbwiki)"
+        },
+        {
+          "example": "Òne są dosc môłé – 12 do 13 cm długotë i mają krótczi skrzidła a dłudżi ògón.",
+          "note": "Kaszëbskô Wikipedijia: Sykórkòwaté (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "cepłi",
+      "partOfSpeech": "ADJECTIVE",
+      "partOfSpeechSubType": "INFLECTIV_ADJECTIVE",
+      "definition": "warm",
+      "polish": "ciepły",
+      "english": "warm"
+    },
+    {
+      "word": "zëmny",
+      "partOfSpeech": "ADJECTIVE",
+      "partOfSpeechSubType": "INFLECTIV_ADJECTIVE",
+      "definition": "cold",
+      "polish": "zimny",
+      "english": "cold",
       "baseOf": "zëma",
-      "antonymOf": "cepłi" },
-    { "word": "nowi", "partOfSpeech": "ADJECTIVE", "partOfSpeechSubType": "INFLECTIV_ADJECTIVE", "definition": "new", "polish": "nowy", "english": "new" },
-    { "word": "stôri", "partOfSpeech": "ADJECTIVE", "partOfSpeechSubType": "INFLECTIV_ADJECTIVE", "definition": "old", "polish": "stary", "english": "old",
-      "antonymOf": "nowi" },
-    { "word": "dobri", "partOfSpeech": "ADJECTIVE", "partOfSpeechSubType": "INFLECTIV_ADJECTIVE", "definition": "good", "polish": "dobry", "english": "good" },
-    { "word": "złi", "partOfSpeech": "ADJECTIVE", "partOfSpeechSubType": "INFLECTIV_ADJECTIVE", "definition": "bad", "polish": "zły", "english": "bad",
-      "antonymOf": "dobri" },
-    { "word": "czerwòny", "partOfSpeech": "ADJECTIVE", "partOfSpeechSubType": "INFLECTIV_ADJECTIVE", "definition": "red", "polish": "czerwony", "english": "red" },
-    { "word": "zelony", "partOfSpeech": "ADJECTIVE", "partOfSpeechSubType": "INFLECTIV_ADJECTIVE", "definition": "green", "polish": "zielony", "english": "green" },
-    { "word": "żôłti", "partOfSpeech": "ADJECTIVE", "partOfSpeechSubType": "INFLECTIV_ADJECTIVE", "definition": "yellow", "polish": "żółty", "english": "yellow" },
-    { "word": "biôłi", "partOfSpeech": "ADJECTIVE", "partOfSpeechSubType": "INFLECTIV_ADJECTIVE", "definition": "white", "polish": "biały", "english": "white" },
-    { "word": "czôrny", "partOfSpeech": "ADJECTIVE", "partOfSpeechSubType": "INFLECTIV_ADJECTIVE", "definition": "black", "polish": "czarny", "english": "black" },
-    { "word": "mòkri", "partOfSpeech": "ADJECTIVE", "partOfSpeechSubType": "INFLECTIV_ADJECTIVE", "definition": "wet", "polish": "mokry", "english": "wet" },
-    { "word": "sëchi", "partOfSpeech": "ADJECTIVE", "partOfSpeechSubType": "INFLECTIV_ADJECTIVE", "definition": "dry", "polish": "suchy", "english": "dry",
-      "antonymOf": "mòkri" },
-    { "word": "jeden", "partOfSpeech": "NUMERAL", "partOfSpeechSubType": "INFLECTIV_NUMERAL", "definition": "one", "polish": "jeden", "english": "one" },
-    { "word": "dwa", "partOfSpeech": "NUMERAL", "partOfSpeechSubType": "INFLECTIV_NUMERAL", "definition": "two", "polish": "dwa", "english": "two" },
-    { "word": "trzë", "partOfSpeech": "NUMERAL", "partOfSpeechSubType": "INFLECTIV_NUMERAL", "definition": "three", "polish": "trzy", "english": "three" },
-    { "word": "sztërë", "partOfSpeech": "NUMERAL", "partOfSpeechSubType": "INFLECTIV_NUMERAL", "definition": "four", "polish": "cztery", "english": "four" },
-    { "word": "piãc", "partOfSpeech": "NUMERAL", "partOfSpeechSubType": "INFLECTIV_NUMERAL", "definition": "five", "polish": "pięć", "english": "five" },
-    { "word": "mëma", "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE", "definition": "mother (fam.)", "polish": "mama", "english": "mother (fam.)",
-      "synonymsOf": ["matka"] },
-    { "word": "fater", "partOfSpeech": "NOUN", "partOfSpeechSubType": "MASCULINE", "definition": "father (fam.)", "polish": "tata", "english": "father (fam.)",
-      "synonymsOf": ["òjc"] }
+      "antonymOf": "cepłi"
+    },
+    {
+      "word": "nowi",
+      "partOfSpeech": "ADJECTIVE",
+      "partOfSpeechSubType": "INFLECTIV_ADJECTIVE",
+      "definition": "new",
+      "polish": "nowy",
+      "english": "new",
+      "origin": "praindoeur *neu̯-"
+    },
+    {
+      "word": "stôri",
+      "partOfSpeech": "ADJECTIVE",
+      "partOfSpeechSubType": "INFLECTIV_ADJECTIVE",
+      "definition": "old",
+      "polish": "stary",
+      "english": "old",
+      "antonymOf": "nowi",
+      "origin": "praindoeur *steh₂-"
+    },
+    {
+      "word": "dobri",
+      "partOfSpeech": "ADJECTIVE",
+      "partOfSpeechSubType": "INFLECTIV_ADJECTIVE",
+      "definition": "good",
+      "polish": "dobry",
+      "english": "good",
+      "examples": [
+        {
+          "example": "Torf sã barżi żôlił jak pôlił ë to béł dosc dobri òpôł.",
+          "note": "Kaszëbskô Wikipedijia: Torf (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "złi",
+      "partOfSpeech": "ADJECTIVE",
+      "partOfSpeechSubType": "INFLECTIV_ADJECTIVE",
+      "definition": "bad",
+      "polish": "zły",
+      "english": "bad",
+      "antonymOf": "dobri",
+      "examples": [
+        {
+          "example": "Roczitnik – pòdłùg Kaszëbów, złi dëch, diôbëł co robi mòcny wiater.",
+          "note": "Kaszëbskô Wikipedijia: Roczitnik (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "czerwòny",
+      "partOfSpeech": "ADJECTIVE",
+      "partOfSpeechSubType": "INFLECTIV_ADJECTIVE",
+      "definition": "red",
+      "polish": "czerwony",
+      "english": "red",
+      "origin": "praindoeur *kʷr̥mi-"
+    },
+    {
+      "word": "zelony",
+      "partOfSpeech": "ADJECTIVE",
+      "partOfSpeechSubType": "INFLECTIV_ADJECTIVE",
+      "definition": "green",
+      "polish": "zielony",
+      "english": "green",
+      "examples": [
+        {
+          "example": "Zelony kątór (Bufotes viridis syn.",
+          "note": "Kaszëbskô Wikipedijia: Zelony kątór (csbwiki)"
+        },
+        {
+          "example": "Zelony mech (Leucobryum glaucum) – to je ôrt mechù.",
+          "note": "Kaszëbskô Wikipedijia: Zelony mech (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "żôłti",
+      "partOfSpeech": "ADJECTIVE",
+      "partOfSpeechSubType": "INFLECTIV_ADJECTIVE",
+      "definition": "yellow",
+      "polish": "żółty",
+      "english": "yellow",
+      "examples": [
+        {
+          "example": "Żôłti lëpin (Lupinus luteus L.) – to je jednorocznô roscëna z rodzëznë bòbòwatëch (Fabaceae).",
+          "note": "Kaszëbskô Wikipedijia: Żôłti lëpin (csbwiki)"
+        },
+        {
+          "example": "Żôłti miodownik (Melilotus officinalis) – to je jednorocznô abò dwalatnô roscëna z rodzëznë bòbòwatëch (Fabaceae).",
+          "note": "Kaszëbskô Wikipedijia: Żôłti miodownik (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "biôłi",
+      "partOfSpeech": "ADJECTIVE",
+      "partOfSpeechSubType": "INFLECTIV_ADJECTIVE",
+      "definition": "white",
+      "polish": "biały",
+      "english": "white",
+      "origin": "praindoeur *bʰelH-",
+      "examples": [
+        {
+          "example": "Biôłi bòcón (Ciconia ciconia) – to je wiôldżi ptôch z rodzëznë bòcónowatëch (Ciconiidae).",
+          "note": "Kaszëbskô Wikipedijia: Biôłi bòcón (csbwiki)"
+        },
+        {
+          "example": "Biôłi nosoróg (Ceratotherium simum) – to je ôrt wiôldzégò niepôrokòpëtnégò suska z rodzëznë nosorógów.",
+          "note": "Kaszëbskô Wikipedijia: Biôłi nosoróg (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "czôrny",
+      "partOfSpeech": "ADJECTIVE",
+      "partOfSpeechSubType": "INFLECTIV_ADJECTIVE",
+      "definition": "black",
+      "polish": "czarny",
+      "english": "black",
+      "antonymOf": "biôłi",
+      "examples": [
+        {
+          "example": "Czôrny bòcón (Ciconia nigra) – to je wiôldżi ptôch z rodzëznë bòcónowatëch (Ciconiidae).",
+          "note": "Kaszëbskô Wikipedijia: Czôrny bòcón (csbwiki)"
+        },
+        {
+          "example": "Czôrny dzëdzón (Dryocopus martius) – to je ôrt strzédnégò ptôcha z rodzëznë dzëdzónowatëch (Picidae).",
+          "note": "Kaszëbskô Wikipedijia: Czôrny dzëdzón (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "mòkri",
+      "partOfSpeech": "ADJECTIVE",
+      "partOfSpeechSubType": "INFLECTIV_ADJECTIVE",
+      "definition": "wet",
+      "polish": "mokry",
+      "english": "wet",
+      "origin": "prabałtosłowiański *mok-",
+      "examples": [
+        {
+          "example": "Òn rosce w dosc mòkri zemi, a nie lubi za wiele słunôszka.",
+          "note": "Kaszëbskô Wikipedijia: Zwëczajny groch (csbwiki)"
+        },
+        {
+          "example": "Mòkri pióra są cãższé a të ptôch mòże pikòwac głãbok w wòda.",
+          "note": "Kaszëbskô Wikipedijia: Zwëczajny szëplôrz (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "sëchi",
+      "partOfSpeech": "ADJECTIVE",
+      "partOfSpeechSubType": "INFLECTIV_ADJECTIVE",
+      "definition": "dry",
+      "polish": "suchy",
+      "english": "dry",
+      "antonymOf": "mòkri",
+      "origin": "praindoeur *h₂seu̯s-",
+      "examples": [
+        {
+          "example": "Sëchi Dwór – kaszëbskô wies w gminie Kòsôkòwò, w pùcczim krézu pòmòrsczégò wòjewództwa.",
+          "note": "Kaszëbskô Wikipedijia: Sëchi Dwór (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "jeden",
+      "partOfSpeech": "NUMERAL",
+      "partOfSpeechSubType": "INFLECTIV_NUMERAL",
+      "definition": "one",
+      "polish": "jeden",
+      "english": "one"
+    },
+    {
+      "word": "dwa",
+      "partOfSpeech": "NUMERAL",
+      "partOfSpeechSubType": "INFLECTIV_NUMERAL",
+      "definition": "two",
+      "polish": "dwa",
+      "english": "two",
+      "origin": "praindoeur *du̯o-"
+    },
+    {
+      "word": "trzë",
+      "partOfSpeech": "NUMERAL",
+      "partOfSpeechSubType": "INFLECTIV_NUMERAL",
+      "definition": "three",
+      "polish": "trzy",
+      "english": "three",
+      "origin": "praindoeur *trei̯-"
+    },
+    {
+      "word": "sztërë",
+      "partOfSpeech": "NUMERAL",
+      "partOfSpeechSubType": "INFLECTIV_NUMERAL",
+      "definition": "four",
+      "polish": "cztery",
+      "english": "four"
+    },
+    {
+      "word": "piãc",
+      "partOfSpeech": "NUMERAL",
+      "partOfSpeechSubType": "INFLECTIV_NUMERAL",
+      "definition": "five",
+      "polish": "pięć",
+      "english": "five"
+    },
+    {
+      "word": "mëma",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "FEMININE",
+      "definition": "mother (fam.)",
+      "polish": "mama",
+      "english": "mother (fam.)",
+      "synonymsOf": [
+        "matka"
+      ],
+      "examples": [
+        {
+          "example": "Czej Mariô bëłô môłô, ji ùmiłotonô sostra Zofiô ùmarła na tifus, pò czim ùmarła téż ji mëma na sëchòtë.",
+          "note": "Kaszëbskô Wikipedijia: Mariô Skłodowskô-Curie (csbwiki)"
+        },
+        {
+          "example": "Ji mëma, Barnisłôwa z dodoma Boguskô herbù Topór, bëła katolëczką ë prowadniczką warszawsczi płôce dlô dzéwczãt.",
+          "note": "Kaszëbskô Wikipedijia: Mariô Skłodowskô-Curie (csbwiki)"
+        }
+      ]
+    },
+    {
+      "word": "fater",
+      "partOfSpeech": "NOUN",
+      "partOfSpeechSubType": "MASCULINE",
+      "definition": "father (fam.)",
+      "polish": "tata",
+      "english": "father (fam.)",
+      "synonymsOf": [
+        "òjc"
+      ]
+    }
   ]
 }
