@@ -7,6 +7,8 @@ import org.springframework.context.ApplicationEventPublisher
 import org.springframework.http.HttpHeaders.CONTENT_DISPOSITION
 import org.springframework.http.HttpStatus.CREATED
 import org.springframework.http.HttpStatus.NO_CONTENT
+import org.springframework.http.MediaType
+import org.springframework.http.MediaType.APPLICATION_OCTET_STREAM
 import org.springframework.http.ResponseEntity
 import org.springframework.security.access.prepost.PreAuthorize
 import org.springframework.validation.annotation.Validated
@@ -97,11 +99,21 @@ class KashubianEntryController(
         return transactionSupport.executeInReadOnlyTransaction {
             downloader.download(entryId).let {
                 ResponseEntity.ok()
-                    .header(CONTENT_DISPOSITION, "attachment; filename=\"${it.fileName}\"")
+                    .contentType(audioTypeOrDefault(it.type))
+                    .header(CONTENT_DISPOSITION, "inline; filename=\"${it.fileName}\"")
                     .body(it.file)
             }
         }
     }
+
+    /**
+     * Audio type stored with the file. The default matters: browsers refuse to play
+     * media served as application/octet-stream, and an unparseable type would make
+     * the whole response fail.
+     */
+    private fun audioTypeOrDefault(type: String?): MediaType =
+        type?.let { runCatching { MediaType.parseMediaType(it) }.getOrNull() }
+            ?: APPLICATION_OCTET_STREAM
 
     @PutMapping(ENTRY_ID_PATH)
     fun update(@EntryExists @PathVariable entryId: Long,

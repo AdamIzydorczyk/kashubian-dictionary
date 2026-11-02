@@ -75,16 +75,34 @@ class DataInitializer(
                         created[seedWord.word] = CreatedEntry(
                                 entryId = response.entryId,
                                 meaningId = response.meaningIds.first())
+                        seedWord.sound?.let { uploadSeedSound(seedWord.word, it, response.entryId) }
                     }
             logger.info("Seeded entry '${seedWord.word}'")
         }
         logger.info("Seed entries generation finished (${min(seedWords.size, properties.size)} entries)")
     }
 
+    /**
+     * Sound files come from /seed/sounds and go through the ordinary upload
+     * endpoint, so they are stored (and recorded as events) exactly like the
+     * files an editor uploads.
+     */
+    private fun uploadSeedSound(word: String, sound: SeedSound, entryId: Long) {
+        val fileName = sound.file.substringAfterLast('/')
+        kashubianEntryController.uploadSoundFile(entryId,
+                FakeMultipartFile(fileName, sound.type, readSeedResource(sound.file)),
+                AuditingInformation("seeded", now()))
+        logger.info("Seeded ${if (sound.generated) "generated mock sound" else "sound"} '$fileName' for '$word'")
+    }
+
     private fun readSeedVocabulary(): SeedVocabulary =
         javaClass.getResourceAsStream(SEED_FILE).use {
             objectMapper.readValue(it, SeedVocabulary::class.java)
         }
+
+    private fun readSeedResource(path: String): ByteArray =
+        javaClass.getResourceAsStream("$SEED_DIR/$path")?.readBytes()
+                ?: throw IllegalStateException("seed data error: '$path' is missing from the seed resources")
 
     private fun recreateDataFromEvents() {
         repository.findAllEvents().forEach {
@@ -126,7 +144,8 @@ class DataInitializer(
     }
 
     companion object {
-        private const val SEED_FILE = "/seed/kashubian-words.json"
+        private const val SEED_DIR = "/seed"
+        private const val SEED_FILE = "$SEED_DIR/kashubian-words.json"
     }
 }
 
@@ -157,6 +176,8 @@ data class SeedWord(
     // inflection paradigm as JSON; keys must match the *Variation model for
     // the partOfSpeechSubType, validated on create like any other entry
     val variation: ObjectNode? = null,
+    // sound file played on the entry's page; path relative to /seed
+    val sound: SeedSound? = null,
     val examples: List<SeedExample> = emptyList(),
     val proverbs: List<SeedProverb> = emptyList(),
     val idioms: List<SeedIdiom> = emptyList(),
@@ -218,6 +239,15 @@ data class SeedQuote(val quote: String, val note: String? = null)
 
 data class SeedRelated(val word: String, val note: String? = null)
 
+/**
+ * A sound file next to the seed vocabulary, stored as the entry's sound file.
+ *
+ * `file` is a path relative to /seed, `type` is the audio type the browser
+ * receives, and `generated` marks files that are not real pronunciations but
+ * tones produced by scripts/generate-mock-sounds.sh.
+ */
+data class SeedSound(val file: String, val type: String, val generated: Boolean = false)
+
 @ConstructorBinding
 @ConfigurationProperties(prefix = "initializer")
 data class RandomDataInitializerProperties(
@@ -229,7 +259,7 @@ data class FakeMultipartFile(
     private val name: String = "test.mp3",
     private val contentType: String = "audio/mp3",
     private val bytes: ByteArray = ByteArray(1)) : MultipartFile {
-    override fun getInputStream(): InputStream = ByteArrayInputStream.nullInputStream()
+    override fun getInputStream(): InputStream = ByteArrayInputStream(bytes)
 
     override fun getName(): String = name
 
@@ -237,11 +267,11 @@ data class FakeMultipartFile(
 
     override fun getContentType(): String = contentType
 
-    override fun isEmpty(): Boolean = false
+    override fun isEmpty(): Boolean = bytes.isEmpty()
 
-    override fun getSize(): Long = 1L
+    override fun getSize(): Long = bytes.size.toLong()
 
     override fun getBytes(): ByteArray = bytes
 
-    override fun transferTo(dest: File) {}
+    override fun transferTo(dest: File) = dest.writeBytes(bytes)
 }

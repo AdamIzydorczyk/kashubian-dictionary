@@ -1,5 +1,5 @@
 {
-  "source": "Core Kashubian vocabulary in modern standard orthography. Headwords: Kashubian Swadesh list (Wiktionary, Module:Swadesh/data/csb) and Polish-Kashubian dictionaries. Proverbs/quotes: printed Kashubian sources (Kaszubopedia 'Przysłowia'; E. Rogowska, Acta Cassubiana IV, 2002; H. Derdowski; A. Majkowski). Used only to seed the development database. Example sentences, idioms, relations and etymologies supplemented from pl.wiktionary.org (CC BY-SA 3.0), Kaszëbskô Wikipedijia-era extracts. Entry notes: first Polish definition of the first Polish equivalent on pl.wiktionary.org (2026-11-02).",
+  "source": "Core Kashubian vocabulary in modern standard orthography. Headwords: Kashubian Swadesh list (Wiktionary, Module:Swadesh/data/csb) and Polish-Kashubian dictionaries. Proverbs/quotes: printed Kashubian sources (Kaszubopedia 'Przysłowia'; E. Rogowska, Acta Cassubiana IV, 2002; H. Derdowski; A. Majkowski). Used only to seed the development database. Example sentences, idioms, relations and etymologies supplemented from pl.wiktionary.org (CC BY-SA 3.0), Kaszëbskô Wikipedijia-era extracts. Entry notes: first Polish definition of the first Polish equivalent on pl.wiktionary.org (2026-11-02). Sound files: mock audio, three-tone sequences generated with ffmpeg (scripts/generate-mock-sounds.sh), not pronunciations; no recordings of these words are published.",
   "words": [
     {
       "word": "białka",
@@ -10,6 +10,11 @@
       "english": "woman",
       "note": "dorosły człowiek płci żeńskiej",
       "origin": "praindoeur *bʰelH-",
+      "sound": {
+        "file": "sounds/mock-bialka.mp3",
+        "type": "audio/mpeg",
+        "generated": true
+      },
       "idioms": [
         {
           "idiom": "mòja białka",
@@ -32,7 +37,12 @@
       "english": "man",
       "note": "dorosły człowiek płci męskiej",
       "antonymOf": "białka",
-      "origin": "prasł *xolp-"
+      "origin": "prasł *xolp-",
+      "sound": {
+        "file": "sounds/mock-chlop.mp3",
+        "type": "audio/mpeg",
+        "generated": true
+      }
     },
     {
       "word": "człowiek",
@@ -57,6 +67,11 @@
       "polish": "dziecko",
       "english": "child",
       "note": "potomek niezależnie od wieku: syn lub córka w odniesieniu do swoich rodziców biologicznych lub przybranych",
+      "sound": {
+        "file": "sounds/mock-dzecko.mp3",
+        "type": "audio/mpeg",
+        "generated": true
+      },
       "hypernymOf": "człowiek",
       "examples": [
         {
@@ -81,6 +96,11 @@
       "polish": "matka",
       "english": "mother",
       "note": "rodzic płci żeńskiej",
+      "sound": {
+        "file": "sounds/mock-matka.mp3",
+        "type": "audio/mpeg",
+        "generated": true
+      },
       "examples": [
         {
           "example": "Mòja matka robi chleb.",
@@ -657,6 +677,11 @@
           "nominativePlural": "jãzëczi"
         }
       },
+      "sound": {
+        "file": "sounds/mock-jazek.mp3",
+        "type": "audio/mpeg",
+        "generated": true
+      },
       "idioms": [
         {
           "idiom": "trzëmac jãzëk za zãbama",
@@ -746,6 +771,11 @@
       "english": "water",
       "note": "bezbarwna i bezzapachowa ciecz, tlenek wodoru, H₂O",
       "origin": "praindoeur. *ued– 'woda'",
+      "sound": {
+        "file": "sounds/mock-woda.mp3",
+        "type": "audio/mpeg",
+        "generated": true
+      },
       "examples": [
         {
           "example": "Dzeckò pije wòdã.",
@@ -1163,6 +1193,11 @@
           "vocativePlural": "miesące"
         }
       },
+      "sound": {
+        "file": "sounds/mock-miesac.mp3",
+        "type": "audio/mpeg",
+        "generated": true
+      },
       "examples": [
         {
           "example": "Zélnik – ósmi miesąc roku w gregorijansczim kalãdôrzu.",
@@ -1267,6 +1302,11 @@
           "thirdPersonPlural": "spiéwają"
         },
         "infinitive": "spiéwac"
+      },
+      "sound": {
+        "file": "sounds/mock-spiewac.mp3",
+        "type": "audio/mpeg",
+        "generated": true
       },
       "examples": [
         {

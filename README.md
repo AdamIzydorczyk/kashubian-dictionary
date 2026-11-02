@@ -51,6 +51,7 @@ no entries, data is instead replayed from the event table.
       "definition": "fish", "polish": "ryba", "english": "fish",
       "origin": "praindoeur ...",              // etymology (optional)
       "variation": { "nounVariation": { "nominative": "...", ... } },
+      "sound": { "file": "sounds/mock-reba.mp3", "type": "audio/mpeg", "generated": true },
       "examples": [{ "example": "...", "note": "source citation" }],
       "proverbs": [...], "idioms": [...], "quotes": [...],
       "synonymsOf": ["..."], "antonymOf": "...", "hypernymOf": "...",
@@ -76,6 +77,27 @@ Rules:
   shapes on REST create/update, and the public entry page renders these shapes.
 - `initializer.size=100` (application.properties) caps how many words are used —
   keep it ≥ the number of entries in the file.
+- `sound` uploads the file through the ordinary `POST /kashubian-entry/{id}/file`
+  endpoint, so a seeded file is stored — and recorded as an `UPLOAD_SOUND_FILE`
+  event — exactly like one an editor uploads. Paths are relative to
+  `src/main/resources/seed/`.
+
+### Mock sound files
+
+Eight seed words carry a `sound` file, so the entry page's player and the admin
+sound controls have something to work with in development. The files are
+three-tone sequences (`src/main/resources/seed/sounds/mock-*.mp3`, about 5 KB
+each, 1 s long) produced by:
+
+```bash
+./scripts/generate-mock-sounds.sh   # needs ffmpeg; output is deterministic
+```
+
+They are mocks on purpose: the tones come from an md5 of the word, so they are
+reproducible and they cannot be mistaken for a Kashubian pronunciation. No
+recordings of these words are published on pl.wiktionary.org or Wikimedia
+Commons; if real ones turn up, put them in `src/main/resources/seed/sounds/`
+and drop `"generated": true`.
 
 ### Data provenance
 
@@ -98,6 +120,9 @@ All content is real, published material — nothing invented:
   *miesąc*, present-tense forms for *spiéwac*, degrees of comparison for
   *dobri*, partial nom./nom.-pl. for *głowa*, *lëst*, *jãzëk*); the rest stay
   `null` because no reliable source exists — nothing is invented.
+- **Sound files**: the only seeded content that is not published material —
+  clearly synthetic tones standing in for recordings that do not exist yet (see
+  "Mock sound files"); never presented as pronunciations.
 
 ### Reseeding after editing the seed JSON
 
@@ -120,6 +145,7 @@ docker exec kas-db psql -U kas -d kas -c \
 | hypernyms / synonyms / base form | 6 / 2 / 1 |
 | proverbs / quotes | 6 / 2 |
 | inflection (`variation`) | 6 (miesąc, głowa, lëst, jãzëk, spiéwac, dobri) |
+| sound file | 8 (generated mock tones — see "Mock sound files") |
 
 Words without examples simply had no usable source hit; fake sentences are not
 generated on purpose.
@@ -130,4 +156,7 @@ generated on purpose.
   returns the word, its definitions and the entry `note` (the frontend card shows the note)
 - `GET /custom-query/variation-example/{partOfSpeechSubType}` — sample inflection
 - `POST/PUT/DELETE /kashubian-entry/...` — CRUD (Basic auth), sound-file
-  upload/download at `/kashubian-entry/{id}/file`
+  upload/download at `/kashubian-entry/{id}/file`. `GET` is public and answers
+  with the audio type stored on upload (`Content-Disposition: inline`), because
+  players refuse media served as `application/octet-stream`; uploads are checked
+  by `AudioTypeValidator` (extension *and* content type must be audio)
