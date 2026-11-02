@@ -105,7 +105,8 @@ All content is real, published material — nothing invented:
 
 - **Headwords**: Kashubian Swadesh list (Wiktionary `Module:Swadesh/data/csb`)
   and Polish–Kashubian dictionaries, in modern standard orthography.
-- **Entry `note`** (shown on the Word of the Day card): the first Polish `1.1`
+- **Entry `note`** (the frontend shows it on the Word of the Day card, read with the
+  entry query): the first Polish `1.1`
   definition of the word's first Polish equivalent on pl.wiktionary.org
   (scraped 2026-11-02); for the 10 headwords with no csb section there, the
   definition of the Polish gloss in the entry's own `polish` field instead.
@@ -152,8 +153,10 @@ generated on purpose.
 
 ## Custom queries & endpoints
 
-- `GET /custom-query/word-of-the-day` — random priority entry, changes twice a day;
-  returns the word, its definitions and the entry `note` (the frontend card shows the note)
+- `GET /custom-query/word-of-the-day` — random priority entry, changes twice a day,
+  returning the word and its definitions. It deliberately carries no entry `note`: the
+  frontend card gets the note from the public entry query instead, so neither this
+  endpoint, its projection nor `find_word_of_the_day()` had to change
 - `GET /custom-query/variation-example/{partOfSpeechSubType}` — sample inflection
 - `POST/PUT/DELETE /kashubian-entry/...` — CRUD (Basic auth), sound-file
   upload/download at `/kashubian-entry/{id}/file`. `GET` is public and answers

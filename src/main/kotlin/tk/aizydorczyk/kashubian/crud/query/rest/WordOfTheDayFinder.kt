@@ -20,7 +20,7 @@ class WordOfTheDayFinder(
     val clock = clockProvider.get()
 
     val logger: Logger = LoggerFactory.getLogger(javaClass.simpleName)
-    val cache = AtomicReference(CachedWordOfTheDay(0L, WordOfTheDay(-1L, "", emptyList(), null)))
+    val cache = AtomicReference(CachedWordOfTheDay(0L, WordOfTheDay(-1L, "", emptyList())))
 
     @Transactional(readOnly = true)
     fun find(): WordOfTheDay {
@@ -51,9 +51,8 @@ class WordOfTheDayFinder(
             WordOfTheDay(
                     entryId = it.key.first,
                     word = it.key.second,
-                    definitions = it.value.map(WordOfTheDayProjection::definition),
-                    note = it.value.first().note)
-        }.ifEmpty { listOf(WordOfTheDay(-1L, "", emptyList(), null)) }.first()
+                    definitions = it.value.map(WordOfTheDayProjection::definition))
+        }.ifEmpty { listOf(WordOfTheDay(-1L, "", emptyList())) }.first()
 
 
     data class CachedWordOfTheDay(val seed: Long, val wordOfTheDay: WordOfTheDay)
@@ -63,4 +62,4 @@ fun AtomicReference<WordOfTheDayFinder.CachedWordOfTheDay>.seed() = this.get().s
 
 fun AtomicReference<WordOfTheDayFinder.CachedWordOfTheDay>.wordOfTheDay() = this.get().wordOfTheDay
 
-data class WordOfTheDay(val entryId: Long, val word: String, val definitions: List<String>, val note: String?)
+data class WordOfTheDay(val entryId: Long, val word: String, val definitions: List<String>)

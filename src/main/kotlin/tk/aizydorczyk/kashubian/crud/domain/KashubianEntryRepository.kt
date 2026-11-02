@@ -149,13 +149,12 @@ class KashubianEntryRepository(val entityManager: EntityManager,
                         .map {
                             WordOfTheDayProjection(entryId = (it[0] as BigInteger).toLong(),
                                     word = it[1] as String,
-                                    definition = it[2] as String,
-                                    note = it[3] as String?)
+                                    definition = it[2] as String)
                         }
             }
 }
 
-data class WordOfTheDayProjection(val entryId: Long, val word: String, val definition: String, val note: String?)
+data class WordOfTheDayProjection(val entryId: Long, val word: String, val definition: String)
 data class MeaningHierarchyElement(@JsonProperty("meaning_id") val meaningId: Long,
     val definition: String,
     @JsonProperty("entry_id") val entryId: Long,
