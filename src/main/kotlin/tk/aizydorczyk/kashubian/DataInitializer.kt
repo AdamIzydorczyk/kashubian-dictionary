@@ -1,6 +1,7 @@
 package tk.aizydorczyk.kashubian
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.databind.node.ObjectNode
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationArguments
@@ -153,6 +154,9 @@ data class SeedWord(
     val english: String,
     val note: String? = null,
     val origin: String? = null,
+    // inflection paradigm as JSON; keys must match the *Variation model for
+    // the partOfSpeechSubType, validated on create like any other entry
+    val variation: ObjectNode? = null,
     val examples: List<SeedExample> = emptyList(),
     val proverbs: List<SeedProverb> = emptyList(),
     val idioms: List<SeedIdiom> = emptyList(),
@@ -170,7 +174,7 @@ data class SeedWord(
             priority = true,
             partOfSpeech = partOfSpeech,
             partOfSpeechSubType = partOfSpeechSubType,
-            variation = null,
+            variation = variation,
             base = baseOf?.let { requireCreated(created, it, "base of").entryId },
             meanings = listOf(MeaningDto(
                     translation = TranslationDto(

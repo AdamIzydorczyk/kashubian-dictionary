@@ -50,6 +50,7 @@ no entries, data is instead replayed from the event table.
       "partOfSpeech": "NOUN", "partOfSpeechSubType": "FEMININE",
       "definition": "fish", "polish": "ryba", "english": "fish",
       "origin": "praindoeur ...",              // etymology (optional)
+      "variation": { "nounVariation": { "nominative": "...", ... } },
       "examples": [{ "example": "...", "note": "source citation" }],
       "proverbs": [...], "idioms": [...], "quotes": [...],
       "synonymsOf": ["..."], "antonymOf": "...", "hypernymOf": "...",
@@ -68,6 +69,11 @@ Rules:
   "must be created earlier" error.
 - Every seed entry gets `priority = true`: the `find_word_of_the_day()` SQL
   function rotates only over priority entries.
+- `variation` JSON keys must match the `crud/model/json/` classes for the word's
+  subtype (`nounVariation` for nouns, `presentVariations`/… for verbs,
+  `base`/`comparative`/`superlative` for adjectives) — the
+  `CorrectVariationJsonFormatByPartOfSpeechSubType` validator rejects wrong
+  shapes on REST create/update, and the public entry page renders these shapes.
 - `initializer.size=100` (application.properties) caps how many words are used —
   keep it ≥ the number of entries in the file.
 
@@ -83,7 +89,11 @@ All content is real, published material — nothing invented:
   csb.wikipedia.org (Kaszëbskô Wikipedijia) articles; note cites the article.
 - **Proverbs & quotes**: printed sources (Kaszubopedia "Przysłowié",
   E. Rogowska *Acta Cassubiana* IV 2002, H. Derdowski, A. Majkowski).
-- Inflection (`variation`) is intentionally `null` — no paradigms were invented.
+- **Inflection (`variation`)**: only paradigms published on pl.wiktionary.org
+  `{{odmiana}}`/`{{stopn}}` sections are seeded (6 words: full case table for
+  *miesąc*, present-tense forms for *spiéwac*, degrees of comparison for
+  *dobri*, partial nom./nom.-pl. for *głowa*, *lëst*, *jãzëk*); the rest stay
+  `null` because no reliable source exists — nothing is invented.
 
 ### Reseeding after editing the seed JSON
 
@@ -105,6 +115,7 @@ docker exec kas-db psql -U kas -d kas -c \
 | idioms | 12 |
 | hypernyms / synonyms / base form | 6 / 2 / 1 |
 | proverbs / quotes | 6 / 2 |
+| inflection (`variation`) | 6 (miesąc, głowa, lëst, jãzëk, spiéwac, dobri) |
 
 Words without examples simply had no usable source hit; fake sentences are not
 generated on purpose.

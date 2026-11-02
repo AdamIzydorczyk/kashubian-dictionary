@@ -327,6 +327,12 @@
       "polish": "liść",
       "english": "leaf",
       "origin": "prasł *list-",
+      "variation": {
+        "nounVariation": {
+          "nominative": "lëst",
+          "nominativePlural": "lëstë"
+        }
+      },
       "examples": [
         {
           "example": "Ten Lëst pòwiôdô téż ò pòwòłanim do Kòscoła pòganów.",
@@ -508,6 +514,12 @@
       "definition": "head",
       "polish": "głowa",
       "english": "head",
+      "variation": {
+        "nounVariation": {
+          "nominative": "głowa",
+          "nominativePlural": "głowë"
+        }
+      },
       "idioms": [
         {
           "idiom": "mic cos w głowã",
@@ -602,6 +614,12 @@
       "definition": "tongue; language",
       "polish": "język",
       "english": "tongue; language",
+      "variation": {
+        "nounVariation": {
+          "nominative": "jãzëk",
+          "nominativePlural": "jãzëczi"
+        }
+      },
       "idioms": [
         {
           "idiom": "trzëmac jãzëk za zãbama",
@@ -1063,6 +1081,24 @@
         }
       ],
       "origin": "praindoeur *meh₁-",
+      "variation": {
+        "nounVariation": {
+          "nominative": "miesąc",
+          "genitive": "miesąca",
+          "dative": "miesącowi",
+          "accusative": "miesąc",
+          "instrumental": "miesącã",
+          "locative": "miesącù",
+          "vocative": "miesącù",
+          "nominativePlural": "miesące",
+          "genitivePlural": "miesąców",
+          "dativePlural": "miesącóm",
+          "accusativePlural": "miesące",
+          "instrumentalPlural": "miesącama",
+          "locativePlural": "miesącach",
+          "vocativePlural": "miesące"
+        }
+      },
       "examples": [
         {
           "example": "Zélnik – ósmi miesąc roku w gregorijansczim kalãdôrzu.",
@@ -1153,6 +1189,18 @@
       "definition": "to sing",
       "polish": "śpiewać",
       "english": "to sing",
+      "variation": {
+        "presentVariations": {
+          "firstPersonSingular": "spiéwóm",
+          "secondPersonSingular": "spiéwôsz",
+          "thirdPersonSingular": "spiéwô",
+          "firstPersonPluralFirst": "spiéwómë",
+          "firstPersonPluralSecond": "spiéwóma",
+          "secondPersonPluralFirst": "spiéwôta",
+          "thirdPersonPlural": "spiéwają"
+        },
+        "infinitive": "spiéwac"
+      },
       "examples": [
         {
           "example": "Òna spiéwô pò kaszëbskù.",
@@ -1360,6 +1408,11 @@
       "definition": "good",
       "polish": "dobry",
       "english": "good",
+      "variation": {
+        "base": "dobri",
+        "comparative": "lepszi",
+        "superlative": "nôlepszi"
+      },
       "examples": [
         {
           "example": "Torf sã barżi żôlił jak pôlił ë to béł dosc dobri òpôł.",
