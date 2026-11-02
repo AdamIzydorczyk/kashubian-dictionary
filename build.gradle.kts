@@ -74,9 +74,9 @@ dependencies {
     testImplementation("org.spockframework:spock-core:2.0-M2-groovy-3.0")
     testImplementation("org.spockframework:spock-spring:2.0-M2-groovy-3.0")
     testImplementation("org.codehaus.groovy:groovy-all:3.0.13")
-    testImplementation("org.testcontainers:testcontainers:1.17.3")
-    testImplementation("org.testcontainers:spock:1.17.3")
-    testImplementation("org.testcontainers:postgresql:1.17.3")
+    testImplementation("org.testcontainers:testcontainers:1.20.6")
+    testImplementation("org.testcontainers:spock:1.20.6")
+    testImplementation("org.testcontainers:postgresql:1.20.6")
 }
 
 tasks.withType<KotlinCompile> {
@@ -96,6 +96,11 @@ tasks.bootJar {
 
 tasks.withType<Test> {
     useJUnitPlatform()
+    // Testcontainers 1.x always speaks the Docker API as version 1.32, and Docker Engine
+    // 28+ rejects that ("client version 1.32 is too old. Minimum supported API version is
+    // 1.40"), which leaves the specs with no Docker environment at all. Asking for 1.40
+    // works on every Engine from 20.10 (API up to 1.41) to 29 (API from 1.40).
+    systemProperty("api.version", "1.40")
     testLogging {
         events(STARTED,
                 FAILED,

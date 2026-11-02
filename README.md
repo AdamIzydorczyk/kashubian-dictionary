@@ -31,6 +31,28 @@ export MAIL_HOST=localhost MAIL_PORT=25 MAIL_USER_NAME=x MAIL_PASSWORD=x  # dumm
 
 On an empty database the app seeds itself (see below).
 
+## Tests & CI
+
+```bash
+./gradlew test                # needs DB_URL/DB_USER/DB_PASSWORD like above, and Docker
+```
+
+- Compiling the tests already needs a reachable Postgres: `generateJooq` depends on
+  `flywayMigrate`, and the generated `entitysearch` sources are part of the main
+  source set. Point `DB_URL` at any schema (the dev one or a scratch one) — the
+  task only migrates and reads metadata.
+- The Spock specs (`BaseTest` via `TestConfig.Initializer`) start their own
+  `postgres:14.5` container with Testcontainers, so a working Docker daemon is
+  required. Testcontainers 1.x always speaks the Docker API as version 1.32,
+  which Docker Engine 28 and newer reject ("client version 1.32 is too old.
+  Minimum supported API version is 1.40") — then every spec dies with
+  "Could not find a valid Docker environment". `build.gradle.kts` therefore sets
+  the `api.version` system property to 1.40 for test JVMs; that version is
+  accepted by every Engine from 20.10 to 29.
+- CI (`.github/workflows/github-ci.yml`) runs `clean test` and `bootJar` against a
+  throwaway `postgres:14.5` service container, so a build never touches the
+  production database; the Docker image is pushed to ghcr.io afterwards.
+
 ## Development seed data
 
 `DataInitializer` (an `ApplicationRunner`) creates **100 real Kashubian words**

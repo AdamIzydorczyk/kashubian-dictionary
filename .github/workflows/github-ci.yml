@@ -8,21 +8,42 @@ jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
     environment: kashubian-dic
+    # Compiling needs a Postgres: flywayMigrate runs before jOOQ code generation,
+    # and the generated sources are needed to compile the main and test code.
+    # A throwaway schema is used for that - the build never touches the production
+    # database.
+    services:
+      postgres:
+        image: postgres:14.5
+        env:
+          POSTGRES_USER: kas
+          POSTGRES_PASSWORD: kas
+          POSTGRES_DB: kas
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U kas"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     env:
-      DB_URL: ${{ secrets.DB_URL }}
-      DB_USER: ${{ secrets.DB_USER }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_URL: jdbc:postgresql://localhost:5432/kas
+      DB_USER: kas
+      DB_PASSWORD: kas
       REGISTRY: ghcr.io
       IMAGE_NAME: ${{ github.repository }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v7
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v6
         with:
           java-version: '17'
-          distribution: 'adopt'
+          distribution: 'temurin'
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/actions/setup-gradle@v6
+        with:
+          # plain GitHub-cache based caching, like the old gradle-build-action did
+          cache-provider: basic
       - name: Invoke Tests
         run: ./gradlew clean test
       - name: Create Jar
