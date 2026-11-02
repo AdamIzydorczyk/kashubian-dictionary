@@ -1,11 +1,6 @@
 package tk.aizydorczyk.kashubian
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import com.fasterxml.jackson.databind.node.ObjectNode
-import com.github.javafaker.Faker
-import org.jeasy.random.EasyRandom
-import org.jeasy.random.EasyRandomParameters
-import org.jeasy.random.FieldPredicates
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.boot.ApplicationArguments
@@ -22,43 +17,29 @@ import tk.aizydorczyk.kashubian.crud.event.DeleteEntryEvent
 import tk.aizydorczyk.kashubian.crud.event.DeleteSoundFileEvent
 import tk.aizydorczyk.kashubian.crud.event.UpdateEntryEvent
 import tk.aizydorczyk.kashubian.crud.event.UploadSoundFileEvent
-import tk.aizydorczyk.kashubian.crud.model.dto.AntonymDto
 import tk.aizydorczyk.kashubian.crud.model.dto.KashubianEntryDto
-import tk.aizydorczyk.kashubian.crud.model.dto.OtherDto
-import tk.aizydorczyk.kashubian.crud.model.dto.SynonymDto
-import tk.aizydorczyk.kashubian.crud.model.entity.KashubianEntry
-import tk.aizydorczyk.kashubian.crud.model.entity.Meaning
+import tk.aizydorczyk.kashubian.crud.model.dto.MeaningDto
+import tk.aizydorczyk.kashubian.crud.model.dto.TranslationDto
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechSubType
 import tk.aizydorczyk.kashubian.crud.model.value.PartOfSpeechType
-import tk.aizydorczyk.kashubian.crud.query.rest.ExampleVariationsGenerator
 import tk.aizydorczyk.kashubian.infrastructure.AuditingInformation
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.InputStream
 import java.time.LocalDateTime.now
 import java.util.Base64.getDecoder
-import java.util.Locale
-import java.util.concurrent.atomic.AtomicLong
 import kotlin.math.min
-import kotlin.random.Random
-import kotlin.streams.toList
-
-typealias JavaRandom = java.util.Random
 
 @Component
 @EnableConfigurationProperties(RandomDataInitializerProperties::class)
 class DataInitializer(
     private val kashubianEntryController: KashubianEntryController,
-    private val exampleVariationsGenerator: ExampleVariationsGenerator,
     private val repository: KashubianEntryRepository,
     private val properties: RandomDataInitializerProperties,
     private val objectMapper: ObjectMapper
 ) : ApplicationRunner {
 
     val logger: Logger = LoggerFactory.getLogger(javaClass.simpleName)
-
-    private final val random = JavaRandom()
-    private final val faker = Faker(Locale(properties.language), random)
 
     override fun run(args: ApplicationArguments) {
         if (repository.countEvents() > 0 && repository.countAllEntries() <= 0) {
@@ -76,26 +57,20 @@ class DataInitializer(
     }
 
     private fun generateData() {
-        val generatorCounter = AtomicLong(1L)
-        val parameters =
-            prepareGeneratorParameters(generatorCounter::get) {
-                exampleVariationsGenerator.variationsExamples().random(Random(generatorCounter.get()))
-            }
+        val seedWords = readSeedVocabulary().words
 
-        val generator = EasyRandom(parameters)
-        generator.objects(KashubianEntryDto::class.java, properties.size)
-            .forEach {
-                kashubianEntryController.create(it, AuditingInformation("generated", now()))
-                    .let { response ->
-                        kashubianEntryController.uploadSoundFile(response.entryId,
-                                FakeMultipartFile(), AuditingInformation("generated",
-                                now()))
-                    }
-                logger.info("Generated entry $generatorCounter from ${properties.size}")
-                generatorCounter.incrementAndGet()
-            }
-        logger.info("Entries generation finished")
+        seedWords.take(properties.size).forEach { seedWord ->
+            kashubianEntryController.create(seedWord.toEntryDto(),
+                    AuditingInformation("seeded", now()))
+            logger.info("Seeded entry '${seedWord.word}'")
+        }
+        logger.info("Seed entries generation finished (${min(seedWords.size, properties.size)} entries)")
     }
+
+    private fun readSeedVocabulary(): SeedVocabulary =
+        javaClass.getResourceAsStream(SEED_FILE).use {
+            objectMapper.readValue(it, SeedVocabulary::class.java)
+        }
 
     private fun recreateDataFromEvents() {
         repository.findAllEvents().forEach {
@@ -136,75 +111,49 @@ class DataInitializer(
         }
     }
 
-    private fun prepareGeneratorParameters(
-        generatorCounter: () -> Long,
-        variationWithTypesFunction: () -> Triple<ObjectNode?, PartOfSpeechSubType, PartOfSpeechType>): EasyRandomParameters {
-
-        return with(EasyRandomParameters()) {
-            collectionSizeRange(1, 3)
-
-            randomize(FieldPredicates.named("variation")) {
-                variationWithTypesFunction.invoke().first
-            }
-
-            randomize(PartOfSpeechType::class.java) {
-                variationWithTypesFunction.invoke().third
-            }
-
-            randomize(PartOfSpeechSubType::class.java) {
-                variationWithTypesFunction.invoke().second
-            }
-
-            randomize(FieldPredicates.ofType(String::class.java)) {
-                selectWordFunction() + generatorCounter.invoke()
-            }
-
-            randomize(FieldPredicates.named("others")) {
-                repository.findByTypeAndIds(KashubianEntry::class.java,
-                        generateEntitiesAmount(generatorCounter.invoke()))
-                    .map { OtherDto(it.id, selectWordFunction() + generatorCounter.invoke().toInt()) }
-            }
-
-            randomize(FieldPredicates.named("synonyms")) {
-                repository.findByTypeAndIds(Meaning::class.java, generateEntitiesAmount(generatorCounter.invoke()))
-                    .map { SynonymDto(it.id, selectWordFunction() + generatorCounter.invoke()) }
-            }
-
-            randomize(FieldPredicates.named("antonyms")) {
-                repository.findByTypeAndIds(Meaning::class.java, generateEntitiesAmount(generatorCounter.invoke()))
-                    .map { AntonymDto(it.id, selectWordFunction() + generatorCounter.invoke()) }
-            }
-
-            randomize(FieldPredicates.named("base")) {
-                repository.findByTypeAndIds(KashubianEntry::class.java,
-                        generateEntitiesAmount(generatorCounter.invoke()))
-                    .firstOrNull()?.id
-            }
-
-            randomize(FieldPredicates.named("hyperonym")) {
-                repository.findByTypeAndIds(Meaning::class.java, generateEntitiesAmount(generatorCounter.invoke()))
-                    .firstOrNull()?.id
-            }
-        }
+    companion object {
+        private const val SEED_FILE = "/seed/kashubian-words.json"
     }
+}
 
-    private fun generateEntitiesAmount(generatorCounter: Long): List<Long> =
-        random.longs(1, -1, generatorCounter).toList()
+/**
+ * One Kashubian dictionary word with glosses, as stored in
+ * /seed/kashubian-words.json (real vocabulary from published
+ * Kashubian dictionaries and word lists, used only for seed data).
+ */
+data class SeedVocabulary(
+    val source: String? = null,
+    val words: List<SeedWord> = emptyList()
+)
 
-    private fun selectWordFunction(): String =
-        selectRandomWordFromSets().let { it.substring(0, min(it.length, 90)) }
-
-
-    private fun selectRandomWordFromSets(): String = listOf(
-            faker.address()::country,
-            faker.address()::state,
-            faker.address()::city,
-            faker.name()::firstName,
-            faker.name()::lastName,
-            faker.name()::prefix,
-            faker.lorem()::word,
-            faker.lorem()::sentence)
-        .random().invoke()
+data class SeedWord(
+    val word: String,
+    val partOfSpeech: PartOfSpeechType,
+    val partOfSpeechSubType: PartOfSpeechSubType,
+    val definition: String,
+    val polish: String,
+    val english: String
+) {
+    fun toEntryDto(): KashubianEntryDto = KashubianEntryDto(
+            word = word,
+            note = null,
+            // core vocabulary; find_word_of_the_day only rotates over priority entries
+            priority = true,
+            partOfSpeech = partOfSpeech,
+            partOfSpeechSubType = partOfSpeechSubType,
+            variation = null,
+            base = null,
+            meanings = listOf(MeaningDto(
+                    translation = TranslationDto(
+                            polish = polish,
+                            english = english,
+                            german = null,
+                            ukrainian = null),
+                    definition = definition,
+                    origin = null,
+                    hyperonym = null)),
+            others = emptyList()
+    )
 }
 
 @ConstructorBinding
