@@ -122,7 +122,8 @@ generated on purpose.
 
 ## Custom queries & endpoints
 
-- `GET /custom-query/word-of-the-day` — random priority entry, changes twice a day
+- `GET /custom-query/word-of-the-day` — random priority entry, changes twice a day;
+  returns the word, its definitions and the entry `note` (the frontend card shows the note)
 - `GET /custom-query/variation-example/{partOfSpeechSubType}` — sample inflection
 - `POST/PUT/DELETE /kashubian-entry/...` — CRUD (Basic auth), sound-file
   upload/download at `/kashubian-entry/{id}/file`
