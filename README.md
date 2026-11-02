@@ -83,6 +83,10 @@ All content is real, published material — nothing invented:
 
 - **Headwords**: Kashubian Swadesh list (Wiktionary `Module:Swadesh/data/csb`)
   and Polish–Kashubian dictionaries, in modern standard orthography.
+- **Entry `note`** (shown on the Word of the Day card): the first Polish `1.1`
+  definition of the word's first Polish equivalent on pl.wiktionary.org
+  (scraped 2026-11-02); for the 10 headwords with no csb section there, the
+  definition of the Polish gloss in the entry's own `polish` field instead.
 - **Etymologies & collocations**: pl.wiktionary.org csb sections (CC BY-SA 3.0;
   cited in item notes).
 - **Example sentences**: shortest real sentence containing the word from

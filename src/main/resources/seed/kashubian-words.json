@@ -1,5 +1,5 @@
 {
-  "source": "Core Kashubian vocabulary in modern standard orthography. Headwords: Kashubian Swadesh list (Wiktionary, Module:Swadesh/data/csb) and Polish-Kashubian dictionaries. Proverbs/quotes: printed Kashubian sources (Kaszubopedia 'Przysłowia'; E. Rogowska, Acta Cassubiana IV, 2002; H. Derdowski; A. Majkowski). Used only to seed the development database. Example sentences, idioms, relations and etymologies supplemented from pl.wiktionary.org (CC BY-SA 3.0), Kaszëbskô Wikipedijia-era extracts.",
+  "source": "Core Kashubian vocabulary in modern standard orthography. Headwords: Kashubian Swadesh list (Wiktionary, Module:Swadesh/data/csb) and Polish-Kashubian dictionaries. Proverbs/quotes: printed Kashubian sources (Kaszubopedia 'Przysłowia'; E. Rogowska, Acta Cassubiana IV, 2002; H. Derdowski; A. Majkowski). Used only to seed the development database. Example sentences, idioms, relations and etymologies supplemented from pl.wiktionary.org (CC BY-SA 3.0), Kaszëbskô Wikipedijia-era extracts. Entry notes: first Polish definition of the first Polish equivalent on pl.wiktionary.org (2026-11-02).",
   "words": [
     {
       "word": "białka",
@@ -8,6 +8,7 @@
       "definition": "woman",
       "polish": "kobieta",
       "english": "woman",
+      "note": "dorosły człowiek płci żeńskiej",
       "origin": "praindoeur *bʰelH-",
       "idioms": [
         {
@@ -29,6 +30,7 @@
       "definition": "man",
       "polish": "mężczyzna",
       "english": "man",
+      "note": "dorosły człowiek płci męskiej",
       "antonymOf": "białka",
       "origin": "prasł *xolp-"
     },
@@ -39,6 +41,7 @@
       "definition": "human being",
       "polish": "człowiek",
       "english": "human being",
+      "note": "istota o najwyższym stopniu świadomości zamieszkująca Ziemię",
       "proverbs": [
         {
           "proverb": "Nie sądzë, a cebie nie bãdą sądzëlë",
@@ -53,6 +56,7 @@
       "definition": "child",
       "polish": "dziecko",
       "english": "child",
+      "note": "potomek niezależnie od wieku: syn lub córka w odniesieniu do swoich rodziców biologicznych lub przybranych",
       "hypernymOf": "człowiek",
       "examples": [
         {
@@ -76,6 +80,7 @@
       "definition": "mother",
       "polish": "matka",
       "english": "mother",
+      "note": "rodzic płci żeńskiej",
       "examples": [
         {
           "example": "Mòja matka robi chleb.",
@@ -98,6 +103,7 @@
       "definition": "father",
       "polish": "ojciec",
       "english": "father",
+      "note": "mężczyzna mający własne dziecko (w stosunku do tego dziecka)",
       "origin": "od , od",
       "examples": [
         {
@@ -117,6 +123,7 @@
       "definition": "animal",
       "polish": "zwierzę",
       "english": "animal",
+      "note": "organizm cudzożywny o komórkach eukariotycznych, bez ściany komórkowej",
       "examples": [
         {
           "example": "Je to zwierzã baro pòżëteczny.",
@@ -135,6 +142,7 @@
       "definition": "fish",
       "polish": "ryba",
       "english": "fish",
+      "note": "zwierzę z gromady kręgowców, żyjące w wodzie",
       "hypernymOf": "zwierzã",
       "proverbs": [
         {
@@ -164,6 +172,7 @@
       "definition": "bird",
       "polish": "ptak",
       "english": "bird",
+      "note": "zwierzę opierzone posiadające skrzydła i dziób",
       "hypernymOf": "zwierzã",
       "origin": "prasł *pъtakъ",
       "idioms": [
@@ -180,6 +189,7 @@
       "definition": "dog",
       "polish": "pies",
       "english": "dog",
+      "note": "zwierzę domowe",
       "hypernymOf": "zwierzã",
       "examples": [
         {
@@ -203,6 +213,7 @@
       "definition": "snake",
       "polish": "wąż",
       "english": "snake",
+      "note": "przedstawiciel podrzędu beznogich gadów o podłużnym ciele",
       "hypernymOf": "zwierzã",
       "examples": [
         {
@@ -218,6 +229,7 @@
       "definition": "worm",
       "polish": "robak",
       "english": "worm",
+      "note": "typ bezkręgowca o nitkowatym kształcie",
       "hypernymOf": "zwierzã",
       "origin": "prasłowiański *xrob-",
       "examples": [
@@ -237,7 +249,8 @@
       "partOfSpeechSubType": "NEUTER",
       "definition": "tree",
       "polish": "drzewo",
-      "english": "tree"
+      "english": "tree",
+      "note": "tkanka roślinna zbudowana głównie z martwych komórek, przewodząca wodę i sole mineralne z korzeni do liści oraz stanowiąca szkielet podtrzymujący roślinę"
     },
     {
       "word": "las",
@@ -246,6 +259,7 @@
       "definition": "forest",
       "polish": "las",
       "english": "forest",
+      "note": "gęste zbiorowisko drzew",
       "relatedTo": [
         {
           "word": "drzewò",
@@ -277,6 +291,7 @@
       "definition": "fruit",
       "polish": "owoc",
       "english": "fruit",
+      "note": "organ rozrodczy roślin, powstający z zalążni, zawierający nasiona",
       "examples": [
         {
           "example": "Brzôd Czôrny, jadalny, baro smaczny.",
@@ -295,6 +310,7 @@
       "definition": "seed",
       "polish": "ziarno",
       "english": "seed",
+      "note": "organ roślin nasiennych składający się z zarodka, tkanki zapasowej i łupiny nasiennej",
       "origin": "praindoeur. *s(e)men– 'nasiono'",
       "proverbs": [
         {
@@ -326,6 +342,7 @@
       "definition": "leaf",
       "polish": "liść",
       "english": "leaf",
+      "note": "element budowy sporofitu rośliny naczyniowej, pełniący funkcje odżywcze dzięki zawartości chlorofilu",
       "origin": "prasł *list-",
       "variation": {
         "nounVariation": {
@@ -351,6 +368,7 @@
       "definition": "root",
       "polish": "korzeń",
       "english": "root",
+      "note": "organ roślin naczyniowych umiejscowiony zwykle w podłożu (glebie), utrzymujący roślinę w jednym miejscu i pobierający dla niej wodę i składniki mineralne",
       "origin": "prasł *koren-",
       "examples": [
         {
@@ -366,6 +384,7 @@
       "definition": "bark of a tree",
       "polish": "kora",
       "english": "bark of a tree",
+      "note": "'kora pierwotna' tkanka łodygi i korzenia znajdująca się między walcem osiowym a skórką",
       "origin": "prasł *kora",
       "examples": [
         {
@@ -381,6 +400,7 @@
       "definition": "flower",
       "polish": "kwiat",
       "english": "flower",
+      "note": "organ roślin nasiennych, w którym wykształcają się wyspecjalizowane elementy służące do rozmnażania",
       "origin": "praindoeur *k̑u̯ei̯t-",
       "examples": [
         {
@@ -400,6 +420,7 @@
       "definition": "grass",
       "polish": "trawa",
       "english": "grass",
+      "note": "roślina z rodziny wiechlinowatych, zwykle w kolorze zielonym, rozłogowa lub kępiasta, o długich, wąskich liściach",
       "origin": "praindoeur *treu̯H-"
     },
     {
@@ -408,7 +429,8 @@
       "partOfSpeechSubType": "FEMININE",
       "definition": "rope",
       "polish": "lina",
-      "english": "rope"
+      "english": "rope",
+      "note": "elastyczne cięgno z włókna lub drutów"
     },
     {
       "word": "skóra",
@@ -417,6 +439,7 @@
       "definition": "skin",
       "polish": "skóra",
       "english": "skin",
+      "note": "zewnętrzna powłoka ciała kręgowców",
       "origin": "praindoeur *(s)ker-"
     },
     {
@@ -426,6 +449,7 @@
       "definition": "meat",
       "polish": "mięso",
       "english": "meat",
+      "note": "jadalne części zabitego zwierzęcia",
       "origin": "praindoeur *mē(m)s-",
       "examples": [
         {
@@ -445,6 +469,7 @@
       "definition": "blood",
       "polish": "krew",
       "english": "blood",
+      "note": "płynna tkanka łączna zwierząt",
       "origin": "praindoeur. *ker– 'krew'",
       "examples": [
         {
@@ -459,7 +484,8 @@
       "partOfSpeechSubType": "FEMININE",
       "definition": "bone",
       "polish": "kość",
-      "english": "bone"
+      "english": "bone",
+      "note": "część szkieletu ludzi lub zwierząt"
     },
     {
       "word": "jajo",
@@ -467,7 +493,8 @@
       "partOfSpeechSubType": "NEUTER",
       "definition": "egg",
       "polish": "jajo",
-      "english": "egg"
+      "english": "egg",
+      "note": "dojrzała komórka rozrodcza żeńska zwierząt i człowieka"
     },
     {
       "word": "róg",
@@ -476,6 +503,7 @@
       "definition": "horn",
       "polish": "róg",
       "english": "horn",
+      "note": "twardy wyrostek występujący na głowie niektórych ssaków, zwykle parzyście",
       "origin": "(1.1)",
       "examples": [
         {
@@ -491,6 +519,7 @@
       "definition": "tail",
       "polish": "ogon",
       "english": "tail",
+      "note": "część ciała niektórych zwierząt, składająca się z włosów, piór lub kręgów, także futro z tej części ciała",
       "origin": "praindoeur *gʷʰen-",
       "examples": [
         {
@@ -505,7 +534,8 @@
       "partOfSpeechSubType": "NEUTER",
       "definition": "feather",
       "polish": "pióro",
-      "english": "feather"
+      "english": "feather",
+      "note": "wytwór naskórka ptaków, pokrywający ich ciało, składający się z elastycznej osi i dwu chorągiewek"
     },
     {
       "word": "głowa",
@@ -514,6 +544,7 @@
       "definition": "head",
       "polish": "głowa",
       "english": "head",
+      "note": "część ciała zwierząt i człowieka, znajdująca się u góry lub z przodu ciała, zawierająca mózg",
       "variation": {
         "nounVariation": {
           "nominative": "głowa",
@@ -548,6 +579,7 @@
       "definition": "ear",
       "polish": "ucho",
       "english": "ear",
+      "note": "małżowina uszna",
       "origin": "praindoeur *h₂eu̯s-",
       "examples": [
         {
@@ -563,6 +595,7 @@
       "definition": "eye",
       "polish": "oko",
       "english": "eye",
+      "note": "narząd wzroku",
       "idioms": [
         {
           "idiom": "czëtac kòmù z òków",
@@ -583,6 +616,7 @@
       "definition": "nose",
       "polish": "nos",
       "english": "nose",
+      "note": "część twarzy powyżej ust, między oczami, narząd zmysłu węchu, część układu oddechowego, również u zwierząt",
       "idioms": [
         {
           "idiom": "mic nos w górã",
@@ -597,7 +631,8 @@
       "partOfSpeechSubType": "FEMININE",
       "definition": "mouth",
       "polish": "gęba",
-      "english": "mouth"
+      "english": "mouth",
+      "note": "część ciała służąca głównie do spożywania pokarmów oraz artykulacji głosek"
     },
     {
       "word": "zãb",
@@ -605,7 +640,8 @@
       "partOfSpeechSubType": "MASCULINE",
       "definition": "tooth",
       "polish": "ząb",
-      "english": "tooth"
+      "english": "tooth",
+      "note": "twór anatomiczny osadzony w szczęce lub żuchwie, ułatwiający gryzienie pokarmu"
     },
     {
       "word": "jãzëk",
@@ -614,6 +650,7 @@
       "definition": "tongue; language",
       "polish": "język",
       "english": "tongue; language",
+      "note": "mięsień znajdujący się w jamie ustnej lub gębowej, pełniący funkcję narządu smaku, ułatwiający jedzenie, a u ludzi także mówienie",
       "variation": {
         "nounVariation": {
           "nominative": "jãzëk",
@@ -650,6 +687,7 @@
       "definition": "leg",
       "polish": "noga",
       "english": "leg",
+      "note": "część ciała tworząca dolny koniec nogi, ograniczona piętą i kostką",
       "origin": "od <",
       "examples": [
         {
@@ -665,6 +703,7 @@
       "definition": "hand",
       "polish": "ręka",
       "english": "hand",
+      "note": "część kończyny górnej człowieka lub małpy człekokształtnej od nadgarstka do końca palców, dłoń",
       "idioms": [
         {
           "idiom": "dac kòmù rãkã",
@@ -680,6 +719,7 @@
       "definition": "belly",
       "polish": "brzuch",
       "english": "belly",
+      "note": "dolna część tułowia",
       "origin": "prasł *bŕuxъ"
     },
     {
@@ -689,6 +729,7 @@
       "definition": "heart",
       "polish": "serce",
       "english": "heart",
+      "note": "u ludzi i wielu zwierząt: organ (mięsień), którego praca powoduje przepływ krwi w organizmie",
       "examples": [
         {
           "example": "Paweł Czaplewsczi Kaszëba mô cwiardą mòwã, ale mitczé serce.",
@@ -703,6 +744,7 @@
       "definition": "water",
       "polish": "woda",
       "english": "water",
+      "note": "bezbarwna i bezzapachowa ciecz, tlenek wodoru, H₂O",
       "origin": "praindoeur. *ued– 'woda'",
       "examples": [
         {
@@ -728,6 +770,7 @@
       "definition": "rain",
       "polish": "deszcz",
       "english": "rain",
+      "note": "opad atmosferyczny, krople wody powstające w chmurach i spadające na ziemię",
       "relatedTo": [
         {
           "word": "wòda",
@@ -752,6 +795,7 @@
       "definition": "river",
       "polish": "rzeka",
       "english": "river",
+      "note": "ciek na powierzchni ziemi",
       "relatedTo": [
         {
           "word": "wòda",
@@ -777,6 +821,7 @@
       "definition": "lake",
       "polish": "jezioro",
       "english": "lake",
+      "note": "śródlądowy zbiornik wodny, zwykle naturalny",
       "relatedTo": [
         {
           "word": "rëba",
@@ -791,6 +836,7 @@
       "definition": "sea",
       "polish": "morze",
       "english": "sea",
+      "note": "duży zbiornik słonej wody mający połączenie z oceanem",
       "relatedTo": [
         {
           "word": "rëba",
@@ -811,6 +857,7 @@
       "definition": "salt",
       "polish": "sól",
       "english": "salt",
+      "note": "chlorek sodu",
       "origin": "praindoeur *sal-"
     },
     {
@@ -820,6 +867,7 @@
       "definition": "stone",
       "polish": "kamień",
       "english": "stone",
+      "note": "obiekt pochodzenia mineralnego o konsystencji stałej, twardy, wyraźnie odgraniczający się od otoczenia",
       "proverbs": [
         {
           "proverb": "Chto na cebie kamieniã, të na niegò chlebã",
@@ -841,6 +889,7 @@
       "definition": "sand",
       "polish": "piasek",
       "english": "sand",
+      "note": "luźna skała osadowa złożona z ziaren i okruchów skalnych o rozmiarze od 0,0625 do 2 mm, głównie kwarcu",
       "relatedTo": [
         {
           "word": "kam",
@@ -855,6 +904,7 @@
       "definition": "earth, land",
       "polish": "ziemia",
       "english": "earth, land",
+      "note": "kraina, obszar geograficzny",
       "origin": "praindoeur. *dʰǵʰm̥mū 'ziemia'",
       "quotes": [
         {
@@ -880,6 +930,7 @@
       "definition": "cloud",
       "polish": "chmura",
       "english": "cloud",
+      "note": "krople wody lub kryształki lodu zawieszone w atmosferze",
       "examples": [
         {
           "example": "Cirrus (Ci – pierzastô chmùra) je chmùrą wësoką.",
@@ -898,6 +949,7 @@
       "definition": "sky",
       "polish": "niebo",
       "english": "sky",
+      "note": "część atmosfery lub kosmosu widziana z Ziemi jako otaczająca ją sfera",
       "origin": "praindoeur *nebʰ-",
       "examples": [
         {
@@ -917,6 +969,7 @@
       "definition": "wind",
       "polish": "wiatr",
       "english": "wind",
+      "note": "ruszające się masy powietrza",
       "relatedTo": [
         {
           "word": "chmùra",
@@ -941,6 +994,7 @@
       "definition": "snow",
       "polish": "śnieg",
       "english": "snow",
+      "note": "opad w postaci kryształków lodu",
       "origin": "praindoeur *snei̯gʷʰ-"
     },
     {
@@ -950,6 +1004,7 @@
       "definition": "ice",
       "polish": "lód",
       "english": "ice",
+      "note": "stały stan skupienia wody",
       "examples": [
         {
           "example": "Firn – to je lód – jegò przechódnô fòrma midzë sniegã a firnowim lodã.",
@@ -964,6 +1019,7 @@
       "definition": "fire",
       "polish": "ogień",
       "english": "fire",
+      "note": "płomienie i żar powstające podczas procesu gwałtownego utleniania",
       "origin": "od , od"
     },
     {
@@ -972,7 +1028,8 @@
       "partOfSpeechSubType": "FEMININE",
       "definition": "road",
       "polish": "droga",
-      "english": "road"
+      "english": "road",
+      "note": "każdy wytyczony lub przyjęty pas terenu przeznaczony do ruchu pojazdów i ludzi, także zwierząt"
     },
     {
       "word": "góra",
@@ -980,7 +1037,8 @@
       "partOfSpeechSubType": "FEMININE",
       "definition": "mountain",
       "polish": "góra",
-      "english": "mountain"
+      "english": "mountain",
+      "note": "duże wzniesienie terenu"
     },
     {
       "word": "noc",
@@ -989,6 +1047,7 @@
       "definition": "night",
       "polish": "noc",
       "english": "night",
+      "note": "okres od zmierzchu do świtu",
       "origin": "praindoeur *negʷ-"
     },
     {
@@ -998,6 +1057,7 @@
       "definition": "day",
       "polish": "dzień",
       "english": "day",
+      "note": "okres od świtu do zmierzchu",
       "origin": "praindoeur. *dyeu– 'dzień, jasne niebo'",
       "antonymOf": "noc",
       "examples": [
@@ -1014,6 +1074,7 @@
       "definition": "year",
       "polish": "rok",
       "english": "year",
+      "note": "czas, jaki w przybliżeniu zajmuje Ziemi obiegnięcie Słońca, równy 365 lub 366 dni",
       "idioms": [
         {
           "idiom": "cządë rokù",
@@ -1028,6 +1089,7 @@
       "definition": "winter",
       "polish": "zima",
       "english": "winter",
+      "note": "najchłodniejsza z 4 astronomicznych (lub 6 klimatycznych) pór roku",
       "examples": [
         {
           "example": "Na swiãtégò Grzegòrza zëma jidze do mòrza.",
@@ -1046,6 +1108,7 @@
       "definition": "summer",
       "polish": "lato",
       "english": "summer",
+      "note": "pora roku, charakteryzująca się najwyższymi temperaturami",
       "antonymOf": "zëma",
       "examples": [
         {
@@ -1064,7 +1127,8 @@
       "partOfSpeechSubType": "NEUTER",
       "definition": "name",
       "polish": "imię",
-      "english": "name"
+      "english": "name",
+      "note": "indywidualna nazwa osoby i stworzeń wyższych (anioła, boga, diabła itd.), zwierzęcia, rośliny itp"
     },
     {
       "word": "miesąc",
@@ -1117,6 +1181,7 @@
       "definition": "star",
       "polish": "gwiazda",
       "english": "star",
+      "note": "ciało niebieskie będące skupiskiem związanej grawitacyjnie materii, w której zachodzą reakcje syntezy jądrowej",
       "relatedTo": [
         {
           "word": "noc",
@@ -1167,6 +1232,7 @@
       "definition": "to talk",
       "polish": "gadać",
       "english": "to talk",
+      "note": "mówić, rozmawiać",
       "examples": [
         {
           "example": "Lëdze gadają pò kaszëbskù.",
@@ -1189,6 +1255,7 @@
       "definition": "to sing",
       "polish": "śpiewać",
       "english": "to sing",
+      "note": "wykonywać melodię głosem",
       "variation": {
         "presentVariations": {
           "firstPersonSingular": "spiéwóm",
@@ -1215,6 +1282,7 @@
       "definition": "to play",
       "polish": "grać",
       "english": "to play",
+      "note": "brać udział w grze – sportowej, towarzyskiej itp",
       "origin": "prasł *jĭgr-"
     },
     {
@@ -1223,7 +1291,8 @@
       "partOfSpeechSubType": "CONJUGATION_I",
       "definition": "to dig",
       "polish": "kopać",
-      "english": "to dig"
+      "english": "to dig",
+      "note": "uderzać kogoś / coś nogą"
     },
     {
       "word": "płëwac",
@@ -1232,6 +1301,7 @@
       "definition": "to swim",
       "polish": "pływać",
       "english": "to swim",
+      "note": "poruszać się w wodzie, po wodzie lub innym płynie",
       "examples": [
         {
           "example": "Òn chce pływac w jezerze.",
@@ -1246,6 +1316,7 @@
       "definition": "to fly",
       "polish": "latać",
       "english": "to fly",
+      "note": "umieć przemieszczać się ponad gruntem, w powietrzu lub kosmosie",
       "examples": [
         {
           "example": "Pszczołë mògą latac òd wczasnégò zymkù tam, gdze są kwiatë z chtërnëch mògą wząc kwiatowi piszk i nektar (kwiatny sok).",
@@ -1264,6 +1335,7 @@
       "definition": "to hunt",
       "polish": "polować",
       "english": "to hunt",
+      "note": "brać udział w polowaniu, tropić aby zabić",
       "examples": [
         {
           "example": "Òne są tu òbjimniãti dzélową òchrónią, ale òd 1 rujana do 15 gromicznika mòże na nie jachtowac.",
@@ -1277,7 +1349,8 @@
       "partOfSpeechSubType": "CONJUGATION_I",
       "definition": "to breathe",
       "polish": "oddychać",
-      "english": "to breathe"
+      "english": "to breathe",
+      "note": "pobierać tlen z naturalnego dla danego gatunku środowiska"
     },
     {
       "word": "ùmierac",
@@ -1285,7 +1358,8 @@
       "partOfSpeechSubType": "CONJUGATION_I",
       "definition": "to die",
       "polish": "umierać",
-      "english": "to die"
+      "english": "to die",
+      "note": "kończyć swoje życie, przestawać żyć"
     },
     {
       "word": "wiôldżi",
@@ -1294,6 +1368,7 @@
       "definition": "big",
       "polish": "duży",
       "english": "big",
+      "note": "o nadzwyczaj dużych rozmiarach",
       "origin": "praindoeur *u̯elH-",
       "idioms": [
         {
@@ -1319,6 +1394,7 @@
       "definition": "small",
       "polish": "mały",
       "english": "small",
+      "note": "mający niewielkie rozmiary, nieduży, drobny, niski",
       "antonymOf": "wiôldżi",
       "examples": [
         {
@@ -1338,6 +1414,7 @@
       "definition": "long",
       "polish": "długi",
       "english": "long",
+      "note": "mający znaczny wymiar podłużny (długość)",
       "examples": [
         {
           "example": "Zëma je dłëgô.",
@@ -1352,6 +1429,7 @@
       "definition": "short",
       "polish": "krótki",
       "english": "short",
+      "note": "mający małą długość",
       "antonymOf": "dłudżi",
       "examples": [
         {
@@ -1370,7 +1448,8 @@
       "partOfSpeechSubType": "INFLECTIV_ADJECTIVE",
       "definition": "warm",
       "polish": "ciepły",
-      "english": "warm"
+      "english": "warm",
+      "note": "mający temperaturę równą temperaturze pokojowej lub niewiele od niej większą"
     },
     {
       "word": "zëmny",
@@ -1379,6 +1458,7 @@
       "definition": "cold",
       "polish": "zimny",
       "english": "cold",
+      "note": "mający (względnie) niską temperaturę, wywołujący uczucie zimna",
       "baseOf": "zëma",
       "antonymOf": "cepłi"
     },
@@ -1389,6 +1469,7 @@
       "definition": "new",
       "polish": "nowy",
       "english": "new",
+      "note": "istniejący od niedawna",
       "origin": "praindoeur *neu̯-"
     },
     {
@@ -1398,6 +1479,7 @@
       "definition": "old",
       "polish": "stary",
       "english": "old",
+      "note": "mający wiele lat, niemłody",
       "antonymOf": "nowi",
       "origin": "praindoeur *steh₂-"
     },
@@ -1408,6 +1490,7 @@
       "definition": "good",
       "polish": "dobry",
       "english": "good",
+      "note": "miły, uczynny, usłużny, szlachetny",
       "variation": {
         "base": "dobri",
         "comparative": "lepszi",
@@ -1427,6 +1510,7 @@
       "definition": "bad",
       "polish": "zły",
       "english": "bad",
+      "note": "agresywny, zdenerwowany (w danej chwili)",
       "antonymOf": "dobri",
       "examples": [
         {
@@ -1442,6 +1526,7 @@
       "definition": "red",
       "polish": "czerwony",
       "english": "red",
+      "note": "mający kolor pierwszego pasma tęczy, taki jak kolor świeżej krwi, truskawki itp.; mający kolor podstawowy",
       "origin": "praindoeur *kʷr̥mi-"
     },
     {
@@ -1451,6 +1536,7 @@
       "definition": "green",
       "polish": "zielony",
       "english": "green",
+      "note": "mający kolor czwartego pasma tęczy, taki jak kolor świeżej trawy, szmaragdu, malachitu itp.; mający kolor pochodny, powstały ze zmieszania kolorów podstawowych: żółtego i niebieskiego",
       "examples": [
         {
           "example": "Zelony kątór (Bufotes viridis syn.",
@@ -1469,6 +1555,7 @@
       "definition": "yellow",
       "polish": "żółty",
       "english": "yellow",
+      "note": "mający kolor trzeciego pasma tęczy, taki jak kolor żółtka, kwiatu jaskra, owocu cytryny itp.; mający kolor podstawowy",
       "examples": [
         {
           "example": "Żôłti lëpin (Lupinus luteus L.) – to je jednorocznô roscëna z rodzëznë bòbòwatëch (Fabaceae).",
@@ -1487,6 +1574,7 @@
       "definition": "white",
       "polish": "biały",
       "english": "white",
+      "note": "mający bardzo jasną barwę przeciwstawną do czarnego, taką jak czysty śnieg, mleko itp",
       "origin": "praindoeur *bʰelH-",
       "examples": [
         {
@@ -1506,6 +1594,7 @@
       "definition": "black",
       "polish": "czarny",
       "english": "black",
+      "note": "mający najciemniejszy możliwy kolor",
       "antonymOf": "biôłi",
       "examples": [
         {
@@ -1525,6 +1614,7 @@
       "definition": "wet",
       "polish": "mokry",
       "english": "wet",
+      "note": "pokryty lub nasiąknięty wodą, albo inną cieczą",
       "origin": "prabałtosłowiański *mok-",
       "examples": [
         {
@@ -1544,6 +1634,7 @@
       "definition": "dry",
       "polish": "suchy",
       "english": "dry",
+      "note": "nie wilgotny; pozbawiony wilgoci",
       "antonymOf": "mòkri",
       "origin": "praindoeur *h₂seu̯s-",
       "examples": [
@@ -1559,7 +1650,8 @@
       "partOfSpeechSubType": "INFLECTIV_NUMERAL",
       "definition": "one",
       "polish": "jeden",
-      "english": "one"
+      "english": "one",
+      "note": "liczba 1"
     },
     {
       "word": "dwa",
@@ -1568,6 +1660,7 @@
       "definition": "two",
       "polish": "dwa",
       "english": "two",
+      "note": "liczba 2",
       "origin": "praindoeur *du̯o-"
     },
     {
@@ -1577,6 +1670,7 @@
       "definition": "three",
       "polish": "trzy",
       "english": "three",
+      "note": "liczba 3",
       "origin": "praindoeur *trei̯-"
     },
     {
@@ -1585,7 +1679,8 @@
       "partOfSpeechSubType": "INFLECTIV_NUMERAL",
       "definition": "four",
       "polish": "cztery",
-      "english": "four"
+      "english": "four",
+      "note": "liczba 4"
     },
     {
       "word": "piãc",
@@ -1593,7 +1688,8 @@
       "partOfSpeechSubType": "INFLECTIV_NUMERAL",
       "definition": "five",
       "polish": "pięć",
-      "english": "five"
+      "english": "five",
+      "note": "liczba 5"
     },
     {
       "word": "mëma",
@@ -1602,6 +1698,7 @@
       "definition": "mother (fam.)",
       "polish": "mama",
       "english": "mother (fam.)",
+      "note": "rodzic płci żeńskiej",
       "synonymsOf": [
         "matka"
       ],
@@ -1623,6 +1720,7 @@
       "definition": "father (fam.)",
       "polish": "tata",
       "english": "father (fam.)",
+      "note": "ojciec",
       "synonymsOf": [
         "òjc"
       ]
